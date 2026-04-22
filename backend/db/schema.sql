@@ -1,4 +1,4 @@
-BEGIN;
+BEGIN;	-- BEGIN inicia una transacción: todos los cambios hechos entre BEGIN y COMMIT se aplican juntos.
 
 DROP TABLE IF EXISTS "pedidoDetalles";
 DROP TABLE IF EXISTS "pedidos";
@@ -86,4 +86,4 @@ CREATE INDEX "idxProductosIdProveedor" ON "productos" ("idProveedor");
 CREATE INDEX "idxPedidosIdUsuario" ON "pedidos" ("idUsuario");
 CREATE INDEX "idxDetallesIdProducto" ON "pedidoDetalles" ("idProducto");
 
-COMMIT;
+COMMIT; -- COMMIT finaliza la transacción y guarda todos los cambios realizados desde BEGIN.
