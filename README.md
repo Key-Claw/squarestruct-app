@@ -73,3 +73,19 @@ La plataforma permite explorar, personalizar y gestionar viviendas modulares bas
 ├── package.json        # Dependencias del frontend
 └── next.config.js      # Configuración de Next.js
 ```
+
+
+## 🛠 Stack tecnológico
+
+| Tecnología | Uso |
+|-----------|-----|
+| Node.js | Entorno de ejecución |
+| Express.js | API REST |
+| MySQL | Base de datos |
+| mysql2 | Conexión con BD |
+| bcrypt | Hash de contraseñas |
+| JWT | Autenticación |
+| dotenv | Variables de entorno |
+| Jest | Testing |
+| Supertest | Tests de API |
+| Nodemon | Desarrollo |
