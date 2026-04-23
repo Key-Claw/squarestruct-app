@@ -1,0 +1,79 @@
+{
+  "info": {
+    "_postman_id": "mvp-coleccion-ejemplo-2026",
+    "name": "MVP Tienda Online - Ejemplos",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Obtener productos",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/productos",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "productos"]
+        }
+      }
+    },
+    {
+      "name": "Registro de usuario",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nombre\": \"Test User\",\n  \"email\": \"testuser@mail.com\",\n  \"contrasena\": \"12345678\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/usuarios/register",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "usuarios", "register"]
+        }
+      }
+    },
+    {
+      "name": "Login de usuario",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"testuser@mail.com\",\n  \"contrasena\": \"12345678\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/usuarios/login",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "usuarios", "login"]
+        }
+      }
+    },
+    {
+      "name": "Obtener perfil (protegido)",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "Authorization", "value": "Bearer <JWT>" }
+        ],
+        "url": {
+          "raw": "http://localhost:3000/api/perfil",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "perfil"]
+        }
+      }
+    }
+  ]
+}
