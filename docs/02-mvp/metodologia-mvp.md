@@ -8,6 +8,19 @@ El objetivo de la MVP (Producto Mínimo Viable) es disponer de una aplicación f
 
 ---
 
+## 🔄 Flujo del usuario
+
+El flujo principal del sistema en la MVP es el siguiente:
+
+1. Registro de usuario
+2. Inicio de sesión (login)
+3. Consulta de productos
+4. Realización de pedido
+
+Este flujo define el recorrido básico que realiza un usuario dentro de la aplicación y sirve como base para la implementación del backend y frontend.
+
+---
+
 ## ⚙️ Funcionalidades incluidas
 
 * Registro de usuarios
