@@ -1,13 +1,43 @@
 # 🏗️ SquareStruct App
 
-Tienda online con backend y frontend conectados que actúa como intermediaria entre empresas de construcción modular y el cliente final.  
-La plataforma permite explorar, personalizar y gestionar viviendas modulares basadas en sistemas de piezas ensamblables.
+Aplicación web con backend y frontend conectados que actúa como intermediaria entre empresas de construcción modular y el cliente final.
+
+La plataforma permite explorar productos, gestionar pedidos y sienta las bases para la creación de soluciones de vivienda mediante sistemas de **construcción modular por bloques**.
+
+---
+
+## 🎯 Estado del proyecto
+
+El proyecto se encuentra actualmente en fase:
+
+👉 **MVP (Producto Mínimo Viable)**
+
+### Funcionalidades actuales
+
+* Registro de usuarios
+* Autenticación mediante JWT
+* Consulta de productos
+* Gestión básica de pedidos
+* API REST funcional
+
+---
+
+## 🚀 Evolución prevista
+
+El sistema está diseñado para evolucionar hacia:
+
+* Diseño de configuraciones de vivienda mediante bloques modulares
+* Cálculo automático de presupuesto
+* Visualización de estructuras personalizadas
+* Comparación entre proveedores
 
 ---
 
 ## 📁 Estructura de ficheros
 
 ### 🌐 Global
+
+Contiene la organización general del proyecto, separando backend, frontend y documentación.
 
 ```bash
 /ecommerce-app
@@ -17,75 +47,209 @@ La plataforma permite explorar, personalizar y gestionar viviendas modulares bas
 ├── docker/         # Configuración de contenedores
 ├── docs/           # Documentación del proyecto
 ├── .env            # Variables de entorno
-└── README.md       # Documentación principal
-````
+└── README.md
+```
 
 ---
 
 ### ⚙️ Backend
 
+Contiene la API REST y toda la lógica de negocio de la aplicación.
+Se encarga de gestionar las peticiones del cliente, interactuar con la base de datos y devolver respuestas estructuradas.
+
 ```bash
 /backend
 │
-├── db/
-│   ├── schema.sql      # Definición de la base de datos
-│   ├── seeds.sql       # Datos iniciales (test/dev)
-│   ├── migrations/     # Versionado de la BD
-│   └── backups/        # Copias de seguridad
+├── db/                # Scripts y gestión de base de datos
+│   ├── schema.sql     # Definición de tablas
+│   ├── seeds.sql      # Datos iniciales
+│   ├── migrations/    # Versionado de la BD
+│   └── backups/       # Copias de seguridad
 │
-├── postman/            # Colecciones para testear la API
+├── postman/           # Colecciones para pruebas de API
 │
 ├── src/
-│   ├── config/         # Configuración (DB, env, etc.)
-│   ├── controllers/    # Controladores (entrada de peticiones)
-│   ├── services/       # Lógica de negocio
-│   ├── routes/         # Definición de endpoints
-│   ├── middlewares/    # Interceptores (auth, logs, etc.)
-│   ├── utils/          # Funciones auxiliares
-│   └── app.js          # Configuración principal de Express
+│   ├── config/        # Configuración (DB, env)
+│   ├── controllers/   # Gestión de peticiones HTTP
+│   ├── services/      # Lógica de negocio
+│   ├── routes/        # Definición de endpoints
+│   ├── middlewares/   # Autenticación y validaciones
+│   ├── utils/         # Funciones auxiliares
+│   └── app.js         # Configuración de Express
 │
-├── tests/              # Tests del backend
-├── package.json        # Dependencias y scripts
-└── server.js           # Punto de arranque del servidor
+├── tests/             # Tests del backend
+├── package.json
+└── server.js          # Punto de entrada
 ```
 
 ---
 
 ### 🎨 Frontend
 
+Contiene la aplicación cliente encargada de la interfaz de usuario.
+Se comunica con el backend mediante peticiones HTTP y permite al usuario interactuar con el sistema.
+
 ```bash
 /frontend
 │
-├── public/             # Archivos estáticos (imágenes, favicon, etc.)
+├── public/
 │
 ├── src/
-│   ├── app/            # Sistema de rutas (Next.js 13+)
-│   ├── components/     # Componentes reutilizables
-│   ├── layouts/        # Estructuras base de páginas
-│   ├── pages/          # (Opcional) Pages Router clásico
-│   ├── services/       # Llamadas a la API
-│   ├── hooks/          # Custom React Hooks
-│   ├── context/        # Estado global (React Context)
-│   ├── styles/         # Estilos (CSS / Bootstrap / Tailwind)
-│   ├── utils/          # Funciones auxiliares
-│   └── types/          # Tipado (TypeScript)
+│   ├── app/           # Sistema de rutas (Next.js)
+│   ├── components/    # Componentes reutilizables
+│   ├── layouts/       # Estructura base
+│   ├── pages/         # Pages Router (opcional)
+│   ├── services/      # Llamadas a la API
+│   ├── hooks/         # Hooks personalizados
+│   ├── context/       # Estado global
+│   ├── styles/        # Estilos
+│   ├── utils/         # Funciones auxiliares
+│   └── types/         # Tipado
 │
-├── package.json        # Dependencias del frontend
-└── next.config.js      # Configuración de Next.js
+├── package.json
+└── next.config.js
 ```
 
+---
 
-## 🛠 Stack tecnológico
+## 🔄 Comunicación Frontend - Backend
 
-| Tecnología | Uso |
-|-----------|-----|
-| Node.js | Entorno de ejecución |
-| Express.js | API REST |
-| MySQL | Base de datos |
-| mysql2 | Conexión con BD |
-| bcrypt | Hash de contraseñas |
-| JWT | Autenticación |
-| dotenv | Variables de entorno |
-| Jest | Testing |
-| Supertest | Tests de API |
-| Nodemon | Desarrollo |
+El frontend se comunica con el backend mediante peticiones HTTP a la API REST.
+
+El backend procesa la lógica de negocio, accede a la base de datos y devuelve respuestas en formato JSON que el frontend utiliza para renderizar la interfaz.
+
+---
+
+## 📚 Documentación
+
+La documentación completa del proyecto se encuentra en `/docs`:
+
+* Proyecto → `docs/01-proyecto/vision-general.md`
+* MVP → `docs/02-mvp/metodologia-mvp.md`
+* Arquitectura → `docs/03-arquitectura/`
+* API → `docs/04-api/endpoint.md`
+* Testing → `docs/05-testing/postman-mvp-ejemplos.md`
+
+---
+
+## 🛠 Stack tecnológico (backend)
+
+| Tecnología | Uso                  |
+| ---------- | -------------------- |
+| Node.js    | Entorno de ejecución |
+| Express.js | API REST             |
+| MySQL      | Base de datos        |
+| mysql2     | Conexión con BD      |
+| bcrypt     | Seguridad            |
+| JWT        | Autenticación        |
+| dotenv     | Variables de entorno |
+| Jest       | Testing              |
+| Supertest  | Tests                |
+| Nodemon    | Desarrollo           |
+
+---
+
+
+## 🚀 Inicialización completa del entorno backend
+
+### 1. Instalar y arrancar MySQL
+
+Si no tienes MySQL instalado:
+
+- Descarga e instala desde [MySQL Community Downloads](https://dev.mysql.com/downloads/installer/).
+- Asegúrate de que el servicio MySQL esté en ejecución.
+
+Puedes iniciar el servicio manualmente (Windows):
+
+```powershell
+net start mysql
+```
+O desde el panel de servicios de Windows.
+
+---
+
+### 2. Clonar repositorio
+
+```bash
+git clone https://github.com/Key-Claw/squarestruct-app
+cd squarestruct-app/backend
+```
+
+---
+
+### 3. Instalar dependencias Node.js
+
+```bash
+npm install
+```
+
+---
+
+### 4. Configurar entorno
+
+```bash
+cp .env.example .env
+```
+
+Edita `.env` con tus credenciales de base de datos (usuario, contraseña, nombre de la base de datos).
+
+---
+
+### 5. Inicializar la base de datos MySQL
+
+Ejecuta los siguientes comandos para crear la estructura y poblar la base de datos:
+
+```bash
+mysql -u <usuario> -p < db/schema.sql
+mysql -u <usuario> -p < db/seeds.sql
+```
+
+Reemplaza `<usuario>` por tu usuario de MySQL. Si usas XAMPP o similar, el usuario suele ser `root`.
+
+---
+
+### 6. Ejecutar el servidor backend
+
+```bash
+npm run dev
+```
+
+El servidor estará disponible en:
+
+```
+http://localhost:3000
+```
+
+---
+
+## 🔁 Flujo básico del sistema
+
+1. El usuario se registra
+2. Inicia sesión
+3. Consulta productos
+4. Realiza un pedido
+
+---
+
+## 🧠 Enfoque del desarrollo
+
+El proyecto sigue un enfoque **MVP-first**, priorizando:
+
+* Implementación funcional
+* Iteración progresiva
+* Escalabilidad futura
+
+---
+
+## 👨‍💻 Gestión del proyecto
+
+* GitFlow
+* Ramas `feature/*`
+* Pull Requests
+* Issues
+
+---
+
+## 📌 Contexto académico
+
+Proyecto desarrollado en el ciclo DAW (Desarrollo de Aplicaciones Web).
