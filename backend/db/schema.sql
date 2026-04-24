@@ -1,3 +1,6 @@
+-- Inicia una transacción ACID. Todo lo entre START TRANSACTION y COMMIT
+-- se ejecuta como una unidad: o se completa todo o no se guarda nada.
+-- Esto garantiza consistencia si hay errores durante la ejecución del script.
 START TRANSACTION;
 
 DROP TABLE IF EXISTS pedidoDetalles;
@@ -79,8 +82,12 @@ CREATE TABLE pedidoDetalles (
     ON DELETE RESTRICT
 ) ENGINE=InnoDB;
 
+-- Indices para optimizar las consultas que usan FOREIGN KEYS en WHERE o JOIN
+-- Mejora el rendimiento de búsquedas como: productos por idProveedor, pedidos por idUsuario, etc.
 CREATE INDEX idxProductosIdProveedor ON productos (idProveedor);
 CREATE INDEX idxPedidosIdUsuario ON pedidos (idUsuario);
 CREATE INDEX idxDetallesIdProducto ON pedidoDetalles (idProducto);
 
+-- COMMIT finaliza la transacción y guarda TODOS los cambios realizados desde BEGIN
+-- Si llega aquí sin errores, la BD quedará con todas las tablas e índices creados.
 COMMIT;

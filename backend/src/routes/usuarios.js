@@ -5,7 +5,6 @@ import { validarRegistro, validarLogin } from '../middlewares/validacion.js';
 
 const router = express.Router();
 
-
 // Registro de usuario
 router.post('/register', validarRegistro, registerUsuario);
 

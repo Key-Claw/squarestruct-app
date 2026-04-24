@@ -32,13 +32,16 @@ export const db = mysql.createPool({
   port: process.env.DB_PORT
 });
 
+// Comprueba que la conexión a MySQL funcione haciendo un ping a la BD
+// Se llama en server.js al iniciar; si falla, el servidor sigue arrancando
+// pero registra el error para que el desarrollador lo corrija (mejor para debug local)
 export const checkDbConnection = async () => {
   const connection = await db.getConnection();
   await connection.ping();
   connection.release();
 };
 
-// Endpoint de prueba (health)
+// Endpoint de prueba (health) para verificar que el servidor está disponible
 app.get('/api/health', (req, res) => {
   res.status(200).send('OK');
 });
