@@ -1,7 +1,7 @@
 // Rutas de usuarios
 import express from 'express';
 import { registerUsuario, loginUsuario } from '../controllers/usuariosController.js';
-import { validarRegistro, validarLogin } from '../../middlewares/validacion.js';
+import { validarRegistro, validarLogin } from '../middlewares/validacion.js';
 
 const router = express.Router();
 

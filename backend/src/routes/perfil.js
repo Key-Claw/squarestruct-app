@@ -5,7 +5,7 @@ import { autenticarJWT } from '../middlewares/auth.js';
 const router = express.Router();
 
 // Ruta protegida: obtener perfil del usuario autenticado
-router.get('/perfil', autenticarJWT, (req, res) => {
+router.get('/', autenticarJWT, (req, res) => {
   res.json({ usuario: req.user });
 });
 
