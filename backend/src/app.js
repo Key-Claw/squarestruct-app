@@ -7,6 +7,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 
 // Importación de rutas
+import pedidosRouter from './routes/pedidos.js';
 import perfilRouter from './routes/perfil.js';
 import productosRouter from './routes/productos.js';
 import usuariosRouter from './routes/usuarios.js';
@@ -22,6 +23,9 @@ app.use(express.json());
 
 // Ruta protegida de ejemplo (perfil)
 app.use('/api/perfil', perfilRouter);
+
+// Ruta protegida de ejemplo (pedidos)
+app.use('/api/pedidos', pedidosRouter);
 
 // Conexión a la base de datos
 export const db = mysql.createPool({
