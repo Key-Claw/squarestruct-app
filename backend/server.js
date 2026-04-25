@@ -10,9 +10,8 @@ const startServer = async () => {
   } catch (error) {
     // El servidor sigue arrancando incluso si falla la BD (util para debug local)
     // En producción con Docker, se puede usar healthcheck + depends_on para evitar esto
-    console.error('⚠️ No se pudo conectar a la base de datos. Revisa DB_HOST, DB_USER y DB_PASSWORD en backend/.env');
-    console.error(`Detalle: ${error.code || 'UNKNOWN'} - ${error.message}`);
-    console.warn('⚠️ El servidor está arrancando SIN conexión a la BD. Esto es intencional para debugging.');
+    console.error(`❌ DB ERROR: ${error.code || 'UNKNOWN'} - ${error.message}`);
+    console.warn('⚠️ Servidor iniciado sin conexión a la base de datos');
   }
 
   app.listen(PORT, () => {
