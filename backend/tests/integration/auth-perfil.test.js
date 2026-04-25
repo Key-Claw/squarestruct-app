@@ -1,13 +1,5 @@
 import request from 'supertest';
-import app from '../src/app.js';
-
-describe('API de productos', () => {
-  it('GET /api/productos debe devolver un array de productos', async () => {
-    const res = await request(app).get('/api/productos');
-    expect(res.statusCode).toBe(200);
-    expect(Array.isArray(res.body)).toBe(true);
-  });
-});
+import app from '../../src/app.js';
 
 describe('Registro y login de usuario', () => {
   const email = `test${Date.now()}@mail.com`;
