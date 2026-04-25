@@ -4,6 +4,11 @@ import { db } from '../app.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
+
+// TODO: revisar error en registro de usuarios
+// Actualmente POST /api/usuarios/register devuelve 500 en tests de integración
+// Esto impide completar correctamente el flujo login → perfil
+// Posibles causas: validación, inserción en BD o hash de contraseña
 export const registerUsuario = async (req, res) => {
   const { nombre, email, contrasena } = req.body;
   if (!nombre || !email || !contrasena) {
