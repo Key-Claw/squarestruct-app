@@ -17,8 +17,8 @@ services:
       retries: 20
     volumes:
       - squarestruct_mysql_data:/var/lib/mysql
-      - ./backend/db/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
-      - ./backend/db/seeds.sql:/docker-entrypoint-initdb.d/02-seeds.sql:ro
+      - ../backend/db/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
+      - ../backend/db/seeds.sql:/docker-entrypoint-initdb.d/02-seeds.sql:ro
 
 volumes:
   squarestruct_mysql_data:
