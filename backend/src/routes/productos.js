@@ -1,6 +1,7 @@
 // Rutas de productos
 import express from 'express';
-import { getProductos,
+import { 
+  getProductos,
   getProductoById,
   crearProducto,
   actualizarProducto,
