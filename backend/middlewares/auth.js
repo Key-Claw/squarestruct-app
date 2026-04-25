@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 
-// Middleware para verificar JWT
+// Middleware para verificar JWT y añadir el usuario autenticado a req.user
 export default function authMiddleware(req, res, next) {
   const authHeader = req.headers['authorization'];
 
