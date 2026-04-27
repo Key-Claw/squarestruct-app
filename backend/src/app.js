@@ -2,20 +2,30 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import mysql from 'mysql2/promise';
+import cors from 'cors';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 // Importación de rutas
+import pedidosRouter from './routes/pedidos.js';
 import perfilRouter from './routes/perfil.js';
 import productosRouter from './routes/productos.js';
 import usuariosRouter from './routes/usuarios.js';
 
-// Cargar variables de entorno
-dotenv.config();
+// Cargar variables de entorno desde backend/.env aunque el proceso se arranque desde otro directorio.
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
 const app = express();
+app.use(cors());
 app.use(express.json());
 
 // Ruta protegida de ejemplo (perfil)
 app.use('/api/perfil', perfilRouter);
+
+// Ruta protegida de ejemplo (pedidos)
+app.use('/api/pedidos', pedidosRouter);
 
 // Conexión a la base de datos
 export const db = mysql.createPool({
@@ -26,9 +36,18 @@ export const db = mysql.createPool({
   port: process.env.DB_PORT
 });
 
-// Endpoint de prueba (health)
+// Comprueba que la conexión a MySQL funcione haciendo un ping a la BD
+// Se llama en server.js al iniciar; si falla, el servidor sigue arrancando
+// pero registra el error para que el desarrollador lo corrija (mejor para debug local)
+export const checkDbConnection = async () => {
+  const connection = await db.getConnection();
+  await connection.ping();
+  connection.release();
+};
+
+// Endpoint de prueba (health) para verificar que el servidor está disponible
 app.get('/api/health', (req, res) => {
-  res.json({ status: 'ok' });
+  res.status(200).send('OK');
 });
 
 // Rutas de productos

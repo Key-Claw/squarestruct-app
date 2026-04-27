@@ -7,9 +7,9 @@
     "scripts": {
       "dev": "nodemon server.js",
       "start": "node server.js",
-      "test": "jest --runInBand",
-      "test:unit": "jest tests/unit --runInBand",
-      "test:integration": "jest tests/integration --runInBand"
+      "test": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js --runInBand",
+      "test:unit": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js tests/unit --runInBand",
+      "test:integration": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js tests/integration --runInBand"
     },
     "dependencies": {
       "bcrypt": "^5.1.1",

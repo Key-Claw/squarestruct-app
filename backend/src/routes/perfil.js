@@ -1,11 +1,12 @@
 // Ejemplo de ruta privada para usuario autenticado
 import express from 'express';
-import { autenticarJWT } from '../middlewares/auth.js';
+import authMiddleware from '../middlewares/auth.js';
 
 const router = express.Router();
 
-// Ruta protegida: obtener perfil del usuario autenticado
-router.get('/perfil', autenticarJWT, (req, res) => {
+// Ruta protegida: devuelve el perfil del usuario autenticado (extraído del JWT)
+// Se monta en: /api/perfil
+router.get('/', authMiddleware, (req, res) => {
   res.json({ usuario: req.user });
 });
 
