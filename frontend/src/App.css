@@ -1,0 +1,197 @@
+.app-shell {
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-main {
+  flex: 1;
+}
+
+.app-navbar {
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.brand-button,
+.nav-button,
+.page-link-button,
+.home-card-button {
+  background: transparent;
+  border: 0;
+  color: inherit;
+}
+
+.brand-button {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.nav-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.nav-button {
+  padding: 0.45rem 0.8rem;
+  border-radius: 10px;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.nav-button.is-active,
+.nav-button:hover,
+.brand-button:hover {
+  color: #fff;
+}
+
+.nav-button.is-active {
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.user-button {
+  border-radius: 12px;
+}
+
+.page-shell {
+  padding: 28px 20px 40px;
+}
+
+.page-hero,
+.page-block,
+.page-card {
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.page-hero {
+  min-height: 250px;
+  background: linear-gradient(180deg, #2a2f36 0%, #1e2228 100%);
+  color: #f8fafc;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  padding: 32px;
+  margin-bottom: 24px;
+}
+
+.page-hero h1 {
+  font-size: clamp(2.2rem, 5vw, 4.3rem);
+  margin: 0;
+  color: #f8fafc;
+}
+
+.page-hero p {
+  margin-top: 14px;
+  max-width: 56ch;
+  color: rgba(248, 250, 252, 0.82);
+}
+
+.page-grid {
+  display: grid;
+  gap: 18px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.page-card {
+  background: #23272d;
+  color: #fff;
+  overflow: hidden;
+  min-height: 220px;
+}
+
+.page-card-media {
+  min-height: 150px;
+  display: grid;
+  place-items: center;
+  background: #8a929d;
+  color: #20252d;
+  font-size: 1rem;
+}
+
+.page-card-body {
+  padding: 14px 16px 16px;
+  text-align: left;
+}
+
+.page-card-body h2,
+.page-card-body h3,
+.page-card-body p {
+  margin: 0;
+}
+
+.page-card-body p {
+  margin-top: 8px;
+  color: rgba(255, 255, 255, 0.84);
+}
+
+.page-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 24px;
+}
+
+.page-link-button {
+  padding: 0.7rem 1rem;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: #fff;
+}
+
+.page-link-button.is-active,
+.page-link-button:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.home-card-button {
+  width: 100%;
+  text-align: left;
+  padding: 0;
+  cursor: pointer;
+}
+
+.home-card-button:focus-visible,
+.nav-button:focus-visible,
+.page-link-button:focus-visible,
+.brand-button:focus-visible {
+  outline: 2px solid #93c5fd;
+  outline-offset: 2px;
+}
+
+@media (max-width: 992px) {
+
+  .mobile-logo-container {
+    position: relative;
+    display: inline-block;
+  }
+
+  .mobile-logo-container img {
+    width: 300px;
+    height: auto;
+    display: block;
+  }
+
+  .mobile-overlay-text {
+    position: absolute;
+    bottom: 10px; 
+    left: 50%;
+    transform: translateX(-50%);
+    color: white;
+    font-size: 1.8rem;
+    font-weight: bold;
+    text-shadow: 0 0 8px rgba(0,0,0,0.7);
+    pointer-events: none; /* Esto hace que no se bloqueen los clicks */
+  }
+  .search-bar {
+    width: 250px;
+  }
+  
+  .cart-button {
+    font-size: 1.3rem;
+    padding: 0.3rem 0.6rem;
+  }
+  
+}
