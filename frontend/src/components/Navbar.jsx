@@ -1,21 +1,32 @@
-function Navbar() {
+function Navbar({ activePage, onNavigate }) {
+  const items = [
+    { id: 'home', label: 'Home' },
+    { id: 'galeria', label: 'Galería' },
+    { id: 'catalogo', label: 'Catálogo' },
+  ]
+
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-dark px-3">
-      <a className="navbar-brand" href="#">
+    <nav className="navbar navbar-expand-lg navbar-dark bg-dark px-3 app-navbar">
+      <button className="navbar-brand brand-button" type="button" onClick={() => onNavigate('home')}>
         SquareStruct
-      </a>
+      </button>
 
-      <div className="collapse navbar-collapse">
-        <ul className="navbar-nav me-auto">
-          <li className="nav-item"><a className="nav-link">Home</a></li>
-          <li className="nav-item"><a className="nav-link">Galería</a></li>
-          <li className="nav-item"><a className="nav-link">Catálogo</a></li>
-                {/*  Producto va dentro de catalogo <li className="nav-item"><a className="nav-link">Producto</a></li> */}
-          <li className="nav-item"><a className="nav-link">Design</a></li>
-        </ul>
-
-        <button className="btn btn-outline-light">User</button>
+      <div className="navbar-nav me-auto nav-strip">
+        {items.map((item) => (
+          <button
+            key={item.id}
+            type="button"
+            className={`nav-link nav-button ${activePage === item.id ? 'is-active' : ''}`}
+            onClick={() => onNavigate(item.id)}
+          >
+            {item.label}
+          </button>
+        ))}
       </div>
+
+      <button className="btn btn-outline-light user-button" type="button">
+        User
+      </button>
     </nav>
   )
 }

@@ -1,13 +1,30 @@
+import { useState } from 'react'
 import Navbar from './components/Navbar'
 import Home from './pages/Home'
+import Galeria from './pages/Galeria'
+import Catalogo from './pages/Catalogo'
 import './App.css'
 
 function App() {
+  const [page, setPage] = useState('home')
+
+  const renderPage = () => {
+    if (page === 'galeria') {
+      return <Galeria onNavigate={setPage} />
+    }
+
+    if (page === 'catalogo') {
+      return <Catalogo onNavigate={setPage} />
+    }
+
+    return <Home onNavigate={setPage} />
+  }
+
   return (
-    <>
-      <Navbar />
-      <Home />
-    </>
+    <div className="app-shell">
+      <Navbar activePage={page} onNavigate={setPage} />
+      <main className="app-main">{renderPage()}</main>
+    </div>
   )
 }
 

@@ -1,4 +1,4 @@
-function Home() {
+function Home({ onNavigate }) {
   return (
     <div className="container mt-4">
 
@@ -10,14 +10,18 @@ function Home() {
 
       {/* CARDS */}
       <div className="row">
-        {[1,2,3].map(i => (
+        {[1, 2, 3].map((i) => (
           <div className="col-md-4 mb-3" key={i}>
-            <div className="card bg-dark text-white">
+            <button
+              type="button"
+              className="card bg-dark text-white w-100 border-0 text-start home-card-button"
+              onClick={() => onNavigate('catalogo')}
+            >
               <div className="card-body">
                 <h5>Producto {i}</h5>
                 <p>Descripción básica</p>
               </div>
-            </div>
+            </button>
           </div>
         ))}
       </div>
