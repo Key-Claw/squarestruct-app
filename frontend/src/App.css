@@ -160,3 +160,38 @@
   outline: 2px solid #93c5fd;
   outline-offset: 2px;
 }
+
+@media (max-width: 992px) {
+
+  .mobile-logo-container {
+    position: relative;
+    display: inline-block;
+  }
+
+  .mobile-logo-container img {
+    width: 300px;
+    height: auto;
+    display: block;
+  }
+
+  .mobile-overlay-text {
+    position: absolute;
+    bottom: 10px; 
+    left: 50%;
+    transform: translateX(-50%);
+    color: white;
+    font-size: 1.8rem;
+    font-weight: bold;
+    text-shadow: 0 0 8px rgba(0,0,0,0.7);
+    pointer-events: none; /* Esto hace que no se bloqueen los clicks */
+  }
+  .search-bar {
+    width: 250px;
+  }
+  
+  .cart-button {
+    font-size: 1.3rem;
+    padding: 0.3rem 0.6rem;
+  }
+  
+}
