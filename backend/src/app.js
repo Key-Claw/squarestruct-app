@@ -12,7 +12,9 @@ import perfilRouter from './routes/perfil.js';
 import productosRouter from './routes/productos.js';
 import usuariosRouter from './routes/usuarios.js';
 
-// Cargar variables de entorno desde backend/.env aunque el proceso se arranque desde otro directorio.
+// dotenv carga `backend/.env` y deja las variables disponibles en `process.env`.
+// Este paso también sirve como respaldo si este archivo se importa desde otro contexto
+// distinto a `server.js` (por ejemplo, tests o ejecuciones manuales).
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 dotenv.config({ path: path.resolve(__dirname, '../.env') });
@@ -27,9 +29,9 @@ app.use('/api/perfil', perfilRouter);
 // Ruta protegida de ejemplo (pedidos)
 app.use('/api/pedidos', pedidosRouter);
 
-// Depuración: mostrar valores de conexión
+// Depuración: mostrar valores de conexión para comprobar que dotenv cargó bien.
 console.log('DB_USER:', process.env.DB_USER, 'DB_PASSWORD:', process.env.DB_PASSWORD);
-// Conexión a la base de datos
+// Conexión a la base de datos usando las variables que cargó dotenv.
 export const db = mysql.createPool({
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
