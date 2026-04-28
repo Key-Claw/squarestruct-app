@@ -1,3 +1,4 @@
+
 import logo from '../assets/LogoSquareStruct.png'
 
 function Navbar({ activePage, onNavigate }) {
@@ -8,14 +9,12 @@ function Navbar({ activePage, onNavigate }) {
   ]
 
   const authItems = [
-    { id: 'login', label: 'Iniciar sesión' },
-    { id: 'register', label: 'Registrarse' }
+    { id: 'login', label: '👤' },
   ]
 
   const mobileItems = [
     ...items,
-    { id: 'login', label: 'Iniciar sesión' },
-    { id: 'register', label: 'Registrarse' },
+    { id: 'login', label: 'Login' },
   ]
 
   return (
@@ -24,7 +23,7 @@ function Navbar({ activePage, onNavigate }) {
         <button
           className="brand-mark"
           type="button"
-          onClick={() => onNavigate('home')}
+          onClick={() => onNavigate('aboutus')}
           aria-label="Ir al inicio"
         >
           <img src={logo} alt="SquareStruct" className="navbar-logo navbar-logo-desktop" />
@@ -57,29 +56,16 @@ function Navbar({ activePage, onNavigate }) {
           </div>
         </div>
 
-        <div className="dropdown">
-          <button
-            className="btn btn-outline-light user-button user-menu-trigger"
-            type="button"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
-            aria-label="Opciones de usuario"
-          >
-            <span aria-hidden="true">☰</span>
-          </button>
-          <div className="dropdown-menu dropdown-menu-end user-dropdown-menu">
-            {authItems.map((item) => (
+        {authItems.map((item) => (
               <button
                 key={item.id}
                 type="button"
-                className="dropdown-item dropdown-action"
+                className="btn btn-outline-light"
                 onClick={() => onNavigate(item.id)}
               >
                 {item.label}
               </button>
             ))}
-          </div>
-        </div>
 
         <button className="btn btn-outline-light cart-button ms-2" type="button" aria-label="Carrito">
           🛒
@@ -90,7 +76,7 @@ function Navbar({ activePage, onNavigate }) {
         <button
           className="brand-mark brand-mark-mobile"
           type="button"
-          onClick={() => onNavigate('home')}
+          onClick={() => onNavigate('aboutus')}
           aria-label="Ir al inicio"
         >
           <img src={logo} alt="SquareStruct" className="navbar-logo navbar-logo-mobile" />
@@ -135,7 +121,7 @@ function Navbar({ activePage, onNavigate }) {
               type="button"
               className={`nav-link nav-button ${activePage === item.id ? 'is-active' : ''}`}
               data-auth={item.id === 'signin' || item.id === 'logout' ? 'true' : 'false'}
-              onClick={() => onNavigate(item.id === 'signin' || item.id === 'logout' ? 'home' : item.id)}
+              onClick={() => onNavigate(item.id === 'signin' || item.id === 'logout' ? 'aboutus' : item.id)}
             >
               {item.label}
             </button>
