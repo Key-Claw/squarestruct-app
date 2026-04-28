@@ -49,9 +49,45 @@ export const checkDbConnection = async () => {
   connection.release();
 };
 
+// Ruta base para validación rápida desde navegador
+app.get('/', (req, res) => {
+  res.status(200).send('Backend OK');
+});
+
 // Endpoint de prueba (health) para verificar que el servidor está disponible
 app.get('/api/health', (req, res) => {
   res.status(200).send('OK');
+});
+
+// Estado rápido de BD: útil para validar desde navegador que hay tablas y datos
+app.get('/api/db-status', async (req, res) => {
+  try {
+    const [tables] = await db.query('SHOW TABLES');
+    const [[usuarios]] = await db.query('SELECT COUNT(*) AS total FROM usuarios');
+    const [[proveedores]] = await db.query('SELECT COUNT(*) AS total FROM proveedores');
+    const [[productos]] = await db.query('SELECT COUNT(*) AS total FROM productos');
+    const [[pedidos]] = await db.query('SELECT COUNT(*) AS total FROM pedidos');
+    const [[pedidoDetalles]] = await db.query('SELECT COUNT(*) AS total FROM pedidoDetalles');
+
+    res.status(200).json({
+      ok: true,
+      db: process.env.DB_NAME,
+      tablas: tables.map((row) => Object.values(row)[0]),
+      totales: {
+        usuarios: usuarios.total,
+        proveedores: proveedores.total,
+        productos: productos.total,
+        pedidos: pedidos.total,
+        pedidoDetalles: pedidoDetalles.total
+      }
+    });
+  } catch (error) {
+    res.status(500).json({
+      ok: false,
+      mensaje: 'Error al consultar el estado de la base de datos',
+      detalle: error.message
+    });
+  }
 });
 
 // Rutas de productos
