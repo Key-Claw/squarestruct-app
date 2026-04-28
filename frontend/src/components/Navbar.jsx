@@ -9,13 +9,13 @@ function Navbar({ activePage, onNavigate }) {
 
   const authItems = [
     { id: 'login', label: 'Iniciar sesión' },
-    { id: 'register', label: 'Registrarse' },
+    { id: 'register', label: 'Registrarse' }
   ]
 
   const mobileItems = [
     ...items,
-    { id: 'signin', label: 'Inicio de sesión' },
-    { id: 'logout', label: 'Cerrar sesión' },
+    { id: 'login', label: 'Iniciar sesión' },
+    { id: 'register', label: 'Registrarse' },
   ]
 
   return (
@@ -52,7 +52,7 @@ function Navbar({ activePage, onNavigate }) {
               aria-label="Buscar productos"
             />
             <button className="btn btn-outline-light search-submit" type="button">
-              Enter
+            ➜]
             </button>
           </div>
         </div>
@@ -73,6 +73,7 @@ function Navbar({ activePage, onNavigate }) {
                 key={item.id}
                 type="button"
                 className="dropdown-item dropdown-action"
+                onClick={() => onNavigate(item.id)}
               >
                 {item.label}
               </button>
@@ -104,7 +105,7 @@ function Navbar({ activePage, onNavigate }) {
               aria-label="Buscar productos"
             />
             <button className="btn btn-outline-light search-submit search-submit-mobile" type="button">
-              Enter
+            ➜]
             </button>
           </div>
         </div>

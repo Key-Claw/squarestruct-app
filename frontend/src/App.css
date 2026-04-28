@@ -311,6 +311,10 @@
     list-style: none;
 }
 
+.gradient-custom {
+  background: #ffffff;  
+  }
+
 @media (max-width: 992px) {
   .app-navbar {
     gap: 8px;
