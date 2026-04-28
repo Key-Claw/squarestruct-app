@@ -27,6 +27,8 @@ app.use('/api/perfil', perfilRouter);
 // Ruta protegida de ejemplo (pedidos)
 app.use('/api/pedidos', pedidosRouter);
 
+// Depuración: mostrar valores de conexión
+console.log('DB_USER:', process.env.DB_USER, 'DB_PASSWORD:', process.env.DB_PASSWORD);
 // Conexión a la base de datos
 export const db = mysql.createPool({
   host: process.env.DB_HOST,
