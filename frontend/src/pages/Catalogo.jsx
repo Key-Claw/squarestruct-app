@@ -1,6 +1,37 @@
 import { useEffect, useMemo, useState } from 'react'
 import { getProductos, filtrarProductos } from '../services/productService'
 
+/**
+ * Corrige texto con mojibake típico de una mala decodificación UTF-8/latin1.
+ * En catálogo solo lo aplicamos a textos que claramente vienen dañados.
+ * @param {string} value - Texto a revisar.
+ * @returns {string} Texto normalizado o el original.
+ */
+const normalizarTexto = (value) => {
+  if (typeof value !== 'string' || !/[ÃÂ�]/.test(value)) {
+    return value
+  }
+
+  try {
+    const bytes = Uint8Array.from([...value].map((character) => character.charCodeAt(0)))
+    return new TextDecoder('utf-8').decode(bytes)
+  } catch {
+    return value
+  }
+}
+
+/**
+ * Normaliza un producto para mostrar textos legibles en la tarjeta.
+ * @param {object} product - Producto devuelto por la API.
+ * @returns {object} Producto con campos de texto corregidos.
+ */
+const normalizarProducto = (product) => ({
+  ...product,
+  nombre: normalizarTexto(product.nombre),
+  descripcion: normalizarTexto(product.descripcion),
+  tipo: normalizarTexto(product.tipo)
+})
+
 function Catalogo({ onNavigate, searchTerm = '' }) {
   // Productos cargados desde el backend.
   const [productos, setProductos] = useState([])
@@ -22,7 +53,7 @@ function Catalogo({ onNavigate, searchTerm = '' }) {
 
         // La respuesta del backend debe ser un array de productos.
         const data = await getProductos()
-        setProductos(Array.isArray(data) ? data : [])
+        setProductos(Array.isArray(data) ? data.map(normalizarProducto) : [])
       } catch (err) {
         setError(err.message || 'No se pudieron cargar los productos')
       } finally {
@@ -39,6 +70,14 @@ function Catalogo({ onNavigate, searchTerm = '' }) {
   useEffect(() => {
     setBusqueda(searchTerm)
   }, [searchTerm])
+
+  /**
+   * Limpia la búsqueda actual y vuelve a mostrar el catálogo completo.
+   */
+  const handleResetSearch = () => {
+    setBusqueda('')
+    onNavigate('catalogo', '')
+  }
 
   const productosFiltrados = useMemo(() => {
     // El filtrado se hace en cliente para que la búsqueda sea inmediata.
@@ -63,9 +102,6 @@ function Catalogo({ onNavigate, searchTerm = '' }) {
       <div className="bg-dark text-white p-5 mb-4 rounded text-center">
         <div>
           <h1>Catálogo</h1>
-          <p>
-            Aquí se muestran los productos reales que vienen del backend.
-          </p>
         </div>
       </div>
 
@@ -73,13 +109,26 @@ function Catalogo({ onNavigate, searchTerm = '' }) {
         <div className="row justify-content-center">
           <div className="col-12 col-md-8 col-lg-6">
             {/* Buscador interno del catálogo para refinar el listado sin salir de la página. */}
-            <input
-              type="text"
-              className="form-control search-bar"
-              placeholder="Buscar productos..."
-              value={busqueda}
-              onChange={(e) => setBusqueda(e.target.value)}
-            />
+            <div className="d-flex gap-2 align-items-center catalog-search-row">
+              <input
+                type="text"
+                className="form-control search-bar"
+                placeholder="Buscar productos..."
+                value={busqueda}
+                onChange={(e) => setBusqueda(e.target.value)}
+              />
+
+              {/* Botón para volver al catálogo completo después de filtrar. */}
+              {busqueda.trim() && (
+                <button
+                  type="button"
+                  className="btn btn-outline-dark catalog-back-button"
+                  onClick={handleResetSearch}
+                >
+                  Volver
+                </button>
+              )}
+            </div>
           </div>
         </div>
       </div>

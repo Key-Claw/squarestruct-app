@@ -10,7 +10,7 @@
 
 .app-navbar {
   gap: 10px;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   align-items: center;
   position: relative;
   padding-top: 0.9rem;
@@ -27,6 +27,7 @@
 
 .navbar-desktop {
   gap: 12px;
+  flex-wrap: nowrap;
 }
 
 .navbar-mobile {
@@ -86,10 +87,16 @@
   flex: 0 1 auto;
 }
 
+.desktop-search {
+  flex: 1 1 360px;
+  min-width: 0;
+}
+
 .nav-button {
   padding: 0.45rem 0.8rem;
   border-radius: 10px;
   color: rgba(255, 255, 255, 0.75);
+  white-space: nowrap;
 }
 
 .nav-button.is-active,
@@ -107,7 +114,8 @@
 }
 
 .search-group {
-  min-width: 400px;
+  width: 100%;
+  min-width: 240px;
   max-width: 520px;
 }
 
@@ -168,6 +176,11 @@
 .cart-button-mobile,
 .user-button {
   flex: 0 0 auto;
+}
+
+.navbar-auth-section {
+  flex: 0 0 auto;
+  white-space: nowrap;
 }
 
 .mobile-menu-row {
@@ -268,6 +281,75 @@
   margin-top: 0.5rem;
 }
 
+.perfil-shell {
+  padding-top: 20px;
+  padding-bottom: 40px;
+}
+
+.perfil-container {
+  min-height: calc(100svh - 160px);
+  display: flex;
+  align-items: center;
+}
+
+.perfil-card {
+  border-radius: 1rem;
+  width: 100%;
+  max-width: 100%;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.24);
+}
+
+.perfil-note {
+  max-width: 42rem;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.55;
+}
+
+.perfil-table-wrap {
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 0.9rem;
+  overflow: hidden;
+}
+
+.perfil-table {
+  margin-bottom: 0;
+  table-layout: fixed;
+}
+
+.perfil-table th,
+.perfil-table td {
+  padding: 1rem 1rem;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+  vertical-align: middle;
+}
+
+.perfil-table th {
+  width: 45%;
+  color: rgba(255, 255, 255, 0.72);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.perfil-table td {
+  color: #fff;
+  text-align: right;
+  word-break: break-word;
+}
+
+.perfil-table .badge {
+  font-size: 0.8rem;
+  letter-spacing: 0.03em;
+}
+
+.perfil-actions {
+  flex-wrap: wrap;
+}
+
+.perfil-actions .btn {
+  min-width: 11rem;
+}
+
 .page-hero,
 .page-block,
 .page-card {
@@ -344,6 +426,14 @@
   margin-top: 24px;
 }
 
+.catalog-search-row {
+  justify-content: center;
+}
+
+.catalog-back-button {
+  white-space: nowrap;
+}
+
 .page-link-button {
   padding: 0.7rem 1rem;
   border-radius: 10px;
@@ -394,6 +484,10 @@
     gap: 8px;
   }
 
+  .navbar-desktop {
+    gap: 10px;
+  }
+
   .navbar-logo-mobile {
     width: 175px;
     max-width: 175px;
@@ -403,6 +497,10 @@
 
   .search-group-mobile .search-bar {
     font-size: 0.92rem;
+  }
+
+  .desktop-search {
+    min-width: 180px;
   }
 
   .cart-button-mobile {

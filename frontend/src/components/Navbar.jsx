@@ -1,9 +1,18 @@
 
 import { useState } from 'react'
+import { isAdmin } from '../services/authService'
 import logo from '../assets/LogoSquareStruct.png'
 
-function Navbar({ activePage, onNavigate }) {
-  // Menú principal visible en desktop y mobile.
+/**
+ * Componente de navegación principal.
+ * Muestra menú condicional según estado de autenticación y rol del usuario.
+ * @param {string} activePage - Página activa para resaltar en el menú.
+ * @param {function} onNavigate - Callback para cambiar de página.
+ * @param {object} user - Datos del usuario autenticado (null si no está logueado).
+ * @param {function} onLogout - Callback para cerrar sesión.
+ */
+function Navbar({ activePage, onNavigate, user, onLogout }) {
+  // Menú principal visible en desktop y mobile (siempre disponible).
   const items = [
     { id: 'home', label: 'Home' },
     { id: 'galeria', label: 'Galería' },
@@ -23,6 +32,15 @@ function Navbar({ activePage, onNavigate }) {
     // La navegación lleva el término al catálogo para aplicar el filtrado allí.
     onNavigate('catalogo', term)
     setSearchValue('')
+  }
+
+  /**
+   * Maneja el cierre de sesión.
+   * Ejecuta el callback de logout y navega a home.
+   */
+  const handleLogout = () => {
+    onLogout()
+    onNavigate('home')
   }
 
   return (
@@ -74,18 +92,62 @@ function Navbar({ activePage, onNavigate }) {
           </div>
         </div>
 
-        {/* Botón de acceso rápido a la pantalla de login. */}
-        <button
-          type="button"
-          className="btn btn-outline-light ms-2"
-          onClick={() => onNavigate('login')}
-        >
-          👤
-        </button>
+        {/* Opciones de usuario - condicionales según autenticación y rol. */}
+        <div className="navbar-auth-section ms-auto d-flex align-items-center gap-2">
+          {/* Si el usuario NO está autenticado, mostrar botón Login. */}
+          {!user && (
+            <button
+              type="button"
+              className="btn btn-outline-light"
+              onClick={() => onNavigate('login')}
+              title="Iniciar sesión"
+            >
+              👤
+            </button>
+          )}
 
-        <button className="btn btn-outline-light cart-button ms-2" type="button" aria-label="Carrito">
-          🛒
-        </button>
+          {/* Si el usuario ESTÁ autenticado, mostrar opciones según rol. */}
+          {user && (
+            <>
+              {/* Opción de admin: panel de gestión de usuarios. */}
+              {isAdmin() && (
+                <button
+                  type="button"
+                  className={`btn btn-outline-light text-nowrap ${activePage === 'usuarios' ? 'active' : ''}`}
+                  onClick={() => onNavigate('usuarios')}
+                  title="Gestión de usuarios"
+                >
+                  👥
+                </button>
+              )}
+
+              {/* Perfil del usuario autenticado. */}
+              <button
+                type="button"
+                className={`btn btn-outline-light text-nowrap ${activePage === 'perfil' ? 'active' : ''}`}
+                onClick={() => onNavigate('perfil')}
+                title={`Perfil de ${user.nombre}`}
+              >
+                Perfil
+              </button>
+
+              {/* Cerrar sesión. */}
+              <button
+                type="button"
+                className="btn btn-outline-warning"
+                onClick={handleLogout}
+                title="Cerrar sesión"
+              >
+                🚪
+              </button>
+            </>
+          )}
+
+          {/* Carrito (siempre visible). */}
+          <button className="btn btn-outline-light cart-button" type="button" aria-label="Carrito">
+            🛒
+          </button>
+        </div>
       </div>
 
       {/* Layout móvil: logo, buscador y botón de menú en una sola fila. */}
@@ -141,9 +203,10 @@ function Navbar({ activePage, onNavigate }) {
         </button>
       </div>
 
-      {/* Menú colapsado exclusivo de mobile con navegación y acceso a login. */}
+      {/* Menú colapsado exclusivo de mobile con navegación y opciones de usuario. */}
       <div className="collapse navbar-collapse d-lg-none" id="navbarMenu">
         <div className="navbar-nav mobile-menu-row">
+          {/* Opciones de navegación principal. */}
           {items.map((item) => (
             <button
               key={item.id}
@@ -155,9 +218,53 @@ function Navbar({ activePage, onNavigate }) {
             </button>
           ))}
 
-          <button type="button" className="nav-link nav-button" onClick={() => onNavigate('login')}>
-            Login
-          </button>
+          {/* Separador visual. */}
+          <hr className="my-2" />
+
+          {/* Si el usuario NO está autenticado, mostrar opción Login. */}
+          {!user && (
+            <button
+              type="button"
+              className="nav-link nav-button"
+              onClick={() => onNavigate('login')}
+            >
+              Iniciar Sesión
+            </button>
+          )}
+
+          {/* Si el usuario ESTÁ autenticado, mostrar opciones según rol. */}
+          {user && (
+            <>
+              {/* Opción de admin: panel de gestión de usuarios. */}
+              {isAdmin() && (
+                <button
+                  type="button"
+                  className={`nav-link nav-button ${activePage === 'usuarios' ? 'is-active' : ''}`}
+                  onClick={() => onNavigate('usuarios')}
+                >
+                  Gestión de Usuarios
+                </button>
+              )}
+
+              {/* Perfil del usuario autenticado. */}
+              <button
+                type="button"
+                className={`nav-link nav-button ${activePage === 'perfil' ? 'is-active' : ''}`}
+                onClick={() => onNavigate('perfil')}
+              >
+                Mi Perfil
+              </button>
+
+              {/* Cerrar sesión. */}
+              <button
+                type="button"
+                className="nav-link nav-button text-warning"
+                onClick={handleLogout}
+              >
+                Cerrar Sesión
+              </button>
+            </>
+          )}
         </div>
       </div>
     </nav>

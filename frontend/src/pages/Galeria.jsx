@@ -8,10 +8,6 @@ function Galeria({ onNavigate }) {
       <div className="bg-dark text-white p-5 mb-4 rounded text-center">
         <div>
           <h1>Galería</h1>
-          <p>
-            Una vista simple para explorar ideas, sin detalle todavía. Todo queda conectado con
-            Home y Catálogo desde arriba.
-          </p>
         </div>
       </div>
 

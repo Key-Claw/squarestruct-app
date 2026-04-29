@@ -1,0 +1,202 @@
+/**
+ * Servicio centralizado de autenticación.
+ * Gestiona login, registro, logout, almacenamiento de tokens y datos de usuario.
+ * Proporciona métodos auxiliares para verificar estado de autenticación y permisos.
+ */
+
+import { postRequest, getRequest, putRequest } from './api'
+
+const TOKEN_KEY = 'authToken'
+const USER_KEY = 'currentUser'
+
+/**
+ * Corrige texto con mojibake típico de una mala decodificación UTF-8/latin1.
+ * En frontend usamos una heurística para no tocar textos que ya están correctos.
+ * @param {string} value - Texto a revisar.
+ * @returns {string} Texto normalizado o el original.
+ */
+const normalizarTexto = (value) => {
+  if (typeof value !== 'string' || !/[ÃÂ�]/.test(value)) {
+    return value
+  }
+
+  try {
+    const bytes = Uint8Array.from([...value].map((character) => character.charCodeAt(0)))
+    return new TextDecoder('utf-8').decode(bytes)
+  } catch {
+    return value
+  }
+}
+
+/**
+ * Normaliza los datos del usuario para evitar nombres o emails con caracteres rotos.
+ * @param {object} userData - Usuario a normalizar.
+ * @returns {object} Usuario con texto corregido.
+ */
+const normalizarUsuario = (userData) => {
+  if (!userData) return userData
+
+  return {
+    ...userData,
+    nombre: normalizarTexto(userData.nombre),
+    email: normalizarTexto(userData.email),
+    rol: normalizarTexto(userData.rol),
+  }
+}
+
+/**
+ * Registra un nuevo usuario en el sistema.
+ * @param {string} nombre - Nombre completo del usuario.
+ * @param {string} email - Correo electrónico único.
+ * @param {string} contrasena - Contraseña del usuario.
+ * @returns {Promise<object>} Respuesta del servidor con mensaje de éxito.
+ * @throws {Error} Si fallan validaciones o si el email ya existe.
+ */
+export const registerUser = async (nombre, email, contrasena) => {
+  const response = await postRequest('/usuarios/register', {
+    nombre,
+    email,
+    contrasena,
+  })
+  return response
+}
+
+/**
+ * Inicia sesión con credenciales de usuario.
+ * Valida credenciales en backend, almacena JWT token y datos de usuario en localStorage.
+ * @param {string} email - Correo electrónico del usuario.
+ * @param {string} contrasena - Contraseña del usuario.
+ * @returns {Promise<object>} Objeto con datos del usuario autenticado.
+ * @throws {Error} Si las credenciales son inválidas.
+ */
+export const loginUser = async (email, contrasena) => {
+  try {
+    // Llamar al endpoint de login
+    const response = await postRequest('/usuarios/login', {
+      email,
+      contrasena,
+    })
+
+    // El backend devuelve { token }
+    if (response.token) {
+      // Guardar token en localStorage
+      localStorage.setItem(TOKEN_KEY, response.token)
+
+      // Decodificar el token para obtener datos del usuario
+      // Los tokens JWT tienen 3 partes separadas por puntos: header.payload.signature
+      const payload = JSON.parse(atob(response.token.split('.')[1]))
+
+      // Crear objeto de usuario con datos del token
+      // Incluye: idUsuario, nombre, email, rol
+      const userData = {
+        idUsuario: payload.idUsuario,
+        nombre: normalizarTexto(payload.nombre),
+        email: normalizarTexto(payload.email),
+        rol: normalizarTexto(payload.rol)
+      }
+
+      // Guardar datos del usuario en localStorage
+      localStorage.setItem(USER_KEY, JSON.stringify(userData))
+
+      return userData
+    }
+
+    throw new Error('No se recibió token de autenticación')
+  } catch (error) {
+    throw error
+  }
+}
+
+/**
+ * Cierra la sesión del usuario.
+ * Elimina token y datos del usuario de localStorage.
+ */
+export const logoutUser = () => {
+  localStorage.removeItem(TOKEN_KEY)
+  localStorage.removeItem(USER_KEY)
+}
+
+/**
+ * Obtiene el token JWT almacenado.
+ * @returns {string|null} Token JWT o null si no existe.
+ */
+export const getToken = () => {
+  return localStorage.getItem(TOKEN_KEY)
+}
+
+/**
+ * Obtiene los datos del usuario autenticado.
+ * @returns {object|null} Objeto con datos del usuario o null si no está autenticado.
+ */
+export const getCurrentUser = () => {
+  const userJson = localStorage.getItem(USER_KEY)
+  return userJson ? normalizarUsuario(JSON.parse(userJson)) : null
+}
+
+/**
+ * Verifica si el usuario está autenticado (tiene token válido).
+ * @returns {boolean} true si el usuario tiene sesión activa.
+ */
+export const isAuthenticated = () => {
+  return !!getToken()
+}
+
+/**
+ * Verifica si el usuario autenticado tiene rol de administrador.
+ * @returns {boolean} true si el usuario es admin, false en caso contrario.
+ */
+export const isAdmin = () => {
+  const user = getCurrentUser()
+  return user && user.rol === 'admin'
+}
+
+/**
+ * Obtiene el perfil del usuario autenticado (datos completos desde servidor).
+ * Útil para refrescar los datos del usuario después de cambios.
+ * @returns {Promise<object>} Datos completos del usuario del servidor.
+ * @throws {Error} Si no hay usuario autenticado o falla la petición.
+ */
+export const getProfile = async () => {
+  const user = getCurrentUser()
+  if (!user) {
+    throw new Error('No hay usuario autenticado')
+  }
+
+  try {
+    const userData = await getRequest(`/usuarios/${user.idUsuario}`)
+    // Actualizar datos en localStorage
+    const normalizedUser = normalizarUsuario(userData)
+    localStorage.setItem(USER_KEY, JSON.stringify(normalizedUser))
+    return normalizedUser
+  } catch (error) {
+    throw error
+  }
+}
+
+/**
+ * Obtiene la lista de todos los usuarios (solo para admin).
+ * @returns {Promise<Array>} Lista de usuarios con sus datos.
+ * @throws {Error} Si no está autenticado o el servidor rechaza la petición.
+ */
+export const getAllUsers = async () => {
+  try {
+    return await getRequest('/usuarios')
+  } catch (error) {
+    throw error
+  }
+}
+
+/**
+ * Actualiza los datos de un usuario (principalmente usado para cambiar rol por admin).
+ * @param {number} idUsuario - ID del usuario a actualizar.
+ * @param {object} userData - Objeto con los campos a actualizar (nombre, email, rol).
+ * @returns {Promise<object>} Respuesta del servidor con confirmación.
+ * @throws {Error} Si la petición falla.
+ */
+export const updateUser = async (idUsuario, userData) => {
+  try {
+    return await putRequest(`/usuarios/${idUsuario}`, userData)
+  } catch (error) {
+    throw error
+  }
+}
