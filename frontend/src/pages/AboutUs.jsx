@@ -1,9 +1,10 @@
 function AboutUs ({ onNavigate }) {
+    // Datos de apoyo para la estructura de la página informativa.
     const items = [1, 2, 3, 4]
   
     return (
 <section className="page-shell">
-  {/* Carrusel con foto de alguna foto enfocada al curro */}
+  {/* Carrusel principal con imágenes de presentación de la empresa. */}
 <div id="carouselExampleIndicators" class="carousel slide" data-mdb-ride="carousel" data-mdb-carousel-init>
   <div class="carousel-indicators">
     <button
@@ -48,7 +49,7 @@ function AboutUs ({ onNavigate }) {
   </button>
 </div>
 
-  {/* Persona 1 */}
+  {/* Primera ficha de miembro o perfil descriptivo. */}
   <div className="row align-items-center mb-5">
     <div className="col-md-6">
       <div className="page-card-media" style={{ minHeight: '350px' }}>
@@ -65,7 +66,7 @@ function AboutUs ({ onNavigate }) {
     </div>
   </div>
 
-  {/* Persona 2 */}
+  {/* Segunda ficha de miembro o perfil descriptivo. */}
   <div className="row align-items-center mb-5 flex-md-row-reverse">
     <div className="col-md-6">
       <div className="page-card-media" style={{ minHeight: '350px' }}>
@@ -82,7 +83,7 @@ function AboutUs ({ onNavigate }) {
     </div>
   </div>
 
-  {/* Foto de los 2 */}
+  {/* Bloque final con la visión de futuro de la marca. */}
   <div className="text-center mb-5">
     <div
       className="page-card-media mb-4"
