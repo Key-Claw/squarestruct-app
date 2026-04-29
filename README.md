@@ -44,7 +44,7 @@ Contiene la organización general del proyecto, separando backend, frontend y do
 │
 ├── backend/        # API y lógica de negocio
 ├── frontend/       # Aplicación web (cliente)
-├── docker/         # Configuración de contenedores
+├── docker/         # Configuración de contenedores (ver docker/README.md)
 ├── docs/           # Documentación del proyecto
 ├── .env            # Variables de entorno
 └── README.md
@@ -71,10 +71,14 @@ Se encarga de gestionar las peticiones del cliente, interactuar con la base de d
 ├── src/
 │   ├── config/        # Configuración (DB, env)
 │   ├── controllers/   # Gestión de peticiones HTTP
-│   ├── services/      # Lógica de negocio
+│   ├── services/      # Lógica de negocio reutilizable
+│   │   ├── productService.js # Servicio MVP productos
+│   │   └── userService.js    # Servicio MVP usuarios
 │   ├── routes/        # Definición de endpoints
 │   ├── middlewares/   # Autenticación y validaciones
 │   ├── utils/         # Funciones auxiliares
+│   │   ├── formatDate.js # Formateo de fechas (MVP)
+│   │   └── generateId.js  # Generador simple de IDs (MVP)
 │   └── app.js         # Configuración de Express
 │
 ├── tests/             # Tests del backend
@@ -124,11 +128,18 @@ El backend procesa la lógica de negocio, accede a la base de datos y devuelve r
 
 La documentación completa del proyecto se encuentra en `/docs`:
 
-* Proyecto → `docs/01-proyecto/vision-general.md`
-* MVP → `docs/02-mvp/metodologia-mvp.md`
-* Arquitectura → `docs/03-arquitectura/`
-* API → `docs/04-api/endpoint.md`
-* Testing → `docs/05-testing/postman-mvp-ejemplos.md`
+
+- **Proyecto** → `docs/01-proyecto/vision-general.md`
+- **MVP** → `docs/02-mvp/metodologia-mvp.md`
+- **Arquitectura** → `docs/03-arquitectura/`
+	- [Estructura backend](docs/03-arquitectura/backend-estructura.md)
+	- [Base de datos](docs/03-arquitectura/base-de-datos.md)
+	- [Tecnologías backend](docs/03-arquitectura/tecnologias-backend.md)
+	- [Estructura frontend](docs/03-arquitectura/frontend-estructura.md)
+	- [Tecnologías frontend](docs/03-arquitectura/tecnologias-frontend.md)
+- **API** → `docs/04-api/endpoint.md`
+- **Testing** → `docs/05-testing/postman-mvp-ejemplos.md`
+- **Docker** → `docker/README.md`
 
 ---
 
@@ -149,6 +160,28 @@ La documentación completa del proyecto se encuentra en `/docs`:
 
 ---
 
+
+
+## ♻️ Reinicializar la base de datos tras cambios
+
+Si modificas los scripts de la base de datos (`schema.sql`, `seeds.sql`, etc.), debes reinicializar el volumen de Docker para que los cambios se apliquen:
+
+1. Detén y elimina los contenedores:
+	```bash
+	docker compose -f docker/docker-compose.yml down
+	```
+2. Elimina el volumen de datos:
+	```bash
+	docker volume rm squarestruct_mysql_data
+	```
+3. Vuelve a levantar los servicios:
+	```bash
+	docker compose -f docker/docker-compose.yml up -d
+	```
+
+Esto recreará la base de datos desde cero con los scripts actualizados.
+
+---
 
 ## 🚀 Inicialización completa del entorno backend
 
