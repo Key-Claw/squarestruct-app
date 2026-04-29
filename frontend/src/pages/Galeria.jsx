@@ -1,8 +1,10 @@
 function Galeria({ onNavigate }) {
+  // Tarjetas de ejemplo para mostrar ideas visuales o referencias.
   const items = [1, 2, 3, 4]
 
   return (
     <section className="page-shell">
+      {/* Encabezado explicativo de la sección de galería. */}
       <div className="bg-dark text-white p-5 mb-4 rounded text-center">
         <div>
           <h1>Galería</h1>
@@ -13,6 +15,7 @@ function Galeria({ onNavigate }) {
         </div>
       </div>
 
+      {/* Grid de referencias visuales para navegar rápido entre ideas. */}
       <div className="page-grid">
         {items.map((item) => (
           <article className="page-card" key={item}>
@@ -25,6 +28,7 @@ function Galeria({ onNavigate }) {
         ))}
       </div>
 
+      {/* Botones de retorno a las vistas principales. */}
       <div className="page-actions">
         <button type="button" className="page-link-button" onClick={() => onNavigate('home')}>
           Home
@@ -34,7 +38,7 @@ function Galeria({ onNavigate }) {
         </button>
       </div>
 
-            {/* PUBLICIDAD */}
+      {/* Espacio reservado para publicidad o mensajes secundarios. */}
       <div className="bg-success text-white text-center p-3 mt-4">
         OFERTA PUBLICITARIA
       </div>
