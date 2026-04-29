@@ -3,6 +3,9 @@ import Navbar from './components/Navbar'
 import Home from './pages/Home'
 import Galeria from './pages/Galeria'
 import Catalogo from './pages/Catalogo'
+import Login from './pages/Login'
+import Register from './pages/Register'
+import AboutUs from './pages/AboutUs'
 import './App.css'
 
 function App() {
@@ -15,6 +18,18 @@ function App() {
 
     if (page === 'catalogo') {
       return <Catalogo onNavigate={setPage} />
+    }
+
+    if (page === 'login') {
+      return <Login onNavigate={setPage} />
+    }
+
+    if (page === 'register') {
+      return <Register onNavigate={setPage} />
+    }
+
+    if (page === 'aboutus') {
+      return <AboutUs onNavigate={setPage} />
     }
 
     return <Home onNavigate={setPage} />
