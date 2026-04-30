@@ -44,8 +44,6 @@ function Perfil({ onNavigate, user, onUserLogout }) {
     switch (rol) {
       case 'admin':
         return 'badge bg-danger'
-      case 'moderador':
-        return 'badge bg-warning text-dark'
       default:
         return 'badge bg-info'
     }

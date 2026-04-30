@@ -16,7 +16,7 @@ CREATE TABLE usuarios (
   contrasena VARCHAR(255) NOT NULL,
   rol VARCHAR(20) NOT NULL DEFAULT 'usuario',
   creadoEn TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  CONSTRAINT chkUsuarioRol CHECK (rol IN ('usuario', 'moderador', 'admin'))
+  CONSTRAINT chkUsuarioRol CHECK (rol IN ('usuario', 'admin'))
 ) ENGINE=InnoDB;
 
 CREATE TABLE proveedores (
