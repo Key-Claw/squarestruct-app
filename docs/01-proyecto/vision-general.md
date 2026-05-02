@@ -50,12 +50,25 @@ En el MVP se prioriza el usuario cliente, porque es el flujo mínimo que permite
 - Gestión básica de pedidos.
 - API REST para comunicar frontend y backend.
 
+## Roadmap del proyecto
+
+El proyecto se organiza en tres fases principales:
+
+| Versión | Objetivo |
+| --- | --- |
+| `MVP v1 - Funcional` | Validar el flujo mínimo: registro, login, catálogo y pedidos. |
+| `v2 - Aplicación completa y estilizada` | Mejorar la experiencia de usuario, seguridad, validaciones, tests y estabilidad. |
+| `v3 - Diseñador de planos 3D` | Implementar la parte más innovadora: diseño de planos modulares y visualización 3D. |
+
 ## Evolución futura
 
 Estas funcionalidades no forman parte obligatoria del MVP, pero muestran hacia dónde podría crecer el proyecto:
 
 - Configurador modular visual.
+- Editor de planos por bloques.
 - Cálculo automático de presupuesto.
+- Guardado de diseños de usuario.
+- Visualización de estructuras en 3D.
 - Comparación entre proveedores.
 - Panel completo de administración.
 - Recomendaciones de materiales.

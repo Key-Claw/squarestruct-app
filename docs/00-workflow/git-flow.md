@@ -38,8 +38,10 @@ git checkout -b feature/backend/nombre-tarea
 | Frontend | `feature/frontend/nombre-tarea` | `feature/frontend/mvp` |
 | Base de datos | `feature/db/nombre-tarea` | `feature/db/seeds-demo` |
 | DevOps | `feature/devops/nombre-tarea` | `feature/devops/docker` |
-| Documentación | `docs/nombre-documento` | `docs/git-flow` |
+| Documentación | `feature/docs/nombre-tarea` | `feature/docs/documentacion-general` |
 | Corrección | `fix/parte/nombre-error` | `fix/backend/login` |
+| Tests | `test/parte/nombre-tarea` | `test/backend/productos-pedidos` |
+| Diseño futuro | `feature/design/nombre-tarea` | `feature/design/editor-planos` |
 
 ## Flujo de trabajo recomendado
 
@@ -87,6 +89,8 @@ Un Pull Request debería incluir:
 - Cambios realizados.
 - Issue relacionada, si existe.
 - Estado actual de la funcionalidad.
+- Rama origen y rama destino.
+- Referencia a la issue que cierra o resuelve.
 
 Ejemplo de título:
 
@@ -108,7 +112,60 @@ Cambios:
 
 Estado:
 Funcional para MVP
+
+Issue:
+Closes #X
 ```
+
+## Issues
+
+Las issues sirven para organizar el trabajo antes de crear una rama o un Pull Request.
+
+Una issue bien definida debería incluir:
+
+- Descripción del problema o mejora.
+- Rama de trabajo propuesta.
+- Rama destino, normalmente `dev`.
+- Pull Request asociado, si ya existe.
+- Dependencias con otras issues.
+- Tareas en formato checklist.
+- Criterios de aceptación.
+
+Estructura recomendada:
+
+```md
+## Descripción
+
+...
+
+## Rama de trabajo
+
+`feature/...`
+
+## Rama destino
+
+`dev`
+
+## Pull Request
+
+Pendiente.
+
+## Dependencias
+
+- Ninguna.
+
+## Tareas
+
+- [ ] Tarea 1
+- [ ] Tarea 2
+
+## Criterios de aceptación
+
+- [ ] Criterio 1
+- [ ] Criterio 2
+```
+
+Cuando se cree el Pull Request, se recomienda enlazarlo desde la issue y usar `Closes #numero` en la descripción del PR si ese PR termina la tarea.
 
 ## Ramas actuales importantes
 
@@ -118,8 +175,9 @@ dev
 feature/backend/db
 feature/backend/mvp
 feature/frontend/mvp
+feature/docs/documentacion-general
 ```
 
 ## Frase útil para la presentación
 
-Usamos `dev` como rama de integración y ramas `feature/*` para separar el trabajo por partes. Así el proyecto se mantiene más ordenado y es más fácil revisar cambios.
+Usamos `dev` como rama de integración y ramas `feature/*`, `fix/*` o `test/*` para separar el trabajo por partes. Cada cambio se relaciona con una issue y se integra mediante Pull Request.

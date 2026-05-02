@@ -9,7 +9,7 @@ Esta carpeta reúne la documentación del proyecto. Está organizada para poder 
 3. `03-arquitectura/`: muestra cómo se organizan backend, frontend y base de datos.
 4. `04-api/endpoint.md`: resume los endpoints principales.
 5. `05-testing/postman-mvp-ejemplos.md`: explica cómo probar el flujo principal.
-6. `00-workflow/`: recoge las normas de ramas y commits.
+6. `00-workflow/`: recoge las normas de ramas, commits, issues y milestones.
 
 ## Para preparar la presentación
 
@@ -20,12 +20,21 @@ Una forma sencilla de explicar el proyecto es seguir este orden:
 3. MVP: registro, login, catálogo y pedidos.
 4. Arquitectura: frontend en React, backend en Express y base de datos MySQL.
 5. Demostración: abrir la web, iniciar sesión, consultar productos y explicar la API.
+6. Roadmap: explicar `MVP v1`, `v2` y `v3`.
+
+## Roadmap resumido
+
+| Versión | Objetivo |
+| --- | --- |
+| `MVP v1 - Funcional` | Demostrar el flujo básico: registro, login, catálogo y pedidos. |
+| `v2 - Aplicación completa y estilizada` | Mejorar interfaz, validaciones, tests, autenticación y estabilidad. |
+| `v3 - Diseñador de planos 3D` | Añadir editor visual, bloques, presupuesto y visualización 3D. |
 
 ## Carpetas
 
 ```text
 docs/
-  00-workflow/       Git Flow y commits
+  00-workflow/       Git Flow, commits, issues y milestones
   01-proyecto/       Idea general del proyecto
   02-mvp/            Alcance del MVP
   03-arquitectura/   Backend, frontend y base de datos

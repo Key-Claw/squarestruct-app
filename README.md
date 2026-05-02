@@ -14,6 +14,14 @@ Un MVP no intenta tener todas las funcionalidades finales. Su objetivo es demost
 registro -> login -> catálogo de productos -> pedido
 ```
 
+## Roadmap
+
+| Versión | Objetivo |
+| --- | --- |
+| `MVP v1 - Funcional` | Validar el flujo básico de usuarios, productos y pedidos. |
+| `v2 - Aplicación completa y estilizada` | Mejorar interfaz, autenticación, validaciones, tests y estabilidad. |
+| `v3 - Diseñador de planos 3D` | Añadir editor visual de planos, bloques modulares, presupuesto y vista 3D. |
+
 ## Funcionalidades actuales
 
 - Registro de usuarios.
