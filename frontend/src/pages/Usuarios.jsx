@@ -33,7 +33,7 @@ function Usuarios({ onNavigate, user }) {
       try {
         const data = await getAllUsers()
         setUsuarios(data)
-      } catch (err) {
+      } catch {
         setError('Error al cargar la lista de usuarios')
       } finally {
         setIsLoading(false)
@@ -92,7 +92,7 @@ function Usuarios({ onNavigate, user }) {
 
       // Limpiar mensaje de éxito después de 3 segundos
       setTimeout(() => setSuccessMessage(''), 3000)
-    } catch (err) {
+    } catch {
       setError('Error al actualizar el rol del usuario')
     } finally {
       setIsEditLoading(false)
@@ -129,8 +129,8 @@ function Usuarios({ onNavigate, user }) {
   // Mostrar spinner mientras se carga
   if (isLoading) {
     return (
-      <section className="page-shell usuarios-shell">
-        <div className="container usuarios-container">
+      <section className="page-shell usuarios-shell container-fluid">
+        <div className="container-fluid usuarios-container">
           <div className="text-center py-5">
             <div className="spinner-border text-light" role="status">
               <span className="visually-hidden">Cargando...</span>
@@ -142,7 +142,16 @@ function Usuarios({ onNavigate, user }) {
   }
 
   return (
-    <section className="page-shell usuarios-shell">
+    <section className="page-shell usuarios-shell container-fluid">
+      {/* Bootstrap grid, card, table, modal, select, alerts, badges and buttons:
+          https://getbootstrap.com/docs/5.3/layout/grid/
+          https://getbootstrap.com/docs/5.3/components/card/
+          https://getbootstrap.com/docs/5.3/content/tables/
+          https://getbootstrap.com/docs/5.3/components/modal/
+          https://getbootstrap.com/docs/5.3/forms/select/
+          https://getbootstrap.com/docs/5.3/components/alerts/
+          https://getbootstrap.com/docs/5.3/components/badge/
+          https://getbootstrap.com/docs/5.3/components/buttons/ */}
       <div className="container-fluid usuarios-container">
         <div className="row">
           <div className="col-12">

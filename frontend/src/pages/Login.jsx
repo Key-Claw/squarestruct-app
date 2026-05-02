@@ -62,11 +62,17 @@ function Login({ onNavigate, onUserLogin }) {
   }
 
   return (
-    <section className="page-shell login-shell">
-      <div className="container login-container">
+    <section className="page-shell login-shell container-fluid">
+      {/* Bootstrap grid, card, form-control, alert and buttons:
+          https://getbootstrap.com/docs/5.3/layout/grid/
+          https://getbootstrap.com/docs/5.3/components/card/
+          https://getbootstrap.com/docs/5.3/forms/form-control/
+          https://getbootstrap.com/docs/5.3/components/alerts/
+          https://getbootstrap.com/docs/5.3/components/buttons/ */}
+      <div className="container-fluid login-container auth-container">
         <div className="row justify-content-center align-items-center login-row w-100 mx-auto">
           <div className="col-12 col-md-9 col-lg-7 col-xl-6">
-            <div className="card bg-dark text-white login-card">
+            <div className="card bg-dark text-white login-card auth-card">
               <div className="card-body p-4 p-md-5 text-center">
                 <div className="mb-md-4 mt-md-2 pb-3">
                   {/* Título y descripción de la pantalla de acceso. */}

@@ -1,11 +1,21 @@
+/* Bootstrap responsive reference:
+   https://getbootstrap.com/docs/5.3/layout/breakpoints/
+   Mobile: default styles, < 768px.
+   Tablet: md/lg range, 768px - 1199.98px.
+   PC: xl and above, >= 1200px.
+*/
+
 .app-shell {
   min-height: 100svh;
   display: flex;
   flex-direction: column;
+  width: 100%;
 }
 
 .app-main {
   flex: 1;
+  width: 100%;
+  background: #f4f6f4;
 }
 
 .app-navbar {
@@ -15,6 +25,7 @@
   position: relative;
   padding-top: 0.9rem;
   padding-bottom: 0.9rem;
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.14);
 }
 
 
@@ -55,9 +66,8 @@
 }
 
 .navbar-logo-desktop {
-  width: 200px;
-  max-width: 200px;
-  margin-right: -2rem;
+  width: 150px;
+  max-width: 150px;
 }
 
 .brand-button,
@@ -82,7 +92,6 @@
 }
 
 .nav-strip-desktop {
-  margin-left: -0.75rem;
   margin-right: 0.5rem;
   flex: 0 1 auto;
 }
@@ -192,6 +201,11 @@
   justify-content: flex-start;
 }
 
+#navbarMenu {
+  width: 100%;
+  flex-basis: 100%;
+}
+
 .mobile-menu-row .nav-button {
   border: 1px solid rgba(255, 255, 255, 0.16);
   background: rgba(255, 255, 255, 0.05);
@@ -204,7 +218,105 @@
 }
 
 .page-shell {
-  padding: 28px 20px 40px;
+  padding: 28px clamp(16px, 3vw, 44px) 40px;
+  width: 100%;
+}
+
+.home-page {
+  padding: 28px clamp(16px, 3vw, 44px) 40px;
+  width: 100%;
+}
+
+.mvp-hero {
+  min-height: 265px;
+  border-radius: 14px;
+  background:
+    linear-gradient(135deg, rgba(31, 42, 34, 0.96), rgba(30, 34, 40, 0.98)),
+    radial-gradient(circle at 20% 20%, rgba(66, 145, 95, 0.35), transparent 34%);
+  color: #f8fafc;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  padding: 42px 28px;
+  margin-bottom: 26px;
+  box-shadow: 0 18px 44px rgba(15, 23, 42, 0.16);
+}
+
+.mvp-hero h1 {
+  max-width: 18ch;
+  margin: 0;
+  color: #f8fafc;
+  font-size: clamp(2.2rem, 4.2vw, 4.4rem);
+  line-height: 1.02;
+}
+
+.mvp-hero p {
+  max-width: 62ch;
+  margin: 14px auto 0;
+  color: rgba(248, 250, 252, 0.84);
+}
+
+.eyebrow {
+  margin: 0 0 0.7rem;
+  color: #91d4a3;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.hero-actions {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.promo-band {
+  margin-top: 28px;
+  background: #1f8f58;
+  color: #fff;
+  text-align: center;
+  padding: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.about-carousel {
+  overflow: hidden;
+  margin-bottom: 28px;
+  border-radius: 14px;
+  background: #20252b;
+  box-shadow: 0 18px 44px rgba(15, 23, 42, 0.16);
+}
+
+.about-carousel-image {
+  height: clamp(260px, 42vw, 520px);
+  object-fit: cover;
+  background:
+    linear-gradient(135deg, rgba(31, 42, 34, 0.96), rgba(30, 34, 40, 0.98));
+}
+
+.about-carousel-caption {
+  right: 8%;
+  left: 8%;
+  bottom: 2rem;
+  padding: 1rem;
+  border-radius: 12px;
+  background: rgba(14, 18, 22, 0.72);
+  backdrop-filter: blur(4px);
+}
+
+.about-carousel-caption h1 {
+  margin: 0;
+  color: #fff;
+  font-size: clamp(2rem, 4vw, 4rem);
+}
+
+.about-carousel-caption p {
+  margin-top: 0.5rem;
+  color: rgba(255, 255, 255, 0.88);
 }
 
 .register-shell {
@@ -383,7 +495,8 @@
 .page-grid {
   display: grid;
   gap: 18px;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+  width: 100%;
 }
 
 .page-card {
@@ -391,6 +504,19 @@
   color: #fff;
   overflow: hidden;
   min-height: 220px;
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.12);
+}
+
+.compact-card {
+  min-height: auto;
+}
+
+.modular-media {
+  background:
+    linear-gradient(135deg, rgba(126, 137, 148, 0.9), rgba(70, 82, 92, 0.95));
+  color: #f8fafc;
+  font-weight: 800;
+  text-transform: uppercase;
 }
 
 .page-card-media {
@@ -453,6 +579,136 @@
   cursor: pointer;
 }
 
+.product-link-block,
+.products-intro,
+.design-board {
+  margin-top: 28px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: #20252b;
+  color: #fff;
+  padding: 24px;
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.12);
+}
+
+.product-link-block,
+.products-intro {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  text-align: left;
+}
+
+.product-link-block h2,
+.products-intro h2,
+.design-panel h2 {
+  margin: 0;
+  color: #fff;
+}
+
+.product-link-block p,
+.products-intro p {
+  margin-top: 8px;
+  max-width: 65ch;
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.product-specs {
+  display: grid;
+  gap: 8px;
+  min-width: 15rem;
+}
+
+.product-specs span {
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.08);
+  padding: 0.55rem 0.75rem;
+  color: rgba(255, 255, 255, 0.86);
+}
+
+.catalog-grid {
+  scroll-margin-top: 120px;
+}
+
+.auth-container,
+.profile-container,
+.usuarios-container {
+  width: 100%;
+}
+
+.auth-card,
+.perfil-card,
+.usuarios-card {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.usuarios-card {
+  overflow: hidden;
+}
+
+.design-board {
+  display: grid;
+  grid-template-columns: minmax(220px, 300px) 1fr;
+  gap: 20px;
+}
+
+.design-panel {
+  text-align: left;
+}
+
+.tool-stack {
+  display: grid;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.tool-stack button {
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.06);
+  color: #fff;
+  padding: 0.7rem 0.9rem;
+  text-align: left;
+}
+
+.plan-preview {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(30px, 1fr));
+  gap: 8px;
+  padding: 16px;
+  border-radius: 12px;
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    #161a1f;
+  background-size: 32px 32px;
+}
+
+.plan-preview span {
+  aspect-ratio: 1;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.plan-preview span.is-filled {
+  background: #45a66b;
+  box-shadow: 0 0 0 2px rgba(69, 166, 107, 0.18);
+}
+
+.step-number {
+  display: inline-grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  margin-bottom: 0.8rem;
+  border-radius: 999px;
+  background: #45a66b;
+  color: #fff;
+  font-weight: 800;
+}
+
 .home-card-button:focus-visible,
 .nav-button:focus-visible,
 .page-link-button:focus-visible,
@@ -476,23 +732,52 @@
 }
 
 .gradient-custom {
-  background: #ffffff;  
-  }
+  background: #ffffff;
+}
 
-@media (max-width: 992px) {
+/* Bootstrap navbar mobile/tablet: d-lg-none is active below 992px. */
+@media (max-width: 991.98px) {
   .app-navbar {
     gap: 8px;
+    flex-wrap: wrap;
   }
 
-  .navbar-desktop {
-    gap: 10px;
+  .navbar-mobile {
+    flex: 0 0 100%;
   }
+
+  #navbarMenu {
+    order: 2;
+  }
+
+  .mobile-menu-row {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    padding-top: 0.75rem;
+    justify-content: stretch;
+  }
+
+  .mobile-menu-row .nav-button {
+    width: 100%;
+    text-align: center;
+  }
+
+  .mobile-menu-row hr {
+    grid-column: 1 / -1;
+    width: 100%;
+  }
+}
+
+/* Mobile responsive: < 768px. One-column content, compact hero and mobile navbar. */
+@media (max-width: 767.98px) {
 
   .navbar-logo-mobile {
-    width: 175px;
-    max-width: 175px;
-  margin-right: -2.4rem;
-    margin-bottom: -1.2rem;
+    width: 104px;
+    max-width: 104px;
+  }
+
+  .brand-mark-mobile {
+    margin-right: 0;
   }
 
   .search-group-mobile .search-bar {
@@ -512,9 +797,133 @@
     padding: 0.3rem 0.5rem;
   }
 
-  .mobile-menu-row {
-    padding-top: 0.6rem;
-    justify-content: center;
+  .page-shell,
+  .home-page {
+    padding-inline: 14px;
   }
-  
+
+  .page-card {
+    min-height: auto;
+  }
+
+  .product-link-block,
+  .products-intro {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .design-board {
+    grid-template-columns: 1fr;
+  }
+
+  .mvp-hero {
+    padding: 34px 20px;
+    min-height: 235px;
+  }
+
+  .about-carousel {
+    border-radius: 10px;
+  }
+
+  .about-carousel-image {
+    height: 280px;
+  }
+
+  .about-carousel-caption {
+    right: 1rem;
+    left: 1rem;
+    bottom: 1.2rem;
+  }
+
+  .mvp-hero h1 {
+    max-width: 12ch;
+  }
+
+  .hero-actions .btn,
+  .page-actions .page-link-button,
+  .product-link-block .btn,
+  .products-intro .btn {
+    width: 100%;
+  }
+}
+
+/* Tablet responsive: 768px - 1199.98px. Two-column grids and medium spacing. */
+@media (min-width: 768px) and (max-width: 1199.98px) {
+  .page-shell,
+  .home-page {
+    padding-inline: 28px;
+  }
+
+  .page-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .catalog-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .product-link-block,
+  .products-intro {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .design-board {
+    grid-template-columns: minmax(220px, 280px) 1fr;
+  }
+
+  .mvp-hero h1 {
+    max-width: 16ch;
+  }
+
+  .navbar-logo-mobile {
+    width: 128px;
+    max-width: 128px;
+  }
+}
+
+/* Bootstrap lg navbar adjustment: tablets from 992px can use the desktop menu. */
+@media (min-width: 992px) and (max-width: 1199.98px) {
+  .navbar-desktop {
+    gap: 10px;
+  }
+}
+
+/* PC responsive: >= 1200px. Full-width layout with more columns and wider hero. */
+@media (min-width: 1200px) {
+  .app-navbar {
+    padding-inline: clamp(1.5rem, 3vw, 3.5rem) !important;
+  }
+
+  .page-shell,
+  .home-page {
+    padding-top: 34px;
+    padding-bottom: 48px;
+  }
+
+  .mvp-hero {
+    min-height: 300px;
+    padding: 54px clamp(36px, 6vw, 88px);
+  }
+
+  .catalog-hero h1,
+  .home-hero h1,
+  .gallery-hero h1 {
+    max-width: 20ch;
+  }
+
+  .catalog-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .page-grid:not(.catalog-grid) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* Large PC responsive: more products fit without wasting horizontal space. */
+@media (min-width: 1600px) {
+  .catalog-grid {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
 }

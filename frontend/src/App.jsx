@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import Navbar from './components/Navbar'
 import Home from './pages/Home'
 import Galeria from './pages/Galeria'
@@ -8,6 +8,7 @@ import Register from './pages/Register'
 import AboutUs from './pages/AboutUs'
 import Perfil from './pages/Perfil'
 import Usuarios from './pages/Usuarios'
+import Design from './pages/Design'
 import { getCurrentUser, logoutUser, isAdmin } from './services/authService'
 import './App.css'
 
@@ -16,22 +17,16 @@ function App() {
   const [page, setPage] = useState('home')
   // Texto de búsqueda que viaja desde el navbar al catálogo.
   const [searchTerm, setSearchTerm] = useState('')
+  const [catalogSection, setCatalogSection] = useState('')
   // Usuario autenticado (null si no hay sesión).
-  const [user, setUser] = useState(null)
+  const [user, setUser] = useState(() => getCurrentUser())
   // Flag para indicar que la app está cargando la sesión guardada.
-  const [isLoading, setIsLoading] = useState(true)
+  const isLoading = false
 
   /**
    * Restaura la sesión del usuario al cargar la aplicación.
    * Si existe un token y datos de usuario en localStorage, los recupera.
    */
-  useEffect(() => {
-    const savedUser = getCurrentUser()
-    if (savedUser) {
-      setUser(savedUser)
-    }
-    setIsLoading(false)
-  }, [])
 
   /**
    * Actualiza el usuario autenticado (después de login exitoso).
@@ -56,9 +51,10 @@ function App() {
    * @param {string} nextPage - Página destino.
    * @param {string} term - Término de búsqueda opcional.
    */
-  const handleNavigate = (nextPage, term = '') => {
+  const handleNavigate = (nextPage, term = '', section = '') => {
     setPage(nextPage)
     setSearchTerm(term)
+    setCatalogSection(section)
   }
 
   /**
@@ -79,7 +75,18 @@ function App() {
 
     if (page === 'catalogo') {
       // El catálogo recibe el término de búsqueda para abrirse ya filtrado.
-      return <Catalogo onNavigate={handleNavigate} searchTerm={searchTerm} />
+      return (
+        <Catalogo
+          key={`${searchTerm}-${catalogSection}`}
+          onNavigate={handleNavigate}
+          searchTerm={searchTerm}
+          initialSection={catalogSection}
+        />
+      )
+    }
+
+    if (page === 'design') {
+      return <Design onNavigate={handleNavigate} />
     }
 
     if (page === 'login') {
@@ -125,6 +132,7 @@ function App() {
     <div className="app-shell">
       <Navbar
         activePage={page}
+        activeSection={catalogSection}
         onNavigate={handleNavigate}
         user={user}
         onLogout={handleUserLogout}

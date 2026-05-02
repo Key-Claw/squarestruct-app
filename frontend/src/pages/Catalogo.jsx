@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { getProductos, filtrarProductos } from '../services/productService'
+import ProductsIntro from './Products'
 
 /**
  * Corrige texto con mojibake típico de una mala decodificación UTF-8/latin1.
@@ -32,7 +33,7 @@ const normalizarProducto = (product) => ({
   tipo: normalizarTexto(product.tipo)
 })
 
-function Catalogo({ onNavigate, searchTerm = '' }) {
+function Catalogo({ onNavigate, searchTerm = '', initialSection = '' }) {
   // Productos cargados desde el backend.
   const [productos, setProductos] = useState([])
   // Estado de carga para mostrar feedback visual.
@@ -68,8 +69,12 @@ function Catalogo({ onNavigate, searchTerm = '' }) {
    * Mantiene sincronizada la búsqueda cuando llega desde el navbar.
    */
   useEffect(() => {
-    setBusqueda(searchTerm)
-  }, [searchTerm])
+    if (initialSection === 'productos') {
+      window.requestAnimationFrame(() => {
+        document.getElementById('productos')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      })
+    }
+  }, [initialSection])
 
   /**
    * Limpia la búsqueda actual y vuelve a mostrar el catálogo completo.
@@ -98,14 +103,25 @@ function Catalogo({ onNavigate, searchTerm = '' }) {
   }, [busqueda, productosFiltrados])
 
   return (
-    <section className="page-shell">
-      <div className="bg-dark text-white p-5 mb-4 rounded text-center">
-        <div>
-          <h1>Catálogo</h1>
-        </div>
+    /* Bootstrap container-fluid ocupa todo el ancho disponible:
+       https://getbootstrap.com/docs/5.3/layout/containers/ */
+    <section className="page-shell container-fluid">
+      <div className="mvp-hero catalog-hero">
+        <p className="eyebrow">Catalogo conectado a la base de datos</p>
+        <h1>Productos modulares para disenar tu plano</h1>
+        <p>
+          Bloques y pilares inspirados en sistemas de construccion modular,
+          preparados para alimentar el futuro disenador.
+        </p>
       </div>
 
-      <div className="container mb-4">
+      <ProductsIntro onNavigate={onNavigate} />
+
+      {/* Bootstrap grid, columns, form-control and button:
+          https://getbootstrap.com/docs/5.3/layout/grid/
+          https://getbootstrap.com/docs/5.3/forms/form-control/
+          https://getbootstrap.com/docs/5.3/components/buttons/ */}
+      <div className="container-fluid mb-4">
         <div className="row justify-content-center">
           <div className="col-12 col-md-8 col-lg-6">
             {/* Buscador interno del catálogo para refinar el listado sin salir de la página. */}
@@ -147,11 +163,11 @@ function Catalogo({ onNavigate, searchTerm = '' }) {
       )}
 
       {/* Grid de tarjetas con los productos devueltos por el backend. */}
-      <div className="page-grid">
+      <div className="page-grid catalog-grid">
         {!cargando && !error && productosFiltrados.map((product) => (
           <article className="page-card" key={product.idProducto} id={`producto-${product.idProducto}`}>
             {/* Bloque superior pensado para una imagen, categoría o tipo de producto. */}
-            <div className="page-card-media">
+            <div className="page-card-media modular-media">
               {product.tipo || 'Producto'}
             </div>
             {/* Bloque inferior con los datos principales del artículo. */}
@@ -163,6 +179,9 @@ function Catalogo({ onNavigate, searchTerm = '' }) {
               </p>
               <p className="mb-0">
                 <strong>Stock:</strong> {product.stock}
+              </p>
+              <p className="mb-0">
+                <strong>Medidas:</strong> {product.alto} x {product.ancho} x {product.largo} cm
               </p>
             </div>
           </article>
@@ -185,7 +204,7 @@ function Catalogo({ onNavigate, searchTerm = '' }) {
         </button>
       </div>
           {/* PUBLICIDAD */}
-      <div className="bg-success text-white text-center p-3 mt-4">
+      <div className="promo-band">
         OFERTA PUBLICITARIA
       </div>
     </section>

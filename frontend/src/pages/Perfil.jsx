@@ -24,7 +24,7 @@ function Perfil({ onNavigate, user, onUserLogout }) {
       try {
         const profile = await getProfile()
         setUserData(profile)
-      } catch (err) {
+      } catch {
         // Si falla el refresco, usamos la sesión local para no romper la vista.
         setUserData(user)
       } finally {
@@ -52,8 +52,8 @@ function Perfil({ onNavigate, user, onUserLogout }) {
   // Mostrar spinner mientras se carga
   if (isLoading) {
     return (
-      <section className="page-shell perfil-shell">
-        <div className="container perfil-container">
+      <section className="page-shell perfil-shell container-fluid">
+        <div className="container-fluid perfil-container profile-container">
           <div className="text-center py-5">
             <div className="spinner-border text-light" role="status">
               <span className="visually-hidden">Cargando...</span>
@@ -66,8 +66,15 @@ function Perfil({ onNavigate, user, onUserLogout }) {
 
   // Renderizar perfil del usuario
   return (
-    <section className="page-shell perfil-shell">
-      <div className="container perfil-container">
+    <section className="page-shell perfil-shell container-fluid">
+      {/* Bootstrap grid, card, table, badge, spinner and buttons:
+          https://getbootstrap.com/docs/5.3/layout/grid/
+          https://getbootstrap.com/docs/5.3/components/card/
+          https://getbootstrap.com/docs/5.3/content/tables/
+          https://getbootstrap.com/docs/5.3/components/badge/
+          https://getbootstrap.com/docs/5.3/components/spinners/
+          https://getbootstrap.com/docs/5.3/components/buttons/ */}
+      <div className="container-fluid perfil-container profile-container">
         <div className="row justify-content-center align-items-start">
           <div className="col-12 col-md-10 col-lg-8 col-xxl-7">
             <div className="card bg-dark text-white perfil-card">

@@ -103,7 +103,8 @@ export const loginUser = async (email, contrasena) => {
 
     throw new Error('No se recibió token de autenticación')
   } catch (error) {
-    throw error
+    if (error instanceof Error) throw error
+    throw new Error(String(error), { cause: error })
   }
 }
 
@@ -169,7 +170,8 @@ export const getProfile = async () => {
     localStorage.setItem(USER_KEY, JSON.stringify(normalizedUser))
     return normalizedUser
   } catch (error) {
-    throw error
+    if (error instanceof Error) throw error
+    throw new Error(String(error), { cause: error })
   }
 }
 
@@ -182,7 +184,8 @@ export const getAllUsers = async () => {
   try {
     return await getRequest('/usuarios')
   } catch (error) {
-    throw error
+    if (error instanceof Error) throw error
+    throw new Error(String(error), { cause: error })
   }
 }
 
@@ -197,6 +200,7 @@ export const updateUser = async (idUsuario, userData) => {
   try {
     return await putRequest(`/usuarios/${idUsuario}`, userData)
   } catch (error) {
-    throw error
+    if (error instanceof Error) throw error
+    throw new Error(String(error), { cause: error })
   }
 }

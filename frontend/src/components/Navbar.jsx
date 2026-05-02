@@ -11,16 +11,22 @@ import logo from '../assets/LogoSquareStruct.png'
  * @param {object} user - Datos del usuario autenticado (null si no está logueado).
  * @param {function} onLogout - Callback para cerrar sesión.
  */
-function Navbar({ activePage, onNavigate, user, onLogout }) {
+function Navbar({ activePage, activeSection, onNavigate, user, onLogout }) {
   // Menú principal visible en desktop y mobile (siempre disponible).
   const items = [
     { id: 'home', label: 'Home' },
     { id: 'galeria', label: 'Galería' },
     { id: 'catalogo', label: 'Catálogo' },
+    { id: 'design', label: 'Design' },
   ]
 
   // Texto escrito en el buscador.
   const [searchValue, setSearchValue] = useState('')
+
+  const isItemActive = (item) => {
+    const targetPage = item.page || item.id
+    return activePage === targetPage && (item.section ? activeSection === item.section : !activeSection)
+  }
 
   /**
    * Envía la búsqueda al catálogo y limpia el input.
@@ -30,7 +36,7 @@ function Navbar({ activePage, onNavigate, user, onLogout }) {
     const term = searchValue.trim()
 
     // La navegación lleva el término al catálogo para aplicar el filtrado allí.
-    onNavigate('catalogo', term)
+    onNavigate('catalogo', term, 'productos')
     setSearchValue('')
   }
 
@@ -44,7 +50,11 @@ function Navbar({ activePage, onNavigate, user, onLogout }) {
   }
 
   return (
+    /* Bootstrap navbar:
+       https://getbootstrap.com/docs/5.3/components/navbar/ */
     <nav className="navbar navbar-dark bg-dark px-2 px-lg-3 app-navbar">
+      {/* Bootstrap display utilities: d-none d-lg-flex muestra este bloque en tablet grande/PC.
+          https://getbootstrap.com/docs/5.3/utilities/display/ */}
       <div className="d-none d-lg-flex align-items-center w-100 navbar-desktop">
         {/* Logo principal: actúa como acceso directo a About Us. */}
         <button
@@ -57,13 +67,15 @@ function Navbar({ activePage, onNavigate, user, onLogout }) {
         </button>
 
         {/* Navegación principal de escritorio. */}
+        {/* Bootstrap nav:
+            https://getbootstrap.com/docs/5.3/components/navs-tabs/ */}
         <div className="navbar-nav nav-strip nav-strip-desktop">
           {items.map((item) => (
             <button
               key={item.id}
               type="button"
-              className={`nav-link nav-button ${activePage === item.id ? 'is-active' : ''}`}
-              onClick={() => onNavigate(item.id)}
+              className={`nav-link nav-button ${isItemActive(item) ? 'is-active' : ''}`}
+              onClick={() => onNavigate(item.page || item.id, '', item.section || '')}
             >
               {item.label}
             </button>
@@ -71,6 +83,10 @@ function Navbar({ activePage, onNavigate, user, onLogout }) {
         </div>
 
         {/* Buscador de escritorio, pensado para lanzar el filtrado con Enter o botón. */}
+        {/* Bootstrap input group, form-control y buttons:
+            https://getbootstrap.com/docs/5.3/forms/input-group/
+            https://getbootstrap.com/docs/5.3/forms/form-control/
+            https://getbootstrap.com/docs/5.3/components/buttons/ */}
         <div className="desktop-search mx-auto">
           <div className="input-group search-group">
             <input
@@ -93,6 +109,10 @@ function Navbar({ activePage, onNavigate, user, onLogout }) {
         </div>
 
         {/* Opciones de usuario - condicionales según autenticación y rol. */}
+        {/* Bootstrap flex, spacing y buttons:
+            https://getbootstrap.com/docs/5.3/utilities/flex/
+            https://getbootstrap.com/docs/5.3/utilities/spacing/
+            https://getbootstrap.com/docs/5.3/components/buttons/ */}
         <div className="navbar-auth-section ms-auto d-flex align-items-center gap-2">
           {/* Si el usuario NO está autenticado, mostrar botón Login. */}
           {!user && (
@@ -151,8 +171,13 @@ function Navbar({ activePage, onNavigate, user, onLogout }) {
       </div>
 
       {/* Layout móvil: logo, buscador y botón de menú en una sola fila. */}
+      {/* Bootstrap display utilities: d-flex d-lg-none muestra este bloque en movil/tablet.
+          https://getbootstrap.com/docs/5.3/utilities/display/ */}
       <div className="d-flex d-lg-none align-items-center w-100 navbar-mobile">
         {/* El logo mantiene el mismo comportamiento que en escritorio. */}
+        {/* Bootstrap collapse toggler:
+            https://getbootstrap.com/docs/5.3/components/collapse/
+            https://getbootstrap.com/docs/5.3/components/navbar/#toggler */}
         <button
           className="brand-mark brand-mark-mobile"
           type="button"
@@ -204,6 +229,8 @@ function Navbar({ activePage, onNavigate, user, onLogout }) {
       </div>
 
       {/* Menú colapsado exclusivo de mobile con navegación y opciones de usuario. */}
+      {/* Bootstrap collapse:
+          https://getbootstrap.com/docs/5.3/components/collapse/ */}
       <div className="collapse navbar-collapse d-lg-none" id="navbarMenu">
         <div className="navbar-nav mobile-menu-row">
           {/* Opciones de navegación principal. */}
@@ -211,8 +238,8 @@ function Navbar({ activePage, onNavigate, user, onLogout }) {
             <button
               key={item.id}
               type="button"
-              className={`nav-link nav-button ${activePage === item.id ? 'is-active' : ''}`}
-              onClick={() => onNavigate(item.id)}
+              className={`nav-link nav-button ${isItemActive(item) ? 'is-active' : ''}`}
+              onClick={() => onNavigate(item.page || item.id, '', item.section || '')}
             >
               {item.label}
             </button>
