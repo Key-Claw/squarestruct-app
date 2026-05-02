@@ -31,7 +31,7 @@ function Register({ onNavigate, onUserLogin }) {
 
     // Validación básica de campos obligatorios.
     if (!nombre || !email || !contrasena || !confirmaContrasena) {
-      setError('Por favor completa todos los campos')
+      setError('Completa todos los campos para crear tu cuenta.')
       return
     }
 
@@ -43,7 +43,7 @@ function Register({ onNavigate, onUserLogin }) {
 
     // Validación de formato de email.
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      setError('Por favor ingresa un email válido')
+      setError('Introduce un correo electrónico válido.')
       return
     }
 
@@ -82,7 +82,7 @@ function Register({ onNavigate, onUserLogin }) {
       onNavigate('home')
     } catch (err) {
       // Mostrar error específico al usuario.
-      setError(err.message || 'Error al registrarse. Por favor, intenta de nuevo.')
+      setError(err.message || 'No se pudo crear la cuenta. Inténtalo de nuevo.')
     } finally {
       setIsLoading(false)
     }
@@ -104,11 +104,11 @@ function Register({ onNavigate, onUserLogin }) {
                 <div className="mb-md-4 mt-md-2 pb-3">
                   {/* Título y contexto de la creación de cuenta. */}
                   <h2 className="fw-bold mb-2 text-uppercase">
-                    Registrarse
+                    Crear cuenta
                   </h2>
 
                   <p className="text-white-50 mb-4">
-                    Crea tu cuenta para continuar
+                    Crea tu cuenta para guardar tus datos y avanzar con el proyecto.
                   </p>
 
                   {/* Mostrar mensaje de error si ocurre. */}
@@ -208,7 +208,7 @@ function Register({ onNavigate, onUserLogin }) {
                       type="submit"
                       disabled={isLoading}
                     >
-                      {isLoading ? 'Cargando...' : 'Crear cuenta'}
+                      {isLoading ? 'Creando cuenta...' : 'Crear cuenta'}
                     </button>
                   </form>
                 </div>

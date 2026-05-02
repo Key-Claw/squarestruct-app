@@ -1,8 +1,8 @@
 function Design({ onNavigate }) {
   const steps = [
-    'Selecciona bloques del catalogo',
-    'Colocalos sobre el plano',
-    'Calcula una estimacion de presupuesto',
+    'Selecciona bloques del catálogo',
+    'Colócalos sobre el plano',
+    'Calcula una estimación de presupuesto',
   ]
 
   return (
@@ -10,8 +10,8 @@ function Design({ onNavigate }) {
        https://getbootstrap.com/docs/5.3/layout/containers/ */
     <section className="page-shell design-shell container-fluid">
       <div className="mvp-hero design-hero">
-        <p className="eyebrow">v3 - Disenador de planos</p>
-        <h1>Disena tu estructura modular</h1>
+        <p className="eyebrow">v3 - Diseñador de planos</p>
+        <h1>Diseña tu estructura modular</h1>
         <p>
           Este espacio prepara el futuro editor de planos: una herramienta para
           montar viviendas por bloques, revisar piezas y estimar costes.
@@ -23,7 +23,7 @@ function Design({ onNavigate }) {
             Ver productos
           </button>
           <button type="button" className="btn btn-outline-light" onClick={() => onNavigate('galeria')}>
-            Ver inspiracion
+            Ver inspiración
           </button>
         </div>
       </div>
@@ -32,8 +32,8 @@ function Design({ onNavigate }) {
         <aside className="design-panel">
           <h2>Herramientas MVP</h2>
           <p>
-            Por ahora se muestra una maqueta visual. Mas adelante aqui iran
-            bloques arrastrables, presupuesto y guardado de disenos.
+            Por ahora se muestra una maqueta visual. Más adelante aquí irán
+            bloques arrastrables, presupuesto y guardado de diseños.
           </p>
           <div className="tool-stack">
             <button type="button">Bloque 300</button>
@@ -55,7 +55,7 @@ function Design({ onNavigate }) {
             <div className="page-card-body">
               <span className="step-number">{index + 1}</span>
               <h3>{step}</h3>
-              <p>Base funcional pensada para explicar la evolucion futura de SquareStruct.</p>
+              <p>Base funcional pensada para explicar la evolución futura de SquareStruct.</p>
             </div>
           </article>
         ))}

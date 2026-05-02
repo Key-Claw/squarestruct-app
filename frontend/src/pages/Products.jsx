@@ -5,10 +5,10 @@ function ProductsIntro({ onNavigate }) {
     <section className="page-block products-intro" id="productos">
       <div>
         <p className="eyebrow">Producto destacado</p>
-        <h2>Bloque ByFusion para construccion modular</h2>
+        <h2>Bloque ByFusion para construcción modular</h2>
         <p>
           En el MVP, los productos representan bloques y pilares disponibles
-          para crear muros, cerramientos y futuras composiciones en Design.
+          para crear muros, cerramientos y futuras composiciones en Diseño.
         </p>
       </div>
 

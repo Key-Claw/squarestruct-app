@@ -80,11 +80,11 @@ function Perfil({ onNavigate, user, onUserLogout }) {
             <div className="card bg-dark text-white perfil-card">
               <div className="card-body p-4 p-md-5">
                 {/* Título de la página. */}
-                <h2 className="fw-bold mb-4 text-uppercase text-center">Mi Perfil</h2>
+                <h2 className="fw-bold mb-4 text-uppercase text-center">Mi perfil</h2>
 
                 {/* Nota breve para aclarar qué información se muestra. */}
                 <p className="perfil-note text-center text-white-50 mb-4">
-                  Aquí ves tus datos de cuenta actuales.
+                  Aquí puedes consultar los datos asociados a tu cuenta.
                 </p>
 
                 {/* Contenedor de información del usuario. */}
@@ -95,7 +95,7 @@ function Perfil({ onNavigate, user, onUserLogout }) {
                       <table className="table table-dark table-bordered align-middle perfil-table mb-0">
                         <tbody>
                           <tr>
-                            <th scope="row">ID Usuario</th>
+                            <th scope="row">ID de usuario</th>
                             <td>{userData.idUsuario}</td>
                           </tr>
                           <tr>
@@ -103,7 +103,7 @@ function Perfil({ onNavigate, user, onUserLogout }) {
                             <td>{userData.nombre}</td>
                           </tr>
                           <tr>
-                            <th scope="row">Correo Electrónico</th>
+                            <th scope="row">Correo electrónico</th>
                             <td>{userData.email}</td>
                           </tr>
                           <tr>
@@ -138,7 +138,7 @@ function Perfil({ onNavigate, user, onUserLogout }) {
                           onNavigate('home')
                         }}
                       >
-                        Cerrar Sesión
+                        Cerrar sesión
                       </button>
                     </div>
                   </div>

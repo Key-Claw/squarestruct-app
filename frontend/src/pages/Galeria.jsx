@@ -1,11 +1,11 @@
 const galleryItems = [
   {
     title: 'Muros modulares',
-    text: 'Aplicaciones para cerramientos, perimetros y separaciones exteriores.',
+    text: 'Aplicaciones para cerramientos, perímetros y separaciones exteriores.',
   },
   {
     title: 'Vivienda por piezas',
-    text: 'Inspiracion para combinar bloques y pilares en estructuras habitables.',
+    text: 'Inspiración para combinar bloques y pilares en estructuras habitables.',
   },
   {
     title: 'Zonas exteriores',
@@ -13,7 +13,7 @@ const galleryItems = [
   },
   {
     title: 'Montaje limpio',
-    text: 'Una propuesta enfocada en ensamblaje rapido y menor desperdicio.',
+    text: 'Una propuesta enfocada en ensamblaje rápido y menor desperdicio.',
   },
 ]
 
@@ -23,10 +23,10 @@ function Galeria({ onNavigate }) {
        https://getbootstrap.com/docs/5.3/layout/containers/ */
     <section className="page-shell gallery-page container-fluid">
       <div className="mvp-hero gallery-hero">
-        <p className="eyebrow">Galeria de aplicaciones</p>
+        <p className="eyebrow">Galería de aplicaciones</p>
         <h1>Ideas para construir con bloques</h1>
         <p>
-          Referencias visuales para explicar como los productos del catalogo
+          Referencias visuales para explicar cómo los productos del catálogo
           pueden convertirse en muros, espacios y estructuras modulares.
         </p>
       </div>
@@ -47,10 +47,10 @@ function Galeria({ onNavigate }) {
 
       <section className="page-block product-link-block">
         <div>
-          <p className="eyebrow">Productos dentro del catalogo</p>
+          <p className="eyebrow">Productos dentro del catálogo</p>
           <h2>Consulta los bloques y pilares disponibles</h2>
           <p>
-            La galeria muestra usos; el catalogo contiene los productos reales
+            La galería muestra usos; el catálogo contiene los productos reales
             conectados con la base de datos.
           </p>
         </div>
@@ -62,7 +62,7 @@ function Galeria({ onNavigate }) {
       </section>
 
       <div className="promo-band">
-        OFERTA PUBLICITARIA
+        Espacio reservado para oferta publicitaria.
       </div>
     </section>
   )

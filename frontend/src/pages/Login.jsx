@@ -27,13 +27,13 @@ function Login({ onNavigate, onUserLogin }) {
     
     // Validación básica de campos.
     if (!email || !contrasena) {
-      setError('Por favor completa todos los campos')
+      setError('Completa todos los campos para iniciar sesión.')
       return
     }
 
     // Validación de formato de email.
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      setError('Por favor ingresa un email válido')
+      setError('Introduce un correo electrónico válido.')
       return
     }
 
@@ -55,7 +55,7 @@ function Login({ onNavigate, onUserLogin }) {
       onNavigate('home')
     } catch (err) {
       // Mostrar error al usuario.
-      setError(err.message || 'Error al iniciar sesión. Verifica tus credenciales.')
+      setError(err.message || 'No se pudo iniciar sesión. Revisa tus credenciales.')
     } finally {
       setIsLoading(false)
     }
@@ -76,8 +76,8 @@ function Login({ onNavigate, onUserLogin }) {
               <div className="card-body p-4 p-md-5 text-center">
                 <div className="mb-md-4 mt-md-2 pb-3">
                   {/* Título y descripción de la pantalla de acceso. */}
-                  <h2 className="fw-bold mb-2 text-uppercase">Iniciar Sesión</h2>
-                  <p className="text-white-50 mb-4">Por favor, introduce tu usuario y tu contraseña.</p>
+                  <h2 className="fw-bold mb-2 text-uppercase">Iniciar sesión</h2>
+                  <p className="text-white-50 mb-4">Accede con tu correo electrónico y contraseña.</p>
 
                   {/* Mostrar mensaje de error si ocurre. */}
                   {error && (
@@ -132,7 +132,7 @@ function Login({ onNavigate, onUserLogin }) {
                       type="submit"
                       disabled={isLoading}
                     >
-                      {isLoading ? 'Cargando...' : 'Iniciar Sesión'}
+                      {isLoading ? 'Accediendo...' : 'Iniciar sesión'}
                     </button>
                   </form>
                 </div>
@@ -140,7 +140,7 @@ function Login({ onNavigate, onUserLogin }) {
                 {/* Enlace para cambiar al formulario de registro. */}
                 <div className="login-footer">
                   <p className="mb-0">
-                    Aún no tiene cuenta?{' '}
+                    ¿Aún no tienes cuenta?{' '}
                     <button
                       type="button"
                       className="btn btn-link text-white-50 fw-bold p-0"

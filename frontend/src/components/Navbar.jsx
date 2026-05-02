@@ -14,10 +14,10 @@ import logo from '../assets/LogoSquareStruct.png'
 function Navbar({ activePage, activeSection, onNavigate, user, onLogout }) {
   // Menú principal visible en desktop y mobile (siempre disponible).
   const items = [
-    { id: 'home', label: 'Home' },
+    { id: 'home', label: 'Inicio' },
     { id: 'galeria', label: 'Galería' },
     { id: 'catalogo', label: 'Catálogo' },
-    { id: 'design', label: 'Design' },
+    { id: 'design', label: 'Diseño' },
   ]
 
   // Texto escrito en el buscador.
@@ -146,9 +146,9 @@ function Navbar({ activePage, activeSection, onNavigate, user, onLogout }) {
                 type="button"
                 className={`btn btn-outline-light text-nowrap ${activePage === 'perfil' ? 'active' : ''}`}
                 onClick={() => onNavigate('perfil')}
-                title={`Perfil de ${user.nombre}`}
+                title={`Mi perfil: ${user.nombre}`}
               >
-                Perfil
+                Mi perfil
               </button>
 
               {/* Cerrar sesión. */}
@@ -164,7 +164,13 @@ function Navbar({ activePage, activeSection, onNavigate, user, onLogout }) {
           )}
 
           {/* Carrito (siempre visible). */}
-          <button className="btn btn-outline-light cart-button" type="button" aria-label="Carrito">
+          <button
+            className={`btn btn-outline-light cart-button ${activePage === 'carrito' ? 'active' : ''}`}
+            type="button"
+            aria-label="Carrito"
+            title="Carrito"
+            onClick={() => onNavigate('carrito')}
+          >
             🛒
           </button>
         </div>
@@ -210,7 +216,12 @@ function Navbar({ activePage, activeSection, onNavigate, user, onLogout }) {
         </div>
 
         {/* Carrito visual en mobile. */}
-        <button className="btn btn-outline-light cart-button cart-button-mobile" type="button" aria-label="Carrito">
+        <button
+          className={`btn btn-outline-light cart-button cart-button-mobile ${activePage === 'carrito' ? 'active' : ''}`}
+          type="button"
+          aria-label="Carrito"
+          onClick={() => onNavigate('carrito')}
+        >
           🛒
         </button>
 
@@ -255,7 +266,7 @@ function Navbar({ activePage, activeSection, onNavigate, user, onLogout }) {
               className="nav-link nav-button"
               onClick={() => onNavigate('login')}
             >
-              Iniciar Sesión
+              Iniciar sesión
             </button>
           )}
 
@@ -269,7 +280,7 @@ function Navbar({ activePage, activeSection, onNavigate, user, onLogout }) {
                   className={`nav-link nav-button ${activePage === 'usuarios' ? 'is-active' : ''}`}
                   onClick={() => onNavigate('usuarios')}
                 >
-                  Gestión de Usuarios
+                  Gestión de usuarios
                 </button>
               )}
 
@@ -279,7 +290,7 @@ function Navbar({ activePage, activeSection, onNavigate, user, onLogout }) {
                 className={`nav-link nav-button ${activePage === 'perfil' ? 'is-active' : ''}`}
                 onClick={() => onNavigate('perfil')}
               >
-                Mi Perfil
+                Mi perfil
               </button>
 
               {/* Cerrar sesión. */}
@@ -288,7 +299,7 @@ function Navbar({ activePage, activeSection, onNavigate, user, onLogout }) {
                 className="nav-link nav-button text-warning"
                 onClick={handleLogout}
               >
-                Cerrar Sesión
+                Cerrar sesión
               </button>
             </>
           )}

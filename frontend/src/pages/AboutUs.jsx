@@ -1,15 +1,15 @@
 const values = [
   {
-    title: 'Construccion modular',
-    text: 'SquareStruct organiza piezas, medidas y datos para explicar como montar estructuras por bloques.',
+    title: 'Construcción modular',
+    text: 'SquareStruct organiza piezas, medidas y datos para explicar cómo montar estructuras por bloques.',
   },
   {
     title: 'Producto conectado',
-    text: 'El catalogo toma la informacion de la base de datos para mantener precio, stock y dimensiones visibles.',
+    text: 'El catálogo toma la información de la base de datos para mantener precio, stock y dimensiones visibles.',
   },
   {
-    title: 'Evolucion a Design',
-    text: 'La siguiente fase prepara el diseno de planos y el calculo aproximado de presupuestos.',
+    title: 'Evolución a Diseño',
+    text: 'La siguiente fase prepara el diseño de planos y el cálculo aproximado de presupuestos.',
   },
 ]
 
@@ -17,20 +17,20 @@ const carouselSlides = [
   {
     image: 'https://mdbcdn.b-cdn.net/img/new/slides/041.webp',
     title: 'SquareStruct',
-    text: 'Presentacion visual del proyecto',
-    alt: 'Paisaje de presentacion',
+    text: 'Presentación visual del proyecto',
+    alt: 'Imagen de presentación del proyecto',
   },
   {
     image: 'https://mdbcdn.b-cdn.net/img/new/slides/042.webp',
-    title: 'Construccion modular',
+    title: 'Construcción modular',
     text: 'Ideas para explicar el MVP',
-    alt: 'Imagen de camara',
+    alt: 'Imagen de apoyo para el MVP',
   },
   {
     image: 'https://mdbcdn.b-cdn.net/img/new/slides/043.webp',
     title: 'Futuro del proyecto',
-    text: 'Catalogo, diseno y crecimiento',
-    alt: 'Imagen de frutas',
+    text: 'Catálogo, diseño y crecimiento',
+    alt: 'Imagen de futuro del proyecto',
   },
 ]
 
@@ -84,8 +84,8 @@ function AboutUs({ onNavigate }) {
         <p className="eyebrow">Sobre SquareStruct</p>
         <h1>Un MVP para construir ideas por bloques</h1>
         <p>
-          El proyecto une catalogo, usuarios y una base tecnica para explicar
-          como podria crecer una herramienta de construccion modular.
+          El proyecto une catálogo, usuarios y una base técnica para explicar
+          cómo podría crecer una herramienta de construcción modular.
         </p>
       </div>
 
@@ -106,17 +106,17 @@ function AboutUs({ onNavigate }) {
 
       <section className="page-block product-link-block">
         <div>
-          <p className="eyebrow">Presentacion del proyecto</p>
-          <h2>De catalogo MVP a disenador de planos</h2>
+          <p className="eyebrow">Presentación del proyecto</p>
+          <h2>Del catálogo MVP al diseñador de planos</h2>
           <p>
-            La web ya deja separadas las partes principales: inspiracion,
+            La web ya deja separadas las partes principales: inspiración,
             productos, usuarios y una vista inicial para el futuro editor.
           </p>
         </div>
         {/* Bootstrap buttons:
             https://getbootstrap.com/docs/5.3/components/buttons/ */}
         <button type="button" className="btn btn-light" onClick={() => onNavigate('design')}>
-          Ver Design
+          Ver Diseño
         </button>
       </section>
     </section>

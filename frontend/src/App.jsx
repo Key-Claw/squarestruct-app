@@ -9,6 +9,7 @@ import AboutUs from './pages/AboutUs'
 import Perfil from './pages/Perfil'
 import Usuarios from './pages/Usuarios'
 import Design from './pages/Design'
+import Carrito from './pages/Carrito'
 import { getCurrentUser, logoutUser, isAdmin } from './services/authService'
 import './App.css'
 
@@ -87,6 +88,10 @@ function App() {
 
     if (page === 'design') {
       return <Design onNavigate={handleNavigate} />
+    }
+
+    if (page === 'carrito') {
+      return <Carrito onNavigate={handleNavigate} />
     }
 
     if (page === 'login') {

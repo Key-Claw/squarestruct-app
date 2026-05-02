@@ -1,17 +1,17 @@
 const highlights = [
   {
     title: 'Bloques modulares',
-    text: 'Piezas inspiradas en sistemas tipo ByBlock para levantar muros por modulos.',
+    text: 'Piezas pensadas para levantar muros, cerramientos y estructuras por módulos.',
     target: 'productos',
   },
   {
-    title: 'Catalogo tecnico',
+    title: 'Catálogo técnico',
     text: 'Consulta precio, stock, tipo y dimensiones desde la base de datos.',
     target: 'catalogo',
   },
   {
-    title: 'Diseno de planos',
-    text: 'Una linea futura para montar estructuras y estimar presupuestos.',
+    title: 'Diseño de planos',
+    text: 'Una línea futura para montar estructuras y estimar presupuestos.',
     target: 'design',
   },
 ]
@@ -28,14 +28,14 @@ function Home({ onNavigate }) {
 
   return (
     /* Bootstrap container-fluid ocupa todo el ancho disponible:
-       https://getbootstrap.com/docs/5.3/layout/containers/ */
+      https://getbootstrap.com/docs/5.3/layout/containers/ */
     <section className="home-page container-fluid">
       <div className="mvp-hero home-hero">
-        <p className="eyebrow">Construccion modular sostenible</p>
-        <h1>Disena tu plano con bloques modulares</h1>
+        <p className="eyebrow">Construcción modular sostenible</p>
+        <h1>Diseña tu plano con bloques modulares</h1>
         <p>
           SquareStruct conecta productos tipo bloque y pilar con un futuro
-          sistema de diseno de viviendas por piezas.
+          sistema de diseño de viviendas por piezas.
         </p>
         {/* Bootstrap buttons:
             https://getbootstrap.com/docs/5.3/components/buttons/ */}
@@ -44,7 +44,7 @@ function Home({ onNavigate }) {
             Ver productos
           </button>
           <button type="button" className="btn btn-outline-light" onClick={() => onNavigate('design')}>
-            Probar Design
+            Explorar Diseño
           </button>
         </div>
       </div>
@@ -66,7 +66,7 @@ function Home({ onNavigate }) {
       </div>
 
       <div className="promo-band">
-        ByFusion como proveedor de referencia para el MVP
+        ByFusion como proveedor de referencia para el MVP.
       </div>
     </section>
   )

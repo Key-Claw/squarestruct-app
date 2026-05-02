@@ -107,11 +107,11 @@ function Catalogo({ onNavigate, searchTerm = '', initialSection = '' }) {
        https://getbootstrap.com/docs/5.3/layout/containers/ */
     <section className="page-shell container-fluid">
       <div className="mvp-hero catalog-hero">
-        <p className="eyebrow">Catalogo conectado a la base de datos</p>
-        <h1>Productos modulares para disenar tu plano</h1>
+        <p className="eyebrow">Catálogo conectado a la base de datos</p>
+        <h1>Productos modulares para diseñar tu plano</h1>
         <p>
-          Bloques y pilares inspirados en sistemas de construccion modular,
-          preparados para alimentar el futuro disenador.
+          Bloques y pilares inspirados en sistemas de construcción modular,
+          preparados para alimentar el futuro diseñador.
         </p>
       </div>
 
@@ -197,7 +197,7 @@ function Catalogo({ onNavigate, searchTerm = '', initialSection = '' }) {
       {/* Acciones de retorno a otras páginas principales. */}
       <div className="page-actions">
         <button type="button" className="page-link-button" onClick={() => onNavigate('home')}>
-          Home
+          Inicio
         </button>
         <button type="button" className="page-link-button" onClick={() => onNavigate('galeria')}>
           Galería
@@ -205,7 +205,7 @@ function Catalogo({ onNavigate, searchTerm = '', initialSection = '' }) {
       </div>
           {/* PUBLICIDAD */}
       <div className="promo-band">
-        OFERTA PUBLICITARIA
+        Espacio reservado para oferta publicitaria.
       </div>
     </section>
   )

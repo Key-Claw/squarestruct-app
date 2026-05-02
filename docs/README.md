@@ -9,7 +9,8 @@ Esta carpeta reúne la documentación del proyecto. Está organizada para poder 
 3. `03-arquitectura/`: muestra cómo se organizan backend, frontend y base de datos.
 4. `04-api/endpoint.md`: resume los endpoints principales.
 5. `05-testing/postman-mvp-ejemplos.md`: explica cómo probar el flujo principal.
-6. `00-workflow/`: recoge las normas de ramas, commits, issues y milestones.
+6. `05-testing/frontend-lint-build.md`: explica como revisar el frontend con ESLint y build.
+7. `00-workflow/`: recoge las normas de ramas, commits, issues y milestones.
 
 ## Para preparar la presentación
 
@@ -20,7 +21,8 @@ Una forma sencilla de explicar el proyecto es seguir este orden:
 3. MVP: registro, login, catálogo y pedidos.
 4. Arquitectura: frontend en React, backend en Express y base de datos MySQL.
 5. Demostración: abrir la web, iniciar sesión, consultar productos y explicar la API.
-6. Roadmap: explicar `MVP v1`, `v2` y `v3`.
+6. Calidad del frontend: explicar `npm run lint` y `npm run build`.
+7. Roadmap: explicar `MVP v1`, `v2` y `v3`.
 
 ## Roadmap resumido
 

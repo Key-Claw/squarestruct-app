@@ -34,7 +34,7 @@ function Usuarios({ onNavigate, user }) {
         const data = await getAllUsers()
         setUsuarios(data)
       } catch {
-        setError('Error al cargar la lista de usuarios')
+        setError('No se pudo cargar la lista de usuarios.')
       } finally {
         setIsLoading(false)
       }
@@ -87,13 +87,13 @@ function Usuarios({ onNavigate, user }) {
         )
       )
 
-      setSuccessMessage(`Rol de ${editingUsuario.nombre} actualizado a ${nuevoRol}`)
+      setSuccessMessage(`Rol de ${editingUsuario.nombre} actualizado a ${nuevoRol}.`)
       handleCloseModal()
 
       // Limpiar mensaje de éxito después de 3 segundos
       setTimeout(() => setSuccessMessage(''), 3000)
     } catch {
-      setError('Error al actualizar el rol del usuario')
+      setError('No se pudo actualizar el rol del usuario.')
     } finally {
       setIsEditLoading(false)
     }
@@ -159,7 +159,7 @@ function Usuarios({ onNavigate, user }) {
               <div className="card-body p-4">
                 {/* Encabezado con título y botón de retorno. */}
                 <div className="d-flex justify-content-between align-items-center mb-4">
-                  <h2 className="fw-bold mb-0 text-uppercase">Gestión de Usuarios</h2>
+                  <h2 className="fw-bold mb-0 text-uppercase">Gestión de usuarios</h2>
                   <button
                     type="button"
                     className="btn btn-outline-light btn-sm"
@@ -202,7 +202,7 @@ function Usuarios({ onNavigate, user }) {
                       <tr>
                         <th>ID</th>
                         <th>Nombre</th>
-                        <th>Email</th>
+                        <th>Correo electrónico</th>
                         <th>Rol</th>
                         <th>Miembro desde</th>
                         <th>Acciones</th>
@@ -274,7 +274,7 @@ function Usuarios({ onNavigate, user }) {
           <div className="modal-dialog modal-dialog-centered">
             <div className="modal-content bg-dark text-white">
               <div className="modal-header border-secondary">
-                <h5 className="modal-title">Editar Rol de Usuario</h5>
+                <h5 className="modal-title">Editar rol de usuario</h5>
                 <button
                   type="button"
                   className="btn-close btn-close-white"
@@ -292,14 +292,14 @@ function Usuarios({ onNavigate, user }) {
                 </div>
 
                 <div className="mb-3">
-                  <label className="form-label text-muted">Email:</label>
+                  <label className="form-label text-muted">Correo electrónico:</label>
                   <p className="mb-0">{editingUsuario.email}</p>
                 </div>
 
                 {/* Selector de nuevo rol. */}
                 <div className="mb-4">
                   <label htmlFor="rolSelect" className="form-label text-muted">
-                    Nuevo Rol:
+                    Nuevo rol:
                   </label>
                   <select
                     id="rolSelect"
@@ -310,14 +310,14 @@ function Usuarios({ onNavigate, user }) {
                   >
                     <option value="usuario">Usuario</option>
                     <option value="moderador">Moderador</option>
-                    <option value="admin">Admin</option>
+                    <option value="admin">Administrador</option>
                   </select>
                 </div>
 
                 {/* Aviso si se cambia a admin. */}
                 {nuevoRol === 'admin' && nuevoRol !== editingUsuario.rol && (
                   <div className="alert alert-warning alert-sm mb-3" role="alert">
-                    ⚠️ Estás asignando permisos de administrador a este usuario.
+                    Estás asignando permisos de administrador a este usuario.
                   </div>
                 )}
               </div>
@@ -340,7 +340,7 @@ function Usuarios({ onNavigate, user }) {
                   onClick={handleSaveChanges}
                   disabled={isEditLoading}
                 >
-                  {isEditLoading ? 'Guardando...' : 'Guardar Cambios'}
+                  {isEditLoading ? 'Guardando...' : 'Guardar cambios'}
                 </button>
               </div>
             </div>
