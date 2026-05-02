@@ -1,54 +1,65 @@
-# 🏗️ Visión general del proyecto
+# Visión general del proyecto
 
-## 🎯 Objetivo
+## Objetivo
 
-Desarrollar una aplicación web que actúe como intermediaria entre empresas de construcción modular y clientes finales, permitiendo explorar productos, gestionar pedidos y, en futuras versiones, diseñar viviendas mediante un sistema visual basado en bloques.
+SquareStruct es una aplicación web para construcción modular.
 
----
+Su objetivo es conectar a usuarios interesados en construir con productos modulares y facilitar un primer flujo de compra o pedido.
 
-## ❗ Problema que resuelve
+En esta primera versión no se intenta construir todo el producto final. Se busca demostrar que la aplicación puede registrar usuarios, iniciar sesión, mostrar productos y gestionar pedidos básicos.
 
-Actualmente, los usuarios que desean construir viviendas modulares no disponen de una herramienta sencilla que les permita visualizar su proyecto antes de comprarlo.
+## Problema que resuelve
 
-Además, el cálculo del presupuesto suele ser poco intuitivo, ya que depende de múltiples piezas, proveedores y configuraciones que el usuario no puede estimar fácilmente.
+La construcción modular puede ser difícil de entender para una persona que no conoce el sector.
 
-Esto genera incertidumbre, dificulta la toma de decisiones y limita la accesibilidad de este tipo de construcción.
+Algunos problemas habituales son:
 
----
+- Es complicado visualizar qué piezas hacen falta.
+- El presupuesto puede depender de muchos productos y proveedores.
+- El usuario no siempre sabe comparar opciones.
+- La información suele estar separada en distintas empresas o catálogos.
 
-## 💡 Solución propuesta
+Esto hace que el proceso sea menos claro y que el usuario tenga dudas antes de tomar una decisión.
 
-SquareStruct ofrece una plataforma centralizada donde los usuarios pueden:
+## Solución propuesta
 
-* Explorar productos de construcción modular
-* Comparar opciones de diferentes proveedores
-* Gestionar pedidos de forma sencilla
+SquareStruct propone una plataforma centralizada donde el usuario puede:
 
-En una evolución futura, la plataforma incorporará un sistema interactivo que permitirá diseñar planos mediante bloques (inspirado en lógica tipo “LEGO” o Minecraft), donde cada pieza añadida calculará automáticamente el coste total del proyecto.
+- Registrarse e iniciar sesión.
+- Consultar productos de construcción modular.
+- Ver información básica de cada producto.
+- Realizar pedidos.
 
----
+En una versión futura, la aplicación podría añadir un configurador visual para diseñar viviendas con bloques modulares y calcular el presupuesto automáticamente.
 
-## 👤 Tipos de usuario
+## Tipos de usuario
 
-* **Cliente:** navega por productos, realiza pedidos y, en el futuro, diseña su vivienda modular.
-* **Proveedor:** gestiona sus productos dentro de la plataforma.
-* **Administrador (opcional):** supervisa el sistema, valida proveedores y controla la integridad de los datos.
+| Usuario | Función |
+| --- | --- |
+| Cliente | Consulta productos y realiza pedidos. |
+| Proveedor | Publica o gestiona productos modulares. |
+| Administrador | Supervisa usuarios, proveedores y datos del sistema. |
 
----
+En el MVP se prioriza el usuario cliente, porque es el flujo mínimo que permite demostrar la utilidad de la aplicación.
 
-## ⚙️ Funcionalidades principales (MVP)
+## Funcionalidades del MVP
 
-* Registro y login de usuarios
-* Consulta de catálogo de productos
-* Gestión de pedidos
-* API REST para comunicación backend–frontend
+- Registro de usuarios.
+- Login con JWT.
+- Catálogo de productos.
+- Gestión básica de pedidos.
+- API REST para comunicar frontend y backend.
 
----
+## Evolución futura
 
-## 🚀 Evolución futura
+Estas funcionalidades no forman parte obligatoria del MVP, pero muestran hacia dónde podría crecer el proyecto:
 
-* Configurador modular 3D interactivo
-* Cálculo automático de presupuesto en tiempo real
-* Visualización de planos personalizados
-* Comparador de proveedores
-* Sistema de recomendación de materiales
+- Configurador modular visual.
+- Cálculo automático de presupuesto.
+- Comparación entre proveedores.
+- Panel completo de administración.
+- Recomendaciones de materiales.
+
+## Frase útil para la presentación
+
+SquareStruct es una plataforma web que simplifica la construcción modular: primero permite consultar productos y hacer pedidos, y en el futuro podría ayudar a diseñar viviendas por bloques y calcular presupuestos.
