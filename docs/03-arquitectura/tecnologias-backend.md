@@ -1,69 +1,41 @@
-# 🛠 Tecnologías del backend
+# Tecnologías del backend
 
-## 🎯 Objetivo
+## Objetivo
 
-Seleccionar tecnologías robustas, seguras y escalables para el desarrollo de la API de SquareStruct.
+El backend usa tecnologías sencillas y conocidas para construir una API REST funcional, segura y fácil de explicar en un entorno académico.
 
----
+## Tecnologías utilizadas
 
-## ⚙️ Tecnologías utilizadas
+| Tecnología | Uso en el proyecto |
+| --- | --- |
+| Node.js | Permite ejecutar JavaScript en el servidor. |
+| Express | Crea la API REST y gestiona rutas HTTP. |
+| MySQL | Guarda los datos del proyecto. |
+| mysql2 | Conecta Node.js con MySQL. |
+| bcrypt | Cifra contraseñas antes de guardarlas. |
+| jsonwebtoken | Genera y valida tokens JWT. |
+| dotenv | Lee variables de entorno desde `.env`. |
+| cors | Permite peticiones entre frontend y backend. |
+| Jest | Ejecuta tests automáticos. |
+| Supertest | Prueba endpoints HTTP del backend. |
+| Nodemon | Reinicia el servidor durante el desarrollo. |
 
-### Node.js
+## Por qué se eligieron
 
-Entorno de ejecución para JavaScript en servidor.
+- Express es directo y adecuado para una API REST de MVP.
+- MySQL encaja bien porque hay relaciones entre usuarios, productos y pedidos.
+- JWT permite mantener sesiones sin guardar estado en el servidor.
+- bcrypt mejora la seguridad de las contraseñas.
+- Jest y Supertest permiten comprobar que partes del backend funcionan.
 
-### Express.js
+## Alternativas consideradas
 
-Framework para crear APIs REST de forma rápida y estructurada.
+| Alternativa | Motivo para no usarla ahora |
+| --- | --- |
+| MongoDB | El proyecto necesita relaciones claras entre tablas. |
+| NestJS | Añade más estructura, pero también más complejidad para un MVP. |
+| TypeScript | Puede ser útil más adelante, pero JavaScript simplifica el arranque inicial. |
 
-### MySQL
+## Idea clave para explicar
 
-Base de datos relacional utilizada para almacenar la información del sistema.
-
-### mysql2
-
-Librería que permite conectar Node.js con MySQL de forma eficiente.
-
-### bcrypt
-
-Permite encriptar contraseñas de forma segura.
-
-### jsonwebtoken (JWT)
-
-Se utiliza para autenticación y autorización mediante tokens.
-
-### dotenv
-
-Gestión de variables de entorno.
-
-### cors
-
-Permite la comunicación segura entre frontend y backend.
-
----
-
-## 🧪 Testing
-
-### Jest
-
-Framework de testing para JavaScript.
-
-### Supertest
-
-Permite testear endpoints HTTP.
-
----
-
-## 🧠 Decisiones técnicas
-
-* Se utiliza Express por su simplicidad y gran comunidad.
-* Se elige MySQL por su robustez y uso académico.
-* JWT permite escalabilidad futura (SPA, apps móviles).
-* bcrypt garantiza seguridad en contraseñas.
-
----
-
-## 🔄 Alternativas consideradas
-
-* MongoDB → descartado por necesidad de relaciones complejas
-* NestJS → descartado por complejidad innecesaria para MVP
+El backend usa Node.js y Express para crear la API, MySQL para guardar datos y JWT/bcrypt para la parte de seguridad.

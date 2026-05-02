@@ -32,11 +32,24 @@ CREATE TABLE productos (
   nombre VARCHAR(150) NOT NULL,
   descripcion TEXT,
   precio DECIMAL(12, 2) NOT NULL,
-  tipo VARCHAR(60),
+  tipo ENUM('bloque', 'pilar') NOT NULL, -- Tipo de producto para futuras funcionalidades específicas
   stock INT NOT NULL DEFAULT 0,
+
+-- Dimensiones en centímetros para futuro configurador 3D
+alto DECIMAL(10, 2) NOT NULL,
+ancho DECIMAL(10, 2) NOT NULL,
+largo DECIMAL(10, 2) NOT NULL,
+
   idProveedor INT NOT NULL,
   CONSTRAINT chkProductoPrecio CHECK (precio >= 0),
   CONSTRAINT chkProductoStock CHECK (stock >= 0),
+
+-- Validaciones para dimensiones, asegurando que sean positivas
+CONSTRAINT chkProductoAlto CHECK (alto > 0),
+CONSTRAINT chkProductoAncho CHECK (ancho > 0),
+CONSTRAINT chkProductoLargo CHECK (largo > 0),
+
+
   CONSTRAINT fkProductosProveedores
     FOREIGN KEY (idProveedor)
     REFERENCES proveedores (idProveedor)

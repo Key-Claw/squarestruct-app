@@ -1,41 +1,86 @@
-# 🧱 Estructura del backend
+# Estructura del backend
 
-## 🎯 Objetivo
+## Objetivo
 
-Organizar el backend de forma escalable y mantenible.
+El backend se encarga de recibir peticiones, aplicar la lógica de negocio, acceder a la base de datos y devolver respuestas al frontend.
 
----
+Está organizado por responsabilidades para que el código sea más fácil de entender, mantener y ampliar.
 
-## 📁 Estructura
+## Estructura principal
 
-* config → configuración
-* controllers → lógica de entrada
-* services → lógica de negocio
-* routes → endpoints
-* middlewares → autenticación y validación
-* utils → funciones auxiliares
+```text
+backend/
+  db/
+    schema.sql       Define las tablas
+    seeds.sql        Inserta datos de prueba
+    migrations/      Cambios futuros de base de datos
+    backups/         Copias de seguridad
+  postman/           Colecciones para probar la API
+  src/
+    config/          Configuración general
+    controllers/     Gestionan las peticiones HTTP
+    services/        Lógica reutilizable
+    routes/          Definen los endpoints
+    middlewares/     Autenticación y validaciones
+    utils/           Funciones auxiliares
+    app.js           Configura Express
+  tests/             Pruebas del backend
+  server.js          Arranca el servidor
+```
 
----
+## Responsabilidad de cada carpeta
 
-## 🔄 Flujo de una petición
+| Carpeta | Responsabilidad |
+| --- | --- |
+| `routes/` | Decide qué controlador se ejecuta según la URL. |
+| `controllers/` | Recibe `req` y `res`, valida el flujo y responde al cliente. |
+| `services/` | Contiene lógica reutilizable, por ejemplo operaciones de usuarios o productos. |
+| `middlewares/` | Ejecuta comprobaciones antes del controlador, como validar JWT. |
+| `config/` | Centraliza configuración como puerto o conexión a base de datos. |
+| `utils/` | Guarda funciones pequeñas reutilizables. |
+| `db/` | Contiene scripts SQL de estructura y datos iniciales. |
 
-1. Cliente hace request → /api/productos
-2. routes recibe la petición
-3. controller procesa
-4. service ejecuta lógica
-5. consulta a base de datos
-6. respuesta JSON
+## Flujo de una petición
 
----
+Ejemplo con productos:
 
-## 🧠 Arquitectura
+```text
+frontend -> GET /api/productos -> route -> controller -> service/base de datos -> respuesta JSON
+```
 
-Se sigue un patrón:
+Explicado paso a paso:
 
-👉 Controlador → Servicio → Base de datos
+1. El frontend pide la lista de productos.
+2. La ruta `/api/productos` recibe la petición.
+3. El controlador decide qué hacer.
+4. El servicio o la consulta obtiene los datos.
+5. El backend devuelve JSON al frontend.
 
-Esto permite:
+## Patrón usado
 
-* Separación de responsabilidades
-* Escalabilidad
-* Código limpio
+El backend sigue esta idea:
+
+```text
+Ruta -> Controlador -> Servicio -> Base de datos
+```
+
+Esto permite separar responsabilidades:
+
+- Las rutas no contienen lógica compleja.
+- Los controladores organizan la respuesta.
+- Los servicios reutilizan lógica.
+- La base de datos queda separada del resto del flujo.
+
+## Ejemplo sencillo
+
+```js
+// productosController.js
+export const getProductos = async (req, res) => {
+  const productos = await productService.getAllProducts();
+  res.json(productos);
+};
+```
+
+## Idea clave para explicar
+
+El backend está dividido en capas. Cada capa tiene una función clara, lo que facilita detectar errores y añadir nuevas funcionalidades.

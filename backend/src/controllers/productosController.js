@@ -35,7 +35,7 @@ export const getProductos = async (req, res) => {
     const [rows] = await db.query('SELECT * FROM productos');
     res.json(rows.map(normalizarProducto));
   } catch (error) {
-    res.status(500).json({ error: 'Error al obtener productos' });
+    res.status(500).json({ error: 'Error al obtener productos', detalle: error.message });
   }
 };
 
@@ -54,7 +54,7 @@ export const getProductoById = async (req, res) => {
 
     res.json(normalizarProducto(rows[0]));
   } catch (error) {
-    res.status(500).json({ error: 'Error al obtener el producto' });
+    res.status(500).json({ error: 'Error al obtener el producto', detalle: error.message });
   }
 };
 

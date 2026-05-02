@@ -1,105 +1,76 @@
-# 🧪 Pruebas del MVP con Postman
+# Pruebas del MVP con Postman
 
-## 🎯 Objetivo
+## Objetivo
 
-Este documento recoge ejemplos de pruebas manuales con Postman para validar el funcionamiento básico del MVP de SquareStruct.
+Este documento explica cómo probar manualmente el flujo principal del MVP usando Postman.
 
-Las pruebas propuestas permiten comprobar el flujo principal de la aplicación:
+El objetivo no es probar todos los casos posibles, sino comprobar que la aplicación funciona de principio a fin.
 
-1. Consulta de productos
-2. Registro de usuario
-3. Inicio de sesión
-4. Acceso a una ruta protegida
+## Requisitos previos
 
----
+Antes de probar:
 
-## ⚙️ Requisitos previos
+- El backend debe estar arrancado.
+- La base de datos debe estar inicializada.
+- Deben existir datos de prueba en MySQL.
+- Postman debe estar instalado, o se puede usar una herramienta similar.
 
-Antes de realizar las pruebas, es necesario:
-
-* Tener el backend en ejecución
-* Tener la base de datos inicializada
-* Disponer de datos de prueba cargados en la base de datos
-* Utilizar Postman o una herramienta similar para enviar peticiones HTTP
-
-Base URL utilizada en los ejemplos:
+URL base:
 
 ```text
 http://localhost:3000
 ```
 
----
+## Flujo recomendado
 
-## 📦 Colección recomendada en Postman
+1. Consultar productos.
+2. Registrar un usuario.
+3. Iniciar sesión.
+4. Copiar el token JWT.
+5. Probar una ruta protegida.
 
-Se recomienda crear una colección llamada:
+## 1. Obtener productos
+
+Comprueba que la API puede leer productos desde la base de datos.
 
 ```text
-SquareStruct - MVP
+Método: GET
+URL: http://localhost:3000/api/productos
 ```
 
-Dentro de ella se pueden organizar las peticiones por bloques:
-
-* Productos
-* Usuarios
-* Perfil
-
----
-
-# 1. Obtener productos
-
-## Descripción
-
-Permite comprobar que el endpoint de productos responde correctamente y devuelve información almacenada en la base de datos.
-
-## Petición
-
-* **Método:** GET
-* **URL:** `http://localhost:3000/api/productos`
-* **Headers:** ninguno
-* **Body:** ninguno
-
-## Respuesta esperada
-
-Código de estado esperado:
+Respuesta esperada:
 
 ```text
 200 OK
 ```
 
-Ejemplo de respuesta:
+Ejemplo:
 
 ```json
 [
   {
     "idProducto": 1,
-    "nombre": "Bloque aislante Gablok",
-    "descripcion": "Bloque modular para construcción",
+    "nombre": "Bloque modular",
+    "descripcion": "Bloque para construcción modular",
     "precio": 25.5,
-    "tipo": "aislante",
+    "tipo": "bloque",
     "stock": 100,
     "idProveedor": 1
   }
 ]
 ```
 
----
+## 2. Registrar usuario
 
-# 2. Registro de usuario
+Crea un usuario nuevo en el sistema.
 
-## Descripción
+```text
+Método: POST
+URL: http://localhost:3000/api/usuarios/register
+Header: Content-Type: application/json
+```
 
-Permite crear un nuevo usuario en el sistema.
-
-## Petición
-
-* **Método:** POST
-* **URL:** `http://localhost:3000/api/usuarios/register`
-* **Headers:**
-
-  * `Content-Type: application/json`
-
-## Body
+Body:
 
 ```json
 {
@@ -109,45 +80,23 @@ Permite crear un nuevo usuario en el sistema.
 }
 ```
 
-## Respuesta esperada
-
-Código de estado esperado:
+Respuesta esperada:
 
 ```text
 201 Created
 ```
 
-Ejemplo de respuesta:
+## 3. Login de usuario
 
-```json
-{
-  "mensaje": "Usuario registrado correctamente"
-}
+Autentica el usuario y devuelve un token JWT.
+
+```text
+Método: POST
+URL: http://localhost:3000/api/usuarios/login
+Header: Content-Type: application/json
 ```
 
-## Posibles errores
-
-* **400 Bad Request** → faltan campos obligatorios
-* **409 Conflict** → el email ya está registrado
-* **500 Internal Server Error** → error del servidor
-
----
-
-# 3. Login de usuario
-
-## Descripción
-
-Permite autenticar un usuario registrado y obtener un token JWT para acceder a rutas protegidas.
-
-## Petición
-
-* **Método:** POST
-* **URL:** `http://localhost:3000/api/usuarios/login`
-* **Headers:**
-
-  * `Content-Type: application/json`
-
-## Body
+Body:
 
 ```json
 {
@@ -156,15 +105,13 @@ Permite autenticar un usuario registrado y obtener un token JWT para acceder a r
 }
 ```
 
-## Respuesta esperada
-
-Código de estado esperado:
+Respuesta esperada:
 
 ```text
 200 OK
 ```
 
-Ejemplo de respuesta:
+Ejemplo:
 
 ```json
 {
@@ -172,41 +119,23 @@ Ejemplo de respuesta:
 }
 ```
 
-## Posibles errores
+## 4. Obtener perfil
 
-* **400 Bad Request** → faltan campos obligatorios
-* **401 Unauthorized** → credenciales incorrectas
-* **500 Internal Server Error** → error interno
+Comprueba que una ruta protegida solo funciona con token.
 
----
+```text
+Método: GET
+URL: http://localhost:3000/api/perfil
+Header: Authorization: Bearer <JWT>
+```
 
-# 4. Obtener perfil de usuario (ruta protegida)
-
-## Descripción
-
-Permite comprobar que una ruta protegida solo puede consultarse si se envía un token JWT válido.
-
-## Petición
-
-* **Método:** GET
-
-* **URL:** `http://localhost:3000/api/perfil`
-
-* **Headers:**
-
-  * `Authorization: Bearer <JWT>`
-
-* **Body:** ninguno
-
-## Respuesta esperada
-
-Código de estado esperado:
+Respuesta esperada:
 
 ```text
 200 OK
 ```
 
-Ejemplo de respuesta:
+Ejemplo:
 
 ```json
 {
@@ -217,43 +146,25 @@ Ejemplo de respuesta:
 }
 ```
 
-## Posibles errores
+## Errores comunes
 
-* **401 Unauthorized** → token ausente o inválido
-* **403 Forbidden** → acceso no permitido
-* **500 Internal Server Error** → error interno
+| Código | Significado |
+| --- | --- |
+| `400 Bad Request` | Faltan campos o el formato no es correcto. |
+| `401 Unauthorized` | El usuario no está autenticado o el token no es válido. |
+| `409 Conflict` | El email ya está registrado. |
+| `500 Internal Server Error` | Error interno del servidor o base de datos. |
 
----
+## Resultado esperado
 
-# 🔁 Flujo recomendado de prueba
+Si estas pruebas funcionan, se puede explicar que:
 
-Para validar correctamente el MVP, se recomienda seguir este orden:
+- La API responde.
+- La base de datos está conectada.
+- El registro funciona.
+- El login genera un token.
+- Las rutas protegidas validan JWT.
 
-1. Ejecutar la petición de **obtener productos**
-2. Registrar un nuevo usuario
-3. Iniciar sesión con ese usuario
-4. Copiar el token JWT recibido
-5. Probar la ruta protegida incluyendo el token en el header `Authorization`
+## Idea clave para explicar
 
----
-
-# ✅ Resultado esperado
-
-Si todas las pruebas responden correctamente, se puede considerar validado el flujo principal del MVP:
-
-* La API responde
-* La base de datos está conectada
-* El sistema registra usuarios
-* El login funciona
-* La protección mediante JWT está operativa
-
----
-
-# 🧠 Observaciones
-
-Estas pruebas corresponden a una validación manual inicial del sistema.
-Más adelante, este proceso debería complementarse con:
-
-* tests unitarios
-* tests de integración
-* automatización de pruebas en el workflow del repositorio
+Postman permite probar el backend sin depender del frontend. Así se comprueba si la API funciona por sí sola.
