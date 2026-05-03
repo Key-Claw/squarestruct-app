@@ -31,9 +31,9 @@ export const getProductoById = async (req, res) => {
 
 export const crearProducto = async (req, res) => {
   try {
-    const { nombre, descripcion, precio, tipo, stock, idProveedor } = req.body;
+    const { nombre, descripcion, precio, tipo, idProveedor } = req.body;
 
-    if (!nombre || precio === undefined || stock === undefined || !idProveedor) {
+    if (!nombre || precio === undefined || !idProveedor) {
       return res.status(400).json({
         error: 'Faltan campos obligatorios'
       });
@@ -41,9 +41,9 @@ export const crearProducto = async (req, res) => {
 
     const [result] = await db.query(
       `INSERT INTO productos 
-       (nombre, descripcion, precio, tipo, stock, idProveedor)
-       VALUES (?, ?, ?, ?, ?, ?)`,
-      [nombre, descripcion || null, precio, tipo || null, stock, idProveedor]
+       (nombre, descripcion, precio, tipo, idProveedor)
+       VALUES (?, ?, ?, ?, ?)`,
+      [nombre, descripcion || null, precio, tipo || null, idProveedor]
     );
 
     res.status(201).json({
@@ -61,13 +61,13 @@ export const crearProducto = async (req, res) => {
 export const actualizarProducto = async (req, res) => {
   try {
     const { id } = req.params;
-    const { nombre, descripcion, precio, tipo, stock, idProveedor } = req.body;
+    const { nombre, descripcion, precio, tipo, idProveedor } = req.body;
 
     const [result] = await db.query(
       `UPDATE productos
-       SET nombre = ?, descripcion = ?, precio = ?, tipo = ?, stock = ?, idProveedor = ?
+       SET nombre = ?, descripcion = ?, precio = ?, tipo = ?, idProveedor = ?
        WHERE idProducto = ?`,
-      [nombre, descripcion || null, precio, tipo || null, stock, idProveedor, id]
+      [nombre, descripcion || null, precio, tipo || null, idProveedor, id]
     );
 
     if (result.affectedRows === 0) {

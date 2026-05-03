@@ -33,7 +33,6 @@ CREATE TABLE productos (
   descripcion TEXT,
   precio DECIMAL(12, 2) NOT NULL,
   tipo ENUM('bloque', 'pilar') NOT NULL, -- Tipo de producto para futuras funcionalidades específicas
-  stock INT NOT NULL DEFAULT 0,
 
 -- Dimensiones en centímetros para futuro configurador 3D
 alto DECIMAL(10, 2) NOT NULL,
@@ -42,7 +41,6 @@ largo DECIMAL(10, 2) NOT NULL,
 
   idProveedor INT NOT NULL,
   CONSTRAINT chkProductoPrecio CHECK (precio >= 0),
-  CONSTRAINT chkProductoStock CHECK (stock >= 0),
 
 -- Validaciones para dimensiones, asegurando que sean positivas
 CONSTRAINT chkProductoAlto CHECK (alto > 0),
