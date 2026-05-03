@@ -1,47 +1,84 @@
-# 🔌 API REST
+# API REST
 
-## 📐 Convenciones
+## Objetivo
 
-* Prefijo: /api
-* Recursos en plural
-* Métodos HTTP estándar
+La API REST permite que el frontend se comunique con el backend.
 
----
+El frontend envía peticiones HTTP y el backend responde con datos en formato JSON.
 
-## 🔐 Seguridad
+## URL base
 
-* Autenticación con JWT
-* Rutas protegidas
-* Validación de datos
+En desarrollo local:
 
----
+```text
+http://localhost:3001
+```
 
-## 📦 Endpoints principales
+Prefijo general:
 
-### Registro
+```text
+/api
+```
 
-POST /api/usuarios/register
+## Convenciones
 
-### Login
+- Los recursos se nombran en plural: `usuarios`, `productos`, `pedidos`.
+- Se usan métodos HTTP estándar.
+- Las respuestas se devuelven en JSON.
+- Las rutas privadas usan JWT.
 
-POST /api/usuarios/login
+## Métodos HTTP usados
 
-### Productos
+| Método | Uso |
+| --- | --- |
+| `GET` | Consultar datos. |
+| `POST` | Crear datos o iniciar una acción. |
+| `PUT` / `PATCH` | Actualizar datos, si se añade más adelante. |
+| `DELETE` | Eliminar datos, si se añade más adelante. |
 
-GET /api/productos
+## Endpoints principales del MVP
 
-### Pedidos
+| Método | Endpoint | Función |
+| --- | --- | --- |
+| `POST` | `/api/usuarios/register` | Registrar un usuario. |
+| `POST` | `/api/usuarios/login` | Iniciar sesión y obtener token JWT. |
+| `GET` | `/api/productos` | Consultar productos. |
+| `POST` | `/api/pedidos` | Crear un pedido. |
+| `POST` | `/api/orders` | Crear un pedido (alias de `/api/pedidos`). |
+| `GET` | `/api/orders` | Listar pedidos del usuario autenticado. |
+| `GET` | `/api/perfil` | Consultar datos del usuario autenticado. |
 
-POST /api/pedidos
+## Seguridad
 
----
+El login devuelve un token JWT.
 
-## 📤 Ejemplo de respuesta
+Ese token se envía en rutas protegidas usando el header:
+
+```text
+Authorization: Bearer <TOKEN>
+```
+
+## Ejemplo de producto
 
 ```json
 {
   "idProducto": 1,
   "nombre": "Bloque modular",
-  "precio": 25.5
+  "descripcion": "Bloque para construcción modular",
+  "precio": 25.5,
+  "tipo": "bloque",
+  "stock": 100
 }
 ```
+
+## Ejemplo de error
+
+```json
+{
+  "error": "Token no proporcionado"
+}
+```
+
+## Idea clave para explicar
+
+La API es el puente entre frontend y base de datos. El frontend no consulta MySQL directamente: siempre pasa por el backend.
