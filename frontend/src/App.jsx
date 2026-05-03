@@ -6,6 +6,11 @@ import Catalogo from './pages/Catalogo'
 import Login from './pages/Login'
 import Register from './pages/Register'
 import AboutUs from './pages/AboutUs'
+import Perfil from './pages/Perfil'
+import Usuarios from './pages/Usuarios'
+import Design from './pages/Design'
+import Carrito from './pages/Carrito'
+import { getCurrentUser, logoutUser, isAdmin } from './services/authService'
 import './App.css'
 
 function App() {
@@ -13,22 +18,57 @@ function App() {
   const [page, setPage] = useState('home')
   // Texto de búsqueda que viaja desde el navbar al catálogo.
   const [searchTerm, setSearchTerm] = useState('')
+  const [catalogSection, setCatalogSection] = useState('')
+  // Usuario autenticado (null si no hay sesión).
+  const [user, setUser] = useState(() => getCurrentUser())
+  // Flag para indicar que la app está cargando la sesión guardada.
+  const isLoading = false
+
+  /**
+   * Restaura la sesión del usuario al cargar la aplicación.
+   * Si existe un token y datos de usuario en localStorage, los recupera.
+   */
+
+  /**
+   * Actualiza el usuario autenticado (después de login exitoso).
+   * @param {object} userData - Datos del usuario autenticado.
+   */
+  const handleUserLogin = (userData) => {
+    setUser(userData)
+  }
+
+  /**
+   * Maneja el logout del usuario.
+   * Limpia tokens, datos de usuario y vuelve a home.
+   */
+  const handleUserLogout = () => {
+    logoutUser()
+    setUser(null)
+    setPage('home')
+  }
 
   /**
    * Cambia la página activa y, si aplica, guarda el término de búsqueda.
    * @param {string} nextPage - Página destino.
    * @param {string} term - Término de búsqueda opcional.
    */
-  const handleNavigate = (nextPage, term = '') => {
+  const handleNavigate = (nextPage, term = '', section = '') => {
     setPage(nextPage)
     setSearchTerm(term)
+    setCatalogSection(section)
   }
 
   /**
    * Renderiza la vista principal según la página seleccionada.
+   * Incluye renderizado condicional de páginas protegidas según autenticación.
    * @returns {JSX.Element}
    */
   const renderPage = () => {
+    // Mostrar spinner mientras se carga la sesión
+    if (isLoading) {
+      return <div className="text-center p-5">Cargando...</div>
+    }
+
     // El orden importa: primero resolvemos las vistas especiales y luego la vista base.
     if (page === 'galeria') {
       return <Galeria onNavigate={handleNavigate} />
@@ -36,22 +76,57 @@ function App() {
 
     if (page === 'catalogo') {
       // El catálogo recibe el término de búsqueda para abrirse ya filtrado.
-      return <Catalogo onNavigate={handleNavigate} searchTerm={searchTerm} />
+      return (
+        <Catalogo
+          key={`${searchTerm}-${catalogSection}`}
+          onNavigate={handleNavigate}
+          searchTerm={searchTerm}
+          initialSection={catalogSection}
+        />
+      )
+    }
+
+    if (page === 'design') {
+      return <Design onNavigate={handleNavigate} />
+    }
+
+    if (page === 'carrito') {
+      return <Carrito onNavigate={handleNavigate} />
     }
 
     if (page === 'login') {
-      // Vista de acceso de usuario.
-      return <Login onNavigate={handleNavigate} />
+      // Vista de acceso de usuario. Pasar callback para actualizar usuario al login.
+      return <Login onNavigate={handleNavigate} onUserLogin={handleUserLogin} />
     }
 
     if (page === 'register') {
-      // Vista de alta de usuario nuevo.
-      return <Register onNavigate={handleNavigate} />
+      // Vista de alta de usuario nuevo. Pasar callback para actualizar usuario al registro.
+      return <Register onNavigate={handleNavigate} onUserLogin={handleUserLogin} />
     }
 
     if (page === 'aboutus') {
       // Página informativa de presentación de la marca.
       return <AboutUs onNavigate={handleNavigate} />
+    }
+
+    // Páginas protegidas - solo disponibles si el usuario está autenticado
+    if (page === 'perfil') {
+      if (!user) {
+        // Si intenta acceder sin autenticación, redirige a login
+        setPage('login')
+        return <Login onNavigate={handleNavigate} onUserLogin={handleUserLogin} />
+      }
+      return <Perfil onNavigate={handleNavigate} user={user} onUserLogout={handleUserLogout} />
+    }
+
+    if (page === 'usuarios') {
+      // Panel de administración - solo para usuarios admin
+      if (!user || !isAdmin()) {
+        // Si intenta acceder sin ser admin, redirige a home
+        setPage('home')
+        return <Home onNavigate={handleNavigate} />
+      }
+      return <Usuarios onNavigate={handleNavigate} user={user} />
     }
 
     // Por defecto volvemos a la portada principal.
@@ -60,16 +135,19 @@ function App() {
 
   return (
     <div className="app-shell">
-      <Navbar activePage={page} onNavigate={handleNavigate} />
+      <Navbar
+        activePage={page}
+        activeSection={catalogSection}
+        onNavigate={handleNavigate}
+        user={user}
+        onLogout={handleUserLogout}
+      />
       <main className="app-main">{renderPage()}</main>
     </div>
   )
 }
 
 export default App
-
-
-
 
 // PLANTILLA DE VITE + REACT (ELIMINADA PARA LIMPIAR EL PROYECTO, PERO SE DEJA AQUÍ POR SI QUEDÓ ALGÚN RESTO O PARA REFERENCIA FUTURA)
 // import { useState } from 'react'
@@ -194,3 +272,4 @@ export default App
 // }
 
 // export default App
+

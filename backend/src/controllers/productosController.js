@@ -1,10 +1,39 @@
 // Controlador para productos
 import { db } from '../app.js';
 
+/**
+ * Corrige texto con mojibake típico de una mala decodificación UTF-8/latin1.
+ * @param {string} value - Texto a corregir.
+ * @returns {string} Texto corregido o el original.
+ */
+const normalizarTexto = (value) => {
+  if (typeof value !== 'string' || !/[ÃÂ�]/.test(value)) {
+    return value;
+  }
+
+  try {
+    return Buffer.from(value, 'latin1').toString('utf8');
+  } catch {
+    return value;
+  }
+};
+
+/**
+ * Normaliza un producto antes de devolverlo al frontend.
+ * @param {object} producto - Registro de producto obtenido de MySQL.
+ * @returns {object} Producto con textos legibles.
+ */
+const normalizarProducto = (producto) => ({
+  ...producto,
+  nombre: normalizarTexto(producto.nombre),
+  descripcion: normalizarTexto(producto.descripcion),
+  tipo: normalizarTexto(producto.tipo)
+});
+
 export const getProductos = async (req, res) => {
   try {
     const [rows] = await db.query('SELECT * FROM productos');
-    res.json(rows);
+    res.json(rows.map(normalizarProducto));
   } catch (error) {
     res.status(500).json({ error: 'Error al obtener productos', detalle: error.message });
   }
@@ -23,7 +52,7 @@ export const getProductoById = async (req, res) => {
       return res.status(404).json({ error: 'Producto no encontrado' });
     }
 
-    res.json(rows[0]);
+    res.json(normalizarProducto(rows[0]));
   } catch (error) {
     res.status(500).json({ error: 'Error al obtener el producto', detalle: error.message });
   }

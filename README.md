@@ -27,6 +27,11 @@ registro -> login -> catálogo de productos -> pedido
 - Registro de usuarios.
 - Inicio de sesión con JWT.
 - Consulta de productos.
+- Interfaz responsive para movil, tablet y PC.
+- Catalogo visual con productos modulares conectados al backend.
+- Pagina de galeria para explicar aplicaciones del producto.
+- Vista `Design` como base visual para la futura version de diseno de planos.
+- Vista `Carrito` enlazada desde el icono del carrito en la navbar.
 - Gestión básica de pedidos.
 - API REST conectada con MySQL.
 - Frontend en React conectado al backend.
@@ -76,6 +81,25 @@ backend/
 ## Frontend
 
 El frontend es la parte visual de la aplicación. Permite navegar por las páginas, consultar productos, registrarse e iniciar sesión.
+
+### Estado actual del frontend
+
+En la version actual del MVP se ha trabajado una interfaz mas coherente:
+
+- `Home`: entrada principal con accesos a productos, catalogo y Design.
+- `AboutUs`: pagina accesible desde el logo; conserva el carrusel visual inicial del proyecto.
+- `Galeria`: muestra posibles aplicaciones de los bloques.
+- `Catalogo`: incluye la seccion de productos y carga datos reales desde la API.
+- `Design`: maqueta inicial para explicar la futura herramienta de diseno de planos.
+
+Para revisar calidad basica del frontend se usa ESLint:
+
+```bash
+cd frontend
+npm run lint
+```
+
+Este comando no arranca la web. Sirve para detectar problemas de codigo antes de presentar o subir cambios.
 
 ```text
 frontend/

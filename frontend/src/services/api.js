@@ -1,17 +1,30 @@
 /**
  * Configuración base para las llamadas a la API del backend.
  * Centraliza la URL base, los headers y el manejo de errores.
+ * Incluye gestión automática de tokens JWT para peticiones autenticadas.
  */
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api'
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001/api'
 
 /**
  * Obtiene los headers por defecto para las peticiones JSON.
- * @returns {HeadersInit} Headers listos para usar en fetch.
+ * Si existe un token de autenticación en localStorage, lo incluye en el header Authorization.
+ * @returns {HeadersInit} Headers listos para usar en fetch con token si existe.
  */
-const getHeaders = () => ({
-  'Content-Type': 'application/json',
-})
+const getHeaders = () => {
+  const headers = {
+    'Content-Type': 'application/json',
+  }
+
+  // Obtener token de localStorage si existe
+  const token = localStorage.getItem('authToken')
+  if (token) {
+    // Incluir token en formato Bearer para requests autenticadas
+    headers['Authorization'] = `Bearer ${token}`
+  }
+
+  return headers
+}
 
 /**
  * Lee el cuerpo JSON de una respuesta y lanza un error claro si falla.
