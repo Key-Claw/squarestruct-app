@@ -47,7 +47,7 @@ export const crearPedido = async (req, res) => {
 
     for (const item of productos) {
       const [rows] = await connection.query(
-        'SELECT idProducto, precio, stock FROM productos WHERE idProducto = ?',
+        'SELECT idProducto, precio FROM productos WHERE idProducto = ?',
         [item.idProducto]
       );
 
@@ -79,13 +79,6 @@ export const crearPedido = async (req, res) => {
         `INSERT INTO pedidoDetalles (idPedido, idProducto, cantidad, precioUnitario)
          VALUES (?, ?, ?, ?)`,
         [idPedido, item.idProducto, item.cantidad, precioUnitario]
-      );
-
-      await connection.query(
-        `UPDATE productos
-         SET stock = stock - ?
-         WHERE idProducto = ?`,
-        [item.cantidad, item.idProducto]
       );
     }
 

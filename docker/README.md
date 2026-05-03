@@ -1,43 +1,50 @@
-## ♻️ Reinicializar la base de datos tras cambios
+# Docker SquareStruct
 
-Si modificas los scripts de la base de datos (`schema.sql`, `seeds.sql`, etc.), debes reinicializar el volumen de Docker para que los cambios se apliquen:
+## Objetivo
 
-1. Detén y elimina los contenedores:
-	```bash
-	docker compose -f docker/docker-compose.yml down
-	```
-2. Elimina el volumen de datos:
-	```bash
-	docker volume rm squarestruct_mysql_data
-	```
-3. Vuelve a levantar los servicios:
-	```bash
-	docker compose -f docker/docker-compose.yml up -d
-	```
+La carpeta `docker/` contiene la configuración necesaria para levantar servicios de infraestructura del proyecto.
 
-Esto recreará la base de datos desde cero con los scripts actualizados.
+Actualmente se usa principalmente para arrancar MySQL.
 
----
-# 🐳 Docker SquareStruct
+## Levantar servicios
 
-Contiene la configuración para levantar servicios de infraestructura (MySQL, etc.) usando Docker Compose.
+Desde la raíz del repositorio:
 
----
+```bash
+docker compose -f docker/docker-compose.yml up -d
+```
 
-## 🚀 Uso rápido
+## Parar servicios
 
-1. Levanta la base de datos:
-	```bash
-	docker compose -f docker/docker-compose.yml up -d
-	```
-2. Accede a MySQL en `localhost:3307` (ver credenciales en el compose).
-3. Para parar y eliminar:
-	```bash
-	docker compose -f docker/docker-compose.yml down
-	```
+```bash
+docker compose -f docker/docker-compose.yml down
+```
 
----
+## Reiniciar la base de datos desde cero
 
-## 📚 Documentación global
+Si cambias `schema.sql` o `seeds.sql`, puede que necesites borrar el volumen anterior para que MySQL vuelva a ejecutar los scripts iniciales.
 
-Toda la documentación ampliada está en la carpeta `/docs`.
+```bash
+docker compose -f docker/docker-compose.yml down -v
+docker compose -f docker/docker-compose.yml up -d
+```
+
+## Comprobar logs
+
+```bash
+docker logs squarestruct-mysql
+```
+
+## Acceso a MySQL
+
+Según la configuración del `docker-compose.yml`, MySQL se expone en el puerto local correspondiente.
+
+También puedes entrar al contenedor:
+
+```bash
+docker exec -it squarestruct-mysql mysql -uadmin -p
+```
+
+## Idea clave
+
+Docker ayuda a que todos puedan usar una base de datos parecida sin instalar MySQL manualmente en su equipo.

@@ -6,7 +6,6 @@ SELECT
   p.nombre,
   p.tipo,
   p.precio,
-  p.stock,
   p.alto,
   p.ancho,
   p.largo,
@@ -34,13 +33,14 @@ SELECT
   (alto * ancho * largo) AS volumenCm3
 FROM productos;
 
--- 5. Productos con stock bajo
+-- 5. Productos con dimensiones
 SELECT 
   nombre,
   tipo,
-  stock
-FROM productos
-WHERE stock < 50;
+  alto,
+  ancho,
+  largo
+FROM productos;
 
 -- 6. Ver pedidos con usuario
 SELECT 

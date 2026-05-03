@@ -4,6 +4,36 @@ import { db } from '../app.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
+/**
+ * Corrige texto con mojibake típico de una mala decodificación UTF-8/latin1 (Para las tildes y eso).
+ * Se usa para normalizar nombres y datos de usuario ya guardados en la base.
+ * @param {string} value - Texto a corregir.
+ * @returns {string} Texto corregido o el original si no parece afectado.
+ */
+const normalizarTexto = (value) => {
+  if (typeof value !== 'string' || !/[ÃÂ�]/.test(value)) {
+    return value;
+  }
+
+  try {
+    return Buffer.from(value, 'latin1').toString('utf8');
+  } catch {
+    return value;
+  }
+};
+
+/**
+ * Normaliza los campos de un usuario para que la interfaz reciba texto legible.
+ * @param {object} usuario - Registro de usuario devuelto por MySQL.
+ * @returns {object} Usuario con campos de texto corregidos.
+ */
+const normalizarUsuario = (usuario) => ({
+  ...usuario,
+  nombre: normalizarTexto(usuario.nombre),
+  email: normalizarTexto(usuario.email),
+  rol: normalizarTexto(usuario.rol)
+});
+
 
 // TODO: revisar error en registro de usuarios
 // Actualmente POST /api/usuarios/register devuelve 500 en tests de integración
@@ -51,7 +81,12 @@ export const loginUsuario = async (req, res) => {
     }
     // Generar JWT
     const token = jwt.sign(
-      { idUsuario: usuario.idUsuario, email: usuario.email, rol: usuario.rol },
+      {
+        idUsuario: usuario.idUsuario,
+        nombre: normalizarTexto(usuario.nombre),
+        email: normalizarTexto(usuario.email),
+        rol: normalizarTexto(usuario.rol)
+      },
       process.env.JWT_SECRET || 'secret',
       { expiresIn: '2h' }
     );
@@ -64,11 +99,9 @@ export const loginUsuario = async (req, res) => {
 
 export const getUsuarios = async (req, res) => {
   try {
-    const [usuarios] = await db.query(
-      'SELECT idUsuario, nombre, email, rol, creadoEn FROM usuarios'
-    );
+    const [usuarios] = await db.query('SELECT * FROM usuarios');
 
-    res.json(usuarios);
+    res.json(usuarios.map(normalizarUsuario));
   } catch (error) {
     res.status(500).json({ error: 'Error al obtener usuarios' });
   }
@@ -79,16 +112,13 @@ export const getUsuarioById = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const [usuarios] = await db.query(
-      'SELECT idUsuario, nombre, email, rol, creadoEn FROM usuarios WHERE idUsuario = ?',
-      [id]
-    );
+    const [usuarios] = await db.query('SELECT * FROM usuarios WHERE idUsuario = ?', [id]);
 
     if (usuarios.length === 0) {
       return res.status(404).json({ error: 'Usuario no encontrado' });
     }
 
-    res.json(usuarios[0]);
+    res.json(normalizarUsuario(usuarios[0]));
   } catch (error) {
     res.status(500).json({ error: 'Error al obtener usuario' });
   }

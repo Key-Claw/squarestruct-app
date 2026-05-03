@@ -1,159 +1,125 @@
-# 🗄️ Base de datos - SquareStruct
+# Base de datos
 
-## 🎯 Objetivo
+## Objetivo
 
-Diseñar una base de datos relacional que permita gestionar de forma estructurada los elementos principales del sistema:
+La base de datos guarda la información principal de SquareStruct:
 
-* Usuarios
-* Proveedores
-* Productos
-* Pedidos
-* Detalles de pedido
+- Usuarios.
+- Proveedores.
+- Productos.
+- Pedidos.
+- Detalles de pedido.
 
-El modelo está pensado para cubrir la MVP actual y permitir futuras ampliaciones como el configurador modular y el cálculo automático de presupuestos.
+Se usa MySQL porque el proyecto trabaja con datos relacionados entre sí. Por ejemplo, un pedido pertenece a un usuario y contiene productos.
 
----
+## Entidades principales
 
-## 📌 Entidades principales
+| Tabla | Qué representa |
+| --- | --- |
+| `usuarios` | Personas registradas en la plataforma. |
+| `proveedores` | Empresas que ofrecen productos modulares. |
+| `productos` | Piezas o bloques de construcción modular. |
+| `pedidos` | Compras o solicitudes realizadas por usuarios. |
+| `pedidoDetalles` | Productos concretos incluidos en cada pedido. |
 
-Las entidades del sistema son:
+## Relaciones principales
 
-* **usuarios**: clientes que interactúan con la plataforma
-* **proveedores**: empresas que ofrecen productos modulares
-* **productos**: bloques o piezas de construcción
-* **pedidos**: compras realizadas por los usuarios
-* **pedidoDetalles**: relación entre pedidos y productos
+- Un usuario puede realizar muchos pedidos.
+- Un pedido pertenece a un solo usuario.
+- Un proveedor puede tener muchos productos.
+- Un producto pertenece a un proveedor.
+- Un pedido puede tener muchos productos.
+- Un producto puede aparecer en muchos pedidos.
 
----
+La tabla `pedidoDetalles` permite resolver la relación entre pedidos y productos.
 
-## 🔗 Relaciones principales
+## Modelo Entidad/Relación
 
-* Un usuario puede realizar múltiples pedidos
-* Un pedido pertenece a un único usuario
-* Un proveedor puede ofrecer múltiples productos
-* Un producto pertenece a un proveedor
-* Un pedido puede contener múltiples productos
-* Un producto puede aparecer en múltiples pedidos
+El modelo Entidad/Relación representa las entidades principales y cómo se conectan entre sí.
 
----
+En este proyecto, la idea central es:
 
-# 🧩 Modelo Entidad / Relación (E/R)
+```text
+usuarios -> pedidos -> pedidoDetalles -> productos -> proveedores
+```
 
-## 📌 Representación
+## Modelo relacional
 
-> Modelo conceptual del sistema basado en entidades y relaciones.
+El modelo relacional traduce esas entidades a tablas, columnas, claves primarias y claves foráneas.
 
-![Modelo ER](../assets/modelo-er.png)
+La relación más importante es `pedidoDetalles`, porque conecta pedidos con productos. Sin esa tabla, un pedido solo podría tener un producto o habría que repetir datos.
 
----
+## Tablas principales
 
-# 🧱 Modelo Relacional
+### `usuarios`
 
-## 📌 Representación
+- `idUsuario`: clave primaria.
+- `nombre`: nombre del usuario.
+- `email`: correo usado para iniciar sesión.
+- `contrasena`: contraseña cifrada.
+- `rol`: tipo de usuario.
+- `creadoEn`: fecha de creación.
 
-> Modelo lógico basado en tablas y claves.
+### `proveedores`
 
-![Modelo Relacional](../assets/modelo-relacional.png)
+- `idProveedor`: clave primaria.
+- `nombreEmpresa`: nombre del proveedor.
+- `telefono`: teléfono de contacto.
+- `validado`: indica si el proveedor está validado.
+- `creadoEn`: fecha de creación.
 
----
+### `productos`
 
-# 📊 Modelo Relacional - Tablas
+- `idProducto`: clave primaria.
+- `nombre`: nombre del producto.
+- `descripcion`: explicación breve.
+- `precio`: precio unitario.
+- `tipo`: categoría del producto.
+- `stock`: unidades disponibles.
+- `idProveedor`: proveedor asociado.
+- `creadoEn`: fecha de creación.
 
-## Usuarios
+### `pedidos`
 
-* idUsuario (PK)
-* nombre
-* email
-* contrasena
-* rol
-* creadoEn
+- `idPedido`: clave primaria.
+- `fecha`: fecha del pedido.
+- `total`: importe total.
+- `estado`: estado del pedido.
+- `direccionEnvio`: dirección de entrega.
+- `metodoPago`: forma de pago.
+- `idUsuario`: usuario que realiza el pedido.
 
----
+### `pedidoDetalles`
 
-## Proveedores
+- `idPedido`: pedido asociado.
+- `idProducto`: producto asociado.
+- `cantidad`: unidades solicitadas.
+- `precioUnitario`: precio del producto en el momento del pedido.
 
-* idProveedor (PK)
-* nombreEmpresa
-* telefono
-* validado
-* creadoEn
+## Flujo de datos
 
----
+1. El usuario se registra.
+2. El usuario inicia sesión.
+3. Consulta productos.
+4. Crea un pedido.
+5. El pedido se guarda en `pedidos`.
+6. Los productos del pedido se guardan en `pedidoDetalles`.
 
-## Productos
+## Scripts del proyecto
 
-* idProducto (PK)
-* nombre
-* descripcion
-* precio
-* tipo
-* stock
-* idProveedor (FK)
-* creadoEn
+Los scripts SQL están en:
 
----
+```text
+backend/db/
+```
 
-## Pedidos
+Archivos principales:
 
-* idPedido (PK)
-* fecha
-* total
-* estado
-* direccionEnvio
-* metodoPago
-* idUsuario (FK)
+- `schema.sql`: crea las tablas.
+- `seeds.sql`: inserta datos de prueba.
+- `consultas.sql`: consultas útiles para revisar la base de datos.
+- `migrations/`: cambios incrementales de estructura.
 
----
+## Idea clave para explicar
 
-## PedidoDetalles
-
-* idPedido (FK)
-* idProducto (FK)
-* cantidad
-* precioUnitario
-
----
-
-# 🔁 Flujo de datos del sistema
-
-1. El usuario se registra
-2. Inicia sesión
-3. Consulta productos
-4. Realiza un pedido
-5. Se guardan los datos en pedidos y pedidoDetalles
-
----
-
-# ⚠️ Reglas de negocio
-
-* Un usuario puede tener múltiples pedidos
-* Un pedido debe estar asociado a un usuario
-* Un producto pertenece a un proveedor
-* Un pedido debe contener al menos un producto
-* El stock se actualiza tras cada compra
-* No se permite eliminar productos asociados a pedidos
-
----
-
-# 🧪 Scripts del proyecto
-
-Ubicación:
-
-/backend/db/
-
-* schema.sql → creación de tablas
-* seeds.sql → datos de prueba
-
----
-
-# 🧠 Justificación del diseño
-
-Se ha optado por un modelo relacional porque permite representar de forma clara las relaciones entre usuarios, productos y pedidos.
-
-La tabla **pedidoDetalles** permite resolver la relación muchos a muchos entre pedidos y productos, garantizando integridad referencial.
-
----
-
-# ✅ Conclusión
-
-El diseño de la base de datos permite cubrir todas las necesidades de la MVP y deja preparada la base para futuras funcionalidades del sistema.
+La base de datos es relacional porque los datos están conectados: usuarios, productos y pedidos dependen unos de otros.

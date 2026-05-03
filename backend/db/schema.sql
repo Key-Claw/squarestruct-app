@@ -14,9 +14,9 @@ CREATE TABLE usuarios (
   nombre VARCHAR(120) NOT NULL,
   email VARCHAR(150) NOT NULL UNIQUE,
   contrasena VARCHAR(255) NOT NULL,
-  rol VARCHAR(20) NOT NULL DEFAULT 'cliente',
+  rol VARCHAR(20) NOT NULL DEFAULT 'usuario',
   creadoEn TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  CONSTRAINT chkUsuarioRol CHECK (rol IN ('cliente', 'admin'))
+  CONSTRAINT chkUsuarioRol CHECK (rol IN ('usuario', 'admin'))
 ) ENGINE=InnoDB;
 
 CREATE TABLE proveedores (
@@ -33,7 +33,6 @@ CREATE TABLE productos (
   descripcion TEXT,
   precio DECIMAL(12, 2) NOT NULL,
   tipo ENUM('bloque', 'pilar') NOT NULL, -- Tipo de producto para futuras funcionalidades específicas
-  stock INT NOT NULL DEFAULT 0,
 
 -- Dimensiones en centímetros para futuro configurador 3D
 alto DECIMAL(10, 2) NOT NULL,
@@ -42,7 +41,6 @@ largo DECIMAL(10, 2) NOT NULL,
 
   idProveedor INT NOT NULL,
   CONSTRAINT chkProductoPrecio CHECK (precio >= 0),
-  CONSTRAINT chkProductoStock CHECK (stock >= 0),
 
 -- Validaciones para dimensiones, asegurando que sean positivas
 CONSTRAINT chkProductoAlto CHECK (alto > 0),
