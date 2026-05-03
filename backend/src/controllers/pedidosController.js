@@ -20,7 +20,7 @@ export const crearPedido = async (req, res) => {
 
     for (const item of productos) {
       const [rows] = await connection.query(
-        'SELECT idProducto, precio, stock FROM productos WHERE idProducto = ?',
+        'SELECT idProducto, precio FROM productos WHERE idProducto = ?',
         [item.idProducto]
       );
 
@@ -29,10 +29,6 @@ export const crearPedido = async (req, res) => {
       }
 
       const producto = rows[0];
-
-      if (producto.stock < item.cantidad) {
-        throw new Error(`Stock insuficiente para el producto ${item.idProducto}`);
-      }
 
       total += Number(producto.precio) * Number(item.cantidad);
     }
@@ -57,13 +53,6 @@ export const crearPedido = async (req, res) => {
         `INSERT INTO pedidoDetalles (idPedido, idProducto, cantidad, precioUnitario)
          VALUES (?, ?, ?, ?)`,
         [idPedido, item.idProducto, item.cantidad, precioUnitario]
-      );
-
-      await connection.query(
-        `UPDATE productos
-         SET stock = stock - ?
-         WHERE idProducto = ?`,
-        [item.cantidad, item.idProducto]
       );
     }
 
