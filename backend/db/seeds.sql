@@ -1,11 +1,22 @@
 -- Seeds para la base de datos de la tienda online de bloques modulares
 
+-- Limpieza para permitir re-ejecutar este archivo sin errores de duplicados
+DELETE FROM pedidoDetalles;
+DELETE FROM pedidos;
+DELETE FROM productos;
+DELETE FROM usuarios;
+DELETE FROM proveedores;
+
+ALTER TABLE pedidoDetalles AUTO_INCREMENT = 1;
+ALTER TABLE pedidos AUTO_INCREMENT = 1;
+ALTER TABLE productos AUTO_INCREMENT = 1;
+ALTER TABLE usuarios AUTO_INCREMENT = 1;
+ALTER TABLE proveedores AUTO_INCREMENT = 1;
+
 -- Proveedores
 INSERT INTO proveedores (nombreEmpresa, telefono, validado)
 VALUES
-  ('Gablok', '+32470123456', TRUE),
-  ('ByFusion', '+13105551234', TRUE),
-  ('ABC Modular', '+34911222333', FALSE);
+  ('ByFusion', '+13105551234', TRUE);
 
 -- Usuarios
 INSERT INTO usuarios (nombre, email, contrasena, rol)
@@ -35,5 +46,6 @@ VALUES
 -- PedidoDetalles
 INSERT INTO pedidoDetalles (idPedido, idProducto, cantidad, precioUnitario)
 VALUES
-  ('2026-04-20 10:00:00', 49.80, 'pagado', 'Calle Falsa 123, Madrid', 'tarjeta', 2),
-  ('2026-04-21 12:30:00', 54.90, 'pendiente', 'Av. Central 456, Barcelona', 'paypal', 3);
+  (1, 1, 1, 24.90),
+  (1, 2, 1, 26.10),
+  (2, 3, 1, 40.00);

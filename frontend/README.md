@@ -1,16 +1,39 @@
-# React + Vite
+# 🎨 Frontend SquareStruct
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Interfaz de usuario de la plataforma SquareStruct, desarrollada con React y Vite.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## 📁 Estructura principal
 
-## React Compiler
+- `public/` — Recursos estáticos
+- `src/` — Código fuente
+  - `assets/` — Imágenes y recursos
+  - `components/` — Componentes reutilizables
+  - `pages/` — Vistas principales
+  - `services/` — Acceso a API
+  - `styles/` — Estilos globales
+  - `App.jsx` — Componente raíz
+  - `main.jsx` — Entrada
+- `package.json` — Dependencias
+- `vite.config.js` — Configuración Vite
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## 🚀 Inicio rápido
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+1. Instala dependencias:
+   ```bash
+   npm install
+   ```
+2. Arranca el frontend:
+   ```bash
+   npm run dev
+   ```
+3. Accede a `http://localhost:5173`
+
+---
+
+## 📚 Documentación global
+
+Toda la documentación ampliada está en la carpeta `/docs`.

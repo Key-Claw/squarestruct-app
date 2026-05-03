@@ -3,26 +3,64 @@ import Navbar from './components/Navbar'
 import Home from './pages/Home'
 import Galeria from './pages/Galeria'
 import Catalogo from './pages/Catalogo'
+import Login from './pages/Login'
+import Register from './pages/Register'
+import AboutUs from './pages/AboutUs'
 import './App.css'
 
 function App() {
+  // Página visible en cada momento.
   const [page, setPage] = useState('home')
+  // Texto de búsqueda que viaja desde el navbar al catálogo.
+  const [searchTerm, setSearchTerm] = useState('')
 
+  /**
+   * Cambia la página activa y, si aplica, guarda el término de búsqueda.
+   * @param {string} nextPage - Página destino.
+   * @param {string} term - Término de búsqueda opcional.
+   */
+  const handleNavigate = (nextPage, term = '') => {
+    setPage(nextPage)
+    setSearchTerm(term)
+  }
+
+  /**
+   * Renderiza la vista principal según la página seleccionada.
+   * @returns {JSX.Element}
+   */
   const renderPage = () => {
+    // El orden importa: primero resolvemos las vistas especiales y luego la vista base.
     if (page === 'galeria') {
-      return <Galeria onNavigate={setPage} />
+      return <Galeria onNavigate={handleNavigate} />
     }
 
     if (page === 'catalogo') {
-      return <Catalogo onNavigate={setPage} />
+      // El catálogo recibe el término de búsqueda para abrirse ya filtrado.
+      return <Catalogo onNavigate={handleNavigate} searchTerm={searchTerm} />
     }
 
-    return <Home onNavigate={setPage} />
+    if (page === 'login') {
+      // Vista de acceso de usuario.
+      return <Login onNavigate={handleNavigate} />
+    }
+
+    if (page === 'register') {
+      // Vista de alta de usuario nuevo.
+      return <Register onNavigate={handleNavigate} />
+    }
+
+    if (page === 'aboutus') {
+      // Página informativa de presentación de la marca.
+      return <AboutUs onNavigate={handleNavigate} />
+    }
+
+    // Por defecto volvemos a la portada principal.
+    return <Home onNavigate={handleNavigate} />
   }
 
   return (
     <div className="app-shell">
-      <Navbar activePage={page} onNavigate={setPage} />
+      <Navbar activePage={page} onNavigate={handleNavigate} />
       <main className="app-main">{renderPage()}</main>
     </div>
   )

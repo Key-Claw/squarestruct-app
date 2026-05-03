@@ -21,13 +21,29 @@ Este flujo define el recorrido básico que realiza un usuario dentro de la aplic
 
 ---
 
-## ⚙️ Funcionalidades incluidas
+
+## ⚙️ Funcionalidades incluidas y estructura MVP
 
 * Registro de usuarios
 * Autenticación mediante JWT
 * Consulta de productos
 * Gestión básica de pedidos
 * API REST funcional
+
+### Organización de carpetas/archivos (MVP backend)
+
+```
+src/
+   config/        # Configuración centralizada (config.js)
+   controllers/   # Lógica de entrada
+   services/      # Lógica de negocio reutilizable (productService.js, userService.js)
+   routes/        # Endpoints
+   middlewares/   # Autenticación y validaciones
+   utils/         # Funciones auxiliares (formatDate.js, generateId.js)
+   app.js         # Configuración principal de Express
+```
+
+Esta estructura permite un desarrollo ágil y escalable, manteniendo el foco en la funcionalidad mínima viable.
 
 ---
 
