@@ -1,39 +1,61 @@
-# 🎨 Frontend SquareStruct
+# Frontend SquareStruct
 
-Interfaz de usuario de la plataforma SquareStruct, desarrollada con React y Vite.
+## Objetivo
 
----
+El frontend es la interfaz de usuario de SquareStruct.
 
-## 📁 Estructura principal
+Está desarrollado con React y Vite, y permite navegar por la aplicación, consultar productos, registrarse e iniciar sesión.
 
-- `public/` — Recursos estáticos
-- `src/` — Código fuente
-  - `assets/` — Imágenes y recursos
-  - `components/` — Componentes reutilizables
-  - `pages/` — Vistas principales
-  - `services/` — Acceso a API
-  - `styles/` — Estilos globales
-  - `App.jsx` — Componente raíz
-  - `main.jsx` — Entrada
-- `package.json` — Dependencias
-- `vite.config.js` — Configuración Vite
+## Estructura
 
----
+```text
+frontend/
+  public/          Recursos públicos
+  src/
+    assets/        Imágenes y recursos visuales
+    components/    Componentes reutilizables
+    pages/         Páginas principales
+    services/      Llamadas a la API
+    styles/        Estilos globales
+    App.jsx        Componente principal
+    main.jsx       Punto de entrada
+  package.json
+  vite.config.js
+```
 
-## 🚀 Inicio rápido
+## Requisitos
 
-1. Instala dependencias:
-   ```bash
-   npm install
-   ```
-2. Arranca el frontend:
-   ```bash
-   npm run dev
-   ```
-3. Accede a `http://localhost:5173`
+- Node.js.
+- Backend arrancado si se quieren cargar datos reales.
 
----
+## Instalar dependencias
 
-## 📚 Documentación global
+```bash
+npm install
+```
 
-Toda la documentación ampliada está en la carpeta `/docs`.
+## Arrancar frontend
+
+```bash
+npm run dev
+```
+
+URL local:
+
+```text
+http://localhost:5173
+```
+
+## Comunicación con backend
+
+El frontend se comunica con la API REST del backend, normalmente en:
+
+```text
+http://localhost:3000
+```
+
+Las llamadas están organizadas en `src/services/`.
+
+## Idea clave
+
+React construye la interfaz y los servicios se encargan de pedir datos al backend.

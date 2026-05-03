@@ -1,117 +1,79 @@
-# 🚧 Metodología para el desarrollo de la MVP
+# Metodología del MVP
 
-## 🎯 Objetivo de la MVP
+## Qué significa MVP
 
-El objetivo de la MVP (Producto Mínimo Viable) es disponer de una aplicación funcional que permita validar el flujo principal del sistema:
+MVP significa Producto Mínimo Viable.
 
-👉 registro → login → consulta de productos → realización de pedido
+En este proyecto, el MVP es la primera versión funcional de SquareStruct. No incluye todas las ideas futuras, pero sí permite comprobar que el flujo principal funciona de principio a fin.
 
----
+## Flujo principal
 
-## 🔄 Flujo del usuario
+El flujo que se quiere validar es:
 
-El flujo principal del sistema en la MVP es el siguiente:
-
-1. Registro de usuario
-2. Inicio de sesión (login)
-3. Consulta de productos
-4. Realización de pedido
-
-Este flujo define el recorrido básico que realiza un usuario dentro de la aplicación y sirve como base para la implementación del backend y frontend.
-
----
-
-
-## ⚙️ Funcionalidades incluidas y estructura MVP
-
-* Registro de usuarios
-* Autenticación mediante JWT
-* Consulta de productos
-* Gestión básica de pedidos
-* API REST funcional
-
-### Organización de carpetas/archivos (MVP backend)
-
-```
-src/
-   config/        # Configuración centralizada (config.js)
-   controllers/   # Lógica de entrada
-   services/      # Lógica de negocio reutilizable (productService.js, userService.js)
-   routes/        # Endpoints
-   middlewares/   # Autenticación y validaciones
-   utils/         # Funciones auxiliares (formatDate.js, generateId.js)
-   app.js         # Configuración principal de Express
+```text
+registro -> login -> consulta de productos -> creación de pedido
 ```
 
-Esta estructura permite un desarrollo ágil y escalable, manteniendo el foco en la funcionalidad mínima viable.
+Este recorrido es importante porque conecta las partes principales del sistema:
 
----
+- Frontend: interfaz que usa el cliente.
+- Backend: API que procesa las peticiones.
+- Base de datos: almacena usuarios, productos y pedidos.
 
-## ❌ Funcionalidades excluidas (por ahora)
+## Funcionalidades incluidas
 
-* Configurador 3D
-* Sistema avanzado de presupuestado
-* Comparador de proveedores
-* Panel administrativo completo
+- Registro de usuarios.
+- Autenticación con JWT.
+- Consulta de productos.
+- Gestión básica de pedidos.
+- API REST funcional.
+- Pruebas manuales con Postman.
 
----
+## Funcionalidades no incluidas todavía
 
-## 🧩 Fases de desarrollo
+Estas funcionalidades quedan fuera del MVP para no aumentar demasiado la complejidad:
 
-1. **Configuración inicial**
+- Configurador 3D.
+- Presupuesto automático avanzado.
+- Comparador completo de proveedores.
+- Panel administrativo completo.
+- Pasarela de pago real.
 
-   * Creación del repositorio
-   * Instalación de dependencias
-   * Configuración de entorno (.env)
+## Fases de desarrollo
 
-2. **Diseño de base de datos**
+1. Configuración inicial del repositorio.
+2. Diseño de la base de datos.
+3. Creación del backend con Express.
+4. Conexión con MySQL.
+5. Registro y login de usuarios.
+6. Catálogo de productos.
+7. Pedidos.
+8. Frontend en React.
+9. Pruebas con Postman y tests automáticos iniciales.
+10. Documentación del proyecto.
 
-   * Modelo entidad-relación
-   * Modelo relacional
-   * Scripts SQL
+## Organización del trabajo
 
-3. **Desarrollo del backend**
+El proyecto usa una forma de trabajo basada en ramas:
 
-   * Configuración de Express
-   * Conexión con MySQL
-   * Estructura de carpetas
+- `main`: versión estable.
+- `dev`: rama principal de desarrollo.
+- `feature/*`: ramas para nuevas funcionalidades.
+- Pull Requests para integrar cambios.
 
-4. **Autenticación**
+Esto ayuda a trabajar de forma ordenada y a evitar mezclar cambios sin revisar.
 
-   * Registro de usuarios
-   * Login con JWT
-   * Protección de rutas
+## Criterio de éxito del MVP
 
-5. **CRUD principal**
+El MVP se considera válido si:
 
-   * Productos
-   * Pedidos
+- El backend arranca correctamente.
+- La base de datos tiene las tablas necesarias.
+- Un usuario puede registrarse.
+- El usuario puede iniciar sesión.
+- El frontend puede consultar productos.
+- Se puede crear o preparar el flujo de pedido.
 
-6. **Testing**
+## Idea clave para explicar
 
-   * Pruebas con Postman
-   * Validación de endpoints
-
-7. **Documentación**
-
-   * README
-   * Documentación técnica en /docs
-
----
-
-## 🛠 Organización del trabajo
-
-* Uso de GitFlow
-* Desarrollo en ramas feature/*
-* Uso de Pull Requests
-* Gestión mediante GitHub Issues
-
----
-
-## 🧠 Filosofía de desarrollo
-
-Se sigue un enfoque **MVP-first**, priorizando:
-
-* Funcionalidad antes que perfección
-* Iteración rápida
-* Escalabilidad futura
+El MVP no es el proyecto final. Es una primera versión que demuestra que la base técnica funciona y que el proyecto puede seguir creciendo.
