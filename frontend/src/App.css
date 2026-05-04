@@ -319,6 +319,328 @@
   color: rgba(255, 255, 255, 0.88);
 }
 
+.about-story-page {
+  --about-name-card-height: 48px;
+  --about-profile-gap: 12px;
+  color: #173f5f;
+}
+
+.about-layout-row {
+  --bs-gutter-x: 18px;
+  --bs-gutter-y: 20px;
+}
+
+.about-team-card,
+.about-story-card,
+.about-photo-card,
+.about-person-text,
+.about-side-card,
+.about-name-card,
+.about-profile-photo-card,
+.about-profile-text-card {
+  border-color: rgba(23, 63, 95, 0.18);
+  border-radius: 6px;
+  box-shadow: 0 14px 32px rgba(15, 23, 42, 0.06);
+}
+
+.about-profile-col {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.about-name-card .card-body {
+  min-height: 42px;
+  display: flex;
+  align-items: center;
+  padding: 10px 16px;
+  color: #173f5f;
+  font-size: 0.95rem;
+}
+
+.about-profile-photo-card {
+  overflow: hidden;
+  aspect-ratio: 1 / 1;
+  background: #8d969d;
+}
+
+.about-profile-image {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+.about-profile-text-card {
+  min-height: 390px;
+}
+
+.about-profile-text-card .card-body {
+  min-height: 390px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 26px 28px;
+}
+
+.about-profile-text-card p {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  color: #173f5f;
+  font-size: 0.94rem;
+  line-height: 1.62;
+  text-align: left;
+}
+
+.about-profile-text-card p + p {
+  margin-top: 12px;
+}
+
+.about-team-card {
+  margin-bottom: 10px;
+  overflow: hidden;
+  background: #8d969d;
+}
+
+.about-team-photo {
+  display: grid;
+  place-items: center;
+  min-height: 280px;
+  aspect-ratio: 4.2 / 1;
+  background:
+    linear-gradient(135deg, rgba(31, 42, 34, 0.2), rgba(15, 23, 42, 0.16)),
+    #8d969d;
+  color: #fff;
+  font-weight: 700;
+  text-align: center;
+}
+
+.about-team-photo span {
+  display: block;
+  font-size: clamp(1.45rem, 2.2vw, 2.4rem);
+}
+
+.about-team-image {
+  width: 100%;
+  aspect-ratio: 3.65 / 1;
+  height: auto;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+.about-photo-kicker,
+.about-section-label {
+  margin: 0 0 10px;
+  color: #5f8d74;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.about-team-photo .about-photo-kicker {
+  color: rgba(255, 255, 255, 0.76);
+}
+
+.about-story-card,
+.about-person-text,
+.about-side-card-text {
+  background: #fff;
+  color: #173f5f;
+}
+
+.about-story-card {
+  min-height: 285px;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.about-story-card .card-body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 36px clamp(38px, 4.5vw, 72px);
+  text-align: center;
+}
+
+.about-story-card .about-text-content {
+  max-width: 1180px;
+}
+
+.about-story-card .about-text-content p {
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.about-newspaper-text {
+  margin-top: 30px;
+  text-align: left;
+}
+
+.about-newspaper-text p {
+  text-align: left;
+}
+
+.about-history-column {
+  height: 100%;
+}
+
+.about-history-column p {
+  margin: 0;
+  color: #173f5f;
+  font-size: 0.95rem;
+  line-height: 1.68;
+}
+
+.about-text-content {
+  width: 100%;
+  max-width: 1120px;
+}
+
+.about-text-content h1,
+.about-text-content h2 {
+  margin: 0 0 16px;
+  color: #173f5f;
+  font-weight: 700;
+  line-height: 1.15;
+}
+
+.about-text-content h1 {
+  font-size: clamp(1.9rem, 2.3vw, 2.55rem);
+}
+
+.about-text-content h2 {
+  font-size: clamp(1.35rem, 1.7vw, 1.8rem);
+}
+
+.about-lead {
+  max-width: 90ch;
+  font-size: 1.02rem;
+  font-weight: 600;
+  line-height: 1.65;
+}
+
+.about-story-card p,
+.about-person-text p,
+.about-photo-card p {
+  margin: 0;
+}
+
+.about-text-content p {
+  max-width: 95ch;
+  color: #173f5f;
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
+.about-text-content p + p {
+  margin-top: 14px;
+}
+
+.about-editorial-row {
+  --bs-gutter-x: clamp(18px, 2vw, 28px);
+  --bs-gutter-y: 24px;
+  margin-top: 28px;
+}
+
+.about-editorial-card {
+  min-height: 390px;
+}
+
+.about-editorial-card .card-body {
+  align-items: flex-start;
+}
+
+.about-side-card + .about-side-card {
+  margin-top: 22px;
+}
+
+.about-photo-card,
+.about-side-card-photo {
+  overflow: hidden;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  min-height: 0;
+  background: #8d969d;
+  color: #0f172a;
+}
+
+.about-photo-card p,
+.about-side-card-photo p {
+  font-weight: 700;
+  text-align: center;
+}
+
+.about-photo-fill {
+  flex-direction: column;
+  gap: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 250px;
+  padding: 34px;
+  background:
+    linear-gradient(145deg, rgba(23, 63, 95, 0.12), rgba(31, 143, 88, 0.12)),
+    #8d969d;
+  color: #fff;
+}
+
+.about-photo-image {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+.about-photo-fill span {
+  color: rgba(255, 255, 255, 0.82);
+  font-weight: 600;
+}
+
+.about-photo-name {
+  color: #fff;
+  font-size: 1.35rem;
+  letter-spacing: 0.02em;
+}
+
+.about-person-text,
+.about-side-card-text {
+  min-height: 360px;
+  background: rgba(255, 255, 255, 0.96);
+}
+
+.about-person-text .card-body,
+.about-side-card-text .card-body {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-height: 360px;
+  padding: 28px;
+}
+
+.about-person-text .about-text-content {
+  max-width: 86ch;
+}
+
+.about-side-card-text p {
+  width: 100%;
+  margin: 0;
+  color: #173f5f;
+  line-height: 1.6;
+  text-align: left;
+}
+
+.about-side-card-text p + p {
+  margin-top: 12px;
+}
+
 .register-shell {
   padding-top: 20px;
   padding-bottom: 40px;
@@ -863,6 +1185,37 @@
     bottom: 1.2rem;
   }
 
+  .about-team-photo {
+    min-height: 230px;
+    margin-bottom: 22px;
+  }
+
+  .about-story-card {
+    min-height: auto;
+    padding: 20px;
+    margin-bottom: 28px;
+  }
+
+  .about-person-grid,
+  .about-person-grid-cristian {
+    grid-template-columns: 1fr;
+    gap: 18px;
+    margin-bottom: 24px;
+  }
+
+  .about-person-grid-cristian .about-photo-card {
+    order: -1;
+  }
+
+  .about-photo-placeholder {
+    min-height: 180px;
+  }
+
+  .about-person-text {
+    min-height: auto;
+    padding: 22px;
+  }
+
   .mvp-hero h1 {
     max-width: 12ch;
   }
@@ -903,6 +1256,23 @@
 
   .mvp-hero h1 {
     max-width: 16ch;
+  }
+
+  .about-team-photo {
+    min-height: 320px;
+  }
+
+  .about-story-card {
+    min-height: 230px;
+  }
+
+  .about-person-grid {
+    grid-template-columns: minmax(190px, 270px) minmax(0, 1fr);
+    gap: 52px;
+  }
+
+  .about-person-grid-cristian {
+    grid-template-columns: minmax(0, 1fr) minmax(190px, 270px);
   }
 
   .navbar-logo-mobile {
@@ -954,5 +1324,104 @@
 @media (min-width: 1600px) {
   .catalog-grid {
     grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+}
+
+/* About Us responsive actual: layout con perfil | historia | perfil. */
+@media (min-width: 768px) and (max-width: 991.98px) {
+  .about-layout-row {
+    --bs-gutter-x: 18px;
+    --bs-gutter-y: 18px;
+  }
+
+  .about-layout-row > main {
+    order: 1;
+    width: 100%;
+  }
+
+  .about-layout-row > .about-profile-col {
+    order: 2;
+    width: 50%;
+  }
+
+  .about-team-image {
+    aspect-ratio: 3.1 / 1;
+  }
+
+  .about-editorial-card {
+    min-height: auto;
+  }
+
+  .about-story-card .card-body {
+    padding: 34px 32px;
+  }
+
+  .about-profile-text-card,
+  .about-profile-text-card .card-body {
+    min-height: 360px;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .about-layout-row {
+    --bs-gutter-y: 16px;
+  }
+
+  .about-layout-row > main {
+    order: 1;
+  }
+
+  .about-layout-row > .about-profile-col {
+    order: 2;
+  }
+
+  .about-profile-col {
+    gap: 8px;
+  }
+
+  .about-name-card .card-body {
+    min-height: 38px;
+    padding: 9px 14px;
+  }
+
+  .about-team-image {
+    aspect-ratio: 2.1 / 1;
+  }
+
+  .about-story-card {
+    min-height: auto;
+    padding: 0;
+    margin-bottom: 0;
+  }
+
+  .about-story-card .card-body {
+    padding: 28px 20px;
+  }
+
+  .about-text-content h1 {
+    font-size: 1.75rem;
+  }
+
+  .about-lead {
+    font-size: 0.98rem;
+  }
+
+  .about-newspaper-text {
+    margin-top: 24px;
+  }
+
+  .about-history-column p,
+  .about-profile-text-card p {
+    font-size: 0.94rem;
+    line-height: 1.62;
+  }
+
+  .about-profile-text-card,
+  .about-profile-text-card .card-body {
+    min-height: auto;
+  }
+
+  .about-profile-text-card .card-body {
+    padding: 22px 20px;
   }
 }
