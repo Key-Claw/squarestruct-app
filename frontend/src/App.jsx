@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import Navbar from './components/Navbar'
+import SiteFooter from './components/SiteFooter'
 import Home from './pages/Home'
 import Galeria from './pages/Galeria'
 import Catalogo from './pages/Catalogo'
@@ -133,6 +134,8 @@ function App() {
     return <Home onNavigate={handleNavigate} />
   }
 
+  const showSiteFooter = ['home', 'galeria', 'catalogo', 'design', 'aboutus'].includes(page)
+
   return (
     <div className="app-shell">
       <Navbar
@@ -143,6 +146,7 @@ function App() {
         onLogout={handleUserLogout}
       />
       <main className="app-main">{renderPage()}</main>
+      {showSiteFooter && <SiteFooter showBenefits={page !== 'aboutus'} />}
     </div>
   )
 }
