@@ -11,7 +11,7 @@ El frontend envía peticiones HTTP y el backend responde con datos en formato JS
 En desarrollo local:
 
 ```text
-http://localhost:3001
+http://localhost:3000
 ```
 
 Prefijo general:
@@ -82,3 +82,5 @@ Authorization: Bearer <TOKEN>
 ## Idea clave para explicar
 
 La API es el puente entre frontend y base de datos. El frontend no consulta MySQL directamente: siempre pasa por el backend.
+
+Si usas la colección de Postman del repo, la URL base se configura con la variable `baseUrl` y por defecto apunta a `http://localhost:3000`.
