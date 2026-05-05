@@ -1,6 +1,6 @@
--- Inicia una transacción ACID. Todo lo entre START TRANSACTION y COMMIT
+-- Inicia una transaccion ACID. Todo lo entre START TRANSACTION y COMMIT
 -- se ejecuta como una unidad: o se completa todo o no se guarda nada.
--- Esto garantiza consistencia si hay errores durante la ejecución del script.
+-- Esto garantiza consistencia si hay errores durante la ejecucion del script.
 START TRANSACTION;
 
 DROP TABLE IF EXISTS pedidoDetalles;
@@ -12,10 +12,12 @@ DROP TABLE IF EXISTS usuarios;
 CREATE TABLE usuarios (
   idUsuario INT AUTO_INCREMENT PRIMARY KEY,
   nombre VARCHAR(120) NOT NULL,
+  primerApellido VARCHAR(80) NOT NULL,
+  segundoApellido VARCHAR(80),
   email VARCHAR(150) NOT NULL UNIQUE,
   contrasena VARCHAR(255) NOT NULL,
   rol VARCHAR(20) NOT NULL DEFAULT 'usuario',
-  creadoEn TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  creadoEn TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, -- Fecha de insercion en la base de datos
   CONSTRAINT chkUsuarioRol CHECK (rol IN ('usuario', 'admin'))
 ) ENGINE=InnoDB;
 
@@ -23,30 +25,30 @@ CREATE TABLE proveedores (
   idProveedor INT AUTO_INCREMENT PRIMARY KEY,
   nombreEmpresa VARCHAR(160) NOT NULL,
   telefono VARCHAR(30),
+  sitioWeb VARCHAR(255),
+  categoria VARCHAR(80) NOT NULL,
   validado BOOLEAN NOT NULL DEFAULT FALSE,
   creadoEn TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB;
+) ENGINE=InnoDB; -- Fecha de insercion en la base de datos
 
 CREATE TABLE productos (
   idProducto INT AUTO_INCREMENT PRIMARY KEY,
   nombre VARCHAR(150) NOT NULL,
-  descripcion TEXT,
+  descripcion VARCHAR(500),
   precio DECIMAL(12, 2) NOT NULL,
-  tipo ENUM('bloque', 'pilar') NOT NULL, -- Tipo de producto para futuras funcionalidades específicas
-
--- Dimensiones en centímetros para futuro configurador 3D
-alto DECIMAL(10, 2) NOT NULL,
-ancho DECIMAL(10, 2) NOT NULL,
-largo DECIMAL(10, 2) NOT NULL,
-
-  idProveedor INT NOT NULL,
-  CONSTRAINT chkProductoPrecio CHECK (precio >= 0),
+  tipo ENUM('bloque', 'pilar') NOT NULL, -- Tipo de producto para futuras funcionalidades especificas
+  material VARCHAR(80) NOT NULL,
+  alto DECIMAL(10, 2) NOT NULL,
+  ancho DECIMAL(10, 2) NOT NULL,
+  largo DECIMAL(10, 2) NOT NULL,
+  idProveedor INT NOT NULL, 
 
 -- Validaciones para dimensiones, asegurando que sean positivas
-CONSTRAINT chkProductoAlto CHECK (alto > 0),
-CONSTRAINT chkProductoAncho CHECK (ancho > 0),
-CONSTRAINT chkProductoLargo CHECK (largo > 0),
-
+  CONSTRAINT chkProductoPrecio CHECK (precio >= 0),
+  CONSTRAINT chkProductoMaterial CHECK (material IN ('Plastico reciclable', 'Hormigon')),
+  CONSTRAINT chkProductoAlto CHECK (alto > 0),
+  CONSTRAINT chkProductoAncho CHECK (ancho > 0),
+  CONSTRAINT chkProductoLargo CHECK (largo > 0),
 
   CONSTRAINT fkProductosProveedores
     FOREIGN KEY (idProveedor)
@@ -60,7 +62,7 @@ CREATE TABLE pedidos (
   fecha TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   total DECIMAL(12, 2) NOT NULL DEFAULT 0,
   estado VARCHAR(30) NOT NULL DEFAULT 'pendiente',
-  direccionEnvio TEXT NOT NULL,
+  direccionEnvio VARCHAR(250) NOT NULL,
   metodoPago VARCHAR(30) NOT NULL,
   idUsuario INT NOT NULL,
   CONSTRAINT chkPedidoTotal CHECK (total >= 0),
@@ -94,11 +96,11 @@ CREATE TABLE pedidoDetalles (
 ) ENGINE=InnoDB;
 
 -- Indices para optimizar las consultas que usan FOREIGN KEYS en WHERE o JOIN
--- Mejora el rendimiento de búsquedas como: productos por idProveedor, pedidos por idUsuario, etc.
+-- Mejora el rendimiento de busquedas como: productos por idProveedor, pedidos por idUsuario, etc.
 CREATE INDEX idxProductosIdProveedor ON productos (idProveedor);
 CREATE INDEX idxPedidosIdUsuario ON pedidos (idUsuario);
 CREATE INDEX idxDetallesIdProducto ON pedidoDetalles (idProducto);
 
--- COMMIT finaliza la transacción y guarda TODOS los cambios realizados desde BEGIN
--- Si llega aquí sin errores, la BD quedará con todas las tablas e índices creados.
+-- COMMIT finaliza la transaccion y guarda TODOS los cambios realizados desde BEGIN
+-- Si llega aqui sin errores, la BD quedara con todas las tablas e indices creados.
 COMMIT;

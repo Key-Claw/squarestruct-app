@@ -18,108 +18,154 @@ const normalizarProducto = (product) => ({
   ...product,
   nombre: normalizarTexto(product.nombre),
   descripcion: normalizarTexto(product.descripcion),
-  tipo: normalizarTexto(product.tipo)
+  tipo: normalizarTexto(product.tipo),
+  material: normalizarTexto(product.material)
 })
 
 const productosDemo = [
   {
     idProducto: 901,
-    nombre: 'Bloque modular base',
-    descripcion: 'Pieza principal para levantar muros y estructuras de una forma ordenada.',
+    nombre: 'Bloque EcoBase',
+    descripcion: 'Bloque ligero de plastico reciclable para primeras hiladas y tramos medios de muro modular.',
     tipo: 'Bloque',
-    precio: 18.5,
-    stock: 120,
-    alto: 20,
-    ancho: 40,
-    largo: 60
+    material: 'Plastico reciclable',
+    proveedor: 'Plasticos renovables ByFusion',
+    precio: 42.5,
+    alto: 22.7,
+    ancho: 19.7,
+    largo: 39.4
   },
   {
     idProducto: 902,
-    nombre: 'Bloque aislante',
-    descripcion: 'Modulo pensado para mejorar el aislamiento en cerramientos exteriores.',
+    nombre: 'Bloque EcoPlano',
+    descripcion: 'Bloque de plastico reciclable con superficie plana para remates superiores y zonas bajo huecos.',
     tipo: 'Bloque',
-    precio: 22,
-    stock: 86,
-    alto: 20,
-    ancho: 35,
-    largo: 60
+    material: 'Plastico reciclable',
+    proveedor: 'Plasticos renovables ByFusion',
+    precio: 41,
+    alto: 20.3,
+    ancho: 19.7,
+    largo: 39.4
   },
   {
     idProducto: 903,
-    nombre: 'Pilar estructural corto',
-    descripcion: 'Elemento vertical para refuerzo puntual en esquinas y zonas de carga.',
-    tipo: 'Pilar',
-    precio: 34.9,
-    stock: 48,
-    alto: 80,
-    ancho: 20,
-    largo: 20
+    nombre: 'Bloque EcoUnion',
+    descripcion: 'Bloque de plastico reciclable para encuentros, huecos de ventana y transiciones escalonadas.',
+    tipo: 'Bloque',
+    material: 'Plastico reciclable',
+    proveedor: 'Plasticos renovables ByFusion',
+    precio: 44,
+    alto: 22.7,
+    ancho: 19.7,
+    largo: 39.4
   },
   {
     idProducto: 904,
-    nombre: 'Pilar estructural alto',
-    descripcion: 'Pilar preparado para combinaciones modulares de mayor altura.',
+    nombre: 'Columna EcoStruct 120',
+    descripcion: 'Columna modular de plastico reciclable para muros, particiones y cerramientos ligeros.',
     tipo: 'Pilar',
-    precio: 52.75,
-    stock: 32,
-    alto: 140,
-    ancho: 20,
-    largo: 20
+    material: 'Plastico reciclable',
+    proveedor: 'Plasticos renovables ByFusion',
+    precio: 180,
+    alto: 120,
+    ancho: 39.4,
+    largo: 39.4
   },
   {
     idProducto: 905,
-    nombre: 'Bloque esquina',
-    descripcion: 'Pieza especifica para resolver encuentros entre dos muros perpendiculares.',
-    tipo: 'Bloque',
-    precio: 24.3,
-    stock: 64,
-    alto: 20,
-    ancho: 40,
-    largo: 40
+    nombre: 'Columna EcoStruct 180',
+    descripcion: 'Columna alta de plastico reciclable para puntos de refuerzo en cerramientos modulares.',
+    tipo: 'Pilar',
+    material: 'Plastico reciclable',
+    proveedor: 'Plasticos renovables ByFusion',
+    precio: 258,
+    alto: 180,
+    ancho: 39.4,
+    largo: 39.4
   },
   {
     idProducto: 906,
-    nombre: 'Bloque ventana',
-    descripcion: 'Modulo auxiliar para preparar huecos de ventana sin romper la reticula.',
+    nombre: 'Columna EcoCorner',
+    descripcion: 'Pilar de plastico reciclable pensado para esquinas, encuentros y cambios de direccion.',
+    tipo: 'Pilar',
+    material: 'Plastico reciclable',
+    proveedor: 'Plasticos renovables ByFusion',
+    precio: 195,
+    alto: 120,
+    ancho: 39.4,
+    largo: 39.4
+  },
+  {
+    idProducto: 907,
+    nombre: 'Bloque H80 Max',
+    descripcion: 'Bloque de hormigon de gran formato para muros de contencion de tierras y cargas exigentes.',
     tipo: 'Bloque',
-    precio: 28.4,
-    stock: 40,
-    alto: 20,
-    ancho: 30,
-    largo: 60
+    material: 'Hormigon',
+    proveedor: 'Hormigon Forpol Group',
+    precio: 152,
+    alto: 80,
+    ancho: 80,
+    largo: 160
+  },
+  {
+    idProducto: 908,
+    nombre: 'Pilar H80 Refuerzo',
+    descripcion: 'Pilar de hormigon pesado para refuerzo vertical en muros de contencion y zonas de carga.',
+    tipo: 'Pilar',
+    material: 'Hormigon',
+    proveedor: 'Hormigon Forpol Group',
+    precio: 210,
+    alto: 160,
+    ancho: 80,
+    largo: 80
   },
   {
     idProducto: 909,
-    nombre: 'Bloque remate superior',
-    descripcion: 'Pieza de cierre para coronacion de muros y acabados vistos.',
+    nombre: 'Bloque H60 Max',
+    descripcion: 'Bloque de hormigon para separadores de aridos, desechos y materiales a granel.',
     tipo: 'Bloque',
-    precio: 19.8,
-    stock: 73,
-    alto: 12,
-    ancho: 40,
-    largo: 60
+    material: 'Hormigon',
+    proveedor: 'Hormigon Forpol Group',
+    precio: 168,
+    alto: 60,
+    ancho: 60,
+    largo: 240
   },
   {
     idProducto: 910,
-    nombre: 'Pilar tecnico',
-    descripcion: 'Elemento vertical preparado para integrar instalaciones en zonas concretas.',
+    nombre: 'Pilar H60 Modular',
+    descripcion: 'Pilar de hormigon para apoyo intermedio en separadores de materiales y muros industriales.',
     tipo: 'Pilar',
-    precio: 61.2,
-    stock: 24,
+    material: 'Hormigon',
+    proveedor: 'Hormigon Forpol Group',
+    precio: 148,
     alto: 120,
-    ancho: 24,
-    largo: 24
+    ancho: 60,
+    largo: 60
   },
   {
     idProducto: 911,
-    nombre: 'Bloque fachada',
-    descripcion: 'Modulo exterior con acabado limpio para fachadas modulares.',
+    nombre: 'Bloque H40 Cerramiento',
+    descripcion: 'Bloque de hormigon para vallas y cerramientos perimetrales sin contencion de tierras.',
     tipo: 'Bloque',
-    precio: 31.6,
-    stock: 55,
-    alto: 20,
+    material: 'Hormigon',
+    proveedor: 'Hormigon Forpol Group',
+    precio: 112,
+    alto: 80,
     ancho: 40,
-    largo: 60
+    largo: 160
+  },
+  {
+    idProducto: 912,
+    nombre: 'Pilar H40 Cerramiento',
+    descripcion: 'Pilar de hormigon para esquinas y remates en vallas y cerramientos perimetrales.',
+    tipo: 'Pilar',
+    material: 'Hormigon',
+    proveedor: 'Hormigon Forpol Group',
+    precio: 98,
+    alto: 120,
+    ancho: 40,
+    largo: 80
   }
 ]
 
@@ -354,8 +400,8 @@ function Catalogo({ onNavigate, searchTerm = '', initialSection = '' }) {
                     </strong>
                     <dl className="catalog-product-meta">
                       <div>
-                        <dt>Stock</dt>
-                        <dd>{product.stock}</dd>
+                        <dt>Material</dt>
+                        <dd>{product.material || 'Sin material'}</dd>
                       </div>
                       <div>
                         <dt>Medidas</dt>
