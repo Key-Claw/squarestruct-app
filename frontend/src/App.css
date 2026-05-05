@@ -656,8 +656,8 @@
 }
 
 .gallery-intro-card {
-  height: 720px;
-  min-height: 720px;
+  height: 300px;
+  min-height: 300px;
   margin-bottom: 22px;
 }
 
@@ -744,12 +744,12 @@
 .gallery-intro-media {
   position: relative;
   width: 100%;
-  min-height: 720px;
+  min-height: 300px;
   height: 100%;
 }
 
 .gallery-intro-media .gallery-cover-image {
-  object-position: center;
+  object-position: center center;
 }
 
 .gallery-intro-media::before {
@@ -2600,9 +2600,9 @@
   }
 
   .gallery-intro-card {
-    position: relative;
-    height: 520px;
-    min-height: 520px;
+    height: 300px;
+    min-height: 300px;
+    margin-bottom: 22px;
     background: #8d969d;
   }
 
@@ -2748,7 +2748,7 @@
 
   .gallery-intro-card {
     position: relative;
-    min-height: 520px;
+    min-height: 300px;
     background: #8d969d;
   }
 

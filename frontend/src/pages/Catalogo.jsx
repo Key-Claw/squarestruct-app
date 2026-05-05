@@ -89,28 +89,6 @@ const productosDemo = [
     largo: 60
   },
   {
-    idProducto: 907,
-    nombre: 'Plano vivienda compacta',
-    descripcion: 'Plano orientativo para una casa modular pequena de una planta.',
-    tipo: 'Plano',
-    precio: 95,
-    stock: 12,
-    alto: 0,
-    ancho: 0,
-    largo: 0
-  },
-  {
-    idProducto: 908,
-    nombre: 'Plano vivienda familiar',
-    descripcion: 'Distribucion base para una vivienda modular con zona social amplia.',
-    tipo: 'Plano',
-    precio: 135,
-    stock: 8,
-    alto: 0,
-    ancho: 0,
-    largo: 0
-  },
-  {
     idProducto: 909,
     nombre: 'Bloque remate superior',
     descripcion: 'Pieza de cierre para coronacion de muros y acabados vistos.',
@@ -142,17 +120,6 @@ const productosDemo = [
     alto: 20,
     ancho: 40,
     largo: 60
-  },
-  {
-    idProducto: 912,
-    nombre: 'Plano casa patio',
-    descripcion: 'Idea de distribucion alrededor de un patio central abierto.',
-    tipo: 'Plano',
-    precio: 120,
-    stock: 10,
-    alto: 0,
-    ancho: 0,
-    largo: 0
   }
 ]
 
@@ -195,7 +162,8 @@ function Catalogo({ onNavigate, searchTerm = '', initialSection = '' }) {
   }
 
   const productosCatalogo = useMemo(() => (
-    productos.length > 0 ? productos : productosDemo
+    (productos.length > 0 ? productos : productosDemo)
+      .filter((product) => product.tipo?.toLowerCase() !== 'plano')
   ), [productos])
 
   const categorias = useMemo(() => {
@@ -394,7 +362,7 @@ function Catalogo({ onNavigate, searchTerm = '', initialSection = '' }) {
                         <dd>
                           {product.alto || product.ancho || product.largo
                             ? `${product.alto} x ${product.ancho} x ${product.largo} cm`
-                            : 'Plano digital'}
+                            : 'Sin medidas'}
                         </dd>
                       </div>
                     </dl>
