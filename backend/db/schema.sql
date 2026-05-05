@@ -23,6 +23,8 @@ CREATE TABLE proveedores (
   idProveedor INT AUTO_INCREMENT PRIMARY KEY,
   nombreEmpresa VARCHAR(160) NOT NULL,
   telefono VARCHAR(30),
+  sitioWeb VARCHAR(255),
+  categoria VARCHAR(80) NOT NULL,
   validado BOOLEAN NOT NULL DEFAULT FALSE,
   creadoEn TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB;
@@ -33,6 +35,7 @@ CREATE TABLE productos (
   descripcion TEXT,
   precio DECIMAL(12, 2) NOT NULL,
   tipo ENUM('bloque', 'pilar') NOT NULL, -- Tipo de producto para futuras funcionalidades específicas
+  material VARCHAR(80) NOT NULL,
 
 -- Dimensiones en centímetros para futuro configurador 3D
 alto DECIMAL(10, 2) NOT NULL,
@@ -41,6 +44,7 @@ largo DECIMAL(10, 2) NOT NULL,
 
   idProveedor INT NOT NULL,
   CONSTRAINT chkProductoPrecio CHECK (precio >= 0),
+  CONSTRAINT chkProductoMaterial CHECK (material IN ('Plastico reciclable', 'Hormigon')),
 
 -- Validaciones para dimensiones, asegurando que sean positivas
 CONSTRAINT chkProductoAlto CHECK (alto > 0),

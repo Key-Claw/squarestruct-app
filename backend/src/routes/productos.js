@@ -7,13 +7,14 @@ import {
   actualizarProducto,
   eliminarProducto
 } from '../controllers/productosController.js';
+import { validarProducto } from '../middlewares/validacionProducto.js';
 
 const router = express.Router();
 
 router.get('/', getProductos);
 router.get('/:id', getProductoById);
-router.post('/', crearProducto);
-router.put('/:id', actualizarProducto);
+router.post('/', validarProducto, crearProducto);
+router.put('/:id', validarProducto, actualizarProducto);
 router.delete('/:id', eliminarProducto);
 
 export default router;
