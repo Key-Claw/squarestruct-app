@@ -20,11 +20,11 @@ VALUES
   ('Hormigon Forpol Group', '+34977881287', 'https://www.forpol.es/prefabricados-hormigon/bloques-de-hormigon-forpolbloc/', 'Hormigon', TRUE);
 
 -- Usuarios
-INSERT INTO usuarios (nombre, email, contrasena, rol)
+INSERT INTO usuarios (nombre, primerApellido, segundoApellido, email, contrasena, rol)
 VALUES
-  ('Admin', 'admin@squarestruct.com', '$2b$10$hashadmin', 'admin'),
-  ('Juan Pérez', 'juan.perez@email.com', '$2b$10$hashjuan', 'usuario'),
-  ('Ana Gómez', 'ana.gomez@email.com', '$2b$10$hashana', 'usuario');
+  ('Admin', 'SquareStruct', NULL, 'admin@squarestruct.com', '$2b$10$hashadmin', 'admin'),
+  ('Juan', 'Perez', 'Guarnizo', 'juan.perez@email.com', '$2b$10$hashjuan', 'usuario'),
+  ('Ana', 'Gomez', NULL, 'ana.gomez@email.com', '$2b$10$hashana', 'usuario');
 
 -- Productos
 INSERT INTO productos (nombre, descripcion, precio, tipo, material, alto, ancho, largo, idProveedor)
