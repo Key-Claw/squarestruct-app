@@ -1374,6 +1374,511 @@
   text-align: center;
 }
 
+.design-page {
+  color: #173f5f;
+}
+
+.design-page .card {
+  border-color: rgba(23, 63, 95, 0.18);
+  border-radius: 8px;
+  box-shadow: 0 14px 32px rgba(15, 23, 42, 0.06);
+}
+
+.design-topbar {
+  min-height: 110px;
+  margin-bottom: 20px;
+  padding: 26px clamp(24px, 5vw, 76px);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  background: rgba(255, 255, 255, 0.96);
+}
+
+.design-topbar h1,
+.design-pieces-panel h2,
+.design-summary-panel h2,
+.design-help-card h2 {
+  margin: 0;
+  color: #0f3d63;
+  font-weight: 850;
+}
+
+.design-topbar p {
+  margin: 10px 0 0;
+  color: #173f5f;
+  font-size: 0.88rem;
+}
+
+.design-topbar-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  justify-content: flex-end;
+}
+
+.design-outline-btn,
+.design-budget-btn,
+.design-guide-btn {
+  min-height: 44px;
+  border: 1px solid rgba(23, 63, 95, 0.18);
+  border-radius: 7px;
+  background: #fff;
+  color: #0f172a;
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  box-shadow: none;
+}
+
+.design-outline-btn {
+  min-width: 92px;
+}
+
+.design-budget-btn {
+  min-width: 190px;
+  border-color: #5f9f38;
+  background: #5f9f38;
+  color: #fff;
+}
+
+.design-workspace {
+  align-items: stretch;
+}
+
+.design-workspace > [class*="col-"] {
+  display: flex;
+}
+
+.design-workspace > [class*="col-"] > .card {
+  width: 100%;
+  height: 100%;
+}
+
+.design-pieces-panel,
+.design-summary-panel,
+.design-canvas-card {
+  min-height: 720px;
+}
+
+.design-pieces-panel,
+.design-summary-panel {
+  padding: 26px 24px;
+  background: rgba(255, 255, 255, 0.96);
+}
+
+.design-tabs {
+  display: flex;
+  gap: 18px;
+  margin: 16px 0 24px;
+  border-bottom: 0;
+}
+
+.design-tabs button {
+  border: 0;
+  background: transparent;
+  color: #0f172a;
+  font-weight: 800;
+  padding: 4px 0;
+}
+
+.design-tabs .active {
+  border-bottom: 0;
+  border-radius: 4px;
+  background: #e7f4df;
+  color: #4f8f2f;
+}
+
+.design-piece-list {
+  display: grid;
+  gap: 12px;
+}
+
+.design-piece-card {
+  display: grid;
+  grid-template-columns: minmax(92px, 38%) 1fr;
+  min-height: 84px;
+  border: 1px solid rgba(23, 63, 95, 0.18);
+  border-radius: 8px;
+  background: #fff;
+  overflow: hidden;
+  box-shadow: 0 10px 22px rgba(15, 23, 42, 0.04);
+}
+
+.design-piece-media {
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(circle at 50% 42%, rgba(255, 255, 255, 0.86), rgba(216, 222, 228, 0.5) 48%, transparent 70%),
+    linear-gradient(135deg, #eef2f5, #d8dee4);
+  color: #8d969d;
+  font-size: 0.78rem;
+}
+
+.design-piece-card div:last-child {
+  padding: 14px 16px;
+}
+
+.design-piece-card h3,
+.design-piece-card p,
+.design-piece-card span {
+  margin: 0;
+}
+
+.design-piece-card h3 {
+  font-size: 1rem;
+  font-weight: 850;
+}
+
+.design-piece-card p,
+.design-piece-card span {
+  margin-top: 5px;
+  color: #0f172a;
+  font-size: 0.78rem;
+}
+
+.design-drag-help {
+  min-height: 82px;
+  margin-top: 22px;
+  border: 1px solid rgba(23, 63, 95, 0.18);
+  border-radius: 8px;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+}
+
+.design-drag-help span {
+  font-size: 2.6rem;
+}
+
+.design-drag-help strong,
+.design-drag-help p {
+  margin: 0;
+}
+
+.design-canvas-card {
+  position: relative;
+  overflow: hidden;
+  background: #fbfdff;
+}
+
+.design-boceto-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: inherit;
+  object-fit: contain;
+  object-position: center;
+}
+
+.design-toolbar,
+.design-zoom,
+.design-view-switch {
+  position: absolute;
+  z-index: 3;
+  display: flex;
+  gap: 6px;
+}
+
+.design-toolbar {
+  top: 44px;
+  left: 44px;
+}
+
+.design-toolbar button,
+.design-zoom button,
+.design-view-switch button {
+  width: 44px;
+  height: 44px;
+  border: 1px solid rgba(23, 63, 95, 0.18);
+  border-radius: 7px;
+  background: rgba(255, 255, 255, 0.96);
+  color: #0f172a;
+  font-weight: 850;
+  box-shadow: none;
+}
+
+.design-toolbar .active,
+.design-view-switch .active {
+  border-color: #5f9f38;
+  background: #5f9f38;
+  color: #fff;
+}
+
+.design-zoom {
+  left: 44px;
+  bottom: 150px;
+  flex-direction: column;
+}
+
+.design-view-switch {
+  left: 50%;
+  bottom: 36px;
+  transform: translateX(-50%);
+  gap: 4px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.96);
+  padding: 3px;
+}
+
+.design-view-switch button {
+  width: 40px;
+  height: 34px;
+  border-radius: 6px;
+  box-shadow: none;
+}
+
+.design-cube {
+  position: absolute;
+  top: 56px;
+  right: 120px;
+  width: 110px;
+  height: 96px;
+  border: 1px solid rgba(17, 17, 17, 0.4);
+  transform: rotate(30deg) skew(-12deg);
+  background: rgba(255, 255, 255, 0.74);
+  display: grid;
+  place-items: center;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+}
+
+.design-cube span:not(:first-child) {
+  display: none;
+}
+
+.design-house-plan {
+  position: absolute;
+  inset: 120px 150px 86px 190px;
+  transform: rotateX(58deg) rotateZ(-38deg);
+  transform-style: preserve-3d;
+}
+
+.design-plan-grid {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: 2px;
+  opacity: 0.48;
+}
+
+.design-plan-grid span {
+  border: 1px solid rgba(17, 17, 17, 0.12);
+}
+
+.design-plan-grid .is-wall {
+  background: rgba(23, 63, 95, 0.08);
+}
+
+.design-wall,
+.design-room {
+  position: absolute;
+  border: 5px solid rgba(17, 17, 17, 0.42);
+  background: rgba(255, 255, 255, 0.22);
+  box-shadow: 0 18px 0 rgba(17, 17, 17, 0.08);
+}
+
+.wall-a {
+  inset: 8% 5% 18% 5%;
+}
+
+.wall-b {
+  inset: 18% 46% 18% 5%;
+}
+
+.wall-c {
+  inset: 8% 5% 52% 38%;
+}
+
+.wall-d {
+  inset: 44% 5% 18% 56%;
+}
+
+.room-a {
+  inset: 22% 60% 52% 14%;
+}
+
+.room-b {
+  inset: 50% 62% 24% 16%;
+}
+
+.room-c {
+  inset: 20% 18% 58% 58%;
+}
+
+.design-measure {
+  position: absolute;
+  color: #0f172a;
+  font-size: 1.4rem;
+  font-weight: 800;
+}
+
+.measure-x {
+  left: 18%;
+  bottom: -34px;
+}
+
+.measure-y {
+  right: 0;
+  bottom: 2%;
+}
+
+.design-summary-list,
+.design-summary-totals {
+  display: grid;
+  gap: 12px;
+  margin: 28px 0 0;
+}
+
+.design-summary-list div,
+.design-summary-totals div {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.design-summary-list span,
+.design-summary-list b,
+.design-summary-totals dt,
+.design-summary-totals dd {
+  color: #0f172a;
+  font-size: 0.92rem;
+}
+
+.design-summary-list strong {
+  margin-right: 8px;
+}
+
+.design-summary-totals {
+  border-top: 1px solid rgba(23, 63, 95, 0.16);
+  padding-top: 20px;
+}
+
+.design-summary-totals dt,
+.design-summary-totals dd {
+  margin: 0;
+}
+
+.design-price-box {
+  margin: 42px 0 38px;
+  border: 1px solid rgba(95, 159, 56, 0.45);
+  border-radius: 8px;
+  background: #f4fbef;
+  padding: 22px 20px;
+}
+
+.design-price-box span,
+.design-price-box strong {
+  display: block;
+  color: #0f172a;
+}
+
+.design-price-box strong {
+  margin-top: 12px;
+  color: #4f8f2f;
+  font-size: 1.45rem;
+}
+
+.design-summary-panel h3 {
+  margin: 0 0 24px;
+  color: #0f172a;
+  font-size: 1.4rem;
+  font-weight: 850;
+}
+
+.design-quick-actions {
+  display: grid;
+  gap: 22px;
+}
+
+.design-quick-actions .design-outline-btn {
+  min-height: 58px;
+  font-size: 1.05rem;
+}
+
+.design-help-card {
+  margin-top: 24px;
+  min-height: 180px;
+  display: grid;
+  grid-template-columns: 1fr minmax(320px, 440px);
+  gap: 42px;
+  padding: 32px clamp(28px, 5vw, 80px);
+  background: rgba(255, 255, 255, 0.96);
+}
+
+.design-help-step-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 42px;
+  margin-top: 34px;
+}
+
+.design-help-step-row article {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.design-help-step-row span {
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(95, 159, 56, 0.35);
+  border-radius: 50%;
+  color: #5f9f38;
+  font-size: 0.72rem;
+}
+
+.design-help-step-row h3,
+.design-help-step-row p {
+  margin: 0;
+  color: #0f172a;
+}
+
+.design-help-step-row h3 {
+  font-size: 0.92rem;
+  font-weight: 850;
+}
+
+.design-help-step-row p {
+  margin-top: 4px;
+  font-size: 0.78rem;
+}
+
+.design-guide-box {
+  background: #f4fbef;
+  border: 1px solid rgba(95, 159, 56, 0.45);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 22px;
+  padding: 28px 36px;
+}
+
+.design-guide-box h2,
+.design-guide-box p {
+  margin: 0;
+  color: #0f172a;
+}
+
+.design-guide-box p {
+  margin-top: 18px;
+  font-size: 0.92rem;
+}
+
+.design-guide-btn {
+  min-width: 170px;
+  min-height: 58px;
+  font-size: 1.2rem;
+  text-transform: none;
+}
+
 .register-shell {
   padding-top: 20px;
   padding-bottom: 40px;
@@ -2352,5 +2857,123 @@
     grid-template-columns: 1fr;
     width: calc(100% - 24px);
     padding: 18px;
+  }
+}
+
+@media (max-width: 1199.98px) {
+  .design-topbar {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .design-topbar-actions {
+    justify-content: flex-start;
+  }
+
+  .design-pieces-panel,
+  .design-summary-panel,
+  .design-canvas-card {
+    min-height: auto;
+  }
+
+  .design-piece-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .design-canvas-card {
+    min-height: 660px;
+  }
+
+  .design-house-plan {
+    inset: 130px 110px 92px 140px;
+  }
+
+  .design-summary-panel {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+  }
+
+  .design-summary-panel h2,
+  .design-summary-panel h3 {
+    grid-column: 1 / -1;
+  }
+
+  .design-price-box {
+    margin: 0;
+  }
+
+  .design-help-card {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .design-topbar {
+    padding: 24px 20px;
+  }
+
+  .design-topbar-actions,
+  .design-topbar-actions .btn {
+    width: 100%;
+  }
+
+  .design-piece-list,
+  .design-summary-panel,
+  .design-help-step-row {
+    grid-template-columns: 1fr;
+  }
+
+  .design-piece-card {
+    grid-template-columns: 94px 1fr;
+  }
+
+  .design-pieces-panel,
+  .design-summary-panel {
+    padding: 22px 18px;
+  }
+
+  .design-canvas-card {
+    min-height: 540px;
+  }
+
+  .design-toolbar {
+    top: 18px;
+    left: 18px;
+    flex-wrap: wrap;
+    max-width: 220px;
+  }
+
+  .design-toolbar button,
+  .design-zoom button {
+    width: 38px;
+    height: 38px;
+  }
+
+  .design-cube {
+    display: none;
+  }
+
+  .design-zoom {
+    left: 18px;
+    bottom: 96px;
+  }
+
+  .design-house-plan {
+    inset: 130px 48px 92px 72px;
+  }
+
+  .design-measure {
+    font-size: 1rem;
+  }
+
+  .design-guide-box {
+    align-items: stretch;
+    flex-direction: column;
+    padding: 24px 20px;
+  }
+
+  .design-guide-btn {
+    width: 100%;
   }
 }
