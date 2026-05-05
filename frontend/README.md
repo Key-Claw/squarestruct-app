@@ -41,7 +41,8 @@ frontend/
 
 ## Responsive
 
-El responsive se organiza en `src/App.css` siguiendo los puntos de corte de Bootstrap:
+El responsive general se organiza en `src/App.css` siguiendo los puntos de corte de Bootstrap.
+La navbar tiene sus ajustes propios en `src/styles/navbar.css`, porque necesitaba copiar un boceto concreto.
 
 | Tipo de pantalla | Rango usado |
 | --- | --- |
@@ -52,11 +53,19 @@ El responsive se organiza en `src/App.css` siguiendo los puntos de corte de Boot
 
 La idea es que todas las paginas usen el ancho disponible con `container-fluid`, y que el contenido se reorganice segun el tamano de pantalla.
 
+En la navbar:
+
+- PC: logo grande, menu, buscador y acciones en una sola fila.
+- Tablet: todo sigue en una fila, pero con controles mas pequenos.
+- Movil: arriba quedan logo, buscador y hamburguesa; al desplegar, los botones salen en una fila horizontal.
+
 ## Bootstrap
 
 Bootstrap se usa para:
 
-- Navbar y menu hamburguesa.
+- Navbar, collapse y menu hamburguesa.
+- Dropdown de usuario.
+- `input-group`, `form-control` y `btn` del buscador.
 - Botones.
 - Formularios.
 - Grid y columnas.
@@ -66,7 +75,30 @@ Bootstrap se usa para:
 - Alerts.
 - Carousel.
 
-En el codigo hay comentarios con enlaces a la documentacion oficial de Bootstrap para poder explicar de donde sale cada pieza.
+En `src/components/Navbar.jsx` se mantiene la estructura de Bootstrap. Las clases usadas en la barra son:
+
+- `navbar`, `navbar-expand-md`, `navbar-light`
+- `container-fluid`
+- `navbar-brand`
+- `navbar-toggler`, `collapse`, `navbar-collapse`
+- `navbar-nav`, `nav-item`
+- `dropdown`, `dropdown-toggle`, `dropdown-menu`, `dropdown-item`
+- `input-group`, `form-control`, `btn`
+
+En `src/styles/navbar.css` se pisa el aspecto visual para ajustar medidas, colores y responsive al boceto. La referencia principal es la documentacion oficial de Bootstrap:
+
+- Navbar: https://getbootstrap.com/docs/5.3/components/navbar/
+- Collapse: https://getbootstrap.com/docs/5.3/components/collapse/
+- Dropdowns: https://getbootstrap.com/docs/5.3/components/dropdowns/
+- Input group: https://getbootstrap.com/docs/5.3/forms/input-group/
+- Buttons: https://getbootstrap.com/docs/5.3/components/buttons/
+
+Para trabajar dos personas sin pisarse:
+
+- Si cambia la navegacion o las acciones, tocar primero `Navbar.jsx`.
+- Si cambia el tamano, color, espaciado o responsive de la barra, tocar `navbar.css`.
+- Mantener `data-bs-target="#mainNavbar"` y `id="mainNavbar"` sincronizados; si no, la hamburguesa deja de abrir.
+- Evitar mover estilos de la navbar a `App.css`, porque se vuelve mas dificil saber que regla gana.
 
 ## ESLint
 
