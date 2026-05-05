@@ -1,3 +1,51 @@
+import heroGalleryImage from '../assets/galeria/hero-galeria-casa-modular.jpeg'
+import featuredHouseImage from '../assets/galeria/galeria-casa-moderna-desierto-destacada.jpeg'
+import compactHouseImage from '../assets/galeria/galeria-casa-compacta.jpeg'
+import forestHouseImage from '../assets/galeria/galeria-casa-moderna-bosque.jpeg'
+
+const homeHighlights = [
+  {
+    title: 'Modular',
+    text: 'Piezas para muros, cerramientos y estructuras ordenadas por tipos.',
+  },
+  {
+    title: 'Resistente',
+    text: 'Materiales pensados para mantener solidez y confianza en obra.',
+  },
+  {
+    title: 'Plano',
+    text: 'Disena y ajusta la estructura antes de construir.',
+  },
+  {
+    title: 'Sostenible',
+    text: 'Construccion mas eficiente con un uso mejor de recursos.',
+  },
+]
+
+const homeFeatureCards = [
+  {
+    title: 'Explorar catalogo',
+    text: 'Encuentra bloques, pilares y accesorios con una vista clara y ordenada.',
+    image: compactHouseImage,
+    action: 'Ir al catalogo',
+    handler: (onNavigate) => onNavigate('catalogo', '', 'productos'),
+  },
+  {
+    title: 'Inspirarte',
+    text: 'Descubre ideas de composicion y referencias visuales para tus proyectos.',
+    image: heroGalleryImage,
+    action: 'Ver galeria',
+    handler: (onNavigate) => onNavigate('galeria'),
+  },
+  {
+    title: 'Generar tu estructura',
+    text: 'Crea tu propio diseno y calcula los materiales necesarios para hacerlo realidad.',
+    image: forestHouseImage,
+    action: 'Ir a Design',
+    handler: (onNavigate) => onNavigate('design'),
+  },
+]
+
 const homeValues = [
   {
     title: 'Bloques modulares',
@@ -15,13 +63,13 @@ const homeValues = [
 
 const homeSlides = [
   {
-    image: 'https://mdbcdn.b-cdn.net/img/new/slides/041.webp',
+    image: heroGalleryImage,
     title: 'SquareStruct',
     text: 'Construccion modular organizada por piezas',
     alt: 'Presentacion visual de SquareStruct',
   },
   {
-    image: 'https://mdbcdn.b-cdn.net/img/new/slides/042.webp',
+    image: featuredHouseImage,
     title: 'Catalogo conectado',
     text: 'Productos, medidas, stock y precios en una misma interfaz',
     alt: 'Imagen de apoyo para catalogo modular',
@@ -37,86 +85,135 @@ const homeSlides = [
 function Home({ onNavigate }) {
   return (
     <section className="page-shell home-page container-fluid">
-      {/* Carrusel de Bootstrap reutilizado como portada principal.
-          https://getbootstrap.com/docs/5.3/components/carousel/ */}
-      <div id="homeCarousel" className="carousel slide about-carousel" data-bs-ride="carousel">
-        <div className="carousel-indicators">
-          {homeSlides.map((slide, index) => (
-            <button
-              key={slide.title}
-              type="button"
-              data-bs-target="#homeCarousel"
-              data-bs-slide-to={index}
-              className={index === 0 ? 'active' : ''}
-              aria-current={index === 0 ? 'true' : undefined}
-              aria-label={`Slide ${index + 1}`}
-            ></button>
-          ))}
-        </div>
-
-        <div className="carousel-inner">
-          {homeSlides.map((slide, index) => (
-            <div className={`carousel-item ${index === 0 ? 'active' : ''}`} key={slide.title}>
-              <img src={slide.image} className="d-block w-100 about-carousel-image" alt={slide.alt} />
-              <div className="carousel-caption about-carousel-caption">
-                <h1>{slide.title}</h1>
-                <p>{slide.text}</p>
+      <div className="home-hero card">
+        <div className="row g-0 align-items-stretch home-hero-grid">
+          <div className="col-12 col-lg-4 home-hero-copy-wrap">
+            <div className="home-hero-copy">
+              <p className="eyebrow">Construccion modular sostenible</p>
+              <h1>Construye sin limites.</h1>
+              <h2>Modular, facil, real.</h2>
+              <p>
+                SquareStruct es la plataforma que te permite descubrir, comparar y
+                planificar tu construccion modular con total claridad y confianza.
+              </p>
+              <div className="hero-actions home-hero-actions">
+                <button type="button" className="btn btn-light" onClick={() => onNavigate('catalogo', '', 'productos')}>
+                  Ver catalogo
+                </button>
+                <button type="button" className="btn btn-outline-light home-design-btn" onClick={() => onNavigate('design')}>
+                  Diseñar tu estructura
+                </button>
               </div>
             </div>
-          ))}
-        </div>
+          </div>
 
-        <button className="carousel-control-prev" type="button" data-bs-target="#homeCarousel" data-bs-slide="prev">
-          <span className="carousel-control-prev-icon" aria-hidden="true"></span>
-          <span className="visually-hidden">Anterior</span>
-        </button>
-        <button className="carousel-control-next" type="button" data-bs-target="#homeCarousel" data-bs-slide="next">
-          <span className="carousel-control-next-icon" aria-hidden="true"></span>
-          <span className="visually-hidden">Siguiente</span>
-        </button>
+          <div className="col-12 col-lg-8 home-carousel-wrap">
+            <div id="homeCarousel" className="carousel slide home-carousel" data-bs-ride="carousel">
+              <div className="carousel-indicators">
+                {homeSlides.map((slide, index) => (
+                  <button
+                    key={slide.title}
+                    type="button"
+                    data-bs-target="#homeCarousel"
+                    data-bs-slide-to={index}
+                    className={index === 0 ? 'active' : ''}
+                    aria-current={index === 0 ? 'true' : undefined}
+                    aria-label={`Slide ${index + 1}`}
+                  ></button>
+                ))}
+              </div>
+
+              <div className="carousel-inner">
+                {homeSlides.map((slide, index) => (
+                  <div className={`carousel-item ${index === 0 ? 'active' : ''}`} key={slide.title}>
+                    <img src={slide.image} className="d-block w-100 home-carousel-image" alt={slide.alt} />
+                    <div className="carousel-caption home-carousel-caption">
+                      <p>{slide.title}</p>
+                      <h2>{slide.text}</h2>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <button className="carousel-control-prev" type="button" data-bs-target="#homeCarousel" data-bs-slide="prev">
+                <span className="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span className="visually-hidden">Anterior</span>
+              </button>
+              <button className="carousel-control-next" type="button" data-bs-target="#homeCarousel" data-bs-slide="next">
+                <span className="carousel-control-next-icon" aria-hidden="true"></span>
+                <span className="visually-hidden">Siguiente</span>
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <div className="mvp-hero home-hero">
-        <p className="eyebrow">Construccion modular sostenible</p>
-        <h1>Disena tu plano con bloques modulares</h1>
-        <p>
-          SquareStruct conecta productos tipo bloque y pilar con un futuro
-          sistema de diseno de viviendas por piezas.
-        </p>
-        <div className="hero-actions">
-          <button type="button" className="btn btn-light" onClick={() => onNavigate('catalogo', '', 'productos')}>
-            Ver productos
-          </button>
-          <button type="button" className="btn btn-outline-light" onClick={() => onNavigate('design')}>
-            Explorar Design
-          </button>
-        </div>
-      </div>
+      <section className="home-about card">
+        <div className="row g-0 align-items-stretch home-about-grid">
+          <div className="col-12 col-lg-5 home-about-media-wrap">
+            <img src={featuredHouseImage} className="home-about-image" alt="Casa modular de SquareStruct" />
+          </div>
 
-      <div className="row g-4 align-items-stretch">
-        {homeValues.map((item) => (
-          <div className="col-12 col-md-4" key={item.title}>
-            <article className="page-card compact-card h-100">
-              <div className="page-card-body">
+          <div className="col-12 col-lg-7 home-about-copy-wrap">
+            <div className="home-about-copy">
+              <p className="eyebrow">SquareStruct</p>
+              <h2>¿Qué es SquareStruct?</h2>
+              <p>
+                Somos una tienda online especializada en soluciones modulares y
+                pilares para la construccion.
+              </p>
+              <p>
+                Nuestro objetivo es acercar este tipo de soluciones al usuario,
+                facilitando la eleccion de materiales y la planificacion de
+                estructuras mediante piezas ensamblables.
+              </p>
+
+              <div className="home-highlight-grid">
+                {homeHighlights.map((item, index) => (
+                  <article className="home-highlight" key={item.title}>
+                    <span className="home-highlight-icon">{index + 1}</span>
+                    <h3>{item.title}</h3>
+                    <p>{item.text}</p>
+                  </article>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="home-section-heading">
+        <h2>Todo lo que puedes hacer en SquareStruct</h2>
+      </section>
+
+      <div className="row g-4 home-feature-grid">
+        {homeFeatureCards.map((item) => (
+          <div className="col-12 col-lg-4" key={item.title}>
+            <article className="page-card home-feature-card h-100">
+              <img src={item.image} className="home-feature-image" alt={item.title} />
+              <div className="page-card-body home-feature-body">
+                <span className="home-feature-badge">0{homeFeatureCards.indexOf(item) + 1}</span>
                 <h3>{item.title}</h3>
                 <p>{item.text}</p>
+                <button type="button" className="home-feature-link" onClick={() => item.handler(onNavigate)}>
+                  {item.action} →
+                </button>
               </div>
             </article>
           </div>
         ))}
       </div>
 
-      <section className="page-block product-link-block">
-        <div>
-          <p className="eyebrow">MVP SquareStruct</p>
-          <h2>Del catalogo al diseno de estructuras</h2>
+      <section className="page-block home-cta-block">
+        <div className="home-cta-copy">
+          <p className="eyebrow home-cta-eyebrow">SquareStruct</p>
+          <h2>Empieza a construir tu idea</h2>
           <p>
-            La portada queda alineada con About Us: una presentacion visual,
-            acceso al catalogo y una entrada directa al futuro editor.
+            Planifica, elige y consigue con la confianza de usar soluciones modulares de calidad.
           </p>
         </div>
-        <button type="button" className="btn btn-light" onClick={() => onNavigate('catalogo', '', 'productos')}>
-          Ir al catalogo
+        <button type="button" className="btn btn-light home-cta-button" onClick={() => onNavigate('design')}>
+          Comienza ahora
         </button>
       </section>
     </section>
