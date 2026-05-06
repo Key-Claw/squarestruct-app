@@ -8,8 +8,9 @@ import { registerUser, loginUser } from '../services/authService'
  * @param {function} onUserLogin - Callback al hacer login exitoso después del registro.
  */
 function Register({ onNavigate, onUserLogin }) {
-  // Nombre completo del usuario a registrar.
+  // Nombre y primer apellido del usuario a registrar.
   const [nombre, setNombre] = useState('')
+  const [primerApellido, setPrimerApellido] = useState('')
   // Email para la nueva cuenta.
   const [email, setEmail] = useState('')
   // Contraseña a establecer.
@@ -30,7 +31,7 @@ function Register({ onNavigate, onUserLogin }) {
     e.preventDefault()
 
     // Validación básica de campos obligatorios.
-    if (!nombre || !email || !contrasena || !confirmaContrasena) {
+    if (!nombre || !primerApellido || !email || !contrasena || !confirmaContrasena) {
       setError('Completa todos los campos para crear tu cuenta.')
       return
     }
@@ -64,16 +65,17 @@ function Register({ onNavigate, onUserLogin }) {
 
     try {
       // Crear la nueva cuenta en el backend.
-      await registerUser(nombre, email, contrasena)
+      await registerUser(nombre, primerApellido, email, contrasena)
 
-      // Hacer login automático con las credenciales recién registradas.
-      const userData = await loginUser(email, contrasena)
+      // Hacer login automático con email y contraseña
+      const userData = await loginUser({ email, contrasena })
 
       // Actualizar estado global del usuario.
       onUserLogin(userData)
 
       // Limpiar formulario.
       setNombre('')
+      setPrimerApellido('')
       setEmail('')
       setContrasena('')
       setConfirmaContrasena('')
@@ -126,23 +128,29 @@ function Register({ onNavigate, onUserLogin }) {
 
                   {/* Formulario de registro. */}
                   <form onSubmit={handleRegister}>
-                    {/* Campo para el nombre visible del usuario. */}
+                    {/* Campo para el nombre y primer apellido */}
                     <div className="form-outline form-white mb-3">
                       <input
                         type="text"
-                        id="registerName"
-                        className="form-control form-control-lg"
+                        id="registerNombre"
+                        className="form-control form-control-lg mb-2"
                         value={nombre}
                         onChange={(e) => setNombre(e.target.value)}
                         placeholder=" "
                         disabled={isLoading}
                       />
-                      <label
-                        className="form-label"
-                        htmlFor="registerName"
-                      >
-                        Nombre completo
-                      </label>
+                      <label className="form-label" htmlFor="registerNombre">Nombre</label>
+
+                      <input
+                        type="text"
+                        id="registerPrimerApellido"
+                        className="form-control form-control-lg mt-2"
+                        value={primerApellido}
+                        onChange={(e) => setPrimerApellido(e.target.value)}
+                        placeholder=" "
+                        disabled={isLoading}
+                      />
+                      <label className="form-label" htmlFor="registerPrimerApellido">Primer apellido</label>
                     </div>
 
                     {/* Campo para el correo de acceso. */}

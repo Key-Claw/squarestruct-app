@@ -169,7 +169,7 @@ const productosDemo = [
   }
 ]
 
-function Catalogo({ onNavigate, searchTerm = '', initialSection = '' }) {
+function Catalogo({ onNavigate, onAddToCart, searchTerm = '', initialSection = '' }) {
   const [productos, setProductos] = useState([])
   const [cargando, setCargando] = useState(true)
   const [error, setError] = useState('')
@@ -205,6 +205,16 @@ function Catalogo({ onNavigate, searchTerm = '', initialSection = '' }) {
   const handleResetSearch = () => {
     setBusqueda('')
     onNavigate('catalogo', '')
+  }
+
+  /**
+   * Añade un producto al carrito desde la tarjeta del catálogo.
+   * @param {object} product - Producto seleccionado.
+   */
+  const handleAddProduct = (product) => {
+    if (typeof onAddToCart === 'function') {
+      onAddToCart(product)
+    }
   }
 
   const productosCatalogo = useMemo(() => (
@@ -416,7 +426,11 @@ function Catalogo({ onNavigate, searchTerm = '', initialSection = '' }) {
                       <button type="button" className="btn catalog-detail-btn">
                         Ver detalle
                       </button>
-                      <button type="button" className="btn catalog-add-btn">
+                      <button
+                        type="button"
+                        className="btn catalog-add-btn"
+                        onClick={() => handleAddProduct(product)}
+                      >
                         Anadir
                       </button>
                     </div>

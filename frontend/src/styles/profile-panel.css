@@ -1,0 +1,403 @@
+/**
+ * ESTILOS DEL PANEL DE PERFIL
+ * 
+ * Panel deslizante que aparece desde la izquierda de la pantalla.
+ * Muestra información del usuario y opciones de acción.
+ */
+
+/* ============================================================================
+   BACKDROP - FONDO OSCURO
+   =========================================================================== */
+
+.profile-panel-backdrop {
+  /* Posición fija para cubrir toda la pantalla */
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  
+  /* Fondo oscuro semi-transparente */
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(3px);
+  
+  /* Capas y visualización */
+  z-index: 999;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  
+  /* Animación de entrada */
+  animation: fadeInBackdrop 0.3s ease-in-out;
+}
+
+@keyframes fadeInBackdrop {
+  from {
+    opacity: 0;
+    backdrop-filter: blur(0px);
+  }
+  to {
+    opacity: 1;
+    backdrop-filter: blur(3px);
+  }
+}
+
+/* ============================================================================
+   CONTENEDOR DEL PANEL
+   =========================================================================== */
+
+.profile-panel-container {
+  /* Dimensiones */
+  width: 100%;
+  max-width: 380px;
+  height: 100vh;
+  
+  /* Estilos visuales */
+  background: #1a1d22;
+  color: #fff;
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 20px 0 50px rgba(0, 0, 0, 0.3);
+  
+  /* Layout flex */
+  display: flex;
+  flex-direction: column;
+  
+  /* Animación de deslizamiento desde la izquierda */
+  animation: slideInFromLeft 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes slideInFromLeft {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* ============================================================================
+   ENCABEZADO DEL PANEL
+   =========================================================================== */
+
+.profile-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.profile-panel-header h2 {
+  margin: 0;
+  font-size: 1.3rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Botón de cerrar */
+.profile-panel-close-btn {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #fff;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.profile-panel-close-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* ============================================================================
+   CONTENIDO DEL PANEL
+   =========================================================================== */
+
+.profile-panel-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+  
+  /* Scroll personalizado */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+}
+
+.profile-panel-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.profile-panel-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.profile-panel-content::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 3px;
+}
+
+.profile-panel-content::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* ============================================================================
+   LOADING
+   =========================================================================== */
+
+.profile-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+  gap: 16px;
+}
+
+.profile-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(255, 255, 255, 0.2);
+  border-top-color: #5f9f38;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.profile-loading p {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.9rem;
+}
+
+/* ============================================================================
+   ERROR
+   =========================================================================== */
+
+.profile-error-message {
+  padding: 12px 14px;
+  background: rgba(220, 53, 69, 0.1);
+  border: 1px solid rgba(220, 53, 69, 0.3);
+  border-radius: 6px;
+  color: #ff6b6b;
+  font-size: 0.85rem;
+  margin-bottom: 16px;
+  animation: slideDownIn 0.3s ease-out;
+}
+
+/* ============================================================================
+   INFORMACIÓN DEL PERFIL
+   =========================================================================== */
+
+.profile-info {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* ============================================================================
+   TARJETA DE INFORMACIÓN
+   =========================================================================== */
+
+.profile-info-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* ============================================================================
+   CAMPO DE INFORMACIÓN
+   =========================================================================== */
+
+.profile-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.profile-field label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.6);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.profile-value {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.9);
+  word-break: break-word;
+}
+
+/* ============================================================================
+   BADGE DE ROL
+   =========================================================================== */
+
+.profile-role-badge {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  width: fit-content;
+}
+
+.profile-role-badge.admin {
+  background: rgba(220, 53, 69, 0.15);
+  color: #ff6b6b;
+  border: 1px solid rgba(220, 53, 69, 0.3);
+}
+
+.profile-role-badge.moderador {
+  background: rgba(255, 193, 7, 0.15);
+  color: #ffc107;
+  border: 1px solid rgba(255, 193, 7, 0.3);
+}
+
+.profile-role-badge.usuario {
+  background: rgba(0, 150, 255, 0.15);
+  color: #0096ff;
+  border: 1px solid rgba(0, 150, 255, 0.3);
+}
+
+/* ============================================================================
+   DIVIDER
+   =========================================================================== */
+
+.profile-divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* ============================================================================
+   BOTONES DE ACCIÓN
+   =========================================================================== */
+
+.profile-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.profile-action-btn {
+  padding: 11px 14px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  color: #fff;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: left;
+  font-family: inherit;
+}
+
+.profile-action-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.15);
+  transform: translateX(-2px);
+}
+
+.profile-action-btn:active {
+  transform: translateX(0);
+}
+
+/* Variante especial para botón de gestionar usuarios */
+.profile-action-btn.users-btn {
+  background: rgba(95, 159, 56, 0.1);
+  border-color: rgba(95, 159, 56, 0.3);
+  color: #5f9f38;
+}
+
+.profile-action-btn.users-btn:hover {
+  background: rgba(95, 159, 56, 0.15);
+  border-color: rgba(95, 159, 56, 0.5);
+}
+
+/* Variante especial para botón de cambiar contraseña */
+.profile-action-btn.change-password-btn {
+  background: rgba(0, 150, 255, 0.1);
+  border-color: rgba(0, 150, 255, 0.3);
+  color: #0096ff;
+}
+
+.profile-action-btn.change-password-btn:hover {
+  background: rgba(0, 150, 255, 0.15);
+  border-color: rgba(0, 150, 255, 0.5);
+}
+
+/* Variante especial para botón de logout */
+.profile-action-btn.logout-btn {
+  background: rgba(220, 53, 69, 0.1);
+  border-color: rgba(220, 53, 69, 0.3);
+  color: #ff6b6b;
+}
+
+.profile-action-btn.logout-btn:hover {
+  background: rgba(220, 53, 69, 0.15);
+  border-color: rgba(220, 53, 69, 0.5);
+}
+
+/* ============================================================================
+   ESTADO VACÍO
+   =========================================================================== */
+
+.profile-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.profile-empty p {
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+/* ============================================================================
+   RESPONSIVE
+   =========================================================================== */
+
+@media (max-width: 480px) {
+  .profile-panel-container {
+    max-width: 100%;
+    width: 100%;
+  }
+
+  .profile-panel-header h2 {
+    font-size: 1.1rem;
+  }
+
+  .profile-info-card {
+    padding: 14px;
+    gap: 12px;
+  }
+
+  .profile-action-btn {
+    font-size: 0.85rem;
+    padding: 10px 12px;
+  }
+}
