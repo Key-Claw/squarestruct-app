@@ -1,7 +1,10 @@
-import heroGalleryImage from '../assets/galeria/hero-galeria-casa-modular.jpeg'
-import featuredHouseImage from '../assets/galeria/galeria-casa-moderna-desierto-destacada.jpeg'
-import compactHouseImage from '../assets/galeria/galeria-casa-compacta.jpeg'
-import forestHouseImage from '../assets/galeria/galeria-casa-moderna-bosque.jpeg'
+import carruselDesignImage from '../assets/inicio/carrusel-design.jpeg'
+import carruselPersonasImage from '../assets/inicio/carrusel-personas.jpeg'
+import carruselSostenibleImage from '../assets/inicio/carrusel-sostenible.jpeg'
+import inicioCatalogoImage from '../assets/inicio/inicio-catalogo.jpeg'
+import inicioDesignImage from '../assets/inicio/inicio-design.jpeg'
+import inicioGaleriaImage from '../assets/inicio/inicio-galeeria.jpeg'
+import inicioSquarestructImage from '../assets/inicio/inicio-squarestruct.jpeg'
 
 const homeHighlights = [
   {
@@ -26,59 +29,44 @@ const homeFeatureCards = [
   {
     title: 'Explorar catalogo',
     text: 'Encuentra bloques, pilares y accesorios con una vista clara y ordenada.',
-    image: compactHouseImage,
+    image: inicioCatalogoImage,
     action: 'Ir al catalogo',
     handler: (onNavigate) => onNavigate('catalogo', '', 'productos'),
   },
   {
     title: 'Inspirarte',
     text: 'Descubre ideas de composicion y referencias visuales para tus proyectos.',
-    image: heroGalleryImage,
+    image: inicioGaleriaImage,
     action: 'Ver galeria',
     handler: (onNavigate) => onNavigate('galeria'),
   },
   {
     title: 'Generar tu estructura',
     text: 'Crea tu propio diseno y calcula los materiales necesarios para hacerlo realidad.',
-    image: forestHouseImage,
+    image: inicioDesignImage,
     action: 'Ir a Design',
     handler: (onNavigate) => onNavigate('design'),
   },
 ]
 
-const homeValues = [
-  {
-    title: 'Bloques modulares',
-    text: 'Piezas pensadas para levantar muros, cerramientos y estructuras por modulos.',
-  },
-  {
-    title: 'Catalogo tecnico',
-    text: 'Consulta precio, stock, tipo y dimensiones desde la base de datos del proyecto.',
-  },
-  {
-    title: 'Diseno de planos',
-    text: 'Una linea futura para montar estructuras y estimar presupuestos de forma visual.',
-  },
-]
-
 const homeSlides = [
   {
-    image: heroGalleryImage,
+    image: carruselDesignImage,
     title: 'SquareStruct',
-    text: 'Construccion modular organizada por piezas',
-    alt: 'Presentacion visual de SquareStruct',
+    text: 'Planifica tu proyecto modular con piezas claras, medibles y comparables',
+    alt: 'Diseño modular en SquareStruct',
   },
   {
-    image: featuredHouseImage,
+    image: carruselPersonasImage,
     title: 'Catalogo conectado',
     text: 'Productos, medidas, stock y precios en una misma interfaz',
-    alt: 'Imagen de apoyo para catalogo modular',
+    alt: 'Personas planificando un proyecto modular',
   },
   {
-    image: 'https://mdbcdn.b-cdn.net/img/new/slides/043.webp',
+    image: carruselSostenibleImage,
     title: 'Disena tu estructura',
     text: 'Base inicial para evolucionar hacia planos y presupuestos',
-    alt: 'Imagen de apoyo para diseno de estructuras',
+    alt: 'Construccion modular sostenible',
   },
 ]
 
@@ -127,10 +115,6 @@ function Home({ onNavigate }) {
                 {homeSlides.map((slide, index) => (
                   <div className={`carousel-item ${index === 0 ? 'active' : ''}`} key={slide.title}>
                     <img src={slide.image} className="d-block w-100 home-carousel-image" alt={slide.alt} />
-                    <div className="carousel-caption home-carousel-caption">
-                      <p>{slide.title}</p>
-                      <h2>{slide.text}</h2>
-                    </div>
                   </div>
                 ))}
               </div>
@@ -151,7 +135,7 @@ function Home({ onNavigate }) {
       <section className="home-about card">
         <div className="row g-0 align-items-stretch home-about-grid">
           <div className="col-12 col-lg-5 home-about-media-wrap">
-            <img src={featuredHouseImage} className="home-about-image" alt="Casa modular de SquareStruct" />
+            <img src={inicioSquarestructImage} className="home-about-image" alt="Casa modular de SquareStruct" />
           </div>
 
           <div className="col-12 col-lg-7 home-about-copy-wrap">
