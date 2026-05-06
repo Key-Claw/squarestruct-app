@@ -40,7 +40,7 @@ function ProfilePanel({ isOpen, user, onClose, onLogout, isAdmin, onNavigateToUs
       try {
         const profile = await getProfile()
         setProfileData(profile)
-      } catch (err) {
+      } catch {
         // Si falla el refresco, usamos la sesión local para no romper la vista
         setProfileData(user)
         setError('No se pudieron cargar los datos actualizados')

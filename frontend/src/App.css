@@ -230,6 +230,7 @@
 
 /* HOME - SECCIÓN HERO CON CARRUSEL */
 .home-hero {
+  position: relative;
   overflow: hidden;
   margin-bottom: 48px;
   border: 1px solid rgba(23, 63, 95, 0.14);
@@ -240,7 +241,8 @@
 
 /* Grid del hero: ajustado para simetría perfecta entre contenido y carrusel */
 .home-hero-grid {
-  min-height: 420px;
+  position: relative;
+  min-height: clamp(420px, 40vw, 560px);
 }
 
 .home-hero-copy-wrap,
@@ -248,20 +250,28 @@
   display: flex;
 }
 
+.home-hero-copy-wrap {
+  position: relative;
+  z-index: 2;
+}
+
 .home-hero-copy {
-  width: 100%;
-  padding: clamp(24px, 3vw, 34px);
+  width: min(100%, 620px);
+  min-height: inherit;
+  padding: clamp(34px, 5vw, 78px);
   display: flex;
   flex-direction: column;
   justify-content: center;
   gap: 10px;
   text-align: left;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.98), rgba(255, 255, 255, 0.9) 56%, rgba(255, 255, 255, 0.34) 82%, rgba(255, 255, 255, 0));
 }
 
 .home-hero-copy h1 {
   margin: 0;
   color: #0f172a;
-  font-size: clamp(2rem, 3vw, 3rem);
+  max-width: 11ch;
+  font-size: clamp(2.25rem, 3.2vw, 3.55rem);
   font-weight: 850;
   line-height: 1.02;
 }
@@ -275,7 +285,7 @@
 
 .home-hero-copy p {
   margin: 0;
-  max-width: 34ch;
+  max-width: 42ch;
   color: #475569;
   line-height: 1.55;
 }
@@ -313,27 +323,37 @@
 }
 
 .home-carousel {
+  position: absolute;
+  inset: 0;
   width: 100%;
+  height: 100%;
   min-height: 100%;
-  border-left: 1px solid rgba(23, 63, 95, 0.12);
+  border-left: 0;
   background: #f5f7f5;
+}
+
+.home-carousel .carousel-inner,
+.home-carousel .carousel-item {
+  height: 100%;
 }
 
 .home-carousel-image {
   width: 100%;
   height: 100%;
-  min-height: 320px;
+  min-height: clamp(420px, 40vw, 560px);
   object-fit: cover;
 }
 
 .home-carousel-caption {
-  right: 10%;
-  left: 10%;
-  bottom: 18px;
-  padding: 14px 16px;
-  border-radius: 12px;
-  background: rgba(15, 23, 42, 0.62);
-  backdrop-filter: blur(4px);
+  right: clamp(22px, 4vw, 70px);
+  left: auto;
+  bottom: clamp(22px, 4vw, 58px);
+  max-width: min(420px, 36vw);
+  padding: 14px 18px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  background: rgba(15, 23, 42, 0.58);
+  backdrop-filter: blur(6px);
   text-align: left;
 }
 
@@ -349,8 +369,8 @@
 .home-carousel-caption h2 {
   margin: 0;
   color: #fff;
-  font-size: clamp(1rem, 1.8vw, 1.4rem);
-  line-height: 1.15;
+  font-size: clamp(0.95rem, 1.25vw, 1.18rem);
+  line-height: 1.35;
 }
 
 .home-about {
@@ -463,9 +483,18 @@
 .home-feature-grid {
   --bs-gutter-x: 18px;
   --bs-gutter-y: 18px;
+  width: 100%;
+  margin-inline: 0;
+}
+
+.home-feature-grid > [class*='col-'] {
+  display: flex;
+  padding-inline: calc(var(--bs-gutter-x) * 0.5);
 }
 
 .home-feature-card {
+  width: 100%;
+  min-height: 360px;
   overflow: hidden;
   border: 1px solid rgba(23, 63, 95, 0.14);
   border-radius: 14px;
@@ -489,13 +518,14 @@
 
 .home-feature-image {
   width: 100%;
-  height: 190px;
+  height: clamp(220px, 16vw, 300px);
   object-fit: cover;
   display: block;
   background: #dfe6e0;
 }
 
 .home-feature-body {
+  flex: 1;
   padding: 18px 18px 20px;
   background: linear-gradient(180deg, rgba(32, 37, 43, 0.98), rgba(32, 37, 43, 0.96));
   display: flex;
@@ -518,7 +548,7 @@
 }
 
 .home-feature-link {
-  margin-top: 14px;
+  margin-top: auto;
   padding: 0;
   border: 0;
   background: transparent;
@@ -534,7 +564,7 @@
 }
 
 .home-cta-block {
-  width: min(100%, 1120px);
+  width: 100%;
   margin: 52px auto 0;
   padding: 22px 28px;
   display: flex;
@@ -2722,6 +2752,15 @@
     padding-inline: 14px;
   }
 
+  .home-hero-grid {
+    min-height: 560px;
+  }
+
+  .home-hero-copy {
+    width: 100%;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(255, 255, 255, 0.88) 66%, rgba(255, 255, 255, 0.18));
+  }
+
   .page-card {
     min-height: auto;
   }
@@ -2760,7 +2799,15 @@
   }
 
   .home-carousel-image {
-    min-height: 250px;
+    min-height: 560px;
+  }
+
+  .home-carousel-caption {
+    right: 18px;
+    left: 18px;
+    bottom: 18px;
+    max-width: none;
+    text-align: left;
   }
 
   .about-carousel {
@@ -2825,6 +2872,16 @@
   .page-shell,
   .home-page {
     padding-inline: 28px;
+  }
+
+  .home-hero-grid {
+    min-height: 520px;
+  }
+
+  .home-carousel-caption {
+    right: 26px;
+    left: auto;
+    max-width: 320px;
   }
 
   .page-grid {

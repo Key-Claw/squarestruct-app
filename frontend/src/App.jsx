@@ -9,6 +9,7 @@ import Register from './pages/Register'
 import AboutUs from './pages/AboutUs'
 import Perfil from './pages/Perfil'
 import Usuarios from './pages/Usuarios'
+import Facturacion from './pages/Facturacion'
 import Design from './pages/Design'
 import Carrito from './pages/Carrito'
 import AuthModal from './components/AuthModal'
@@ -23,7 +24,7 @@ function App() {
   // ============================================================================
   
   // Página visible en cada momento.
-  const [page, setPage] = useState('home')
+  const [page, setPage] = useState('facturacion')
   // Texto de búsqueda que viaja desde el navbar al catálogo.
   const [searchTerm, setSearchTerm] = useState('')
   const [catalogSection, setCatalogSection] = useState('')
@@ -244,6 +245,12 @@ function App() {
         return <Home onNavigate={handleNavigate} />
       }
       return <Usuarios onNavigate={handleNavigate} user={user} />
+    }
+
+    if (page === 'facturacion') {
+      // Acceso provisional para revisar la maqueta sin backend ni login.
+      // Antes de entregar, volver a proteger esta ruta con rol admin.
+      return <Facturacion onNavigate={handleNavigate} user={user} />
     }
 
     // Por defecto volvemos a la portada principal.

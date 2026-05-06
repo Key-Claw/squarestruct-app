@@ -197,6 +197,14 @@ function Navbar({
                         <li>
                           <button
                             className="dropdown-item"
+                            onClick={() => onNavigate('facturacion')}
+                          >
+                            Facturacion
+                          </button>
+                        </li>
+                        <li>
+                          <button
+                            className="dropdown-item"
                             onClick={() => onNavigate('pedidos')}
                           >
                             Mis pedidos
