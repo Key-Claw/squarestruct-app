@@ -40,7 +40,7 @@ const normalizarUsuario = (usuario) => ({
 // Esto impide completar correctamente el flujo login → perfil
 // Posibles causas: validación, inserción en BD o hash de contraseña
 export const registerUsuario = async (req, res) => {
-  const { nombre, email, contrasena } = req.body;
+  const { nombre, primerApellido = '', email, contrasena } = req.body;
   if (!nombre || !email || !contrasena) {
     return res.status(400).json({ error: 'Faltan campos obligatorios' });
   }
@@ -54,8 +54,8 @@ export const registerUsuario = async (req, res) => {
     const hash = await bcrypt.hash(contrasena, 10);
     // Insertar usuario
     await db.query(
-      'INSERT INTO usuarios (nombre, email, contrasena) VALUES (?, ?, ?)',
-      [nombre, email, hash]
+      'INSERT INTO usuarios (nombre, primerApellido, email, contrasena) VALUES (?, ?, ?, ?)',
+      [nombre, primerApellido, email, hash]
     );
     res.status(201).json({ mensaje: 'Usuario registrado correctamente' });
   } catch (error) {
@@ -65,20 +65,37 @@ export const registerUsuario = async (req, res) => {
 
 
 export const loginUsuario = async (req, res) => {
-  const { email, contrasena } = req.body;
-  if (!email || !contrasena) {
+  const { email, nombre, primerApellido, contrasena } = req.body;
+
+  // Requerir: o bien email + contrasena, o bien nombre + primerApellido + contrasena
+  if ((!email && !(nombre && primerApellido)) || !contrasena) {
     return res.status(400).json({ error: 'Faltan campos obligatorios' });
   }
+
   try {
-    const [usuarios] = await db.query('SELECT * FROM usuarios WHERE email = ?', [email]);
+    let usuarios = [];
+
+    if (nombre && primerApellido) {
+      const [rows] = await db.query(
+        'SELECT * FROM usuarios WHERE nombre = ? AND primerApellido = ?',
+        [nombre, primerApellido]
+      );
+      usuarios = rows;
+    } else {
+      const [rows] = await db.query('SELECT * FROM usuarios WHERE email = ?', [email]);
+      usuarios = rows;
+    }
+
     if (usuarios.length === 0) {
       return res.status(401).json({ error: 'Credenciales inválidas' });
     }
+
     const usuario = usuarios[0];
     const match = await bcrypt.compare(contrasena, usuario.contrasena);
     if (!match) {
       return res.status(401).json({ error: 'Credenciales inválidas' });
     }
+
     // Generar JWT
     const token = jwt.sign(
       {
@@ -90,6 +107,7 @@ export const loginUsuario = async (req, res) => {
       process.env.JWT_SECRET || 'secret',
       { expiresIn: '2h' }
     );
+
     res.json({ token });
   } catch (error) {
     res.status(500).json({ error: 'Error al iniciar sesión', detalle: error.message });

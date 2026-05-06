@@ -3,17 +3,41 @@ import { useState } from 'react'
 import logo from '../assets/logo/squarestruct-icon.png'
 import '../styles/navbar.css'
 
-// Navbar principal.
-// Bootstrap usado aqui:
-// - navbar / navbar-expand-md / navbar-light: estructura principal responsive.
-// - container-fluid: ancho fluido del contenido.
-// - navbar-brand: zona del logo.
-// - navbar-toggler + collapse + navbar-collapse: menu hamburguesa.
-// - navbar-nav / nav-item: listas de navegacion.
-// - dropdown / dropdown-toggle / dropdown-menu: menu de usuario.
-// - input-group / form-control / btn: buscador y botones.
-// El aspecto final esta en src/styles/navbar.css para no mezclar layout con estilos.
-function Navbar({ activePage, activeSection, onNavigate, user, onLogout }) {
+/**
+ * Barra de navegación principal.
+ * 
+ * Componentes de Bootstrap utilizados:
+ * - navbar / navbar-expand-md / navbar-light: estructura principal responsive
+ * - container-fluid: ancho fluido del contenido
+ * - navbar-brand: zona del logo
+ * - navbar-toggler + collapse + navbar-collapse: menú hamburguesa
+ * - navbar-nav / nav-item: listas de navegación
+ * - dropdown / dropdown-toggle / dropdown-menu: menú de usuario
+ * - input-group / form-control / btn: buscador y botones
+ * 
+ * Los estilos finales están en src/styles/navbar.css
+ * 
+ * @param {object} props - Props del componente
+ * @param {string} props.activePage - Página activa actual
+ * @param {string} props.activeSection - Sección activa del catálogo
+ * @param {function} props.onNavigate - Callback para cambiar de página
+ * @param {object} props.user - Datos del usuario autenticado (null si no hay sesión)
+ * @param {function} props.onLogout - Callback para logout
+ * @param {function} props.onOpenAuthModal - Callback para abrir modal de autenticación
+ * @param {function} props.onOpenCartPanel - Callback para abrir panel del carrito
+ * @param {function} props.onOpenProfilePanel - Callback para abrir panel del perfil
+ */
+function Navbar({
+  activePage,
+  activeSection,
+  onNavigate,
+  user,
+  onLogout,
+  onOpenAuthModal,
+  onOpenCartPanel,
+  onOpenProfilePanel,
+}) {
+  // Elementos del menú de navegación principal
   const items = [
     { id: 'home', label: 'Inicio' },
     { id: 'galeria', label: 'Galeria' },
@@ -21,34 +45,61 @@ function Navbar({ activePage, activeSection, onNavigate, user, onLogout }) {
     { id: 'design', label: 'Design' },
   ]
 
+  // Estado del buscador
   const [searchValue, setSearchValue] = useState('')
+  // Estado del idioma
   const [language, setLanguage] = useState('ES')
 
+  /**
+   * Determina si un item de menú está activo.
+   * @param {object} item - Item del menú
+   * @returns {boolean} true si el item está activo
+   */
   const isItemActive = (item) => {
     const targetPage = item.page || item.id
     return activePage === targetPage && (item.section ? activeSection === item.section : !activeSection)
   }
 
+  /**
+   * Maneja la búsqueda en el catálogo.
+   */
   const handleSearch = () => {
     const term = searchValue.trim()
     onNavigate('catalogo', term, 'productos')
     setSearchValue('')
   }
 
+  /**
+   * Maneja el logout del usuario.
+   */
   const handleLogout = () => {
     onLogout()
     onNavigate('home')
   }
 
+  /**
+   * Cambia el idioma (por ahora solo para demostración).
+   * @param {string} lang - Código del idioma
+   */
   const handleLanguageChange = (lang) => {
     setLanguage(lang)
   }
 
-  // Se renderiza dos veces para controlar responsive:
-  // desktop dentro del collapse y movil/tablet pequena entre logo y hamburguesa.
+  /**
+   * Renderiza el formulario de búsqueda (reutilizado en mobile y desktop).
+   * @param {string} className - Clase CSS adicional
+   * @returns {JSX.Element}
+   */
   const renderSearchForm = (className = '') => (
-    <form className={`navbar-search-form ${className}`} role="search" onSubmit={(e) => { e.preventDefault(); handleSearch() }}>
-      {/* Bootstrap input-group + form-control + btn. Los tamanos se ajustan en navbar.css. */}
+    <form
+      className={`navbar-search-form ${className}`}
+      role="search"
+      onSubmit={(e) => {
+        e.preventDefault()
+        handleSearch()
+      }}
+    >
+      {/* Bootstrap input-group + form-control + btn. Los tamaños se ajustan en navbar.css. */}
       <div className="input-group navbar-search-group">
         <input
           type="text"
@@ -108,20 +159,100 @@ function Navbar({ activePage, activeSection, onNavigate, user, onLogout }) {
                 >
                   USER<span className="ms-1">{user ? user.nombre : ''}</span>
                 </button>
-                {/* Dropdown de Bootstrap. El contenido cambia segun haya sesion o no. */}
+                {/* Dropdown de Bootstrap. El contenido cambia según haya sesión o no. */}
                 <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                   {!user && (
-                    <li><button className="dropdown-item" onClick={() => onNavigate('login')}>Iniciar sesion</button></li>
+                    <>
+                      <li>
+                        <button
+                          className="dropdown-item"
+                          onClick={() => onOpenAuthModal(true)}
+                        >
+                          Iniciar sesión
+                        </button>
+                      </li>
+                      <li>
+                        <button
+                          className="dropdown-item"
+                          onClick={() => onOpenAuthModal(false)}
+                        >
+                          Crear cuenta
+                        </button>
+                      </li>
+                    </>
                   )}
                   {user && (
-                    <>
-                      <li><button className="dropdown-item" onClick={() => onNavigate('perfil')}>Mi perfil</button></li>
-                      <li><button className="dropdown-item" onClick={() => onNavigate('pedidos')}>Mis pedidos</button></li>
-                      <li><button className="dropdown-item" onClick={() => onNavigate('presupuestos')}>Mis presupuestos</button></li>
-                      <li><button className="dropdown-item" onClick={() => onNavigate('configuracion')}>Configuracion</button></li>
-                      <li><hr className="dropdown-divider" /></li>
-                      <li><button className="dropdown-item text-danger" onClick={handleLogout}>Cerrar sesion</button></li>
-                    </>
+                    // Mostrar solo opciones esenciales para usuarios normales.
+                    // Si es admin, mostrar el menú completo; si no, mostrar únicamente "Mi perfil" y la opción de cerrar sesión.
+                    user.rol === 'admin' ? (
+                      <>
+                        <li>
+                          <button
+                            className="dropdown-item"
+                            onClick={() => onOpenProfilePanel()}
+                          >
+                            Mi perfil
+                          </button>
+                        </li>
+                        <li>
+                          <button
+                            className="dropdown-item"
+                            onClick={() => onNavigate('pedidos')}
+                          >
+                            Mis pedidos
+                          </button>
+                        </li>
+                        <li>
+                          <button
+                            className="dropdown-item"
+                            onClick={() => onNavigate('presupuestos')}
+                          >
+                            Mis presupuestos
+                          </button>
+                        </li>
+                        <li>
+                          <button
+                            className="dropdown-item"
+                            onClick={() => onNavigate('configuracion')}
+                          >
+                            Configuración
+                          </button>
+                        </li>
+                        <li>
+                          <hr className="dropdown-divider" />
+                        </li>
+                        <li>
+                          <button
+                            className="dropdown-item text-danger"
+                            onClick={handleLogout}
+                          >
+                            Cerrar sesión
+                          </button>
+                        </li>
+                      </>
+                    ) : (
+                      <>
+                        <li>
+                          <button
+                            className="dropdown-item"
+                            onClick={() => onOpenProfilePanel()}
+                          >
+                            Mi perfil
+                          </button>
+                        </li>
+                        <li>
+                          <hr className="dropdown-divider" />
+                        </li>
+                        <li>
+                          <button
+                            className="dropdown-item text-danger"
+                            onClick={handleLogout}
+                          >
+                            Cerrar sesión
+                          </button>
+                        </li>
+                      </>
+                    )
                   )}
                 </ul>
               </li>
@@ -132,7 +263,7 @@ function Navbar({ activePage, activeSection, onNavigate, user, onLogout }) {
                   type="button"
                   aria-label="Carrito"
                   title="Carrito"
-                  onClick={() => onNavigate('carrito')}
+                  onClick={() => onOpenCartPanel()}
                 >
                   <span className="cart-icon" aria-hidden="true">&#128722;</span>
                 </button>

@@ -11,24 +11,48 @@ import Perfil from './pages/Perfil'
 import Usuarios from './pages/Usuarios'
 import Design from './pages/Design'
 import Carrito from './pages/Carrito'
+import AuthModal from './components/AuthModal'
+import CartPanel from './components/CartPanel'
+import ProfilePanel from './components/ProfilePanel'
 import { getCurrentUser, logoutUser, isAdmin } from './services/authService'
 import './App.css'
 
 function App() {
+  // ============================================================================
+  // ESTADO DE PÁGINAS Y NAVEGACIÓN
+  // ============================================================================
+  
   // Página visible en cada momento.
   const [page, setPage] = useState('home')
   // Texto de búsqueda que viaja desde el navbar al catálogo.
   const [searchTerm, setSearchTerm] = useState('')
   const [catalogSection, setCatalogSection] = useState('')
+  
+  // ============================================================================
+  // ESTADO DE AUTENTICACIÓN
+  // ============================================================================
+  
   // Usuario autenticado (null si no hay sesión).
   const [user, setUser] = useState(() => getCurrentUser())
   // Flag para indicar que la app está cargando la sesión guardada.
   const isLoading = false
-
-  /**
-   * Restaura la sesión del usuario al cargar la aplicación.
-   * Si existe un token y datos de usuario en localStorage, los recupera.
-   */
+  
+  // ============================================================================
+  // ESTADO DE MODALES Y PANELES DESLIZANTES
+  // ============================================================================
+  
+  // Control del modal de autenticación (login/register)
+  const [authModalOpen, setAuthModalOpen] = useState(false)
+  // Indica si el modal está en modo login (true) o registro (false)
+  const [authIsLoginMode, setAuthIsLoginMode] = useState(true)
+  
+  // Control del panel deslizante del carrito
+  const [cartPanelOpen, setCartPanelOpen] = useState(false)
+  // Items guardados en el carrito (para demo)
+  const [cartItems, setCartItems] = useState([])
+  
+  // Control del panel deslizante del perfil
+  const [profilePanelOpen, setProfilePanelOpen] = useState(false)
 
   /**
    * Actualiza el usuario autenticado (después de login exitoso).
@@ -60,6 +84,97 @@ function App() {
   }
 
   /**
+   * Abre el modal de autenticación en modo login.
+   */
+  const handleOpenAuthModal = (isLogin = true) => {
+    setAuthIsLoginMode(isLogin)
+    setAuthModalOpen(true)
+  }
+
+  /**
+   * Cierra el modal de autenticación.
+   */
+  const handleCloseAuthModal = () => {
+    setAuthModalOpen(false)
+  }
+
+  /**
+   * Cambia entre modo login y modo registro en el modal.
+   */
+  const handleToggleAuthMode = () => {
+    setAuthIsLoginMode(!authIsLoginMode)
+  }
+
+  /**
+   * Abre el panel deslizante del carrito.
+   */
+  const handleOpenCartPanel = () => {
+    setCartPanelOpen(true)
+  }
+
+  /**
+   * Cierra el panel deslizante del carrito.
+   */
+  const handleCloseCartPanel = () => {
+    setCartPanelOpen(false)
+  }
+
+  /**
+   * Elimina un item del carrito.
+   * @param {number} index - Índice del item a eliminar
+   */
+  const handleRemoveCartItem = (index) => {
+    setCartItems(cartItems.filter((_, i) => i !== index))
+  }
+
+  /**
+   * Actualiza la cantidad de un item en el carrito.
+   * @param {number} index - Índice del item
+   * @param {number} newQuantity - Nueva cantidad
+   */
+  const handleUpdateCartQuantity = (index, newQuantity) => {
+    const newItems = [...cartItems]
+    newItems[index] = { ...newItems[index], cantidad: newQuantity }
+    setCartItems(newItems)
+  }
+
+  /**
+   * Añade un producto al carrito o incrementa su cantidad si ya existe.
+   * @param {object} product - Producto seleccionado en el catálogo.
+   */
+  const handleAddToCart = (product) => {
+    setCartItems((currentItems) => {
+      const existingItem = currentItems.find((item) => item.idProducto === product.idProducto)
+
+      if (existingItem) {
+        return currentItems.map((item) => (
+          item.idProducto === product.idProducto
+            ? { ...item, cantidad: (item.cantidad || 1) + 1 }
+            : item
+        ))
+      }
+
+      return [...currentItems, { ...product, cantidad: 1 }]
+    })
+
+    setCartPanelOpen(true)
+  }
+
+  /**
+   * Abre el panel deslizante del perfil.
+   */
+  const handleOpenProfilePanel = () => {
+    setProfilePanelOpen(true)
+  }
+
+  /**
+   * Cierra el panel deslizante del perfil.
+   */
+  const handleCloseProfilePanel = () => {
+    setProfilePanelOpen(false)
+  }
+
+  /**
    * Renderiza la vista principal según la página seleccionada.
    * Incluye renderizado condicional de páginas protegidas según autenticación.
    * @returns {JSX.Element}
@@ -83,6 +198,7 @@ function App() {
           onNavigate={handleNavigate}
           searchTerm={searchTerm}
           initialSection={catalogSection}
+          onAddToCart={handleAddToCart}
         />
       )
     }
@@ -134,6 +250,7 @@ function App() {
     return <Home onNavigate={handleNavigate} />
   }
 
+  // Determina si mostrar el footer (solo en ciertas páginas)
   const showSiteFooter = ['home', 'galeria', 'catalogo', 'design', 'aboutus'].includes(page)
 
   return (
@@ -144,9 +261,41 @@ function App() {
         onNavigate={handleNavigate}
         user={user}
         onLogout={handleUserLogout}
+        onOpenAuthModal={handleOpenAuthModal}
+        onOpenCartPanel={handleOpenCartPanel}
+        onOpenProfilePanel={handleOpenProfilePanel}
       />
       <main className="app-main">{renderPage()}</main>
       {showSiteFooter && <SiteFooter showBenefits={page !== 'aboutus'} />}
+
+      {/* MODAL DE AUTENTICACIÓN (LOGIN/REGISTER CON FLIP) */}
+      <AuthModal
+        isOpen={authModalOpen}
+        isLoginMode={authIsLoginMode}
+        onClose={handleCloseAuthModal}
+        onToggleMode={handleToggleAuthMode}
+        onUserLogin={handleUserLogin}
+        onNavigate={handleNavigate}
+      />
+
+      {/* PANEL DESLIZANTE DEL CARRITO (DESDE LA DERECHA) */}
+      <CartPanel
+        isOpen={cartPanelOpen}
+        items={cartItems}
+        onClose={handleCloseCartPanel}
+        onRemoveItem={handleRemoveCartItem}
+        onUpdateQuantity={handleUpdateCartQuantity}
+      />
+
+      {/* PANEL DESLIZANTE DEL PERFIL (DESDE LA IZQUIERDA) */}
+      <ProfilePanel
+        isOpen={profilePanelOpen}
+        user={user}
+        onClose={handleCloseProfilePanel}
+        onLogout={handleUserLogout}
+        isAdmin={user && isAdmin()}
+        onNavigateToUsers={() => handleNavigate('usuarios')}
+      />
     </div>
   )
 }

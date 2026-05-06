@@ -228,17 +228,19 @@
   background: linear-gradient(180deg, #f6f8f5 0%, #eef3ef 100%);
 }
 
+/* HOME - SECCIÓN HERO CON CARRUSEL */
 .home-hero {
   overflow: hidden;
-  margin-bottom: 22px;
+  margin-bottom: 48px;
   border: 1px solid rgba(23, 63, 95, 0.14);
   border-radius: 16px;
   background: #fff;
   box-shadow: 0 16px 36px rgba(15, 23, 42, 0.08);
 }
 
+/* Grid del hero: ajustado para simetría perfecta entre contenido y carrusel */
 .home-hero-grid {
-  min-height: 320px;
+  min-height: 420px;
 }
 
 .home-hero-copy-wrap,
@@ -352,7 +354,8 @@
 }
 
 .home-about {
-  margin-top: 24px;
+  margin-top: 48px;
+  margin-bottom: 52px;
   overflow: hidden;
   border: 1px solid rgba(23, 63, 95, 0.14);
   border-radius: 16px;
@@ -360,8 +363,9 @@
   box-shadow: 0 14px 32px rgba(15, 23, 42, 0.06);
 }
 
+/* Grid del about: ajustado para simetría y altura consistente */
 .home-about-grid {
-  min-height: 360px;
+  min-height: 420px;
 }
 
 .home-about-media-wrap {
@@ -445,7 +449,7 @@
 }
 
 .home-section-heading {
-  margin: 28px 0 18px;
+  margin: 48px 0 28px;
   text-align: center;
 }
 
@@ -531,7 +535,7 @@
 
 .home-cta-block {
   width: min(100%, 1120px);
-  margin: 28px auto 0;
+  margin: 52px auto 0;
   padding: 22px 28px;
   display: flex;
   align-items: center;
