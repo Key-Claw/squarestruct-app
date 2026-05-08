@@ -1,3 +1,5 @@
+import adminMiddleware from '../middlewares/admin.js';
+
 // Rutas de usuarios
 import express from 'express';
 import { 
@@ -19,9 +21,9 @@ router.post('/register', validarRegistro, registerUsuario);
 router.post('/login', validarLogin, loginUsuario);
 
 // Rutas privadas CRUD usuarios
-router.get('/', authMiddleware, getUsuarios);
-router.get('/:id', authMiddleware, getUsuarioById);
-router.put('/:id', authMiddleware, actualizarUsuario);
-router.delete('/:id', authMiddleware, eliminarUsuario);
+router.get('/', authMiddleware, adminMiddleware, getUsuarios);
+router.get('/:id', authMiddleware, adminMiddleware, getUsuarioById);
+router.put('/:id', authMiddleware, adminMiddleware, actualizarUsuario);
+router.delete('/:id', authMiddleware, adminMiddleware, eliminarUsuario);
 
 export default router;
