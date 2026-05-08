@@ -170,9 +170,16 @@ const productosDemo = [
 ]
 
 function Catalogo({ onNavigate, onAddToCart, searchTerm = '', initialSection = '' }) {
+  // ============================================================================
+  // ESTADO - DATA
+  // ============================================================================
   const [productos, setProductos] = useState([])
   const [cargando, setCargando] = useState(true)
   const [error, setError] = useState('')
+  
+  // ============================================================================
+  // ESTADO - FILTROS Y BÚSQUEDA
+  // ============================================================================
   const [busqueda, setBusqueda] = useState(searchTerm)
   const [categoriaActiva, setCategoriaActiva] = useState('todos')
   const [orden, setOrden] = useState('reciente')
@@ -269,12 +276,18 @@ function Catalogo({ onNavigate, onAddToCart, searchTerm = '', initialSection = '
 
   return (
     <section className="page-shell catalog-page container-fluid">
+      {/* ====================================================================
+          ENCABEZADO - Título y descripción de la página
+          ==================================================================== */}
       <header className="catalog-heading">
         <h1>Catalogo de productos</h1>
         <p>Encuentra los bloques modulares, pilares y accesorios que necesitas para tu proyecto.</p>
       </header>
 
       <div className="row g-4 align-items-start">
+        {/* ====================================================================
+            SIDEBAR IZQUIERDO - Filtros (categoría, tipo, medidas, material, precio)
+            ==================================================================== */}
         <aside className="col-12 col-lg-2 catalog-sidebar">
           <button type="button" className="btn catalog-filter-title">
             Filtros
@@ -336,6 +349,10 @@ function Catalogo({ onNavigate, onAddToCart, searchTerm = '', initialSection = '
           </button>
         </aside>
 
+        {/* ====================================================================
+            CONTENIDO PRINCIPAL - Barra de resultados, búsqueda, ordenamiento
+            y grid de productos con paginación
+            ==================================================================== */}
         <div className="col-12 col-lg-10 catalog-content">
           <div className="card catalog-results-bar">
             <div className="catalog-results-count">
@@ -388,15 +405,23 @@ function Catalogo({ onNavigate, onAddToCart, searchTerm = '', initialSection = '
             </div>
           )}
 
+          {/* Alerta si hay error conectando con BD (muestra demo) */}
           {error && (
             <div className="alert alert-warning catalog-demo-alert text-center">
               No se pudo conectar con la base de datos. Mostrando productos provisionales.
             </div>
           )}
 
+          {/* ================================================================
+              GRID DE PRODUCTOS - Muestra tarjetas con filtros y búsqueda aplicados
+              ================================================================ */}
           <div className="row g-4 catalog-products-grid" id="productos">
             {!cargando && productosFiltrados.map((product) => (
               <div className="col-12 col-sm-6 col-xl-3" key={product.idProducto}>
+                {/* ============================================================
+                    TARJETA DE PRODUCTO
+                    - Muestra: imagen, nombre, precio, material, medidas, botones
+                    ============================================================ */}
                 <article className="card h-100 catalog-product-card" id={`producto-${product.idProducto}`}>
                   <div className="catalog-product-media">
                     <span>{product.tipo || 'Producto'}</span>

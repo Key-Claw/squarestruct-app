@@ -38,6 +38,26 @@
   padding: 28px 32px;
 }
 
+@media (max-width: 768px) {
+  .usuarios-card .card-body {
+    padding: 20px 16px;
+  }
+
+  .usuarios-card .card-body > .d-flex {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .usuarios-card .card-body > .d-flex .btn-outline-light {
+    width: 100%;
+  }
+
+  .usuarios-card .table thead th,
+  .usuarios-card .table tbody td {
+    padding: 12px 10px;
+  }
+}
+
 /* ============================================================================
    ENCABEZADO
    =========================================================================== */
@@ -116,6 +136,8 @@
 .usuarios-card .table-responsive {
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
+  border: 1px solid rgba(23, 63, 95, 0.08);
+  border-radius: 10px;
 }
 
 .usuarios-card .table td {

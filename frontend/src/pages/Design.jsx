@@ -34,6 +34,9 @@ const howItWorks = [
 function Design({ onNavigate }) {
   return (
     <section className="page-shell design-page container-fluid">
+      {/* ====================================================================
+          BARRA SUPERIOR - Título, descripción y botones de acción principal
+          ==================================================================== */}
       <header className="card design-topbar">
         <div>
           <h1>Disena tu estructura modular</h1>
@@ -49,6 +52,9 @@ function Design({ onNavigate }) {
       </header>
 
       <div className="row g-4 design-workspace">
+        {/* ====================================================================
+            PANEL IZQUIERDO - Piezas disponibles (Bloques, Pilares, Accesorios)
+            ==================================================================== */}
         <aside className="col-12 col-xl-2">
           <section className="card design-pieces-panel">
             <h2>Bloques y piezas</h2>
@@ -81,6 +87,9 @@ function Design({ onNavigate }) {
           </section>
         </aside>
 
+        {/* ====================================================================
+            ÁREA CENTRAL - Canvas 2D/3D, herramientas de edición, zoom, vistas
+            ==================================================================== */}
         <main className="col-12 col-xl-8">
           <section className="card design-canvas-card" aria-label="Boceto provisional del futuro panel de Design">
             <img
@@ -111,6 +120,9 @@ function Design({ onNavigate }) {
           </section>
         </main>
 
+        {/* ====================================================================
+            PANEL DERECHO - Resumen del proyecto, totales, precio, acciones rápidas
+            ==================================================================== */}
         <aside className="col-12 col-xl-2">
           <section className="card design-summary-panel">
             <h2>Resumen del proyecto</h2>
@@ -153,6 +165,9 @@ function Design({ onNavigate }) {
         </aside>
       </div>
 
+      {/* ====================================================================
+          SECCIÓN INFERIOR - Pasos de uso y caja de ayuda
+          ==================================================================== */}
       <section className="card design-help-card">
         <div className="design-help-steps">
           <h2>Como funciona</h2>

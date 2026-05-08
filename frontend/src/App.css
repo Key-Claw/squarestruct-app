@@ -5,6 +5,13 @@
    PC: xl and above, >= 1200px.
 */
 
+/* ============================================================================
+   ESTRUCTURA BASE DE LA APLICACIÓN
+   - app-shell: Contenedor principal (flex, 100vh)
+   - app-main: Área de contenido (flex: 1, background)
+   - app-navbar: Barra de navegación con sombra
+   ============================================================================ */
+
 .app-shell {
   min-height: 100svh;
   display: flex;
@@ -27,6 +34,16 @@
   padding-bottom: 0.9rem;
   box-shadow: 0 12px 28px rgba(15, 23, 42, 0.14);
 }
+
+/* ============================================================================
+   NAVBAR - Navegación responsiva (desktop/mobile, logo, menú, búsqueda, usuario)
+   - navbar-desktop: Layout para pantallas >= 992px
+   - navbar-mobile: Layout para pantallas < 992px
+   - brand-mark, navbar-logo: Logo y marca
+   - nav-strip, nav-button: Botones de navegación
+   - search-group, search-bar: Búsqueda de productos
+   - user-dropdown-menu: Menú desplegable usuario
+   ============================================================================ */
 
 
 
@@ -227,6 +244,16 @@
   width: 100%;
   background: linear-gradient(180deg, #f6f8f5 0%, #eef3ef 100%);
 }
+
+/* ============================================================================
+   PÁGINA HOME - Estructura principal con hero, secciones y llamadas a acción
+   - home-hero: Hero con carrusel Bootstrap (3 slides)
+   - home-about: Sección "¿Qué es SquareStruct?" con imagen y texto
+   - home-feature-grid: Grid de 3 features (bloques modulares, diseño, catálogo)
+   - home-highlight-grid: Highlights dentro del about
+   - home-cta-block: Llamada a acción principal (CTA)
+   - home-section-heading: Títulos reutilizables de secciones
+   ============================================================================ */
 
 /* HOME - SECCIÓN HERO CON CARRUSEL */
 .home-hero {
@@ -650,6 +677,16 @@
   letter-spacing: 0.04em;
 }
 
+/* ============================================================================
+   PÁGINA ABOUT US - Estructura con carrusel, team, story, profiles editoriales
+   - about-carousel: Carrusel de fondo (imagen de portada)
+   - about-story-page: Layout principal de la página
+   - about-team-card, about-team-photo: Cards del equipo con fotos
+   - about-profile-col: Columnas de perfiles (foto + texto)
+   - about-story-card: Card central con historia de SquareStruct
+   - about-editorial-row: Grid editorial con fotos y textos laterales
+   ============================================================================ */
+
 .about-carousel {
   overflow: hidden;
   margin-bottom: 28px;
@@ -1008,9 +1045,15 @@
   margin-top: 12px;
 }
 
-.gallery-page {
-  color: #173f5f;
-}
+/* ============================================================================
+   PÁGINA GALERÍA - Proyectos con filtros, cards con overlays y proyecto destacado
+   - gallery-page: Contenedor principal
+   - gallery-intro-card: Card de introducción con imagen de fondo
+   - gallery-project-card: Cards de proyectos con overlay degradado
+   - gallery-feature-card: Proyecto destacado (grande) con contenido absoluto
+   - gallery-toolbar: Filtros y ordenamiento
+   - gallery-favorite-btn: Botón de favoritos en esquina
+   ============================================================================ */
 
 .gallery-intro-card,
 .gallery-project-card,
@@ -1360,9 +1403,15 @@
   min-height: 50px;
 }
 
-.catalog-page {
-  color: #173f5f;
-}
+/* ============================================================================
+   PÁGINA CATÁLOGO - Filtros + Grid de productos con búsqueda y ordenamiento
+   - catalog-page: Contenedor principal
+   - catalog-sidebar: Sidebar sticky con 5 secciones de filtros
+   - catalog-results-bar: Barra con búsqueda, ordenamiento y botones de vista
+   - catalog-products-grid: Grid responsivo (1-5 columnas según pantalla)
+   - catalog-product-card: Card individual con: imagen, nombre, precio, specs, botones
+   - catalog-filter-card: Cards de filtros (categoría, tipo, medidas, material, precio)
+   ============================================================================ */
 
 .catalog-heading {
   margin-bottom: 26px;
@@ -1741,9 +1790,17 @@
   text-align: center;
 }
 
-.design-page {
-  color: #173f5f;
-}
+/* ============================================================================
+   PÁGINA DESIGN - Workspace 3 columnas: piezas | canvas | resumen
+   - design-page: Contenedor principal
+   - design-topbar: Barra superior con título y botones de acción
+   - design-workspace: Grid 3 columnas (piezas | canvas | resumen)
+   - design-pieces-panel: Panel izq. con piezas disponibles y tabs
+   - design-canvas-card: Área central con boceto del plano 3D
+   - design-summary-panel: Panel derecho con resumen del proyecto
+   - design-toolbar, design-zoom, design-view-switch: Controles del canvas
+   - design-help-card: Sección inferior con pasos y caja de ayuda
+   ============================================================================ */
 
 .design-page .card {
   border-color: rgba(23, 63, 95, 0.18);
