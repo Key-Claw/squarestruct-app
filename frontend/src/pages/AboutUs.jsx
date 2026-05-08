@@ -8,17 +8,17 @@ function AboutUs() {
       <div className="row g-3 about-layout-row align-items-start">
         <aside className="col-12 col-lg-2 about-profile-col">
           <div className="card about-name-card">
-            <div className="card-body">Raul Martinez</div>
+            <div className="card-body">Raúl Martín</div>
           </div>
 
           <article className="card about-profile-photo-card">
-            <img src={raulmartinezPhoto} className="card-img about-profile-image" alt="Raul Martinez" />
+            <img src={raulmartinezPhoto} className="card-img about-profile-image" alt="Raúl Martín" />
           </article>
 
           <section className="card about-profile-text-card">
             <div className="card-body">
               <p>
-                Raul Martin ha sentido desde pequeno una gran pasion por los
+                Raúl Martín ha sentido desde pequeno una gran pasion por los
                 videojuegos y el mundo de la tecnologia, lo que le llevo a orientar su
                 formacion hacia este sector.
               </p>

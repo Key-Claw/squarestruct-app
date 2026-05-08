@@ -220,6 +220,7 @@
   display: flex;
   flex-direction: column;
   gap: 14px;
+  align-items: center;
 }
 
 /* ============================================================================
@@ -230,6 +231,9 @@
   display: flex;
   flex-direction: column;
   gap: 4px;
+  width: 100%;
+  align-items: center;
+  text-align: center;
 }
 
 .profile-field label {
@@ -297,9 +301,11 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
+  align-items: center;
 }
 
 .profile-action-btn {
+  width: min(100%, 280px);
   padding: 11px 14px;
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -309,18 +315,18 @@
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
-  text-align: left;
+  text-align: center;
   font-family: inherit;
 }
 
 .profile-action-btn:hover {
   background: rgba(255, 255, 255, 0.08);
   border-color: rgba(255, 255, 255, 0.15);
-  transform: translateX(-2px);
+  transform: translateY(-1px);
 }
 
 .profile-action-btn:active {
-  transform: translateX(0);
+  transform: translateY(0);
 }
 
 /* Variante especial para botón de gestionar usuarios */

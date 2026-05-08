@@ -45,6 +45,9 @@ const menuAdmin = [
 function Facturacion() {
   return (
     <section className="billing-admin-page">
+      {/* ====================================================================
+          SIDEBAR IZQUIERDO - Branding, menú admin, caja de ayuda
+          ==================================================================== */}
       <aside className="billing-sidebar">
         <div className="billing-brand">
           <strong>SquareStruct</strong>
@@ -71,6 +74,16 @@ function Facturacion() {
         </div>
       </aside>
 
+      {/* ====================================================================
+          CONTENIDO PRINCIPAL
+          - Barra superior con título y botones de acción
+          - Métricas resumen (facturación total, # facturas, ticket medio, top producto)
+          - Filtros (cliente, fecha, estado, método pago)
+          - Panel facturas recientes (tabla con acciones)
+          - Panel tendencias de compra (gráfico donut)
+          - Panel productos más vendidos
+          - Panel últimas acciones
+          ==================================================================== */}
       <main className="billing-dashboard">
         <header className="billing-topbar">
           <div>
@@ -87,6 +100,7 @@ function Facturacion() {
         </header>
 
         <section className="billing-metrics-grid">
+          {/* Tarjetas de métricas principales: facturación, # facturas, ticket medio, top producto */}
           {metricas.map((metrica) => (
             <article className="billing-metric-card" key={metrica.titulo}>
               <span className="billing-metric-icon">{metrica.icono}</span>
@@ -99,6 +113,7 @@ function Facturacion() {
           ))}
         </section>
 
+        {/* Barra de filtros: búsqueda de cliente, rango de fechas, estado, método de pago */}
         <section className="billing-filter-card">
           <input className="form-control" type="text" placeholder="Buscar cliente..." />
           <input className="form-control" type="text" value="01/05/2025 - 14/05/2025" readOnly />
@@ -116,7 +131,9 @@ function Facturacion() {
           <button className="btn billing-primary-btn" type="button">Filtrar</button>
         </section>
 
+        {/* GRID DE 4 PANELES: Facturas | Tendencias | Productos Top | Últimas acciones */}
         <div className="billing-content-grid">
+          {/* PANEL 1: Tabla de facturas recientes con estado, método de pago y acciones */}
           <section className="billing-panel billing-invoices-panel">
             <div className="billing-panel-head">
               <h2>Facturas recientes</h2>
@@ -172,6 +189,7 @@ function Facturacion() {
             </nav>
           </section>
 
+          {/* PANEL 2: Gráfico donut de tendencias de compra con leyenda de productos */}
           <section className="billing-panel billing-trends-panel">
             <div className="billing-panel-head">
               <h2>Tendencias de compra</h2>
@@ -201,6 +219,7 @@ function Facturacion() {
             <button className="btn billing-report-btn" type="button">Ver informe completo</button>
           </section>
 
+          {/* PANEL 3: Listado de productos más vendidos con barra de progreso (%) */}
           <section className="billing-panel">
             <div className="billing-panel-head">
               <h2>Productos mas vendidos</h2>
@@ -224,6 +243,7 @@ function Facturacion() {
             </div>
           </section>
 
+          {/* PANEL 4: Historial de últimas acciones del sistema (facturas, pedidos, clientes) */}
           <section className="billing-panel">
             <div className="billing-panel-head">
               <h2>Ultimas acciones</h2>

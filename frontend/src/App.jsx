@@ -7,11 +7,9 @@ import Catalogo from './pages/Catalogo'
 import Login from './pages/Login'
 import Register from './pages/Register'
 import AboutUs from './pages/AboutUs'
-import Perfil from './pages/Perfil'
 import Usuarios from './pages/Usuarios'
 import Facturacion from './pages/Facturacion'
 import Design from './pages/Design'
-import Carrito from './pages/Carrito'
 import AuthModal from './components/AuthModal'
 import CartPanel from './components/CartPanel'
 import ProfilePanel from './components/ProfilePanel'
@@ -208,10 +206,6 @@ function App() {
       return <Design onNavigate={handleNavigate} />
     }
 
-    if (page === 'carrito') {
-      return <Carrito onNavigate={handleNavigate} />
-    }
-
     if (page === 'login') {
       // Vista de acceso de usuario. Pasar callback para actualizar usuario al login.
       return <Login onNavigate={handleNavigate} onUserLogin={handleUserLogin} />
@@ -225,16 +219,6 @@ function App() {
     if (page === 'aboutus') {
       // Página informativa de presentación de la marca.
       return <AboutUs onNavigate={handleNavigate} />
-    }
-
-    // Páginas protegidas - solo disponibles si el usuario está autenticado
-    if (page === 'perfil') {
-      if (!user) {
-        // Si intenta acceder sin autenticación, redirige a login
-        setPage('login')
-        return <Login onNavigate={handleNavigate} onUserLogin={handleUserLogin} />
-      }
-      return <Perfil onNavigate={handleNavigate} user={user} onUserLogout={handleUserLogout} />
     }
 
     if (page === 'usuarios') {

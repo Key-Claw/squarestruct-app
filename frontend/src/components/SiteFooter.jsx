@@ -39,7 +39,7 @@ function SiteFooter({ showBenefits = true }) {
       )}
 
       <p className="site-footer-copy">
-        SquareStruct © 2026 · Proyecto academico de construccion modular desarrollado por Raul Martinez y Cristian Gil
+        SquareStruct © 2026 · Proyecto academico de construccion modular desarrollado por Raúl Martín y Cristian Gil
       </p>
     </footer>
   )
