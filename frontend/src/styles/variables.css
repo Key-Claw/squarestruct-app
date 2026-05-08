@@ -1,0 +1,94 @@
+/* ============================================================================
+   VARIABLES CSS GLOBALES - Colores, espaciado, tipografía
+   Se reutilizan en todo el proyecto para mantener consistencia
+   ============================================================================ */
+
+/* COLORES PRINCIPALES */
+:root {
+  /* Primario: Verde SquareStruct */
+  --color-primary: #5f9f38;
+  --color-primary-dark: #4f8f2f;
+  --color-primary-light: #7dc55a;
+  
+  /* Secundario: Azul SquareStruct */
+  --color-secondary: #173f5f;
+  --color-secondary-dark: #0f3d63;
+  --color-secondary-light: #35681d;
+  
+  /* Neutrales */
+  --color-dark: #0f172a;
+  --color-dark-secondary: #20252b;
+  --color-gray-dark: #1e2228;
+  --color-gray: #8d969d;
+  --color-gray-light: #d9dee3;
+  --color-white: #ffffff;
+  --color-white-transparent: rgba(255, 255, 255, 0.96);
+  
+  /* Backgrounds */
+  --bg-light: #f4f6f4;
+  --bg-form: rgba(255, 255, 255, 0.04);
+  
+  /* Borders */
+  --border-light: rgba(23, 63, 95, 0.14);
+  --border-lighter: rgba(23, 63, 95, 0.12);
+  --border-subtle: rgba(255, 255, 255, 0.08);
+}
+
+/* TIPOGRAFÍA */
+:root {
+  /* Font weights */
+  --fw-regular: 400;
+  --fw-medium: 600;
+  --fw-bold: 700;
+  --fw-extra-bold: 800;
+  --fw-black: 850;
+  
+  /* Tamaños fluidos (clamp) */
+  --fs-h1: clamp(2.25rem, 3.2vw, 3.55rem);
+  --fs-h2: clamp(1.4rem, 2vw, 2rem);
+  --fs-h3: clamp(0.95rem, 1.25vw, 1.18rem);
+  --fs-body: 1rem;
+  --fs-small: 0.82rem;
+  --fs-xs: 0.78rem;
+  
+  /* Line heights */
+  --lh-tight: 1.02;
+  --lh-snug: 1.15;
+  --lh-normal: 1.45;
+  --lh-relaxed: 1.62;
+  --lh-loose: 1.7;
+}
+
+/* ESPACIADO */
+:root {
+  /* Padding y margin fluidos (clamp) */
+  --spacing-xs: clamp(8px, 1vw, 12px);
+  --spacing-sm: clamp(12px, 1.5vw, 18px);
+  --spacing-md: clamp(16px, 2vw, 24px);
+  --spacing-lg: clamp(24px, 3vw, 36px);
+  --spacing-xl: clamp(34px, 5vw, 78px);
+  --spacing-2xl: clamp(28px, 4vw, 80px);
+  
+  /* Border radius */
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 14px;
+  --radius-full: 999px;
+}
+
+/* SOMBRAS */
+:root {
+  --shadow-sm: 0 8px 18px rgba(15, 23, 42, 0.1);
+  --shadow-md: 0 12px 28px rgba(15, 23, 42, 0.08);
+  --shadow-lg: 0 14px 32px rgba(15, 23, 42, 0.06);
+  --shadow-xl: 0 18px 44px rgba(15, 23, 42, 0.16);
+  --shadow-navbar: 0 12px 28px rgba(15, 23, 42, 0.14);
+}
+
+/* TRANSICIONES Y ANIMACIONES */
+:root {
+  --transition-fast: 0.15s ease-in-out;
+  --transition-normal: 0.3s ease-in-out;
+  --transition-slow: 0.5s ease-in-out;
+}

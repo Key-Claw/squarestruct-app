@@ -1,311 +1,306 @@
-
 import { useState } from 'react'
-import { isAdmin } from '../services/authService'
-import logo from '../assets/LogoSquareStruct.png'
+
+import logo from '../assets/logo/squarestruct-icon.png'
+import '../styles/navbar.css'
 
 /**
- * Componente de navegación principal.
- * Muestra menú condicional según estado de autenticación y rol del usuario.
- * @param {string} activePage - Página activa para resaltar en el menú.
- * @param {function} onNavigate - Callback para cambiar de página.
- * @param {object} user - Datos del usuario autenticado (null si no está logueado).
- * @param {function} onLogout - Callback para cerrar sesión.
+ * Barra de navegación principal.
+ * 
+ * Componentes de Bootstrap utilizados:
+ * - navbar / navbar-expand-md / navbar-light: estructura principal responsive
+ * - container-fluid: ancho fluido del contenido
+ * - navbar-brand: zona del logo
+ * - navbar-toggler + collapse + navbar-collapse: menú hamburguesa
+ * - navbar-nav / nav-item: listas de navegación
+ * - dropdown / dropdown-toggle / dropdown-menu: menú de usuario
+ * - input-group / form-control / btn: buscador y botones
+ * 
+ * Los estilos finales están en src/styles/navbar.css
+ * 
+ * @param {object} props - Props del componente
+ * @param {string} props.activePage - Página activa actual
+ * @param {string} props.activeSection - Sección activa del catálogo
+ * @param {function} props.onNavigate - Callback para cambiar de página
+ * @param {object} props.user - Datos del usuario autenticado (null si no hay sesión)
+ * @param {function} props.onLogout - Callback para logout
+ * @param {function} props.onOpenAuthModal - Callback para abrir modal de autenticación
+ * @param {function} props.onOpenCartPanel - Callback para abrir panel del carrito
+ * @param {function} props.onOpenProfilePanel - Callback para abrir panel del perfil
  */
-function Navbar({ activePage, activeSection, onNavigate, user, onLogout }) {
-  // Menú principal visible en desktop y mobile (siempre disponible).
+function Navbar({
+  activePage,
+  activeSection,
+  onNavigate,
+  user,
+  onLogout,
+  onOpenAuthModal,
+  onOpenCartPanel,
+  onOpenProfilePanel,
+}) {
+  // Elementos del menú de navegación principal
   const items = [
     { id: 'home', label: 'Inicio' },
-    { id: 'galeria', label: 'Galería' },
-    { id: 'catalogo', label: 'Catálogo' },
-    { id: 'design', label: 'Diseño' },
+    { id: 'galeria', label: 'Galeria' },
+    { id: 'catalogo', label: 'Catalogo' },
+    { id: 'design', label: 'Design' },
   ]
 
-  // Texto escrito en el buscador.
+  // Estado del buscador
   const [searchValue, setSearchValue] = useState('')
+  // Estado del idioma
+  const [language, setLanguage] = useState('ES')
 
+  /**
+   * Determina si un item de menú está activo.
+   * @param {object} item - Item del menú
+   * @returns {boolean} true si el item está activo
+   */
   const isItemActive = (item) => {
     const targetPage = item.page || item.id
     return activePage === targetPage && (item.section ? activeSection === item.section : !activeSection)
   }
 
   /**
-   * Envía la búsqueda al catálogo y limpia el input.
-   * Si el campo está vacío, igualmente abre catálogo para mostrar todo.
+   * Maneja la búsqueda en el catálogo.
    */
   const handleSearch = () => {
     const term = searchValue.trim()
-
-    // La navegación lleva el término al catálogo para aplicar el filtrado allí.
     onNavigate('catalogo', term, 'productos')
     setSearchValue('')
   }
 
   /**
-   * Maneja el cierre de sesión.
-   * Ejecuta el callback de logout y navega a home.
+   * Maneja el logout del usuario.
    */
   const handleLogout = () => {
     onLogout()
     onNavigate('home')
   }
 
+  /**
+   * Cambia el idioma (por ahora solo para demostración).
+   * @param {string} lang - Código del idioma
+   */
+  const handleLanguageChange = (lang) => {
+    setLanguage(lang)
+  }
+
+  /**
+   * Renderiza el formulario de búsqueda (reutilizado en mobile y desktop).
+   * @param {string} className - Clase CSS adicional
+   * @returns {JSX.Element}
+   */
+  const renderSearchForm = (className = '') => (
+    <form
+      className={`navbar-search-form ${className}`}
+      role="search"
+      onSubmit={(e) => {
+        e.preventDefault()
+        handleSearch()
+      }}
+    >
+      {/* Bootstrap input-group + form-control + btn. Los tamaños se ajustan en navbar.css. */}
+      <div className="input-group navbar-search-group">
+        <input
+          type="text"
+          className="form-control navbar-search-input"
+          placeholder="Choose file"
+          aria-label="Buscar"
+          value={searchValue}
+          onChange={(e) => setSearchValue(e.target.value)}
+        />
+        <button className="btn navbar-search-btn" type="button" onClick={handleSearch}>
+          Browse
+        </button>
+      </div>
+    </form>
+  )
+
   return (
-    /* Bootstrap navbar:
-       https://getbootstrap.com/docs/5.3/components/navbar/ */
-    <nav className="navbar navbar-dark bg-dark px-2 px-lg-3 app-navbar">
-      {/* Bootstrap display utilities: d-none d-lg-flex muestra este bloque en tablet grande/PC.
-          https://getbootstrap.com/docs/5.3/utilities/display/ */}
-      <div className="d-none d-lg-flex align-items-center w-100 navbar-desktop">
-        {/* Logo principal: actúa como acceso directo a About Us. */}
-        <button
-          className="brand-mark"
-          type="button"
-          onClick={() => onNavigate('aboutus')}
-          aria-label="Ir al inicio"
-        >
-          <img src={logo} alt="SquareStruct" className="navbar-logo navbar-logo-desktop" />
-        </button>
+    <div className="square-navbar-stage">
+      {/* navbar-expand-md: en tablet queda todo en fila; en movil aparece hamburguesa. */}
+      <nav className="navbar navbar-expand-md navbar-light app-navbar square-navbar">
+        <div className="container-fluid square-navbar-inner">
+          <a className="navbar-brand square-navbar-brand d-flex align-items-center" href="#" onClick={() => onNavigate('aboutus')}>
+            <img src={logo} alt="SquareStruct" className="navbar-logo" />
+          </a>
 
-        {/* Navegación principal de escritorio. */}
-        {/* Bootstrap nav:
-            https://getbootstrap.com/docs/5.3/components/navs-tabs/ */}
-        <div className="navbar-nav nav-strip nav-strip-desktop">
-          {items.map((item) => (
-            <button
-              key={item.id}
-              type="button"
-              className={`nav-link nav-button ${isItemActive(item) ? 'is-active' : ''}`}
-              onClick={() => onNavigate(item.page || item.id, '', item.section || '')}
-            >
-              {item.label}
-            </button>
-          ))}
-        </div>
+          {renderSearchForm('navbar-search-mobile')}
 
-        {/* Buscador de escritorio, pensado para lanzar el filtrado con Enter o botón. */}
-        {/* Bootstrap input group, form-control y buttons:
-            https://getbootstrap.com/docs/5.3/forms/input-group/
-            https://getbootstrap.com/docs/5.3/forms/form-control/
-            https://getbootstrap.com/docs/5.3/components/buttons/ */}
-        <div className="desktop-search mx-auto">
-          <div className="input-group search-group">
-            <input
-              type="text"
-              className="form-control search-bar"
-              placeholder="Buscar productos..."
-              aria-label="Buscar productos"
-              value={searchValue}
-              onChange={(e) => setSearchValue(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter') {
-                  handleSearch()
-                }
-              }}
-            />
-            <button className="btn btn-outline-light search-submit" type="button" onClick={handleSearch}>
-              ➜
-            </button>
-          </div>
-        </div>
-
-        {/* Opciones de usuario - condicionales según autenticación y rol. */}
-        {/* Bootstrap flex, spacing y buttons:
-            https://getbootstrap.com/docs/5.3/utilities/flex/
-            https://getbootstrap.com/docs/5.3/utilities/spacing/
-            https://getbootstrap.com/docs/5.3/components/buttons/ */}
-        <div className="navbar-auth-section ms-auto d-flex align-items-center gap-2">
-          {/* Si el usuario NO está autenticado, mostrar botón Login. */}
-          {!user && (
-            <button
-              type="button"
-              className="btn btn-outline-light"
-              onClick={() => onNavigate('login')}
-              title="Iniciar sesión"
-            >
-              👤
-            </button>
-          )}
-
-          {/* Si el usuario ESTÁ autenticado, mostrar opciones según rol. */}
-          {user && (
-            <>
-              {/* Opción de admin: panel de gestión de usuarios. */}
-              {isAdmin() && (
-                <button
-                  type="button"
-                  className={`btn btn-outline-light text-nowrap ${activePage === 'usuarios' ? 'active' : ''}`}
-                  onClick={() => onNavigate('usuarios')}
-                  title="Gestión de usuarios"
-                >
-                  👥
-                </button>
-              )}
-
-              {/* Perfil del usuario autenticado. */}
-              <button
-                type="button"
-                className={`btn btn-outline-light text-nowrap ${activePage === 'perfil' ? 'active' : ''}`}
-                onClick={() => onNavigate('perfil')}
-                title={`Mi perfil: ${user.nombre}`}
-              >
-                Mi perfil
-              </button>
-
-              {/* Cerrar sesión. */}
-              <button
-                type="button"
-                className="btn btn-outline-warning"
-                onClick={handleLogout}
-                title="Cerrar sesión"
-              >
-                🚪
-              </button>
-            </>
-          )}
-
-          {/* Carrito (siempre visible). */}
-          <button
-            className={`btn btn-outline-light cart-button ${activePage === 'carrito' ? 'active' : ''}`}
-            type="button"
-            aria-label="Carrito"
-            title="Carrito"
-            onClick={() => onNavigate('carrito')}
-          >
-            🛒
+          {/* Toggler de Bootstrap. data-bs-target debe coincidir con id="mainNavbar". */}
+          <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
+            <span className="navbar-toggler-icon"></span>
           </button>
-        </div>
-      </div>
 
-      {/* Layout móvil: logo, buscador y botón de menú en una sola fila. */}
-      {/* Bootstrap display utilities: d-flex d-lg-none muestra este bloque en movil/tablet.
-          https://getbootstrap.com/docs/5.3/utilities/display/ */}
-      <div className="d-flex d-lg-none align-items-center w-100 navbar-mobile">
-        {/* El logo mantiene el mismo comportamiento que en escritorio. */}
-        {/* Bootstrap collapse toggler:
-            https://getbootstrap.com/docs/5.3/components/collapse/
-            https://getbootstrap.com/docs/5.3/components/navbar/#toggler */}
-        <button
-          className="brand-mark brand-mark-mobile"
-          type="button"
-          onClick={() => onNavigate('aboutus')}
-          aria-label="Ir al inicio"
-        >
-          <img src={logo} alt="SquareStruct" className="navbar-logo navbar-logo-mobile" />
-        </button>
+          <div className="collapse navbar-collapse square-navbar-collapse" id="mainNavbar">
+            <ul className="navbar-nav navbar-menu">
+              {items.map((item) => (
+                <li className="nav-item" key={item.id}>
+                  <button
+                    className={`navbar-menu-btn${isItemActive(item) ? ' active' : ''}`}
+                    onClick={() => onNavigate(item.page || item.id, '', item.section || '')}
+                  >
+                    {item.label}
+                  </button>
+                </li>
+              ))}
+            </ul>
 
-        {/* Campo compacto de búsqueda para pantallas pequeñas. */}
-        <div className="flex-grow-1 px-2 mobile-search-wrap">
-          <div className="input-group search-group search-group-mobile">
-            <input
-              type="text"
-              className="form-control search-bar search-bar-mobile"
-              placeholder="Buscar"
-              aria-label="Buscar productos"
-              value={searchValue}
-              onChange={(e) => setSearchValue(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter') {
-                  handleSearch()
-                }
-              }}
-            />
-            <button className="btn btn-outline-light search-submit search-submit-mobile" type="button" onClick={handleSearch}>
-              ➜
-            </button>
+            {renderSearchForm('navbar-search-desktop')}
+
+            <ul className="navbar-nav navbar-actions">
+              <li className="nav-item dropdown">
+                <button
+                  className="btn dropdown-toggle navbar-user-btn"
+                  id="userDropdown"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                  type="button"
+                >
+                  USER<span className="ms-1">{user ? user.nombre : ''}</span>
+                </button>
+                {/* Dropdown de Bootstrap. El contenido cambia según haya sesión o no. */}
+                <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                  {!user && (
+                    <>
+                      <li>
+                        <button
+                          className="dropdown-item"
+                          onClick={() => onOpenAuthModal(true)}
+                        >
+                          Iniciar sesión
+                        </button>
+                      </li>
+                      <li>
+                        <button
+                          className="dropdown-item"
+                          onClick={() => onOpenAuthModal(false)}
+                        >
+                          Crear cuenta
+                        </button>
+                      </li>
+                    </>
+                  )}
+                  {user && (
+                    // Mostrar solo opciones esenciales para usuarios normales.
+                    // Si es admin, mostrar el menú completo; si no, mostrar únicamente "Mi perfil" y la opción de cerrar sesión.
+                    user.rol === 'admin' ? (
+                      <>
+                        <li>
+                          <button
+                            className="dropdown-item"
+                            onClick={() => onOpenProfilePanel()}
+                          >
+                            Mi perfil
+                          </button>
+                        </li>
+                        <li>
+                          <button
+                            className="dropdown-item"
+                            onClick={() => onNavigate('facturacion')}
+                          >
+                            Facturacion
+                          </button>
+                        </li>
+                        <li>
+                          <button
+                            className="dropdown-item"
+                            onClick={() => onNavigate('pedidos')}
+                          >
+                            Mis pedidos
+                          </button>
+                        </li>
+                        <li>
+                          <button
+                            className="dropdown-item"
+                            onClick={() => onNavigate('presupuestos')}
+                          >
+                            Mis presupuestos
+                          </button>
+                        </li>
+                        <li>
+                          <button
+                            className="dropdown-item"
+                            onClick={() => onNavigate('configuracion')}
+                          >
+                            Configuración
+                          </button>
+                        </li>
+                        <li>
+                          <hr className="dropdown-divider" />
+                        </li>
+                        <li>
+                          <button
+                            className="dropdown-item text-danger"
+                            onClick={handleLogout}
+                          >
+                            Cerrar sesión
+                          </button>
+                        </li>
+                      </>
+                    ) : (
+                      <>
+                        <li>
+                          <button
+                            className="dropdown-item"
+                            onClick={() => onOpenProfilePanel()}
+                          >
+                            Mi perfil
+                          </button>
+                        </li>
+                        <li>
+                          <hr className="dropdown-divider" />
+                        </li>
+                        <li>
+                          <button
+                            className="dropdown-item text-danger"
+                            onClick={handleLogout}
+                          >
+                            Cerrar sesión
+                          </button>
+                        </li>
+                      </>
+                    )
+                  )}
+                </ul>
+              </li>
+
+              <li className="nav-item">
+                <button
+                  className={`btn navbar-action-btn${activePage === 'carrito' ? ' active' : ''}`}
+                  type="button"
+                  aria-label="Carrito"
+                  title="Carrito"
+                  onClick={() => onOpenCartPanel()}
+                >
+                  <span className="cart-icon" aria-hidden="true">&#128722;</span>
+                </button>
+              </li>
+
+              <li className="nav-item d-flex align-items-center">
+                {language === 'ES' ? (
+                  <button
+                    className="btn navbar-action-btn"
+                    type="button"
+                    onClick={() => handleLanguageChange('EN')}
+                  >
+                    ES
+                  </button>
+                ) : (
+                  <button
+                    className="btn navbar-action-btn"
+                    type="button"
+                    onClick={() => handleLanguageChange('ES')}
+                  >
+                    EN
+                  </button>
+                )}
+              </li>
+            </ul>
           </div>
         </div>
-
-        {/* Carrito visual en mobile. */}
-        <button
-          className={`btn btn-outline-light cart-button cart-button-mobile ${activePage === 'carrito' ? 'active' : ''}`}
-          type="button"
-          aria-label="Carrito"
-          onClick={() => onNavigate('carrito')}
-        >
-          🛒
-        </button>
-
-        {/* Botón colapsable para mostrar el menú principal en pantallas pequeñas. */}
-        <button
-          className="navbar-toggler ms-2"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarMenu"
-          aria-controls="navbarMenu"
-          aria-expanded="false"
-          aria-label="Abrir menú"
-        >
-          <span className="navbar-toggler-icon"></span>
-        </button>
-      </div>
-
-      {/* Menú colapsado exclusivo de mobile con navegación y opciones de usuario. */}
-      {/* Bootstrap collapse:
-          https://getbootstrap.com/docs/5.3/components/collapse/ */}
-      <div className="collapse navbar-collapse d-lg-none" id="navbarMenu">
-        <div className="navbar-nav mobile-menu-row">
-          {/* Opciones de navegación principal. */}
-          {items.map((item) => (
-            <button
-              key={item.id}
-              type="button"
-              className={`nav-link nav-button ${isItemActive(item) ? 'is-active' : ''}`}
-              onClick={() => onNavigate(item.page || item.id, '', item.section || '')}
-            >
-              {item.label}
-            </button>
-          ))}
-
-          {/* Separador visual. */}
-          <hr className="my-2" />
-
-          {/* Si el usuario NO está autenticado, mostrar opción Login. */}
-          {!user && (
-            <button
-              type="button"
-              className="nav-link nav-button"
-              onClick={() => onNavigate('login')}
-            >
-              Iniciar sesión
-            </button>
-          )}
-
-          {/* Si el usuario ESTÁ autenticado, mostrar opciones según rol. */}
-          {user && (
-            <>
-              {/* Opción de admin: panel de gestión de usuarios. */}
-              {isAdmin() && (
-                <button
-                  type="button"
-                  className={`nav-link nav-button ${activePage === 'usuarios' ? 'is-active' : ''}`}
-                  onClick={() => onNavigate('usuarios')}
-                >
-                  Gestión de usuarios
-                </button>
-              )}
-
-              {/* Perfil del usuario autenticado. */}
-              <button
-                type="button"
-                className={`nav-link nav-button ${activePage === 'perfil' ? 'is-active' : ''}`}
-                onClick={() => onNavigate('perfil')}
-              >
-                Mi perfil
-              </button>
-
-              {/* Cerrar sesión. */}
-              <button
-                type="button"
-                className="nav-link nav-button text-warning"
-                onClick={handleLogout}
-              >
-                Cerrar sesión
-              </button>
-            </>
-          )}
-        </div>
-      </div>
-    </nav>
+      </nav>
+    </div>
   )
 }
 

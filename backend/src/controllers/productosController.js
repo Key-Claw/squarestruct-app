@@ -27,12 +27,23 @@ const normalizarProducto = (producto) => ({
   ...producto,
   nombre: normalizarTexto(producto.nombre),
   descripcion: normalizarTexto(producto.descripcion),
-  tipo: normalizarTexto(producto.tipo)
+  tipo: normalizarTexto(producto.tipo),
+  material: normalizarTexto(producto.material),
+  proveedor: normalizarTexto(producto.proveedor),
+  categoriaProveedor: normalizarTexto(producto.categoriaProveedor)
 });
 
 export const getProductos = async (req, res) => {
   try {
-    const [rows] = await db.query('SELECT * FROM productos');
+    const [rows] = await db.query(`
+      SELECT
+        p.*,
+        pr.nombreEmpresa AS proveedor,
+        pr.categoria AS categoriaProveedor,
+        pr.sitioWeb AS sitioWebProveedor
+      FROM productos p
+      JOIN proveedores pr ON p.idProveedor = pr.idProveedor
+    `);
     res.json(rows.map(normalizarProducto));
   } catch (error) {
     res.status(500).json({ error: 'Error al obtener productos', detalle: error.message });
@@ -44,7 +55,14 @@ export const getProductoById = async (req, res) => {
     const { id } = req.params;
 
     const [rows] = await db.query(
-      'SELECT * FROM productos WHERE idProducto = ?',
+      `SELECT
+        p.*,
+        pr.nombreEmpresa AS proveedor,
+        pr.categoria AS categoriaProveedor,
+        pr.sitioWeb AS sitioWebProveedor
+      FROM productos p
+      JOIN proveedores pr ON p.idProveedor = pr.idProveedor
+      WHERE p.idProducto = ?`,
       [id]
     );
 
@@ -60,9 +78,9 @@ export const getProductoById = async (req, res) => {
 
 export const crearProducto = async (req, res) => {
   try {
-    const { nombre, descripcion, precio, tipo, idProveedor } = req.body;
+    const { nombre, descripcion, precio, tipo, material, alto, ancho, largo, idProveedor } = req.body;
 
-    if (!nombre || precio === undefined || !idProveedor) {
+    if (!nombre || precio === undefined || !material || alto === undefined || ancho === undefined || largo === undefined || !idProveedor) {
       return res.status(400).json({
         error: 'Faltan campos obligatorios'
       });
@@ -70,9 +88,9 @@ export const crearProducto = async (req, res) => {
 
     const [result] = await db.query(
       `INSERT INTO productos 
-       (nombre, descripcion, precio, tipo, idProveedor)
-       VALUES (?, ?, ?, ?, ?)`,
-      [nombre, descripcion || null, precio, tipo || null, idProveedor]
+       (nombre, descripcion, precio, tipo, material, alto, ancho, largo, idProveedor)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [nombre, descripcion || null, precio, tipo || null, material, alto, ancho, largo, idProveedor]
     );
 
     res.status(201).json({
@@ -90,13 +108,13 @@ export const crearProducto = async (req, res) => {
 export const actualizarProducto = async (req, res) => {
   try {
     const { id } = req.params;
-    const { nombre, descripcion, precio, tipo, idProveedor } = req.body;
+    const { nombre, descripcion, precio, tipo, material, alto, ancho, largo, idProveedor } = req.body;
 
     const [result] = await db.query(
       `UPDATE productos
-       SET nombre = ?, descripcion = ?, precio = ?, tipo = ?, idProveedor = ?
+       SET nombre = ?, descripcion = ?, precio = ?, tipo = ?, material = ?, alto = ?, ancho = ?, largo = ?, idProveedor = ?
        WHERE idProducto = ?`,
-      [nombre, descripcion || null, precio, tipo || null, idProveedor, id]
+      [nombre, descripcion || null, precio, tipo || null, material, alto, ancho, largo, idProveedor, id]
     );
 
     if (result.affectedRows === 0) {

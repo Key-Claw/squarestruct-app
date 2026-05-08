@@ -1,124 +1,136 @@
-const values = [
-  {
-    title: 'Construcción modular',
-    text: 'SquareStruct organiza piezas, medidas y datos para explicar cómo montar estructuras por bloques.',
-  },
-  {
-    title: 'Producto conectado',
-    text: 'El catálogo toma la información de la base de datos para mantener precio, stock y dimensiones visibles.',
-  },
-  {
-    title: 'Evolución a Diseño',
-    text: 'La siguiente fase prepara el diseño de planos y el cálculo aproximado de presupuestos.',
-  },
-]
+import cristianGilPhoto from '../assets/about/cristiangil.jpeg'
+import raulmartinezPhoto from '../assets/about/raulmartinez.jpeg'
+import teamPhoto from '../assets/about/retoseas.jpeg'
 
-const carouselSlides = [
-  {
-    image: 'https://mdbcdn.b-cdn.net/img/new/slides/041.webp',
-    title: 'SquareStruct',
-    text: 'Presentación visual del proyecto',
-    alt: 'Imagen de presentación del proyecto',
-  },
-  {
-    image: 'https://mdbcdn.b-cdn.net/img/new/slides/042.webp',
-    title: 'Construcción modular',
-    text: 'Ideas para explicar el MVP',
-    alt: 'Imagen de apoyo para el MVP',
-  },
-  {
-    image: 'https://mdbcdn.b-cdn.net/img/new/slides/043.webp',
-    title: 'Futuro del proyecto',
-    text: 'Catálogo, diseño y crecimiento',
-    alt: 'Imagen de futuro del proyecto',
-  },
-]
-
-function AboutUs({ onNavigate }) {
+function AboutUs() {
   return (
-    /* Bootstrap container-fluid ocupa todo el ancho disponible:
-       https://getbootstrap.com/docs/5.3/layout/containers/ */
-    <section className="page-shell about-page container-fluid">
-      {/* Bootstrap carousel:
-          https://getbootstrap.com/docs/5.3/components/carousel/
-          Se conserva la esencia del carrusel creado por el companero al entrar desde el logo.
-          Se corrigio de MDB/HTML a Bootstrap + React usando className y data-bs. */}
-      <div id="aboutCarousel" className="carousel slide about-carousel" data-bs-ride="carousel">
-        <div className="carousel-indicators">
-          {carouselSlides.map((slide, index) => (
-            <button
-              key={slide.title}
-              type="button"
-              data-bs-target="#aboutCarousel"
-              data-bs-slide-to={index}
-              className={index === 0 ? 'active' : ''}
-              aria-current={index === 0 ? 'true' : undefined}
-              aria-label={`Slide ${index + 1}`}
-            ></button>
-          ))}
-        </div>
+    <section className="page-shell about-page about-story-page container-fluid">
+      <div className="row g-3 about-layout-row align-items-start">
+        <aside className="col-12 col-lg-2 about-profile-col">
+          <div className="card about-name-card">
+            <div className="card-body">Raúl Martín</div>
+          </div>
 
-        <div className="carousel-inner">
-          {carouselSlides.map((slide, index) => (
-            <div className={`carousel-item ${index === 0 ? 'active' : ''}`} key={slide.title}>
-              <img src={slide.image} className="d-block w-100 about-carousel-image" alt={slide.alt} />
-              <div className="carousel-caption about-carousel-caption">
-                <h1>{slide.title}</h1>
-                <p>{slide.text}</p>
+          <article className="card about-profile-photo-card">
+            <img src={raulmartinezPhoto} className="card-img about-profile-image" alt="Raúl Martín" />
+          </article>
+
+          <section className="card about-profile-text-card">
+            <div className="card-body">
+              <p>
+                Raúl Martín ha sentido desde pequeno una gran pasion por los
+                videojuegos y el mundo de la tecnologia, lo que le llevo a orientar su
+                formacion hacia este sector.
+              </p>
+
+              <p>
+                Inicio sus estudios en Sistemas Microinformaticos y Redes en el Centro
+                San Valero, donde adquirio una base solida en sistemas y tecnologia y
+                desperto su interes por el desarrollo web.
+              </p>
+
+              <p>
+                Actualmente cursa Desarrollo de Aplicaciones Web (DAW), aplicando sus
+                conocimientos en proyectos como SquareStruct mientras continua
+                formandose de manera autodidacta con el objetivo de crecer en el
+                ambito tecnologico.
+              </p>
+            </div>
+          </section>
+        </aside>
+
+        <main className="col-12 col-lg-8">
+          <div className="card about-team-card">
+            <img src={teamPhoto} className="card-img about-team-image" alt="Raul y Cristian" />
+          </div>
+
+          <section className="card about-story-card about-editorial-card">
+            <div className="card-body">
+              <div className="about-text-content">
+                <h1>Nuestra historia</h1>
+                <p className="about-lead">
+                  SquareStruct es un proyecto academico con mentalidad practica: una
+                  tienda online para acercar la construccion modular a un usuario que
+                  quiere comparar, elegir y planificar con mas claridad.
+                </p>
+
+                <div className="row g-4 about-newspaper-text align-items-stretch">
+                  <div className="col-12 col-md-4 d-flex">
+                    <div className="about-history-column flex-fill h-100">
+                      <p>
+                        SquareStruct nace como proyecto final del primer curso de
+                        Desarrollo de Aplicaciones Web (DAW) en el Centro San Valero,
+                        con la idea de crear una tienda online especializada en productos
+                        modulares para la construccion. El proyecto se centra
+                        principalmente en la comercializacion de bloques de distintas
+                        medidas y pilares, suministrados por una empresa que actuara
+                        como proveedora inicial.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="col-12 col-md-4 d-flex">
+                    <div className="about-history-column flex-fill h-100">
+                      <p>
+                        La finalidad de SquareStruct es facilitar al usuario la consulta,
+                        seleccion y compra de materiales modulares, ofreciendo una
+                        plataforma clara, moderna y orientada a la construccion de
+                        viviendas o estructuras mediante piezas ensamblables.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="col-12 col-md-4 d-flex">
+                    <div className="about-history-column flex-fill h-100">
+                      <p>
+                        La idea surge tambien de nuestra experiencia previa en otros
+                        ciclos formativos y de la buena dinamica de trabajo que hemos
+                        construido como equipo. Aunque no comenzamos a trabajar juntos
+                        directamente hasta este curso, la confianza, la coordinacion y
+                        la forma de complementarnos nos han permitido plantear un
+                        proyecto mas completo, con una vision practica y cercana a un
+                        caso real.
+                      </p>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
-          ))}
-        </div>
+          </section>
+        </main>
 
-        <button className="carousel-control-prev" type="button" data-bs-target="#aboutCarousel" data-bs-slide="prev">
-          <span className="carousel-control-prev-icon" aria-hidden="true"></span>
-          <span className="visually-hidden">Anterior</span>
-        </button>
-        <button className="carousel-control-next" type="button" data-bs-target="#aboutCarousel" data-bs-slide="next">
-          <span className="carousel-control-next-icon" aria-hidden="true"></span>
-          <span className="visually-hidden">Siguiente</span>
-        </button>
-      </div>
-
-      <div className="mvp-hero about-hero">
-        <p className="eyebrow">Sobre SquareStruct</p>
-        <h1>Un MVP para construir ideas por bloques</h1>
-        <p>
-          El proyecto une catálogo, usuarios y una base técnica para explicar
-          cómo podría crecer una herramienta de construcción modular.
-        </p>
-      </div>
-
-      {/* Bootstrap grid:
-          https://getbootstrap.com/docs/5.3/layout/grid/ */}
-      <div className="row g-4 align-items-stretch">
-        {values.map((item) => (
-          <div className="col-12 col-md-4" key={item.title}>
-            <article className="page-card compact-card h-100">
-              <div className="page-card-body">
-                <h3>{item.title}</h3>
-                <p>{item.text}</p>
-              </div>
-            </article>
+        <aside className="col-12 col-lg-2 about-profile-col">
+          <div className="card about-name-card">
+            <div className="card-body">Cristian Gil Gz</div>
           </div>
-        ))}
-      </div>
 
-      <section className="page-block product-link-block">
-        <div>
-          <p className="eyebrow">Presentación del proyecto</p>
-          <h2>Del catálogo MVP al diseñador de planos</h2>
-          <p>
-            La web ya deja separadas las partes principales: inspiración,
-            productos, usuarios y una vista inicial para el futuro editor.
-          </p>
-        </div>
-        {/* Bootstrap buttons:
-            https://getbootstrap.com/docs/5.3/components/buttons/ */}
-        <button type="button" className="btn btn-light" onClick={() => onNavigate('design')}>
-          Ver Diseño
-        </button>
-      </section>
+          <article className="card about-profile-photo-card">
+            <img src={cristianGilPhoto} className="card-img about-profile-image" alt="Cristian Gil" />
+          </article>
+
+          <section className="card about-profile-text-card">
+            <div className="card-body">
+              <p>
+                Cristian Gil decidio reinventarse profesionalmente apostando por el
+                sector tecnologico, dejando atras un entorno laboral distinto para
+                enfocarse en su desarrollo como programador.
+              </p>
+
+              <p>
+                Inicio su formacion en Sistemas Microinformaticos y Redes en el Centro
+                San Valero, donde adquirio una base solida en sistemas y redes que le
+                permite comprender mejor el funcionamiento de las aplicaciones.
+              </p>
+
+              <p>
+                Actualmente cursa Desarrollo de Aplicaciones Web (DAW), aplicando sus
+                conocimientos en proyectos como SquareStruct mientras continua
+                ampliando sus habilidades dentro del desarrollo web.
+              </p>
+            </div>
+          </section>
+        </aside>
+      </div>
     </section>
   )
 }

@@ -52,9 +52,10 @@ const normalizarUsuario = (userData) => {
  * @returns {Promise<object>} Respuesta del servidor con mensaje de éxito.
  * @throws {Error} Si fallan validaciones o si el email ya existe.
  */
-export const registerUser = async (nombre, email, contrasena) => {
+export const registerUser = async (nombre, primerApellido, email, contrasena) => {
   const response = await postRequest('/usuarios/register', {
     nombre,
+    primerApellido,
     email,
     contrasena,
   })
@@ -69,35 +70,31 @@ export const registerUser = async (nombre, email, contrasena) => {
  * @returns {Promise<object>} Objeto con datos del usuario autenticado.
  * @throws {Error} Si las credenciales son inválidas.
  */
-export const loginUser = async (email, contrasena) => {
+export const loginUser = async ({ email, nombre, primerApellido, contrasena }) => {
   try {
-    // Llamar al endpoint de login
-    const response = await postRequest('/usuarios/login', {
-      email,
-      contrasena,
-    })
+    const payload = {}
+    if (nombre && primerApellido) {
+      payload.nombre = nombre
+      payload.primerApellido = primerApellido
+    } else if (email) {
+      payload.email = email
+    }
+    payload.contrasena = contrasena
+
+    // Llamar al endpoint de login (acepta email o nombre+primerApellido)
+    const response = await postRequest('/usuarios/login', payload)
 
     // El backend devuelve { token }
     if (response.token) {
-      // Guardar token en localStorage
       localStorage.setItem(TOKEN_KEY, response.token)
-
-      // Decodificar el token para obtener datos del usuario
-      // Los tokens JWT tienen 3 partes separadas por puntos: header.payload.signature
-      const payload = JSON.parse(atob(response.token.split('.')[1]))
-
-      // Crear objeto de usuario con datos del token
-      // Incluye: idUsuario, nombre, email, rol
+      const jwtPayload = JSON.parse(atob(response.token.split('.')[1]))
       const userData = {
-        idUsuario: payload.idUsuario,
-        nombre: normalizarTexto(payload.nombre),
-        email: normalizarTexto(payload.email),
-        rol: normalizarTexto(payload.rol)
+        idUsuario: jwtPayload.idUsuario,
+        nombre: normalizarTexto(jwtPayload.nombre),
+        email: normalizarTexto(jwtPayload.email),
+        rol: normalizarTexto(jwtPayload.rol)
       }
-
-      // Guardar datos del usuario en localStorage
       localStorage.setItem(USER_KEY, JSON.stringify(userData))
-
       return userData
     }
 

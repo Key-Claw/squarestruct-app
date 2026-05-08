@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { getAllUsers, updateUser } from '../services/authService'
+import '../styles/usuarios.css'
 
 /**
  * Página de administración de usuarios (solo para admin).

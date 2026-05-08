@@ -25,24 +25,18 @@ function Login({ onNavigate, onUserLogin }) {
   const handleLogin = async (e) => {
     e.preventDefault()
     
-    // Validación básica de campos.
-    if (!email || !contrasena) {
-      setError('Completa todos los campos para iniciar sesión.')
-      return
-    }
-
-    // Validación de formato de email.
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      setError('Introduce un correo electrónico válido.')
-      return
-    }
+      // Validación básica de campos (email + contraseña).
+      if (!email || !contrasena) {
+        setError('Completa el correo y la contraseña para iniciar sesión.')
+        return
+      }
 
     setIsLoading(true)
     setError('')
 
     try {
-      // Llamar al servicio de autenticación.
-      const userData = await loginUser(email, contrasena)
+      // Llamar al servicio de autenticación con email.
+      const userData = await loginUser({ email, contrasena })
 
       // Actualizar estado global del usuario.
       onUserLogin(userData)
@@ -94,6 +88,8 @@ function Login({ onNavigate, onUserLogin }) {
 
                   {/* Formulario de login. */}
                   <form onSubmit={handleLogin}>
+
+
                     {/* Campo de correo electrónico del usuario. */}
                     <div className="form-outline form-white mb-3 login-field">
                       <input
