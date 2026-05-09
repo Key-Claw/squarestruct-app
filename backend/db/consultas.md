@@ -1,24 +1,30 @@
--- Consultas utiles para comprobar la base de datos de SquareStruct.
---
--- Orden recomendado de ejecucion:
---   1. backend/db/schema.sql
---   2. backend/db/seeds.sql
---   3. backend/db/consultas.sql
---
--- Objetivo del archivo:
---   - Validar que la base de datos contiene datos coherentes.
---   - Tener consultas preparadas para explicar el modelo en la presentacion.
---   - Comprobar integridad entre pedidos, productos, usuarios y proveedores.
---
--- Consultas recomendadas para demo:
---   1, 16, 23, 29, 31, 42, 54, 60, 65, 68, 73 y 74.
+# Consultas SquareStruct
 
+## Objetivo
 
--- ============================================================
--- 1. SELECT BASICO, ALIAS, ORDER BY
--- ============================================================
+Este archivo recoge consultas utiles para comprobar la base de datos de SquareStruct.
 
--- 1. Catalogo completo con proveedor, material y dimensiones.
+Sirve para validar que los datos son coherentes, explicar el modelo en una presentacion y comprobar la integridad entre usuarios, proveedores, productos, pedidos y detalles de pedido.
+
+## Orden recomendado
+
+```text
+1. backend/db/schema.sql
+2. backend/db/seeds.sql
+3. backend/db/consultas.md
+```
+
+## Consultas recomendadas para demo
+
+```text
+1, 16, 23, 29, 31, 42, 54, 60, 65, 68, 73 y 74
+```
+
+## 1. Select basico, alias y ordenacion
+
+### 1. Catalogo completo con proveedor, material y dimensiones.
+
+```sql
 SELECT
   p.idProducto,
   p.nombre,
@@ -34,8 +40,11 @@ SELECT
 FROM productos p
 JOIN proveedores pr ON p.idProveedor = pr.idProveedor
 ORDER BY pr.nombreEmpresa, p.tipo, p.nombre;
+```
 
--- 2. Productos visibles como bloques.
+### 2. Productos visibles como bloques.
+
+```sql
 SELECT
   idProducto,
   nombre,
@@ -47,8 +56,11 @@ SELECT
 FROM productos
 WHERE tipo = 'bloque'
 ORDER BY material, precio DESC;
+```
 
--- 3. Productos visibles como pilares o columnas.
+### 3. Productos visibles como pilares o columnas.
+
+```sql
 SELECT
   idProducto,
   nombre,
@@ -60,8 +72,11 @@ SELECT
 FROM productos
 WHERE tipo = 'pilar'
 ORDER BY material, precio DESC;
+```
 
--- 4. Usuarios registrados ordenados por fecha de alta.
+### 4. Usuarios registrados ordenados por fecha de alta.
+
+```sql
 SELECT
   idUsuario,
   nombre,
@@ -72,8 +87,11 @@ SELECT
   creadoEn
 FROM usuarios
 ORDER BY creadoEn DESC;
+```
 
--- 5. Proveedores validados.
+### 5. Proveedores validados.
+
+```sql
 SELECT
   idProveedor,
   nombreEmpresa,
@@ -84,12 +102,13 @@ SELECT
 FROM proveedores
 WHERE validado = TRUE
 ORDER BY nombreEmpresa;
+```
 
--- ============================================================
--- 2. WHERE, OPERADORES, IN, BETWEEN, LIKE, NULL
--- ============================================================
+## 2. Filtros y operadores
 
--- 6. Productos de hormigon.
+### 6. Productos de hormigon.
+
+```sql
 SELECT
   idProducto,
   nombre,
@@ -99,8 +118,11 @@ SELECT
 FROM productos
 WHERE material = 'Hormigon'
 ORDER BY precio DESC;
+```
 
--- 7. Productos de plastico reciclable.
+### 7. Productos de plastico reciclable.
+
+```sql
 SELECT
   idProducto,
   nombre,
@@ -110,8 +132,11 @@ SELECT
 FROM productos
 WHERE material = 'Plastico reciclable'
 ORDER BY precio DESC;
+```
 
--- 8. Productos con precio entre 100 y 1000 euros.
+### 8. Productos con precio entre 100 y 1000 euros.
+
+```sql
 SELECT
   idProducto,
   nombre,
@@ -121,8 +146,11 @@ SELECT
 FROM productos
 WHERE precio BETWEEN 100 AND 1000
 ORDER BY precio;
+```
 
--- 9. Productos cuyo nombre contiene la palabra bloque.
+### 9. Productos cuyo nombre contiene la palabra bloque.
+
+```sql
 SELECT
   idProducto,
   nombre,
@@ -132,8 +160,11 @@ SELECT
 FROM productos
 WHERE nombre LIKE '%bloque%'
 ORDER BY nombre;
+```
 
--- 10. Usuarios administradores.
+### 10. Usuarios administradores.
+
+```sql
 SELECT
   idUsuario,
   nombre,
@@ -143,8 +174,11 @@ SELECT
 FROM usuarios
 WHERE rol = 'admin'
 ORDER BY nombre;
+```
 
--- 11. Usuarios normales.
+### 11. Usuarios normales.
+
+```sql
 SELECT
   idUsuario,
   nombre,
@@ -154,8 +188,11 @@ SELECT
 FROM usuarios
 WHERE rol = 'usuario'
 ORDER BY nombre;
+```
 
--- 12. Proveedores sin pagina web registrada.
+### 12. Proveedores sin pagina web registrada.
+
+```sql
 SELECT
   idProveedor,
   nombreEmpresa,
@@ -163,8 +200,11 @@ SELECT
   sitioWeb
 FROM proveedores
 WHERE sitioWeb IS NULL;
+```
 
--- 13. Proveedores con telefono informado.
+### 13. Proveedores con telefono informado.
+
+```sql
 SELECT
   idProveedor,
   nombreEmpresa,
@@ -172,8 +212,11 @@ SELECT
 FROM proveedores
 WHERE telefono IS NOT NULL
 ORDER BY nombreEmpresa;
+```
 
--- 14. Pedidos pendientes, pagados o enviados.
+### 14. Pedidos pendientes, pagados o enviados.
+
+```sql
 SELECT
   idPedido,
   fecha,
@@ -184,8 +227,11 @@ SELECT
 FROM pedidos
 WHERE estado IN ('pendiente', 'pagado', 'enviado')
 ORDER BY fecha DESC;
+```
 
--- 15. Pedidos que no estan cancelados.
+### 15. Pedidos que no estan cancelados.
+
+```sql
 SELECT
   idPedido,
   fecha,
@@ -194,12 +240,13 @@ SELECT
 FROM pedidos
 WHERE estado <> 'cancelado'
 ORDER BY fecha DESC;
+```
 
--- ============================================================
--- 3. COLUMNAS CALCULADAS Y FUNCIONES
--- ============================================================
+## 3. Columnas calculadas y funciones
 
--- 16. Calcular volumen de cada producto en cm3.
+### 16. Calcular volumen de cada producto en cm3.
+
+```sql
 SELECT
   idProducto,
   nombre,
@@ -211,8 +258,11 @@ SELECT
   (alto * ancho * largo) AS volumenCm3
 FROM productos
 ORDER BY volumenCm3 DESC;
+```
 
--- 17. Calcular precio con IVA orientativo del 21%.
+### 17. Calcular precio con IVA orientativo del 21%.
+
+```sql
 SELECT
   idProducto,
   nombre,
@@ -220,8 +270,11 @@ SELECT
   ROUND(precio * 1.21, 2) AS precioConIVA
 FROM productos
 ORDER BY precioConIVA DESC;
+```
 
--- 18. Calcular el 10% del precio de cada producto.
+### 18. Calcular el 10% del precio de cada producto.
+
+```sql
 SELECT
   idProducto,
   nombre,
@@ -229,24 +282,33 @@ SELECT
   ROUND(precio * 0.10, 2) AS diezPorCiento
 FROM productos
 ORDER BY precio DESC;
+```
 
--- 19. Crear una etiqueta visual para productos.
+### 19. Crear una etiqueta visual para productos.
+
+```sql
 SELECT
   idProducto,
   CONCAT(tipo, ' - ', material, ' - ', nombre) AS etiquetaProducto,
   precio
 FROM productos
 ORDER BY etiquetaProducto;
+```
 
--- 20. Longitud del nombre de cada producto.
+### 20. Longitud del nombre de cada producto.
+
+```sql
 SELECT
   idProducto,
   nombre,
   LENGTH(nombre) AS longitudNombre
 FROM productos
 ORDER BY longitudNombre DESC;
+```
 
--- 21. Fecha de pedido en formato dia/mes/anio.
+### 21. Fecha de pedido en formato dia/mes/anio.
+
+```sql
 SELECT
   idPedido,
   DATE_FORMAT(fecha, '%d/%m/%Y') AS fechaFormateada,
@@ -254,8 +316,11 @@ SELECT
   total
 FROM pedidos
 ORDER BY fecha DESC;
+```
 
--- 22. Extraer anio y mes de los pedidos.
+### 22. Extraer anio y mes de los pedidos.
+
+```sql
 SELECT
   idPedido,
   YEAR(fecha) AS anio,
@@ -264,51 +329,68 @@ SELECT
   total
 FROM pedidos
 ORDER BY anio DESC, mes DESC;
+```
 
--- ============================================================
--- 4. FUNCIONES AGREGADAS
--- ============================================================
+## 4. Funciones agregadas
 
--- 23. Precio minimo, maximo y medio de todos los productos.
+### 23. Precio minimo, maximo y medio de todos los productos.
+
+```sql
 SELECT
   MIN(precio) AS precioMinimo,
   MAX(precio) AS precioMaximo,
   ROUND(AVG(precio), 2) AS precioMedio
 FROM productos;
+```
 
--- 24. Total de productos registrados.
+### 24. Total de productos registrados.
+
+```sql
 SELECT
   COUNT(*) AS totalProductos
 FROM productos;
+```
 
--- 25. Total de usuarios registrados.
+### 25. Total de usuarios registrados.
+
+```sql
 SELECT
   COUNT(*) AS totalUsuarios
 FROM usuarios;
+```
 
--- 26. Total de proveedores registrados.
+### 26. Total de proveedores registrados.
+
+```sql
 SELECT
   COUNT(*) AS totalProveedores
 FROM proveedores;
+```
 
--- 27. Importe total vendido segun pedidos.
+### 27. Importe total vendido segun pedidos.
+
+```sql
 SELECT
   COALESCE(SUM(total), 0) AS totalVendido
 FROM pedidos
 WHERE estado IN ('pagado', 'enviado', 'entregado');
+```
 
--- 28. Pedido mas caro y pedido mas barato.
+### 28. Pedido mas caro y pedido mas barato.
+
+```sql
 SELECT
   MIN(total) AS pedidoMinimo,
   MAX(total) AS pedidoMaximo,
   ROUND(AVG(total), 2) AS pedidoMedio
 FROM pedidos;
+```
 
--- ============================================================
--- 5. GROUP BY
--- ============================================================
+## 5. Agrupaciones
 
--- 29. Productos por material.
+### 29. Productos por material.
+
+```sql
 SELECT
   material,
   COUNT(*) AS totalProductos,
@@ -318,8 +400,11 @@ SELECT
 FROM productos
 GROUP BY material
 ORDER BY totalProductos DESC;
+```
 
--- 30. Productos por tipo.
+### 30. Productos por tipo.
+
+```sql
 SELECT
   tipo,
   COUNT(*) AS totalProductos,
@@ -327,8 +412,11 @@ SELECT
 FROM productos
 GROUP BY tipo
 ORDER BY totalProductos DESC;
+```
 
--- 31. Productos por proveedor y tipo.
+### 31. Productos por proveedor y tipo.
+
+```sql
 SELECT
   pr.nombreEmpresa AS proveedor,
   pr.categoria AS categoriaProveedor,
@@ -339,8 +427,11 @@ FROM productos p
 JOIN proveedores pr ON p.idProveedor = pr.idProveedor
 GROUP BY pr.nombreEmpresa, pr.categoria, p.tipo, p.material
 ORDER BY pr.nombreEmpresa, p.tipo;
+```
 
--- 32. Pedidos por estado.
+### 32. Pedidos por estado.
+
+```sql
 SELECT
   estado,
   COUNT(*) AS totalPedidos,
@@ -348,8 +439,11 @@ SELECT
 FROM pedidos
 GROUP BY estado
 ORDER BY totalPedidos DESC;
+```
 
--- 33. Pedidos por metodo de pago.
+### 33. Pedidos por metodo de pago.
+
+```sql
 SELECT
   metodoPago,
   COUNT(*) AS totalPedidos,
@@ -357,16 +451,22 @@ SELECT
 FROM pedidos
 GROUP BY metodoPago
 ORDER BY importeTotal DESC;
+```
 
--- 34. Usuarios por rol.
+### 34. Usuarios por rol.
+
+```sql
 SELECT
   rol,
   COUNT(*) AS totalUsuarios
 FROM usuarios
 GROUP BY rol
 ORDER BY totalUsuarios DESC;
+```
 
--- 35. Pedidos por mes y anio.
+### 35. Pedidos por mes y anio.
+
+```sql
 SELECT
   YEAR(fecha) AS anio,
   MONTH(fecha) AS mes,
@@ -375,12 +475,13 @@ SELECT
 FROM pedidos
 GROUP BY YEAR(fecha), MONTH(fecha)
 ORDER BY anio DESC, mes DESC;
+```
 
--- ============================================================
--- 6. HAVING
--- ============================================================
+## 6. Filtros sobre agrupaciones
 
--- 36. Materiales con mas de un producto.
+### 36. Materiales con mas de un producto.
+
+```sql
 SELECT
   material,
   COUNT(*) AS totalProductos
@@ -388,8 +489,11 @@ FROM productos
 GROUP BY material
 HAVING COUNT(*) > 1
 ORDER BY totalProductos DESC;
+```
 
--- 37. Proveedores con mas de un producto.
+### 37. Proveedores con mas de un producto.
+
+```sql
 SELECT
   pr.nombreEmpresa AS proveedor,
   COUNT(p.idProducto) AS totalProductos
@@ -398,8 +502,11 @@ JOIN productos p ON pr.idProveedor = p.idProveedor
 GROUP BY pr.nombreEmpresa
 HAVING COUNT(p.idProducto) > 1
 ORDER BY totalProductos DESC;
+```
 
--- 38. Tipos de producto cuyo precio medio supera 100 euros.
+### 38. Tipos de producto cuyo precio medio supera 100 euros.
+
+```sql
 SELECT
   tipo,
   ROUND(AVG(precio), 2) AS precioMedio
@@ -407,8 +514,11 @@ FROM productos
 GROUP BY tipo
 HAVING AVG(precio) > 100
 ORDER BY precioMedio DESC;
+```
 
--- 39. Usuarios con mas de un pedido.
+### 39. Usuarios con mas de un pedido.
+
+```sql
 SELECT
   u.idUsuario,
   u.nombre,
@@ -419,8 +529,11 @@ JOIN pedidos pe ON u.idUsuario = pe.idUsuario
 GROUP BY u.idUsuario, u.nombre, u.primerApellido
 HAVING COUNT(pe.idPedido) > 1
 ORDER BY totalPedidos DESC;
+```
 
--- 40. Proveedores cuyo catalogo supera 1000 euros de valor total.
+### 40. Proveedores cuyo catalogo supera 1000 euros de valor total.
+
+```sql
 SELECT
   pr.nombreEmpresa AS proveedor,
   SUM(p.precio) AS valorCatalogo
@@ -429,12 +542,13 @@ JOIN productos p ON pr.idProveedor = p.idProveedor
 GROUP BY pr.nombreEmpresa
 HAVING SUM(p.precio) > 1000
 ORDER BY valorCatalogo DESC;
+```
 
--- ============================================================
--- 7. JOIN
--- ============================================================
+## 7. Relaciones con JOIN
 
--- 41. Pedidos con usuario.
+### 41. Pedidos con usuario.
+
+```sql
 SELECT
   pe.idPedido,
   pe.fecha,
@@ -447,8 +561,11 @@ SELECT
 FROM pedidos pe
 JOIN usuarios u ON pe.idUsuario = u.idUsuario
 ORDER BY pe.fecha DESC;
+```
 
--- 42. Detalle completo de pedidos.
+### 42. Detalle completo de pedidos.
+
+```sql
 SELECT
   pe.idPedido,
   pe.fecha,
@@ -466,8 +583,11 @@ JOIN usuarios u ON pe.idUsuario = u.idUsuario
 JOIN productos p ON pd.idProducto = p.idProducto
 JOIN proveedores pr ON p.idProveedor = pr.idProveedor
 ORDER BY pe.idPedido, p.nombre;
+```
 
--- 43. Proveedores registrados y productos asociados.
+### 43. Proveedores registrados y productos asociados.
+
+```sql
 SELECT
   pr.idProveedor,
   pr.nombreEmpresa,
@@ -480,8 +600,11 @@ FROM proveedores pr
 LEFT JOIN productos p ON pr.idProveedor = p.idProveedor
 GROUP BY pr.idProveedor, pr.nombreEmpresa, pr.categoria, pr.telefono, pr.sitioWeb, pr.validado
 ORDER BY pr.nombreEmpresa;
+```
 
--- 44. Usuarios y sus pedidos, incluyendo usuarios sin pedidos.
+### 44. Usuarios y sus pedidos, incluyendo usuarios sin pedidos.
+
+```sql
 SELECT
   u.idUsuario,
   u.nombre,
@@ -493,8 +616,11 @@ FROM usuarios u
 LEFT JOIN pedidos pe ON u.idUsuario = pe.idUsuario
 GROUP BY u.idUsuario, u.nombre, u.primerApellido, u.email
 ORDER BY importeTotal DESC;
+```
 
--- 45. Productos que nunca han sido pedidos.
+### 45. Productos que nunca han sido pedidos.
+
+```sql
 SELECT
   p.idProducto,
   p.nombre,
@@ -505,8 +631,11 @@ FROM productos p
 LEFT JOIN pedidoDetalles pd ON p.idProducto = pd.idProducto
 WHERE pd.idProducto IS NULL
 ORDER BY p.nombre;
+```
 
--- 46. Proveedores sin productos.
+### 46. Proveedores sin productos.
+
+```sql
 SELECT
   pr.idProveedor,
   pr.nombreEmpresa,
@@ -515,12 +644,13 @@ FROM proveedores pr
 LEFT JOIN productos p ON pr.idProveedor = p.idProveedor
 WHERE p.idProducto IS NULL
 ORDER BY pr.nombreEmpresa;
+```
 
--- ============================================================
--- 8. SUBCONSULTAS
--- ============================================================
+## 8. Subconsultas
 
--- 47. Productos con precio superior al precio medio.
+### 47. Productos con precio superior al precio medio.
+
+```sql
 SELECT
   idProducto,
   nombre,
@@ -533,8 +663,11 @@ WHERE precio > (
   FROM productos
 )
 ORDER BY precio DESC;
+```
 
--- 48. Producto o productos mas caros.
+### 48. Producto o productos mas caros.
+
+```sql
 SELECT
   idProducto,
   nombre,
@@ -546,8 +679,11 @@ WHERE precio = (
   SELECT MAX(precio)
   FROM productos
 );
+```
 
--- 49. Usuarios que han realizado algun pedido.
+### 49. Usuarios que han realizado algun pedido.
+
+```sql
 SELECT
   idUsuario,
   nombre,
@@ -558,8 +694,11 @@ WHERE idUsuario IN (
   SELECT idUsuario
   FROM pedidos
 );
+```
 
--- 50. Usuarios que no han realizado ningun pedido.
+### 50. Usuarios que no han realizado ningun pedido.
+
+```sql
 SELECT
   idUsuario,
   nombre,
@@ -570,8 +709,11 @@ WHERE idUsuario NOT IN (
   SELECT idUsuario
   FROM pedidos
 );
+```
 
--- 51. Productos del proveedor con mas productos.
+### 51. Productos del proveedor con mas productos.
+
+```sql
 SELECT
   p.idProducto,
   p.nombre,
@@ -587,8 +729,11 @@ WHERE p.idProveedor = (
   ORDER BY COUNT(*) DESC
   LIMIT 1
 );
+```
 
--- 52. Pedidos cuyo total es mayor que la media de todos los pedidos.
+### 52. Pedidos cuyo total es mayor que la media de todos los pedidos.
+
+```sql
 SELECT
   idPedido,
   fecha,
@@ -600,8 +745,11 @@ WHERE total > (
   FROM pedidos
 )
 ORDER BY total DESC;
+```
 
--- 53. Proveedores que tienen productos mas caros que la media general.
+### 53. Proveedores que tienen productos mas caros que la media general.
+
+```sql
 SELECT
   pr.idProveedor,
   pr.nombreEmpresa,
@@ -616,12 +764,13 @@ WHERE pr.idProveedor IN (
   )
 )
 ORDER BY pr.nombreEmpresa;
+```
 
--- ============================================================
--- 9. CONSULTAS DE COMPROBACION DE INTEGRIDAD
--- ============================================================
+## 9. Comprobacion de integridad
 
--- 54. Comprobar si el total guardado de cada pedido cuadra con sus detalles.
+### 54. Comprobar si el total guardado de cada pedido cuadra con sus detalles.
+
+```sql
 SELECT
   pe.idPedido,
   pe.total AS totalGuardado,
@@ -631,8 +780,11 @@ FROM pedidos pe
 LEFT JOIN pedidoDetalles pd ON pe.idPedido = pd.idPedido
 GROUP BY pe.idPedido, pe.total
 ORDER BY pe.idPedido;
+```
 
--- 55. Mostrar solo pedidos cuyo total no cuadra.
+### 55. Mostrar solo pedidos cuyo total no cuadra.
+
+```sql
 SELECT
   pe.idPedido,
   pe.total AS totalGuardado,
@@ -643,16 +795,22 @@ LEFT JOIN pedidoDetalles pd ON pe.idPedido = pd.idPedido
 GROUP BY pe.idPedido, pe.total
 HAVING diferencia <> 0
 ORDER BY pe.idPedido;
+```
 
--- 56. Comprobar emails duplicados.
+### 56. Comprobar emails duplicados.
+
+```sql
 SELECT
   email,
   COUNT(*) AS vecesRepetido
 FROM usuarios
 GROUP BY email
 HAVING COUNT(*) > 1;
+```
 
--- 57. Comprobar productos duplicados por nombre, tipo, material y proveedor.
+### 57. Comprobar productos duplicados por nombre, tipo, material y proveedor.
+
+```sql
 SELECT
   nombre,
   tipo,
@@ -662,8 +820,11 @@ SELECT
 FROM productos
 GROUP BY nombre, tipo, material, idProveedor
 HAVING COUNT(*) > 1;
+```
 
--- 58. Comprobar pedidos sin detalles.
+### 58. Comprobar pedidos sin detalles.
+
+```sql
 SELECT
   pe.idPedido,
   pe.fecha,
@@ -672,8 +833,11 @@ SELECT
 FROM pedidos pe
 LEFT JOIN pedidoDetalles pd ON pe.idPedido = pd.idPedido
 WHERE pd.idPedido IS NULL;
+```
 
--- 59. Comprobar detalles con cantidad o precio unitario incorrecto.
+### 59. Comprobar detalles con cantidad o precio unitario incorrecto.
+
+```sql
 SELECT
   idPedido,
   idProducto,
@@ -682,12 +846,13 @@ SELECT
 FROM pedidoDetalles
 WHERE cantidad <= 0
    OR precioUnitario < 0;
+```
 
--- ============================================================
--- 10. CONSULTAS PARA CATALOGO Y FRONTEND
--- ============================================================
+## 10. Catalogo y frontend
 
--- 60. Consulta base para la pagina Catalogo.
+### 60. Consulta base para la pagina Catalogo.
+
+```sql
 SELECT
   p.idProducto,
   p.nombre,
@@ -704,8 +869,11 @@ SELECT
 FROM productos p
 JOIN proveedores pr ON p.idProveedor = pr.idProveedor
 ORDER BY p.idProducto DESC;
+```
 
--- 61. Consulta para filtros de catalogo por tipo y material.
+### 61. Consulta para filtros de catalogo por tipo y material.
+
+```sql
 SELECT
   p.idProducto,
   p.nombre,
@@ -718,8 +886,11 @@ JOIN proveedores pr ON p.idProveedor = pr.idProveedor
 WHERE p.tipo = 'bloque'
   AND p.material = 'Hormigon'
 ORDER BY p.precio DESC;
+```
 
--- 62. Consulta para mostrar productos baratos primero.
+### 62. Consulta para mostrar productos baratos primero.
+
+```sql
 SELECT
   idProducto,
   nombre,
@@ -728,8 +899,11 @@ SELECT
   precio
 FROM productos
 ORDER BY precio ASC;
+```
 
--- 63. Consulta para mostrar productos premium primero.
+### 63. Consulta para mostrar productos premium primero.
+
+```sql
 SELECT
   idProducto,
   nombre,
@@ -738,8 +912,11 @@ SELECT
   precio
 FROM productos
 ORDER BY precio DESC;
+```
 
--- 64. Buscador simple por nombre o descripcion.
+### 64. Buscador simple por nombre o descripcion.
+
+```sql
 SELECT
   idProducto,
   nombre,
@@ -751,20 +928,24 @@ FROM productos
 WHERE nombre LIKE '%modular%'
    OR descripcion LIKE '%modular%'
 ORDER BY nombre;
+```
 
--- ============================================================
--- 11. CONSULTAS PARA PANEL ADMIN
--- ============================================================
+## 11. Panel admin
 
--- 65. Resumen general del panel admin.
+### 65. Resumen general del panel admin.
+
+```sql
 SELECT
   (SELECT COUNT(*) FROM usuarios) AS totalUsuarios,
   (SELECT COUNT(*) FROM proveedores) AS totalProveedores,
   (SELECT COUNT(*) FROM productos) AS totalProductos,
   (SELECT COUNT(*) FROM pedidos) AS totalPedidos,
   (SELECT COALESCE(SUM(total), 0) FROM pedidos) AS facturacionTotal;
+```
 
--- 66. Facturacion por usuario.
+### 66. Facturacion por usuario.
+
+```sql
 SELECT
   u.idUsuario,
   u.nombre,
@@ -776,8 +957,11 @@ FROM usuarios u
 LEFT JOIN pedidos pe ON u.idUsuario = pe.idUsuario
 GROUP BY u.idUsuario, u.nombre, u.primerApellido, u.email
 ORDER BY facturacionUsuario DESC;
+```
 
--- 67. Facturacion por proveedor.
+### 67. Facturacion por proveedor.
+
+```sql
 SELECT
   pr.idProveedor,
   pr.nombreEmpresa,
@@ -788,8 +972,11 @@ LEFT JOIN productos p ON pr.idProveedor = p.idProveedor
 LEFT JOIN pedidoDetalles pd ON p.idProducto = pd.idProducto
 GROUP BY pr.idProveedor, pr.nombreEmpresa, pr.categoria
 ORDER BY facturacionProveedor DESC;
+```
 
--- 68. Productos mas vendidos por unidades.
+### 68. Productos mas vendidos por unidades.
+
+```sql
 SELECT
   p.idProducto,
   p.nombre,
@@ -800,8 +987,11 @@ FROM productos p
 LEFT JOIN pedidoDetalles pd ON p.idProducto = pd.idProducto
 GROUP BY p.idProducto, p.nombre, p.tipo, p.material
 ORDER BY unidadesVendidas DESC;
+```
 
--- 69. Productos que generan mas facturacion.
+### 69. Productos que generan mas facturacion.
+
+```sql
 SELECT
   p.idProducto,
   p.nombre,
@@ -812,8 +1002,11 @@ FROM productos p
 LEFT JOIN pedidoDetalles pd ON p.idProducto = pd.idProducto
 GROUP BY p.idProducto, p.nombre, p.tipo, p.material
 ORDER BY facturacionProducto DESC;
+```
 
--- 70. Tendencia de compra por mes.
+### 70. Tendencia de compra por mes.
+
+```sql
 SELECT
   YEAR(fecha) AS anio,
   MONTH(fecha) AS mes,
@@ -822,28 +1015,35 @@ SELECT
 FROM pedidos
 GROUP BY YEAR(fecha), MONTH(fecha)
 ORDER BY anio DESC, mes DESC;
+```
 
--- 71. Estados de pedido para grafico circular.
+### 71. Estados de pedido para grafico circular.
+
+```sql
 SELECT
   estado,
   COUNT(*) AS totalPedidos
 FROM pedidos
 GROUP BY estado
 ORDER BY totalPedidos DESC;
+```
 
--- 72. Metodos de pago mas usados.
+### 72. Metodos de pago mas usados.
+
+```sql
 SELECT
   metodoPago,
   COUNT(*) AS totalUsos
 FROM pedidos
 GROUP BY metodoPago
 ORDER BY totalUsos DESC;
+```
 
--- ============================================================
--- 12. CONSULTAS TIPO DISENO 3D / PRESUPUESTO
--- ============================================================
+## 12. Diseno 3D y presupuesto
 
--- 73. Calcular presupuesto de ejemplo usando cantidades manuales.
+### 73. Calcular presupuesto de ejemplo usando cantidades manuales.
+
+```sql
 SELECT
   p.idProducto,
   p.nombre,
@@ -854,8 +1054,11 @@ SELECT
   ROUND(p.precio * 10, 2) AS subtotalSimulado
 FROM productos p
 ORDER BY subtotalSimulado DESC;
+```
 
--- 74. Calcular volumen total de productos usados en pedidos.
+### 74. Calcular volumen total de productos usados en pedidos.
+
+```sql
 SELECT
   p.nombre,
   p.tipo,
@@ -866,8 +1069,11 @@ FROM pedidoDetalles pd
 JOIN productos p ON pd.idProducto = p.idProducto
 GROUP BY p.nombre, p.tipo, p.material
 ORDER BY volumenTotalCm3 DESC;
+```
 
--- 75. Calcular coste medio por tipo de pieza.
+### 75. Calcular coste medio por tipo de pieza.
+
+```sql
 SELECT
   tipo,
   ROUND(AVG(precio), 2) AS costeMedio,
@@ -875,8 +1081,11 @@ SELECT
   MAX(precio) AS costeMaximo
 FROM productos
 GROUP BY tipo;
+```
 
--- 76. Material mas usado en pedidos.
+### 76. Material mas usado en pedidos.
+
+```sql
 SELECT
   p.material,
   SUM(pd.cantidad) AS unidadesVendidas
@@ -884,130 +1093,4 @@ FROM pedidoDetalles pd
 JOIN productos p ON pd.idProducto = p.idProducto
 GROUP BY p.material
 ORDER BY unidadesVendidas DESC;
-
--- ============================================================
--- 13. DML DE EJEMPLO, COMENTADO PARA NO MODIFICAR DATOS SIN QUERER
--- ============================================================
-
--- 77. INSERT de ejemplo para crear un usuario.
--- INSERT INTO usuarios (nombre, primerApellido, segundoApellido, email, contrasena, rol)
--- VALUES ('Mario', 'Lopez', NULL, 'mario.lopez@email.com', '$2b$10$hashmario', 'usuario');
-
--- 78. INSERT de ejemplo para crear un proveedor.
--- INSERT INTO proveedores (nombreEmpresa, telefono, sitioWeb, categoria, validado)
--- VALUES ('Modular Zaragoza SL', '976000000', 'https://modularzaragoza.com', 'Construccion modular', TRUE);
-
--- 79. INSERT de ejemplo para crear un producto.
--- INSERT INTO productos (nombre, descripcion, precio, tipo, material, alto, ancho, largo, idProveedor)
--- VALUES ('Bloque modular hormigon 100x50x50', 'Bloque estructural para construccion modular.', 299.99, 'bloque', 'Hormigon', 50, 50, 100, 1);
-
--- 80. UPDATE de ejemplo para validar un proveedor.
--- UPDATE proveedores
--- SET validado = TRUE
--- WHERE idProveedor = 1;
-
--- 81. UPDATE de ejemplo para cambiar el estado de un pedido.
--- UPDATE pedidos
--- SET estado = 'pagado'
--- WHERE idPedido = 1;
-
--- 82. DELETE de ejemplo para borrar un producto no usado.
--- DELETE FROM productos
--- WHERE idProducto = 99;
-
--- ============================================================
--- 14. CONSULTAS DE REPASO 
--- ============================================================
-
--- 83. Muestra nombre, apellidos y numero de pedidos de cada usuario.
-SELECT
-  u.idUsuario,
-  u.nombre,
-  u.primerApellido,
-  u.segundoApellido,
-  COUNT(pe.idPedido) AS totalPedidos
-FROM usuarios u
-LEFT JOIN pedidos pe ON u.idUsuario = pe.idUsuario
-GROUP BY u.idUsuario, u.nombre, u.primerApellido, u.segundoApellido
-ORDER BY totalPedidos DESC;
-
--- 84. Muestra los proveedores que tengan productos de hormigon.
-SELECT DISTINCT
-  pr.nombreEmpresa,
-  pr.categoria
-FROM proveedores pr
-JOIN productos p ON pr.idProveedor = p.idProveedor
-WHERE p.material = 'Hormigon'
-ORDER BY pr.nombreEmpresa;
-
--- 85. Muestra los pedidos cuyo total sea mayor que el pedido medio.
-SELECT
-  idPedido,
-  fecha,
-  estado,
-  total
-FROM pedidos
-WHERE total > (
-  SELECT AVG(total)
-  FROM pedidos
-)
-ORDER BY total DESC;
-
--- 86. Muestra el proveedor con mayor valor de catalogo.
-SELECT
-  pr.nombreEmpresa,
-  SUM(p.precio) AS valorCatalogo
-FROM proveedores pr
-JOIN productos p ON pr.idProveedor = p.idProveedor
-GROUP BY pr.nombreEmpresa
-ORDER BY valorCatalogo DESC
-LIMIT 1;
-
--- 87. Muestra los usuarios que han comprado productos de plastico reciclable.
-SELECT DISTINCT
-  u.idUsuario,
-  u.nombre,
-  u.primerApellido,
-  u.email
-FROM usuarios u
-JOIN pedidos pe ON u.idUsuario = pe.idUsuario
-JOIN pedidoDetalles pd ON pe.idPedido = pd.idPedido
-JOIN productos p ON pd.idProducto = p.idProducto
-WHERE p.material = 'Plastico reciclable'
-ORDER BY u.nombre;
-
--- 88. Muestra los productos cuyo precio sea mayor que todos los productos de plastico reciclable.
-SELECT
-  idProducto,
-  nombre,
-  tipo,
-  material,
-  precio
-FROM productos
-WHERE precio > (
-  SELECT MAX(precio)
-  FROM productos
-  WHERE material = 'Plastico reciclable'
-)
-ORDER BY precio DESC;
-
--- 89. Muestra el numero de productos distintos comprados en cada pedido.
-SELECT
-  pe.idPedido,
-  pe.fecha,
-  COUNT(pd.idProducto) AS productosDistintos
-FROM pedidos pe
-JOIN pedidoDetalles pd ON pe.idPedido = pd.idPedido
-GROUP BY pe.idPedido, pe.fecha
-ORDER BY productosDistintos DESC;
-
--- 90. Muestra pedidos con mas de 2 productos distintos.
-SELECT
-  pe.idPedido,
-  pe.fecha,
-  COUNT(pd.idProducto) AS productosDistintos
-FROM pedidos pe
-JOIN pedidoDetalles pd ON pe.idPedido = pd.idPedido
-GROUP BY pe.idPedido, pe.fecha
-HAVING COUNT(pd.idProducto) > 2
-ORDER BY productosDistintos DESC;
+```
