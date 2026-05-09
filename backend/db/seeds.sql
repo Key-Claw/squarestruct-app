@@ -19,14 +19,14 @@ VALUES
   ('Plasticos renovables ByFusion', '+18332925625', 'https://byfusion.com/', 'Plasticos renovables', TRUE),
   ('Hormigon Forpol Group', '+34977881287', 'https://www.forpol.es/prefabricados-hormigon/bloques-de-hormigon-forpolbloc/', 'Hormigon', TRUE);
 
--- Usuarios RECORDAR QUE CUANDO SUBAMOS A AWS HAY QUE CAMBIAR LOS HASH DE LAS CONTRASEÑAS POR LOS REALES GENERADOS CON BCRYPT
+-- Hash bcrypt de la contrasena temporal de ejemplo para usuarios seed. Cambiar antes de desplegar en AWS.
 INSERT INTO usuarios (nombre, primerApellido, segundoApellido, email, contrasena, rol)
 VALUES
   ('Admin', 'SquareStruct', NULL, 'admin@squarestruct.com', '$2b$10$uDPwExnvB1b.4fDtKNOKZOx.4BmAODWoLc23EtZZOa6IPljXf3cjW', 'admin'),
   ('Juan', 'Perez', 'Guarnizo', 'juan.perez@email.com', '$2b$10$uDPwExnvB1b.4fDtKNOKZOx.4BmAODWoLc23EtZZOa6IPljXf3cjW', 'usuario'),
   ('Ana', 'Gomez', NULL, 'ana.gomez@email.com', '$2b$10$uDPwExnvB1b.4fDtKNOKZOx.4BmAODWoLc23EtZZOa6IPljXf3cjW', 'usuario'),
   ('Carlos', 'Martinez', 'Lopez', 'carlos.martinez@email.com', '$2b$10$uDPwExnvB1b.4fDtKNOKZOx.4BmAODWoLc23EtZZOa6IPljXf3cjW', 'usuario'),
-  ('Lucia', 'Fernandez', NULL, 'lucia.fernandez@email.com', '$$2b$10$uDPwExnvB1b.4fDtKNOKZOx.4BmAODWoLc23EtZZOa6IPljXf3cjW', 'usuario'),
+  ('Lucia', 'Fernandez', NULL, 'lucia.fernandez@email.com', '$2b$10$uDPwExnvB1b.4fDtKNOKZOx.4BmAODWoLc23EtZZOa6IPljXf3cjW', 'usuario'),
   ('Miguel', 'Sanchez', 'Ruiz', 'miguel.sanchez@email.com', '$2b$10$uDPwExnvB1b.4fDtKNOKZOx.4BmAODWoLc23EtZZOa6IPljXf3cjW', 'usuario'),
   ('Elena', 'Torres', NULL, 'elena.torres@email.com', '$2b$10$uDPwExnvB1b.4fDtKNOKZOx.4BmAODWoLc23EtZZOa6IPljXf3cjW', 'usuario'),
   ('David', 'Ramirez', 'Moreno', 'david.ramirez@email.com', '$2b$10$uDPwExnvB1b.4fDtKNOKZOx.4BmAODWoLc23EtZZOa6IPljXf3cjW', 'usuario'),
