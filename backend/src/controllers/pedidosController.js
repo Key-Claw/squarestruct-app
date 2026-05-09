@@ -1,6 +1,12 @@
 // Controladores para manejar la lógica de pedidos
 import { db } from '../app.js';
 
+const crearErrorHttp = (status, mensaje) => {
+  const error = new Error(mensaje);
+  error.status = status;
+  return error;
+};
+
 export const crearPedido = async (req, res) => {
   const connection = await db.getConnection();
 
@@ -8,15 +14,36 @@ export const crearPedido = async (req, res) => {
     const { direccionEnvio, metodoPago, productos } = req.body;
     const idUsuario = req.user.idUsuario || req.user.id;
 
+    if (!idUsuario) {
+      return res.status(401).json({
+        error: 'Usuario no autenticado'
+      });
+    }
+
     if (!direccionEnvio || !metodoPago || !Array.isArray(productos) || productos.length === 0) {
       return res.status(400).json({
         error: 'Datos incompletos para crear el pedido'
       });
     }
 
+    for (const item of productos) {
+      if (
+        !item ||
+        typeof item.idProducto !== 'number' ||
+        item.idProducto <= 0 ||
+        typeof item.cantidad !== 'number' ||
+        item.cantidad <= 0
+      ) {
+        return res.status(400).json({
+          error: 'Productos inválidos en el pedido'
+        });
+      }
+    }
+
     await connection.beginTransaction();
 
     let total = 0;
+    const preciosPorProducto = new Map();
 
     for (const item of productos) {
       const [rows] = await connection.query(
@@ -25,12 +52,16 @@ export const crearPedido = async (req, res) => {
       );
 
       if (rows.length === 0) {
-        throw new Error(`Producto no encontrado: ${item.idProducto}`);
+        throw crearErrorHttp(404, `Producto no encontrado: ${item.idProducto}`);
       }
 
       const producto = rows[0];
-
-      total += Number(producto.precio) * Number(item.cantidad);
+      const precioUnitario = Number(producto.precio);
+      preciosPorProducto.set(item.idProducto, precioUnitario);
+      if (producto.stock < item.cantidad) {
+        throw new Error(`Stock insuficiente para el producto ${item.idProducto}`);
+      }
+      total += precioUnitario * Number(item.cantidad);
     }
 
     const [pedidoResult] = await connection.query(
@@ -42,12 +73,7 @@ export const crearPedido = async (req, res) => {
     const idPedido = pedidoResult.insertId;
 
     for (const item of productos) {
-      const [rows] = await connection.query(
-        'SELECT precio FROM productos WHERE idProducto = ?',
-        [item.idProducto]
-      );
-
-      const precioUnitario = rows[0].precio;
+      const precioUnitario = preciosPorProducto.get(item.idProducto);
 
       await connection.query(
         `INSERT INTO pedidoDetalles (idPedido, idProducto, cantidad, precioUnitario)
@@ -66,8 +92,8 @@ export const crearPedido = async (req, res) => {
   } catch (error) {
     await connection.rollback();
 
-    res.status(500).json({
-      error: 'Error al crear el pedido',
+    res.status(error.status || 500).json({
+      error: error.status ? error.message : 'Error al crear el pedido',
       detalle: error.message
     });
   } finally {

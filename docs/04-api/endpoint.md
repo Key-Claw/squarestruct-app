@@ -44,6 +44,8 @@ Prefijo general:
 | `POST` | `/api/usuarios/login` | Iniciar sesión y obtener token JWT. |
 | `GET` | `/api/productos` | Consultar productos. |
 | `POST` | `/api/pedidos` | Crear un pedido. |
+| `POST` | `/api/orders` | Crear un pedido (alias de `/api/pedidos`). |
+| `GET` | `/api/orders` | Listar pedidos del usuario autenticado. |
 | `GET` | `/api/perfil` | Consultar datos del usuario autenticado. |
 
 ## Seguridad
@@ -80,3 +82,5 @@ Authorization: Bearer <TOKEN>
 ## Idea clave para explicar
 
 La API es el puente entre frontend y base de datos. El frontend no consulta MySQL directamente: siempre pasa por el backend.
+
+Si usas la colección de Postman del repo, la URL base se configura con la variable `baseUrl` y por defecto apunta a `http://localhost:3000`.

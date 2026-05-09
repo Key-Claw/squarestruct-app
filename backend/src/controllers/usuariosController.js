@@ -117,7 +117,9 @@ export const loginUsuario = async (req, res) => {
 
 export const getUsuarios = async (req, res) => {
   try {
-    const [usuarios] = await db.query('SELECT * FROM usuarios');
+    const [usuarios] = await db.query(
+      'SELECT idUsuario, nombre, primerApellido, segundoApellido, email, rol FROM usuarios'
+    );
 
     res.json(usuarios.map(normalizarUsuario));
   } catch (error) {
@@ -130,7 +132,10 @@ export const getUsuarioById = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const [usuarios] = await db.query('SELECT * FROM usuarios WHERE idUsuario = ?', [id]);
+    const [usuarios] = await db.query(
+      'SELECT idUsuario, nombre, primerApellido, segundoApellido, email, rol FROM usuarios WHERE idUsuario = ?',
+      [id]
+    );
 
     if (usuarios.length === 0) {
       return res.status(404).json({ error: 'Usuario no encontrado' });

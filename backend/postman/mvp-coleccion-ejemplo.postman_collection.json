@@ -4,6 +4,13 @@
     "name": "MVP Tienda Online - Ejemplos",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000",
+      "type": "string"
+    }
+  ],
   "item": [
     {
       "name": "Obtener productos",
@@ -11,11 +18,7 @@
         "method": "GET",
         "header": [],
         "url": {
-          "raw": "http://localhost:3000/api/productos",
-          "protocol": "http",
-          "host": ["localhost"],
-          "port": "3000",
-          "path": ["api", "productos"]
+          "raw": "{{baseUrl}}/api/productos"
         }
       }
     },
@@ -31,11 +34,7 @@
           "raw": "{\n  \"nombre\": \"Test User\",\n  \"email\": \"testuser@mail.com\",\n  \"contrasena\": \"12345678\"\n}"
         },
         "url": {
-          "raw": "http://localhost:3000/api/usuarios/register",
-          "protocol": "http",
-          "host": ["localhost"],
-          "port": "3000",
-          "path": ["api", "usuarios", "register"]
+          "raw": "{{baseUrl}}/api/usuarios/register"
         }
       }
     },
@@ -51,11 +50,7 @@
           "raw": "{\n  \"email\": \"testuser@mail.com\",\n  \"contrasena\": \"12345678\"\n}"
         },
         "url": {
-          "raw": "http://localhost:3000/api/usuarios/login",
-          "protocol": "http",
-          "host": ["localhost"],
-          "port": "3000",
-          "path": ["api", "usuarios", "login"]
+          "raw": "{{baseUrl}}/api/usuarios/login"
         }
       }
     },
@@ -67,11 +62,36 @@
           { "key": "Authorization", "value": "Bearer <JWT>" }
         ],
         "url": {
-          "raw": "http://localhost:3000/api/perfil",
-          "protocol": "http",
-          "host": ["localhost"],
-          "port": "3000",
-          "path": ["api", "perfil"]
+          "raw": "{{baseUrl}}/api/perfil"
+        }
+      }
+    },
+    {
+      "name": "Crear pedido (orders)",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer <JWT>" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"direccionEnvio\": \"Calle Ejemplo 123, Madrid\",\n  \"metodoPago\": \"tarjeta\",\n  \"productos\": [\n    { \"idProducto\": 1, \"cantidad\": 2 },\n    { \"idProducto\": 2, \"cantidad\": 1 }\n  ]\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/orders"
+        }
+      }
+    },
+    {
+      "name": "Listar mis pedidos (orders)",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "Authorization", "value": "Bearer <JWT>" }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/orders"
         }
       }
     }

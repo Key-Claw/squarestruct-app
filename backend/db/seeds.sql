@@ -19,29 +19,29 @@ VALUES
   ('Plasticos renovables ByFusion', '+18332925625', 'https://byfusion.com/', 'Plasticos renovables', TRUE),
   ('Hormigon Forpol Group', '+34977881287', 'https://www.forpol.es/prefabricados-hormigon/bloques-de-hormigon-forpolbloc/', 'Hormigon', TRUE);
 
--- Usuarios RECORDAR QUE CUANDO SUBAMOS A AWS HAY QUE CAMBIAR LOS HASH DE LAS CONTRASEÑAS POR LOS REALES GENERADOS CON BCRYPT
+-- Hash bcrypt de la contrasena temporal de ejemplo para usuarios seed. Cambiar antes de desplegar en AWS.
 INSERT INTO usuarios (nombre, primerApellido, segundoApellido, email, contrasena, rol)
 VALUES
-  ('Admin', 'SquareStruct', NULL, 'admin@squarestruct.com', '$2b$10$hashadmin', 'admin'),
-  ('Juan', 'Perez', 'Guarnizo', 'juan.perez@email.com', '$2b$10$hashjuan', 'usuario'),
-  ('Ana', 'Gomez', NULL, 'ana.gomez@email.com', '$2b$10$hashana', 'usuario'),
-  ('Carlos', 'Martinez', 'Lopez', 'carlos.martinez@email.com', '$2b$10$hashcarlos', 'usuario'),
-  ('Lucia', 'Fernandez', NULL, 'lucia.fernandez@email.com', '$2b$10$hashlucia', 'usuario'),
-  ('Miguel', 'Sanchez', 'Ruiz', 'miguel.sanchez@email.com', '$2b$10$hashmiguel', 'usuario'),
-  ('Elena', 'Torres', NULL, 'elena.torres@email.com', '$2b$10$hashelena', 'usuario'),
-  ('David', 'Ramirez', 'Moreno', 'david.ramirez@email.com', '$2b$10$hashdavid', 'usuario'),
-  ('Sara', 'Navarro', NULL, 'sara.navarro@email.com', '$2b$10$hashsara', 'usuario'),
-  ('Javier', 'Ortega', 'Gil', 'javier.ortega@email.com', '$2b$10$hashjavier', 'usuario'),
-  ('Paula', 'Castro', NULL, 'paula.castro@email.com', '$2b$10$hashpaula', 'usuario'),
-  ('Raul', 'Mendez', 'Vega', 'raul.mendez@email.com', '$2b$10$hashraul', 'usuario'),
-  ('Claudia', 'Herrera', NULL, 'claudia.herrera@email.com', '$2b$10$hashclaudia', 'usuario'),
-  ('Alberto', 'Cano', 'Serrano', 'alberto.cano@email.com', '$2b$10$hashalberto', 'usuario'),
-  ('Marta', 'Iglesias', NULL, 'marta.iglesias@email.com', '$2b$10$hashmarta', 'usuario'),
-  ('Sergio', 'Delgado', 'Nieto', 'sergio.delgado@email.com', '$2b$10$hashsergio', 'usuario'),
-  ('Andrea', 'Reyes', NULL, 'andrea.reyes@email.com', '$2b$10$hashandrea', 'usuario'),
-  ('Fernando', 'Vidal', 'Prieto', 'fernando.vidal@email.com', '$2b$10$hashfernando', 'usuario'),
-  ('Natalia', 'Flores', NULL, 'natalia.flores@email.com', '$2b$10$hashnatalia', 'usuario'),
-  ('Pablo', 'Romero', 'Saez', 'pablo.romero@email.com', '$2b$10$hashpablo', 'usuario');
+  ('Admin', 'SquareStruct', NULL, 'admin@squarestruct.com', '$2b$10$uDPwExnvB1b.4fDtKNOKZOx.4BmAODWoLc23EtZZOa6IPljXf3cjW', 'admin'),
+  ('Juan', 'Perez', 'Guarnizo', 'juan.perez@email.com', '$2b$10$uDPwExnvB1b.4fDtKNOKZOx.4BmAODWoLc23EtZZOa6IPljXf3cjW', 'usuario'),
+  ('Ana', 'Gomez', NULL, 'ana.gomez@email.com', '$2b$10$uDPwExnvB1b.4fDtKNOKZOx.4BmAODWoLc23EtZZOa6IPljXf3cjW', 'usuario'),
+  ('Carlos', 'Martinez', 'Lopez', 'carlos.martinez@email.com', '$2b$10$uDPwExnvB1b.4fDtKNOKZOx.4BmAODWoLc23EtZZOa6IPljXf3cjW', 'usuario'),
+  ('Lucia', 'Fernandez', NULL, 'lucia.fernandez@email.com', '$2b$10$uDPwExnvB1b.4fDtKNOKZOx.4BmAODWoLc23EtZZOa6IPljXf3cjW', 'usuario'),
+  ('Miguel', 'Sanchez', 'Ruiz', 'miguel.sanchez@email.com', '$2b$10$uDPwExnvB1b.4fDtKNOKZOx.4BmAODWoLc23EtZZOa6IPljXf3cjW', 'usuario'),
+  ('Elena', 'Torres', NULL, 'elena.torres@email.com', '$2b$10$uDPwExnvB1b.4fDtKNOKZOx.4BmAODWoLc23EtZZOa6IPljXf3cjW', 'usuario'),
+  ('David', 'Ramirez', 'Moreno', 'david.ramirez@email.com', '$2b$10$uDPwExnvB1b.4fDtKNOKZOx.4BmAODWoLc23EtZZOa6IPljXf3cjW', 'usuario'),
+  ('Sara', 'Navarro', NULL, 'sara.navarro@email.com', '$2b$10$uDPwExnvB1b.4fDtKNOKZOx.4BmAODWoLc23EtZZOa6IPljXf3cjW', 'usuario'),
+  ('Javier', 'Ortega', 'Gil', 'javier.ortega@email.com', '$2b$10$uDPwExnvB1b.4fDtKNOKZOx.4BmAODWoLc23EtZZOa6IPljXf3cjW', 'usuario'),
+  ('Paula', 'Castro', NULL, 'paula.castro@email.com', '$2b$10$uDPwExnvB1b.4fDtKNOKZOx.4BmAODWoLc23EtZZOa6IPljXf3cjW', 'usuario'),
+  ('Raul', 'Mendez', 'Vega', 'raul.mendez@email.com', '$2b$10$uDPwExnvB1b.4fDtKNOKZOx.4BmAODWoLc23EtZZOa6IPljXf3cjW', 'usuario'),
+  ('Claudia', 'Herrera', NULL, 'claudia.herrera@email.com', '$2b$10$uDPwExnvB1b.4fDtKNOKZOx.4BmAODWoLc23EtZZOa6IPljXf3cjW', 'usuario'),
+  ('Alberto', 'Cano', 'Serrano', 'alberto.cano@email.com', '$2b$10$uDPwExnvB1b.4fDtKNOKZOx.4BmAODWoLc23EtZZOa6IPljXf3cjW', 'usuario'),
+  ('Marta', 'Iglesias', NULL, 'marta.iglesias@email.com', '$2b$10$uDPwExnvB1b.4fDtKNOKZOx.4BmAODWoLc23EtZZOa6IPljXf3cjW', 'usuario'),
+  ('Sergio', 'Delgado', 'Nieto', 'sergio.delgado@email.com', '$2b$10$uDPwExnvB1b.4fDtKNOKZOx.4BmAODWoLc23EtZZOa6IPljXf3cjW', 'usuario'),
+  ('Andrea', 'Reyes', NULL, 'andrea.reyes@email.com', '$2b$10$uDPwExnvB1b.4fDtKNOKZOx.4BmAODWoLc23EtZZOa6IPljXf3cjW', 'usuario'),
+  ('Fernando', 'Vidal', 'Prieto', 'fernando.vidal@email.com', '$2b$10$uDPwExnvB1b.4fDtKNOKZOx.4BmAODWoLc23EtZZOa6IPljXf3cjW', 'usuario'),
+  ('Natalia', 'Flores', NULL, 'natalia.flores@email.com', '$2b$10$uDPwExnvB1b.4fDtKNOKZOx.4BmAODWoLc23EtZZOa6IPljXf3cjW', 'usuario'),
+  ('Pablo', 'Romero', 'Saez', 'pablo.romero@email.com', '$2b$10$uDPwExnvB1b.4fDtKNOKZOx.4BmAODWoLc23EtZZOa6IPljXf3cjW', 'usuario');
 
 -- Productos
 INSERT INTO productos (nombre, descripcion, precio, tipo, material, alto, ancho, largo, idProveedor)

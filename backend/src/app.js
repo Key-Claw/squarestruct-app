@@ -29,6 +29,9 @@ app.use('/api/perfil', perfilRouter);
 // Ruta protegida de ejemplo (pedidos)
 app.use('/api/pedidos', pedidosRouter);
 
+// Alias para mantener compatibilidad con clientes que usan nomenclatura en inglés.
+app.use('/api/orders', pedidosRouter);
+
 // Depuración: mostrar valores de conexión para comprobar que dotenv cargó bien.
 console.log('DB_USER:', process.env.DB_USER, 'DB_PASSWORD:', process.env.DB_PASSWORD);
 // Conexión a la base de datos usando las variables que cargó dotenv.

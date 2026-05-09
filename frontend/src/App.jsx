@@ -22,7 +22,7 @@ function App() {
   // ============================================================================
   
   // Página visible en cada momento.
-  const [page, setPage] = useState('facturacion')
+  const [page, setPage] = useState('home')
   // Texto de búsqueda que viaja desde el navbar al catálogo.
   const [searchTerm, setSearchTerm] = useState('')
   const [catalogSection, setCatalogSection] = useState('')
@@ -232,8 +232,11 @@ function App() {
     }
 
     if (page === 'facturacion') {
-      // Acceso provisional para revisar la maqueta sin backend ni login.
-      // Antes de entregar, volver a proteger esta ruta con rol admin.
+      if (!user || !isAdmin()) {
+        // Si intenta acceder sin ser admin, redirige a home
+        setPage('home')
+        return <Home onNavigate={handleNavigate} />
+      }
       return <Facturacion onNavigate={handleNavigate} user={user} />
     }
 

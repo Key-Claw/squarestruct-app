@@ -10,7 +10,8 @@ Esta carpeta reúne la documentación del proyecto. Está organizada para poder 
 4. `04-api/endpoint.md`: resume los endpoints principales.
 5. `05-testing/postman-mvp-ejemplos.md`: explica cómo probar el flujo principal.
 6. `05-testing/frontend-lint-build.md`: explica como revisar el frontend con ESLint y build.
-7. `00-workflow/`: recoge las normas de ramas, commits, issues y milestones.
+7. `06-debug/generar-hash-bcrypt.md`: explica como crear hashes bcrypt para usuarios de prueba.
+8. `00-workflow/`: recoge las normas de ramas, commits, issues y milestones.
 
 ## Para preparar la presentación
 
