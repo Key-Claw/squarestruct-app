@@ -178,6 +178,25 @@ feature/frontend/mvp
 feature/docs/documentacion-general
 ```
 
+## Futuro cambio de ramas por recomendacion del profesorado
+
+```text
+main               → Versión estable y preparada para producción
+dev                → Rama principal de desarrollo e integración
+
+feat/db            → Desarrollo y cambios de base de datos
+feat/api           → Desarrollo general del backend y API
+feat/orders        → Sistema de pedidos, carrito y presupuestos
+feat/ui            → Diseño y estructura visual del frontend
+feat/login         → Autenticación, usuarios y roles
+
+docs/general       → Documentación y organización del proyecto
+hotfix/auth        → Corrección urgente de errores de autenticación
+refactor/navbar    → Reorganización y limpieza interna del navbar
+test/frontend      → Tests y validaciones del frontend
+```
+
+
 ## Frase útil para la presentación
 
 Usamos `dev` como rama de integración y ramas `feature/*`, `fix/*` o `test/*` para separar el trabajo por partes. Cada cambio se relaciona con una issue y se integra mediante Pull Request.
