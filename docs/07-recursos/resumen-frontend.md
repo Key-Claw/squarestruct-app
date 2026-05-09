@@ -1,4 +1,4 @@
-# Frontend SquareStruct
+# Resumen del frontend
 
 ## Objetivo
 
