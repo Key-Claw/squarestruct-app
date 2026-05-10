@@ -26,7 +26,7 @@ La documentacion del frontend esta repartida en dos niveles:
 
 | Documento | Uso |
 | --- | --- |
-| [`../frontend/README.md`](frontend/README.md) | Guia practica para instalar, arrancar, validar y entender el frontend desde la carpeta `frontend`. |
+| [`../frontend/README.md`](../frontend/README.md) | Guia practica para instalar, arrancar, validar y entender el frontend desde la carpeta `frontend`. |
 | [`03-arquitectura/frontend-estructura.md`](03-arquitectura/frontend-estructura.md) | Explicacion profunda de estructura, paginas, componentes, servicios, CSS, responsive y estado del MVP. |
 | [`03-arquitectura/tecnologias-frontend.md`](03-arquitectura/tecnologias-frontend.md) | Explica React, Vite, JavaScript, Bootstrap, CSS modularizado y ESLint. |
 | [`05-testing/frontend-lint-build.md`](05-testing/frontend-lint-build.md) | Explica que son `lint` y `build`, como ejecutarlos y que revisar antes de entregar. |
