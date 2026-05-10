@@ -4,21 +4,21 @@ Esta carpeta reune la documentacion del proyecto. Esta organizada para consultar
 
 ## Orden recomendado de lectura
 
-1. `01-proyecto/vision-general.md`: explica la idea general del proyecto.
-2. `01-proyecto/enfoque-saas-y-evolucion.md`: explica el enfoque SaaS y su evolucion futura.
-3. `02-mvp/metodologia-mvp.md`: explica que incluye la primera version funcional.
-4. `02-mvp/decisiones-tecnicas-mvp.md`: justifica las decisiones tecnicas principales.
-5. `03-arquitectura/backend-estructura.md`: explica la organizacion del backend.
-6. `03-arquitectura/frontend-estructura.md`: explica la organizacion real del frontend, sus paginas, componentes, servicios y CSS.
-7. `03-arquitectura/tecnologias-frontend.md`: resume las tecnologias usadas en el frontend y por que se usan.
-8. `03-arquitectura/base-de-datos.md`: resume la base de datos.
-9. `04-api/endpoints.md`: resume los endpoints principales.
-10. `05-testing/postman-mvp-ejemplos.md`: explica como probar el backend con Postman.
-11. `05-testing/backend-tests.md`: documenta los tests actuales del backend.
-12. `05-testing/frontend-lint-build.md`: explica como revisar el frontend con ESLint, build y comprobacion manual.
-13. `06-debug/generar-hash-bcrypt.md`: explica como crear hashes bcrypt para usuarios de prueba.
-14. `07-recursos/resumen-frontend.md`: chuleta rapida para explicar el frontend.
-15. `00-workflow/`: recoge normas de ramas, commits, issues y milestones.
+1. [`01-proyecto/vision-general.md`](01-proyecto/vision-general.md): explica la idea general del proyecto.
+2. [`01-proyecto/enfoque-saas-y-evolucion.md`](01-proyecto/enfoque-saas-y-evolucion.md): explica el enfoque SaaS y su evolucion futura.
+3. [`02-mvp/metodologia-mvp.md`](02-mvp/metodologia-mvp.md): explica que incluye la primera version funcional.
+4. [`02-mvp/decisiones-tecnicas-mvp.md`](02-mvp/decisiones-tecnicas-mvp.md): justifica las decisiones tecnicas principales.
+5. [`03-arquitectura/backend-estructura.md`](03-arquitectura/backend-estructura.md): explica la organizacion del backend.
+6. [`03-arquitectura/frontend-estructura.md`](03-arquitectura/frontend-estructura.md): explica la organizacion real del frontend, sus paginas, componentes, servicios y CSS.
+7. [`03-arquitectura/tecnologias-frontend.md`](03-arquitectura/tecnologias-frontend.md): resume las tecnologias usadas en el frontend y por que se usan.
+8. [`03-arquitectura/base-de-datos.md`](03-arquitectura/base-de-datos.md): resume la base de datos.
+9. [`04-api/endpoints.md`](04-api/endpoints.md): resume los endpoints principales.
+10. [`05-testing/postman-mvp-ejemplos.md`](05-testing/postman-mvp-ejemplos.md): explica como probar el backend con Postman.
+11. [`05-testing/backend-tests.md`](05-testing/backend-tests.md): documenta los tests actuales del backend.
+12. [`05-testing/frontend-lint-build.md`](05-testing/frontend-lint-build.md): explica como revisar el frontend con ESLint, build y comprobacion manual.
+13. [`06-debug/generar-hash-bcrypt.md`](06-debug/generar-hash-bcrypt.md): explica como crear hashes bcrypt para usuarios de prueba.
+14. [`07-recursos/resumen-frontend.md`](07-recursos/resumen-frontend.md): chuleta rapida para explicar el frontend.
+15. [`00-workflow/`](00-workflow/): recoge normas de ramas, commits, issues y milestones.
 
 ## Documentacion frontend actualizada
 
@@ -26,11 +26,11 @@ La documentacion del frontend esta repartida en dos niveles:
 
 | Documento | Uso |
 | --- | --- |
-| `../frontend/README.md` | Guia practica para instalar, arrancar, validar y entender el frontend desde la carpeta `frontend`. |
-| `03-arquitectura/frontend-estructura.md` | Explicacion profunda de estructura, paginas, componentes, servicios, CSS, responsive y estado del MVP. |
-| `03-arquitectura/tecnologias-frontend.md` | Explica React, Vite, JavaScript, Bootstrap, CSS modularizado y ESLint. |
-| `05-testing/frontend-lint-build.md` | Explica que son `lint` y `build`, como ejecutarlos y que revisar antes de entregar. |
-| `07-recursos/resumen-frontend.md` | Resumen corto para defensa o repaso rapido. |
+| [`../frontend/README.md`](frontend/README.md) | Guia practica para instalar, arrancar, validar y entender el frontend desde la carpeta `frontend`. |
+| [`03-arquitectura/frontend-estructura.md`](03-arquitectura/frontend-estructura.md) | Explicacion profunda de estructura, paginas, componentes, servicios, CSS, responsive y estado del MVP. |
+| [`03-arquitectura/tecnologias-frontend.md`](03-arquitectura/tecnologias-frontend.md) | Explica React, Vite, JavaScript, Bootstrap, CSS modularizado y ESLint. |
+| [`05-testing/frontend-lint-build.md`](05-testing/frontend-lint-build.md) | Explica que son `lint` y `build`, como ejecutarlos y que revisar antes de entregar. |
+| [`07-recursos/resumen-frontend.md`](07-recursos/resumen-frontend.md) | Resumen corto para defensa o repaso rapido. |
 
 ## Para preparar la presentacion
 
