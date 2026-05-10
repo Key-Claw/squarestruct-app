@@ -12,7 +12,7 @@ function AuthErrorMessage({ error, onClear }) {
         onClick={onClear}
         aria-label="Cerrar error"
       >
-        âœ•
+        X
       </button>
     </div>
   )

@@ -118,7 +118,7 @@ export const loginUsuario = async (req, res) => {
 export const getUsuarios = async (req, res) => {
   try {
     const [usuarios] = await db.query(
-      'SELECT idUsuario, nombre, primerApellido, segundoApellido, email, rol FROM usuarios'
+      'SELECT idUsuario, nombre, primerApellido, segundoApellido, email, rol, creadoEn FROM usuarios'
     );
 
     res.json(usuarios.map(normalizarUsuario));
@@ -133,7 +133,7 @@ export const getUsuarioById = async (req, res) => {
     const { id } = req.params;
 
     const [usuarios] = await db.query(
-      'SELECT idUsuario, nombre, primerApellido, segundoApellido, email, rol FROM usuarios WHERE idUsuario = ?',
+      'SELECT idUsuario, nombre, primerApellido, segundoApellido, email, rol, creadoEn FROM usuarios WHERE idUsuario = ?',
       [id]
     );
 

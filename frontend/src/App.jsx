@@ -228,7 +228,7 @@ function App() {
         setPage('home')
         return <Home onNavigate={handleNavigate} />
       }
-      return <Usuarios onNavigate={handleNavigate} user={user} />
+      return <Usuarios onNavigate={handleNavigate} user={user} onAuthExpired={handleUserLogout} />
     }
 
     if (page === 'facturacion') {

@@ -21,7 +21,7 @@ function AuthModal({ isOpen, isLoginMode, onClose, onToggleMode, onUserLogin, on
     setError('')
 
     if (!loginEmail || !loginPassword) {
-      setError('Completa el correo y la contraseÃ±a para iniciar sesiÃ³n.')
+      setError('Completa el correo y la contrasena para iniciar sesion.')
       return
     }
 
@@ -36,7 +36,7 @@ function AuthModal({ isOpen, isLoginMode, onClose, onToggleMode, onUserLogin, on
       onClose()
       onNavigate('home')
     } catch (err) {
-      setError(err.message || 'No se pudo iniciar sesiÃ³n. Revisa tus credenciales.')
+      setError(err.message || 'No se pudo iniciar sesion. Revisa tus credenciales.')
     } finally {
       setIsLoading(false)
     }
@@ -57,17 +57,17 @@ function AuthModal({ isOpen, isLoginMode, onClose, onToggleMode, onUserLogin, on
     }
 
     if (!isValidEmail(registerEmail)) {
-      setError('Introduce un correo electrÃ³nico vÃ¡lido.')
+      setError('Introduce un correo electronico valido.')
       return
     }
 
     if (registerPassword.length < 6) {
-      setError('La contraseÃ±a debe tener al menos 6 caracteres.')
+      setError('La contrasena debe tener al menos 6 caracteres.')
       return
     }
 
     if (registerPassword !== registerConfirmPassword) {
-      setError('Las contraseÃ±as no coinciden.')
+      setError('Las contrasenas no coinciden.')
       return
     }
 
@@ -86,7 +86,7 @@ function AuthModal({ isOpen, isLoginMode, onClose, onToggleMode, onUserLogin, on
       onClose()
       onNavigate('home')
     } catch (err) {
-      setError(err.message || 'No se pudo crear la cuenta. IntÃ©ntalo de nuevo.')
+      setError(err.message || 'No se pudo crear la cuenta. Intentalo de nuevo.')
     } finally {
       setIsLoading(false)
     }

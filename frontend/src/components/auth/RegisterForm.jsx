@@ -28,7 +28,7 @@ function RegisterForm({
           onClick={onClose}
           aria-label="Cerrar modal"
         >
-          âœ•
+          X
         </button>
       </div>
 
@@ -79,12 +79,12 @@ function RegisterForm({
         </div>
 
         <div className="auth-modal-form-group">
-          <label htmlFor="register-password">ContraseÃ±a</label>
+          <label htmlFor="register-password">Contrasena</label>
           <input
             id="register-password"
             type="password"
             className="auth-modal-input"
-            placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
+            placeholder="********"
             value={password}
             onChange={(e) => onPasswordChange(e.target.value)}
             disabled={isLoading}
@@ -92,12 +92,12 @@ function RegisterForm({
         </div>
 
         <div className="auth-modal-form-group">
-          <label htmlFor="register-confirm-password">Confirmar contraseÃ±a</label>
+          <label htmlFor="register-confirm-password">Confirmar contrasena</label>
           <input
             id="register-confirm-password"
             type="password"
             className="auth-modal-input"
-            placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
+            placeholder="********"
             value={confirmPassword}
             onChange={(e) => onConfirmPasswordChange(e.target.value)}
             disabled={isLoading}
@@ -115,14 +115,14 @@ function RegisterForm({
 
       <div className="auth-modal-footer">
         <p>
-          Â¿Ya tienes cuenta?{' '}
+          Ya tienes cuenta?{' '}
           <button
             type="button"
             className="auth-modal-toggle-btn"
             onClick={onToggleMode}
             disabled={isLoading}
           >
-            Inicia sesiÃ³n aquÃ­
+            Inicia sesion aqui
           </button>
         </p>
       </div>

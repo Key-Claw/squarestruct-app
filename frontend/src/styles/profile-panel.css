@@ -272,12 +272,6 @@
   border: 1px solid rgba(220, 53, 69, 0.3);
 }
 
-.profile-role-badge.moderador {
-  background: rgba(255, 193, 7, 0.15);
-  color: #ffc107;
-  border: 1px solid rgba(255, 193, 7, 0.3);
-}
-
 .profile-role-badge.usuario {
   background: rgba(0, 150, 255, 0.15);
   color: #0096ff;
