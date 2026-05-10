@@ -31,7 +31,8 @@ Incluye:
 - Frontend básico.
 - Registro y login.
 - Catálogo.
-- Pedidos básicos.
+- Carrito visual y base de pedidos.
+- Gestión admin inicial.
 - Documentación del estado actual.
 
 Este milestone es el foco actual del proyecto. Las issues de esta fase deben estar orientadas a conseguir una demo completa y explicable.
@@ -83,7 +84,8 @@ Ejemplo de reparto:
 | --- | --- |
 | Base de datos inicial | `MVP v1 - Funcional` |
 | Registro, login y JWT | `MVP v1 - Funcional` |
-| Catálogo y pedidos básicos | `MVP v1 - Funcional` |
+| Catálogo, carrito y base de pedidos | `MVP v1 - Funcional` |
+| Gestión admin inicial | `MVP v1 - Funcional` |
 | Mejoras visuales avanzadas | `v2 - Aplicación completa y estilizada` |
 | Tests más completos | `v2 - Aplicación completa y estilizada` |
 | Editor visual de planos | `v3 - Diseñador de planos 3D` |
@@ -163,7 +165,7 @@ Las issues se escriben con una estructura parecida a esta:
 ```md
 ## Descripción
 
-Implementar la creación básica de pedidos para permitir completar el flujo principal del MVP: registro, login, catálogo y pedido.
+Implementar la base de pedidos para preparar el flujo principal del MVP: registro, login, catálogo y carrito/base de pedido.
 
 ## Rama de trabajo
 
@@ -192,7 +194,7 @@ Relacionado con PR #19 o PR #20 si aplica.
 - [x] Calcular total del pedido.
 - [x] Probar endpoint con Postman.
 - [x] Manejar errores básicos (usuario no autenticado, productos inválidos, etc.).
-- [x] (Opcional) Conectar con frontend (carrito).
+- [x] (Opcional) Preparar conexión con frontend (carrito).
 
 ## Criterios de aceptación
 
@@ -200,8 +202,8 @@ Relacionado con PR #19 o PR #20 si aplica.
 - [ ] El pedido se guarda correctamente en la base de datos.
 - [ ] Los productos asociados al pedido quedan registrados.
 - [ ] El endpoint responde correctamente (200 / 201).
-- [ ] Se puede demostrar el flujo completo del MVP:
-      registro -> login -> catálogo -> pedido.
+- [ ] Se puede demostrar la base del flujo del MVP:
+      registro -> login -> catálogo -> carrito/base de pedido.
 ```
 
 La diferencia entre tareas y criterios de aceptación es importante:

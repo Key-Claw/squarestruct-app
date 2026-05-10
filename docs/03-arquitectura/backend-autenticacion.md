@@ -102,8 +102,10 @@ El MVP trabaja con dos roles:
 El middleware `admin.js` comprueba:
 
 ```text
-req.user.rol === 'admin'
+req.user?.rol?.toLowerCase() === 'admin'
 ```
+
+Se normaliza a minusculas para evitar problemas si el rol llega como `Admin` o `ADMIN`.
 
 ## Rutas públicas y protegidas
 
@@ -116,6 +118,8 @@ req.user.rol === 'admin'
 | `GET /api/pedidos` | Protegida |
 | `POST /api/pedidos` | Protegida |
 | `GET /api/usuarios` | Protegida y admin |
+| `GET /api/usuarios/:id` | Protegida y admin |
+| `PUT /api/usuarios/:id` | Protegida y admin |
 
 ## Seguridad en el MVP
 

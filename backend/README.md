@@ -388,15 +388,17 @@ Además, la base de datos refuerza reglas importantes con restricciones:
 Existe una colección en:
 
 ```text
-backend/postman/mvp-coleccion-ejemplo.postman_collection.json
+backend/postman/squarestruct-mvp.postman_collection.json
 ```
 
-Sirve para probar manualmente el flujo básico:
+Sirve para probar manualmente el flujo básico del MVP:
 
 - registro;
 - login;
 - acceso a perfil con token;
-- llamadas a endpoints principales.
+- productos;
+- gestión admin de usuarios;
+- base de pedidos.
 
 ## Tests automatizados
 

@@ -98,7 +98,7 @@ El backend cumple una parte importante del MVP:
 - Permite trabajar con usuarios.
 - Tiene autenticación.
 - Tiene productos.
-- Tiene pedidos básicos.
+- Tiene base de pedidos.
 - Se puede probar con Postman.
 
 Pero todavía conviene revisar bien:
@@ -107,6 +107,7 @@ Pero todavía conviene revisar bien:
 - Validaciones.
 - Seguridad de configuración.
 - Tests de integración.
+- Integración completa del checkout desde el carrito.
 
 ## Recomendaciones
 
