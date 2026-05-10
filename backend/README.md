@@ -12,7 +12,7 @@ Actualmente gestiona:
 - perfil de usuario autenticado;
 - administración básica de usuarios;
 - catálogo de productos modulares;
-- creación y consulta de pedidos;
+- base técnica para creación y consulta de pedidos;
 - conexión con MySQL;
 - consultas y scripts SQL para explicar y validar el modelo de datos.
 
@@ -276,6 +276,8 @@ Campos principales de producto:
 Las dimensiones se guardan porque el catálogo está pensado para piezas modulares y para futuras funcionalidades de cálculo, presupuesto y representación 3D.
 
 ### Pedidos
+
+El backend ya tiene endpoints y tablas para pedidos. En la fase actual se documenta como base técnica, porque el checkout completo desde el carrito del frontend queda para fases siguientes.
 
 | Método | Ruta | Protección | Descripción |
 | --- | --- | --- | --- |

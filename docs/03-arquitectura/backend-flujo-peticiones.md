@@ -103,7 +103,7 @@ Flujo previsto en backend:
 7. Se insertan las lineas en `pedidoDetalles`.
 8. Se confirma la transaccion.
 
-En el frontend actual existe carrito visual y servicio de pedidos, pero el checkout completo desde el carrito todavia queda pendiente. Por eso se documenta como base tecnica de pedidos, no como flujo final cerrado.
+En el frontend actual existe carrito visual y servicio de pedidos, pero el checkout completo desde el carrito queda para fases siguientes. Por eso se documenta como base tecnica de pedidos, no como flujo final cerrado.
 
 ## Idea clave para explicar
 

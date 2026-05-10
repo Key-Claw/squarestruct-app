@@ -153,9 +153,9 @@ Authorization: Bearer <token>
 
 Las paginas `Usuarios` y `Facturacion` solo se muestran si el usuario tiene rol `admin`.
 
-## Relacion con el MVP
+## Relacion con MVP v1
 
-Estas tecnologias permiten cubrir el MVP sin sobrecargar el proyecto:
+Estas tecnologias permiten cubrir `MVP v1 - Funcional` sin sobrecargar el proyecto:
 
 - React organiza vistas y componentes;
 - Vite simplifica desarrollo y build;

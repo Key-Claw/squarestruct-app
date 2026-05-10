@@ -108,7 +108,7 @@ La relacion mas importante es `pedidoDetalles`, porque conecta pedidos con produ
 4. Puede anadir productos a un carrito visual en el frontend.
 5. La base de datos y el backend ya tienen tablas para guardar pedidos y sus detalles.
 
-El checkout completo desde el carrito queda pendiente, pero la estructura relacional ya esta preparada para ese crecimiento.
+El checkout completo desde el carrito queda para fases siguientes, pero la estructura relacional ya esta preparada para ese crecimiento.
 
 ## Scripts del proyecto
 
@@ -127,4 +127,4 @@ Archivos principales:
 
 ## Idea clave para explicar
 
-La base de datos es relacional porque los datos estan conectados: usuarios, productos y pedidos dependen unos de otros. En el MVP ya existe la base tecnica para pedidos, aunque el flujo visual completo de checkout queda como mejora futura.
+La base de datos es relacional porque los datos estan conectados: usuarios, productos y pedidos dependen unos de otros. En `MVP v1` ya existe la base tecnica para pedidos, aunque el flujo visual completo de checkout queda para fases siguientes.

@@ -106,7 +106,7 @@ Metodos de pago permitidos:
 tarjeta, transferencia, paypal, efectivo
 ```
 
-En el estado actual del MVP, estas tablas existen como base tecnica. El frontend ya tiene carrito visual y servicio de pedidos, pero el checkout completo desde carrito todavia no esta integrado.
+En `MVP v1`, estas tablas existen como base tecnica. El frontend ya tiene carrito visual y servicio de pedidos, pero el checkout completo desde carrito todavia no esta integrado.
 
 ## PedidoDetalles
 

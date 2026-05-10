@@ -4,7 +4,7 @@
 
 MVP significa Producto Minimo Viable.
 
-En este proyecto, el MVP es la primera version funcional de SquareStruct. No incluye todas las ideas futuras, pero permite comprobar que la base tecnica funciona y que el proyecto puede seguir creciendo.
+En este proyecto, `MVP v1 - Funcional` es la primera fase del roadmap de SquareStruct. No incluye todas las ideas futuras, pero permite comprobar que la base tecnica funciona y que el proyecto puede seguir creciendo hacia `v2` y `v3`.
 
 ## Flujo principal
 
@@ -36,7 +36,7 @@ Este recorrido conecta las partes principales del sistema:
 
 ## Funcionalidades no incluidas todavia
 
-Estas funcionalidades quedan fuera del MVP para no aumentar demasiado la complejidad:
+Estas funcionalidades quedan fuera de `MVP v1` para no aumentar demasiado la complejidad:
 
 - Configurador 3D real.
 - Presupuesto automatico avanzado.
@@ -75,7 +75,7 @@ Esto ayuda a trabajar de forma ordenada y a evitar mezclar cambios sin revisar.
 
 ## Criterio de exito del MVP
 
-El MVP se considera valido si:
+`MVP v1` se considera valido si:
 
 - El backend arranca correctamente.
 - La base de datos tiene las tablas necesarias.
@@ -85,8 +85,8 @@ El MVP se considera valido si:
 - El usuario puede anadir productos a un carrito visual.
 - Existe base tecnica para pedidos.
 - Un admin puede acceder a gestion de usuarios.
-- La documentacion explica que partes son funcionales y cuales son provisionales.
+- La documentacion explica que entra en `MVP v1` y que queda para fases siguientes.
 
 ## Idea clave para explicar
 
-El MVP no es el proyecto final. Es una primera version que demuestra que la base tecnica funciona: frontend, backend, base de datos, autenticacion, catalogo, carrito visual y administracion inicial.
+`MVP v1` no es el proyecto final. Es la primera version que demuestra que la base tecnica funciona: frontend, backend, base de datos, autenticacion, catalogo, carrito visual y administracion inicial. Despues, `v2` y `v3` completaran la aplicacion y el disenador 3D.

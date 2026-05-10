@@ -4,7 +4,7 @@
 
 Este documento explica como podria crecer la base de datos cuando se implemente el disenador de planos 3D.
 
-En el MVP todavia no existe la entidad `plano`. La prioridad actual es validar registro, login, catalogo, carrito/base de pedidos y administracion inicial.
+En `MVP v1` todavia no existe la entidad `plano`. La prioridad actual es validar registro, login, catalogo, carrito/base de pedidos y administracion inicial.
 
 ## Por que no esta en el MVP
 
@@ -85,4 +85,4 @@ Guardar planos es una funcionalidad tipica de SaaS porque permite que el usuario
 
 ## Idea clave para explicar
 
-El MVP prepara la base para el futuro disenador 3D porque ya separa usuarios, productos, pedidos y roles. La entidad `plano` seria la evolucion natural para guardar disenos modulares creados por usuarios.
+`MVP v1` prepara la base para el futuro disenador 3D porque ya separa usuarios, productos, pedidos y roles. La entidad `plano` seria la evolucion natural para guardar disenos modulares creados por usuarios en `v3`.

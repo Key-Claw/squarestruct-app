@@ -78,7 +78,7 @@ Los servicios viven en `src/services/` y evitan hacer `fetch` directamente desde
 | `api.js` | Base comun para `GET`, `POST`, `PUT` y `DELETE`. Lee `VITE_API_URL` o usa `/api` por defecto. Anade `Authorization: Bearer <token>` si hay token. |
 | `authService.js` | Registro, login, logout, usuario actual, validacion de expiracion JWT, perfil, listado y actualizacion de usuarios. |
 | `productService.js` | Carga productos con `/productos` y filtra productos en cliente. |
-| `orderService.js` | Funciones para crear y consultar pedidos usando `/orders`. Existe la base, pero la integracion completa de checkout sigue pendiente. |
+| `orderService.js` | Funciones para crear y consultar pedidos usando `/orders`. Existe la base, pero la integracion completa de checkout queda para fases siguientes. |
 
 Durante desarrollo, `vite.config.js` redirige `/api` a `http://localhost:3000`, por lo que normalmente no hace falta configurar nada si el backend esta arrancado en ese puerto.
 
@@ -131,9 +131,9 @@ Antes de abrir una pull request o dar por terminada una tarea de frontend:
 5. Si hay login/admin, cerrar sesion e iniciar sesion de nuevo para renovar el JWT.
 6. Revisar que no quedan errores visibles en consola.
 
-## Relacion con el MVP
+## Relacion con MVP v1
 
-El frontend cubre las partes principales del MVP:
+El frontend cubre las partes principales de `MVP v1 - Funcional`:
 
 - registro e inicio de sesion;
 - catalogo conectado al backend;
@@ -143,7 +143,7 @@ El frontend cubre las partes principales del MVP:
 - gestion de usuarios admin;
 - maqueta de Design como base del futuro disenador.
 
-## Pendiente o mejorable
+## Queda para fases siguientes
 
 - Integrar por completo el flujo de pedidos desde el carrito.
 - Sustituir datos de maqueta en `Facturacion.jsx` por datos reales.

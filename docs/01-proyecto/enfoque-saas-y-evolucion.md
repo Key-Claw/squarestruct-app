@@ -2,7 +2,7 @@
 
 ## Objetivo
 
-Este documento explica por que SquareStruct se plantea como un futuro SaaS y como el MVP actual prepara esa evolucion.
+Este documento explica por que SquareStruct se plantea como un futuro SaaS y como la fase actual `MVP v1 - Funcional` prepara esa evolucion.
 
 SaaS significa *Software as a Service*. Es decir, una aplicacion que el usuario utiliza desde el navegador, mientras la logica, los datos y la infraestructura viven en servidores.
 
@@ -22,9 +22,9 @@ El usuario solo necesita acceder a la web. El mantenimiento, los datos, la segur
 
 SquareStruct se plantea como una futura plataforma SaaS para construccion modular.
 
-El MVP actual todavia no es el SaaS completo. Es la base funcional que permite demostrar el flujo principal y preparar la futura herramienta diferencial: el diseno de planos modulares en 3D.
+La fase actual `MVP v1 - Funcional` todavia no es el SaaS completo. Es la base funcional que permite demostrar el flujo principal y preparar la futura herramienta diferencial: el diseno de planos modulares en 3D.
 
-En el MVP, el enfoque SaaS se empieza a ver en estas decisiones:
+En `MVP v1`, el enfoque SaaS se empieza a ver en estas decisiones:
 
 - El usuario accede desde una interfaz web.
 - El frontend consume una API REST.
@@ -36,7 +36,7 @@ En el MVP, el enfoque SaaS se empieza a ver en estas decisiones:
 
 ## SaaS actual frente a SaaS futuro
 
-En la fase actual, SquareStruct funciona como un MVP web con enfoque SaaS.
+En la fase actual, SquareStruct funciona como una primera version web con enfoque SaaS.
 
 El valor SaaS completo llegara con la implementacion futura del disenador 3D y la gestion completa de pedidos/proyectos, porque permitira ofrecer un servicio mas potente desde el navegador:
 
@@ -51,7 +51,7 @@ El valor SaaS completo llegara con la implementacion futura del disenador 3D y l
 Por eso es mas preciso explicar el proyecto asi:
 
 ```text
-SquareStruct es un MVP con enfoque SaaS que prepara una futura plataforma SaaS para diseno, presupuesto y gestion de construccion modular.
+SquareStruct esta en fase MVP v1: una primera version funcional con enfoque SaaS que prepara una futura plataforma para diseno, presupuesto y gestion de construccion modular.
 ```
 
 ## Pasos seguidos en el MVP
@@ -99,4 +99,4 @@ En AWS, una arquitectura futura podria separar:
 
 ## Idea clave para explicar
 
-SquareStruct todavia no es el SaaS completo, pero el MVP construye su base: usuarios, autenticacion, catalogo, carrito visual, base de pedidos, gestion admin inicial, backend y base de datos. La evolucion SaaS fuerte llegara con el disenador 3D, el guardado de planos, el checkout completo y el calculo de presupuestos desde el navegador.
+SquareStruct todavia no es el SaaS completo, pero `MVP v1` construye su base: usuarios, autenticacion, catalogo, carrito visual, base de pedidos, gestion admin inicial, backend y base de datos. La evolucion SaaS fuerte llegara con `v2` y `v3`: checkout completo, facturacion real, disenador 3D, guardado de planos y calculo de presupuestos desde el navegador.

@@ -133,12 +133,12 @@ Para rutas de administracion, tambien se usa `adminMiddleware`, que comprueba qu
 }
 ```
 
-## Estado actual del MVP
+## Estado actual de MVP v1
 
 - Catalogo conectado a `/api/productos`.
 - Login y registro conectados a `/api/usuarios`.
 - Gestion de usuarios admin conectada a `/api/usuarios`.
-- Pedidos tienen backend y servicios, pero el checkout completo desde carrito sigue pendiente.
+- Pedidos tienen backend y servicios, pero el checkout completo desde carrito queda para fases siguientes.
 
 ## Idea clave para explicar
 

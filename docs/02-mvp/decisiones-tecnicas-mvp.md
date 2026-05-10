@@ -122,7 +122,7 @@ Ademas, `pedidoDetalles` guarda:
 
 Guardar `precioUnitario` es importante porque conserva el precio del producto en el momento del pedido, aunque el precio del catalogo cambie mas adelante.
 
-En el estado actual del MVP, la base de datos y el backend ya preparan pedidos, y el frontend tiene un carrito visual y un servicio `orderService.js`. El checkout completo desde el carrito queda pendiente para una fase posterior.
+En `MVP v1`, la base de datos y el backend ya preparan pedidos, y el frontend tiene un carrito visual y un servicio `orderService.js`. El checkout completo desde el carrito queda para fases siguientes.
 
 ## Por que los productos tienen dimensiones
 
@@ -139,7 +139,7 @@ Esto no solo sirve para mostrar informacion del catalogo. Tambien prepara el pro
 - compatibilidad entre bloques y pilares;
 - disenador de planos 3D.
 
-## Por que el plano 3D queda fuera del MVP
+## Por que el plano 3D queda fuera de MVP v1
 
 El disenador 3D es una de las ideas mas importantes del proyecto, pero tambien una de las mas complejas.
 
@@ -152,13 +152,13 @@ Requiere:
 - representacion 2D o 3D;
 - una nueva entidad `plano`.
 
-Por eso se deja para una fase posterior. El MVP prepara la base, pero no intenta resolver todo el producto final.
+Por eso se deja para `v3`. `MVP v1` prepara la base, pero no intenta resolver todo el producto final.
 
 La pagina `Design.jsx` existe como maqueta visual para explicar la direccion futura, pero no implementa todavia un motor 3D ni guardado real de planos.
 
 ## Por que hay gestion admin inicial
 
-Aunque el MVP prioriza el flujo de cliente, se incluye una primera administracion para demostrar vistas protegidas y control por rol.
+Aunque `MVP v1` prioriza el flujo de cliente, se incluye una primera administracion para demostrar vistas protegidas y control por rol.
 
 En esta fase:
 

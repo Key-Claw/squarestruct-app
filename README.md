@@ -1,134 +1,138 @@
-# SquareStruct App
+<p align="center">
+  <img src="./frontend/src/assets/logo/squarestruct-logo.png" alt="SquareStruct Logo" width="240" />
+</p>
 
-SquareStruct es una aplicación web pensada para acercar la construcción modular al usuario final.
+<h1 align="center">SquareStruct</h1>
 
-La idea principal es que una persona pueda consultar productos de construcción modular, registrarse, iniciar sesión y realizar pedidos. En una versión futura, la plataforma podría evolucionar hacia un configurador visual de viviendas por bloques.
+<p align="center">
+  <a href="https://img.shields.io/badge/version-1.0-blue?style=flat-square"><img src="https://img.shields.io/badge/version-1.0-blue?style=flat-square" alt="version"/></a>
+  <a href="https://img.shields.io/badge/status-MVP-yellow?style=flat-square"><img src="https://img.shields.io/badge/status-MVP-yellow?style=flat-square" alt="status"/></a>
+  <a href="https://img.shields.io/badge/React-19.2.5-61dafb?logo=react&logoColor=white&style=flat-square"><img src="https://img.shields.io/badge/React-19.2.5-61dafb?logo=react&logoColor=white&style=flat-square" alt="React"/></a>
+  <a href="https://img.shields.io/badge/Vite-8.0.10-646cff?logo=vite&logoColor=white&style=flat-square"><img src="https://img.shields.io/badge/Vite-8.0.10-646cff?logo=vite&logoColor=white&style=flat-square" alt="Vite"/></a>
+  <a href="https://img.shields.io/badge/Express-5.1.0-000000?logo=express&logoColor=white&style=flat-square"><img src="https://img.shields.io/badge/Express-5.1.0-000000?logo=express&logoColor=white&style=flat-square" alt="Express"/></a>
+  <a href="https://img.shields.io/badge/MySQL-8.4-4479a1?logo=mysql&logoColor=white&style=flat-square"><img src="https://img.shields.io/badge/MySQL-8.4-4479a1?logo=mysql&logoColor=white&style=flat-square" alt="MySQL"/></a>
+  <a href="https://img.shields.io/badge/Docker-Compose-2496ed?logo=docker&logoColor=white&style=flat-square"><img src="https://img.shields.io/badge/Docker-Compose-2496ed?logo=docker&logoColor=white&style=flat-square" alt="Docker Compose"/></a>
+  <a href="./LICENSE"><img src="https://img.shields.io/badge/license-MIT-green?style=flat-square" alt="MIT License"/></a>
+</p>
 
-## Estado del proyecto
+<h2 align="center">Plataforma web para consultar productos de construccion modular, validar un MVP funcional y evolucionar hacia una experiencia SaaS</h2>
 
-El proyecto se encuentra en fase de MVP, es decir, Producto Mínimo Viable.
+SquareStruct es una aplicacion web planteada por fases. Actualmente el proyecto esta trabajando en `MVP v1 - Funcional`, una primera version centrada en validar la base del sistema: usuarios, autenticacion, catalogo, carrito visual, base de pedidos y gestion administrativa inicial.
 
-Un MVP no intenta tener todas las funcionalidades finales. Su objetivo es demostrar que el flujo principal funciona:
+Despues del MVP, el roadmap continua con `v2 - Aplicacion completa y estilizada` y `v3 - Disenador de planos 3D`, donde se ampliaran la experiencia visual, la gestion real de pedidos, la facturacion y el futuro disenador de estructuras modulares.
+
+---
+
+## Tabla de Contenidos
+
+- [Caracteristicas](#caracteristicas)
+- [Estado del MVP](#estado-del-mvp)
+- [Tecnologias](#tecnologias)
+- [Instalacion y Uso](#instalacion-y-uso)
+- [Inicializacion del Backend y Base de Datos](#inicializacion-del-backend-y-base-de-datos)
+- [Estructura del Proyecto](#estructura-del-proyecto)
+- [Comandos de Validacion](#comandos-de-validacion)
+- [Coleccion Postman](#coleccion-postman)
+- [Documentacion Ampliada](#documentacion-ampliada)
+- [Roadmap](#roadmap)
+- [Licencia](#licencia)
+- [Contexto Academico](#contexto-academico)
+
+---
+
+## Caracteristicas
+
+- **Autenticacion de usuarios**: registro, login, JWT, cierre de sesion y validacion de token.
+- **Catalogo conectado al backend**: productos obtenidos desde la API REST, con fallback de productos demo en frontend.
+- **Carrito visual**: seleccion de productos, cantidades y calculo de total en cliente.
+- **Gestion admin inicial**: vista protegida para listar usuarios y cambiar rol entre `usuario` y `admin`.
+- **API REST**: backend en Express con rutas para usuarios, productos, perfil, pedidos y estado de base de datos.
+- **Base de datos relacional**: MySQL con usuarios, proveedores, productos, pedidos y detalles de pedido.
+- **Frontend modularizado**: React, Vite, Bootstrap y CSS separado por dominios en `frontend/src/styles/`.
+- **Documentacion tecnica**: explicacion de arquitectura, API, MVP, testing, workflow y recursos de defensa.
+
+---
+
+## Estado del MVP
+
+La fase actual del proyecto es `MVP v1 - Funcional`. No es la version final del producto, sino el primer hito del roadmap. Su objetivo es demostrar que la base tecnica funciona antes de pasar a `v2` y `v3`:
 
 ```text
-registro -> login -> catálogo de productos -> pedido
+registro -> login -> catalogo -> carrito/base de pedidos -> gestion admin inicial
 ```
 
-## Roadmap
+### Funcional
 
-| Versión | Objetivo |
+- Registro e inicio de sesion.
+- Catalogo de productos conectado al backend.
+- Carrito visual en frontend.
+- Gestion de usuarios para administradores.
+- Backend con API REST y conexion a MySQL.
+- Base tecnica de pedidos en backend y servicios frontend.
+- Pruebas manuales con Postman.
+- Lint y build del frontend.
+
+### Queda para fases siguientes
+
+- Checkout completo desde el carrito.
+- Facturacion conectada con datos reales.
+- Herramienta `Design` como disenador 3D real.
+- Panel administrativo completo.
+- Tests automatizados de frontend.
+
+---
+
+## Tecnologias
+
+| Parte | Tecnologias |
 | --- | --- |
-| `MVP v1 - Funcional` | Validar el flujo básico de usuarios, productos y pedidos. |
-| `v2 - Aplicación completa y estilizada` | Mejorar interfaz, autenticación, validaciones, tests y estabilidad. |
-| `v3 - Diseñador de planos 3D` | Añadir editor visual de planos, bloques modulares, presupuesto y vista 3D. |
-
-## Funcionalidades actuales
-
-- Registro de usuarios.
-- Inicio de sesión con JWT.
-- Consulta de productos.
-- Interfaz responsive para movil, tablet y PC.
-- Catalogo visual con productos modulares conectados al backend.
-- Pagina de galeria para explicar aplicaciones del producto.
-- Vista `Design` como base visual para la futura version de diseno de planos.
-- Vista `Carrito` enlazada desde el icono del carrito en la navbar.
-- Gestión básica de pedidos.
-- API REST conectada con MySQL.
-- Frontend en React conectado al backend.
-
-## Tecnologías principales
-
-| Parte | Tecnologías |
-| --- | --- |
-| Backend | Node.js, Express, MySQL, JWT, bcrypt |
-| Frontend | React, Vite, JavaScript, Bootstrap |
-| Base de datos | MySQL |
-| Pruebas | Postman, Jest, Supertest |
+| Frontend | React, Vite, JavaScript, Bootstrap, CSS |
+| Backend | Node.js, Express, JWT, bcrypt, dotenv, cors |
+| Base de datos | MySQL 8.4, mysql2 |
+| Testing | Jest, Supertest, Postman, ESLint |
 | Entorno | Docker Compose |
 
-## Estructura del proyecto
+---
 
-```text
-squarestruct-app/
-  backend/      API REST, lógica de negocio y base de datos
-  frontend/     Interfaz web de usuario
-  docker/       Configuración de Docker Compose
-  docs/         Documentación técnica y de presentación
-  scripts/      Scripts de ayuda para arrancar el entorno
-  README.md     Resumen general del proyecto
-```
-
-## Backend
-
-El backend recibe las peticiones del frontend, aplica la lógica de negocio, consulta la base de datos y devuelve respuestas en formato JSON.
-
-```text
-backend/
-  db/              Scripts SQL, seeds, migraciones y backups
-  postman/         Colección de pruebas manuales
-  src/
-    config/        Configuración del proyecto
-    controllers/   Reciben las peticiones HTTP
-    services/      Contienen lógica reutilizable
-    routes/        Definen los endpoints
-    middlewares/   Autenticación y validaciones
-    utils/         Funciones auxiliares
-    app.js         Configuración de Express
-  tests/           Tests del backend
-  server.js        Punto de entrada
-```
-
-## Frontend
-
-El frontend es la parte visual de la aplicación. Permite navegar por las páginas, consultar productos, registrarse e iniciar sesión.
-
-### Estado actual del frontend
-
-En la version actual del MVP se ha trabajado una interfaz mas coherente:
-
-- `Home`: entrada principal con accesos a productos, catalogo y Design.
-- `AboutUs`: pagina accesible desde el logo; conserva el carrusel visual inicial del proyecto.
-- `Galeria`: muestra posibles aplicaciones de los bloques.
-- `Catalogo`: incluye la seccion de productos y carga datos reales desde la API.
-- `Design`: maqueta inicial para explicar la futura herramienta de diseno de planos.
-
-Para revisar calidad basica del frontend se usa ESLint:
+## Instalacion y Uso
 
 ```bash
-cd frontend
-npm run lint
+# Clonar repositorio
+git clone https://github.com/Key-Claw/squarestruct-app.git
+cd squarestruct-app
 ```
 
-Este comando no arranca la web. Sirve para detectar problemas de codigo antes de presentar o subir cambios.
+Instala dependencias de backend y frontend:
 
-```text
-frontend/
-  public/          Recursos públicos
-  src/
-    assets/        Imágenes y recursos visuales
-    components/    Componentes reutilizables
-    pages/         Páginas principales
-    services/      Conexión con la API
-    styles/        Estilos globales
-    App.jsx        Componente principal
-    main.jsx       Punto de entrada de React
+```bash
+cd backend
+npm install
+
+cd ../frontend
+npm install
 ```
 
-## Cómo arrancar el proyecto
+---
 
-### 1. Levantar la base de datos
+## Inicializacion del Backend y Base de Datos
 
-Desde la raíz del repositorio:
+### 1. Levantar MySQL con Docker Compose
+
+Desde la raiz del proyecto:
 
 ```bash
 docker compose -f docker/docker-compose.yml up -d
 ```
 
+Este comando crea el contenedor MySQL `squarestruct-mysql` y carga:
+
+- `backend/db/schema.sql`
+- `backend/db/seeds.sql`
+
 ### 2. Arrancar el backend
 
 ```bash
 cd backend
-npm install
 npm run dev
 ```
 
@@ -138,13 +142,22 @@ El backend queda disponible en:
 http://localhost:3000
 ```
 
+Endpoints utiles:
+
+```text
+GET /api/health
+GET /api/db-status
+GET /api/productos
+POST /api/usuarios/register
+POST /api/usuarios/login
+```
+
 ### 3. Arrancar el frontend
 
 En otra terminal:
 
 ```bash
 cd frontend
-npm install
 npm run dev
 ```
 
@@ -154,19 +167,131 @@ El frontend queda disponible en:
 http://localhost:5173
 ```
 
-## Documentación
+Vite usa proxy para que las llamadas a `/api` apunten al backend local.
 
-La documentación está organizada en la carpeta `docs/`:
+---
 
-- `docs/00-workflow/`: forma de trabajar con Git y commits.
-- `docs/01-proyecto/`: visión general del proyecto.
-- `docs/02-mvp/`: explicación del MVP.
-- `docs/03-arquitectura/`: estructura del backend, frontend y base de datos.
-- `docs/04-api/`: endpoints principales.
-- `docs/05-testing/`: pruebas manuales con Postman.
-- `docs/06-debug/`: errores frecuentes y soluciones.
-- `docs/07-recursos/`: documentación de apoyo.
+## Estructura del Proyecto
 
-## Contexto académico
+```text
+squarestruct-app/
+  backend/
+    db/              Scripts SQL, seeds, migraciones y backups
+    postman/         Coleccion Postman del MVP
+    src/
+      controllers/   Logica de peticiones HTTP
+      routes/        Endpoints de la API
+      middlewares/   Autenticacion, admin y validaciones
+      services/      Logica reutilizable
+      config/        Configuracion
+      utils/         Funciones auxiliares
+      app.js         Configuracion de Express
+    tests/           Tests Jest/Supertest
+    server.js        Punto de entrada del backend
 
-Este proyecto está desarrollado dentro del ciclo de Desarrollo de Aplicaciones Web. La documentación está pensada para que pueda entenderse, mantenerse y explicarse en una presentación de clase.
+  frontend/
+    public/          Recursos publicos
+    src/
+      assets/        Imagenes y logotipo
+      components/    Navbar, footer, auth, carrito, perfil y catalogo
+      data/          Datos demo
+      pages/         Home, Catalogo, Galeria, Design, AboutUs, Usuarios...
+      services/      api, auth, productos y pedidos
+      styles/        CSS separado por dominio
+      utils/         Helpers y validadores
+      App.jsx        Estado principal y navegacion interna
+      main.jsx       Punto de entrada de React
+
+  docker/            Docker Compose para MySQL
+  docs/              Documentacion tecnica y de presentacion
+  scripts/           Scripts auxiliares
+```
+
+---
+
+## Comandos de Validacion
+
+### Frontend
+
+```bash
+cd frontend
+npm run lint
+npm run build
+```
+
+### Backend
+
+```bash
+cd backend
+npm test
+```
+
+Tambien se pueden ejecutar pruebas separadas:
+
+```bash
+npm run test:unit
+npm run test:integration
+```
+
+---
+
+## Coleccion Postman
+
+La coleccion oficial del MVP esta en:
+
+```text
+backend/postman/squarestruct-mvp.postman_collection.json
+```
+
+Incluye pruebas manuales para:
+
+- health y estado de base de datos;
+- productos;
+- registro, login y perfil;
+- gestion admin de usuarios;
+- pedidos con `/api/pedidos`;
+- alias `/api/orders`.
+
+La coleccion usa variables como `baseUrl`, `token`, `adminToken`, `idUsuario` e `idProducto`.
+
+---
+
+## Documentacion Ampliada
+
+La documentacion extendida esta en [`docs/`](docs/):
+
+- [`docs/README.md`](docs/README.md): indice general de documentacion.
+- [`docs/01-proyecto/vision-general.md`](docs/01-proyecto/vision-general.md): vision del proyecto.
+- [`docs/01-proyecto/enfoque-saas-y-evolucion.md`](docs/01-proyecto/enfoque-saas-y-evolucion.md): enfoque SaaS y evolucion.
+- [`docs/02-mvp/metodologia-mvp.md`](docs/02-mvp/metodologia-mvp.md): alcance del MVP.
+- [`docs/02-mvp/decisiones-tecnicas-mvp.md`](docs/02-mvp/decisiones-tecnicas-mvp.md): decisiones tecnicas.
+- [`docs/03-arquitectura/frontend-estructura.md`](docs/03-arquitectura/frontend-estructura.md): estructura del frontend.
+- [`docs/03-arquitectura/backend-estructura.md`](docs/03-arquitectura/backend-estructura.md): estructura del backend.
+- [`docs/03-arquitectura/base-de-datos.md`](docs/03-arquitectura/base-de-datos.md): modelo de base de datos.
+- [`docs/04-api/endpoints.md`](docs/04-api/endpoints.md): endpoints principales.
+- [`docs/05-testing/frontend-lint-build.md`](docs/05-testing/frontend-lint-build.md): validacion del frontend.
+- [`docs/05-testing/postman-mvp-ejemplos.md`](docs/05-testing/postman-mvp-ejemplos.md): pruebas manuales con Postman.
+
+---
+
+## Roadmap
+
+| Version | Objetivo |
+| --- | --- |
+| `MVP v1 - Funcional` | Registro, login, catalogo, carrito visual, base de pedidos y gestion admin inicial. |
+| `v2 - Aplicacion completa y estilizada` | Mejorar interfaz, validaciones, tests, autenticacion, pedidos y estabilidad. |
+| `v3 - Disenador de planos 3D` | Anadir editor visual, piezas modulares, presupuesto y guardado de proyectos. |
+
+---
+
+## Licencia
+
+Este proyecto esta bajo licencia MIT. Consulta el archivo [`LICENSE`](LICENSE) para mas detalles.
+
+---
+
+## Contexto Academico
+
+SquareStruct se desarrolla dentro del ciclo de Desarrollo de Aplicaciones Web.
+
+La documentacion esta pensada para que el proyecto pueda entenderse, mantenerse y defenderse en clase: explica que entra en `MVP v1`, que queda para `v2` y `v3`, como se arranca, como se valida y como podria evolucionar.

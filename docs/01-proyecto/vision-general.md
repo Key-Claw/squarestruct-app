@@ -6,7 +6,7 @@ SquareStruct es una aplicacion web para construccion modular.
 
 Su objetivo es conectar a usuarios interesados en construir con productos modulares y facilitar un primer flujo de consulta, seleccion y gestion basica.
 
-En esta primera version no se intenta construir todo el producto final. Se busca demostrar que la aplicacion puede registrar usuarios, iniciar sesion, mostrar productos reales desde backend, trabajar con un carrito visual y ofrecer una primera administracion de usuarios.
+En `MVP v1 - Funcional` no se intenta construir todo el producto final. Se busca demostrar que la aplicacion puede registrar usuarios, iniciar sesion, mostrar productos reales desde backend, trabajar con un carrito visual y ofrecer una primera administracion de usuarios.
 
 ## Problema que resuelve
 
@@ -36,7 +36,7 @@ SquareStruct propone la base de una futura plataforma SaaS donde el usuario pued
 
 En una version futura, la aplicacion podria anadir un configurador visual para disenar viviendas con bloques modulares y calcular el presupuesto automaticamente. Esa herramienta 3D seria la parte mas diferencial del SaaS.
 
-SaaS significa *Software as a Service*: una aplicacion accesible desde el navegador, mantenida en un servidor y pensada para que los usuarios usen el servicio sin instalar el sistema completo en su equipo. En este MVP se construye la base tecnica, y el SaaS completo queda como evolucion futura.
+SaaS significa *Software as a Service*: una aplicacion accesible desde el navegador, mantenida en un servidor y pensada para que los usuarios usen el servicio sin instalar el sistema completo en su equipo. En `MVP v1` se construye la base tecnica, y el SaaS completo queda como evolucion futura.
 
 ## Tipos de usuario
 
@@ -46,7 +46,7 @@ SaaS significa *Software as a Service*: una aplicacion accesible desde el navega
 | Administrador | Accede a vistas protegidas y gestiona usuarios. |
 | Proveedor | Publicaria o gestionaria productos modulares en una fase futura. |
 
-En el MVP se priorizan el flujo de cliente y una primera administracion basica. El rol de proveedor queda como parte de la evolucion futura.
+En `MVP v1` se priorizan el flujo de cliente y una primera administracion basica. El rol de proveedor queda como parte de la evolucion futura.
 
 ## Funcionalidades del MVP
 
@@ -59,13 +59,13 @@ En el MVP se priorizan el flujo de cliente y una primera administracion basica. 
 - API REST para comunicar frontend y backend.
 - Vistas visuales de apoyo como galeria, Design y facturacion.
 
-## Partes provisionales
+## Queda para fases siguientes
 
-Algunas secciones existen como base visual o tecnica, pero no representan todavia una funcionalidad completa:
+Algunas secciones existen como base visual o tecnica, pero no representan todavia una funcionalidad completa. Se desarrollaran o completaran en `v2` o `v3`:
 
 - `Design`: maqueta del futuro disenador de estructuras.
 - `Facturacion`: panel visual con datos de ejemplo.
-- Pedidos: existe base de backend/servicios, pero el checkout completo desde carrito sigue pendiente.
+- Pedidos: existe base de backend/servicios, pero el checkout completo desde carrito queda para fases siguientes.
 - Proveedor: se contempla en la vision del producto, pero no esta desarrollado como flujo propio del MVP.
 
 ## Roadmap del proyecto
@@ -80,7 +80,7 @@ El proyecto se organiza en tres fases principales:
 
 ## Evolucion futura
 
-Estas funcionalidades no forman parte obligatoria del MVP, pero muestran hacia donde podria crecer el proyecto:
+Estas funcionalidades no forman parte obligatoria de `MVP v1`, pero muestran hacia donde podria crecer el proyecto:
 
 - Configurador modular visual.
 - Editor de planos por bloques.
@@ -95,4 +95,4 @@ Estas funcionalidades no forman parte obligatoria del MVP, pero muestran hacia d
 
 ## Frase util para la presentacion
 
-SquareStruct es una plataforma web que simplifica la construccion modular: en el MVP permite consultar productos, iniciar sesion, preparar un carrito y administrar usuarios; en el futuro podria ayudar a disenar viviendas por bloques y calcular presupuestos.
+SquareStruct es una plataforma web que simplifica la construccion modular: en `MVP v1` permite consultar productos, iniciar sesion, preparar un carrito y administrar usuarios; en `v2` y `v3` podria completar pedidos, facturacion y diseno de viviendas por bloques con calculo de presupuestos.

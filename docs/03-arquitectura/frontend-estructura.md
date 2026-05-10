@@ -141,7 +141,7 @@ Las vistas `Usuarios` y `Facturacion` estan protegidas: si no hay usuario o el u
 | `api.js` | Crea funciones comunes `getRequest`, `postRequest`, `putRequest`, `deleteRequest`. Usa `VITE_API_URL` o `/api`. Anade token JWT si existe. |
 | `authService.js` | Registro, login, logout, usuario actual, caducidad de token, perfil, usuarios admin y actualizacion de usuarios. |
 | `productService.js` | Obtiene productos y filtra en cliente por texto. |
-| `orderService.js` | Base para crear y consultar pedidos con `/orders`. La integracion completa desde el carrito queda pendiente. |
+| `orderService.js` | Base para crear y consultar pedidos con `/orders`. La integracion completa desde el carrito queda para fases siguientes. |
 
 ## Comunicacion con backend
 
@@ -223,9 +223,9 @@ Rangos usados como referencia:
 | PC | Desde `1200px` |
 | PC grande | Desde `1600px` |
 
-## Estado del MVP
+## Estado de MVP v1
 
-El frontend cubre el flujo principal del MVP:
+El frontend cubre el flujo principal de `MVP v1 - Funcional`:
 
 - home y navegacion;
 - catalogo conectado al backend;
@@ -236,12 +236,12 @@ El frontend cubre el flujo principal del MVP:
 - gestion de usuarios admin;
 - vistas visuales de galeria, about, design y facturacion.
 
-Partes provisionales:
+Queda para fases siguientes:
 
 - `Design.jsx` es una maqueta visual, no un diseno 3D funcional.
 - `Facturacion.jsx` usa datos de ejemplo.
 - algunos filtros del catalogo son visuales y no aplican logica real todavia.
-- el checkout completo de pedidos desde carrito sigue pendiente.
+- el checkout completo de pedidos desde carrito queda para fases siguientes.
 
 ## Idea clave para explicar
 

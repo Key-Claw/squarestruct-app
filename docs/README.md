@@ -38,8 +38,8 @@ Una forma sencilla de explicar el proyecto es seguir este orden:
 
 1. Problema: construir una vivienda modular es dificil de visualizar y presupuestar.
 2. Solucion: una plataforma web que conecta usuarios, productos y pedidos.
-3. MVP: registro, login, catalogo, carrito visual, base de pedidos y gestion admin.
-4. Enfoque SaaS: MVP web que prepara una futura plataforma con disenador 3D.
+3. MVP v1: registro, login, catalogo, carrito visual, base de pedidos y gestion admin.
+4. Enfoque SaaS: primera version web que prepara una futura plataforma con disenador 3D.
 5. Arquitectura: frontend en React, backend en Express y base de datos MySQL.
 6. Frontend: paginas, componentes, servicios, CSS modularizado y comunicacion con `/api`.
 7. Backend: rutas, controladores, middlewares, JWT y base de datos.
@@ -51,7 +51,7 @@ Una forma sencilla de explicar el proyecto es seguir este orden:
 
 | Version | Objetivo |
 | --- | --- |
-| `MVP v1 - Funcional` | Demostrar el flujo basico: registro, login, catalogo, carrito/pedidos base y vistas admin. |
+| `MVP v1 - Funcional` | Demostrar el flujo basico: registro, login, catalogo, carrito/base de pedidos y vistas admin. |
 | `v2 - Aplicacion completa y estilizada` | Mejorar interfaz, validaciones, tests, autenticacion, pedidos y estabilidad. |
 | `v3 - Disenador de planos 3D` | Anadir editor visual, bloques, presupuesto y visualizacion 3D. |
 

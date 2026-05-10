@@ -202,7 +202,7 @@ usuario, admin
 
 ## 6. Base de pedidos
 
-El backend tiene endpoints y tablas para pedidos. Esta prueba valida la base tecnica, aunque el checkout completo desde el carrito del frontend sigue pendiente.
+El backend tiene endpoints y tablas para pedidos. Esta prueba valida la base tecnica, aunque el checkout completo desde el carrito del frontend queda para fases siguientes.
 
 ```text
 Metodo: POST
