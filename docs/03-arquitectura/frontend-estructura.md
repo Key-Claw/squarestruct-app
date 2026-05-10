@@ -2,139 +2,247 @@
 
 ## Objetivo
 
-El frontend es la parte visual de SquareStruct.
+El frontend es la capa visual de SquareStruct. Se encarga de mostrar las pantallas al usuario, gestionar la navegacion interna, mantener estado de sesion, mostrar productos y comunicarse con el backend mediante una API REST.
 
-Permite que el usuario navegue por la aplicacion, consulte productos, se registre e inicie sesion. Esta desarrollado con React y Vite.
+No accede directamente a MySQL. Toda la informacion real llega a traves del backend.
 
-## Tecnologias usadas
-
-- React.
-- Vite.
-- JavaScript.
-- Bootstrap.
-- CSS.
-- ESLint.
-
-## Estructura principal
+## Estructura real del proyecto
 
 ```text
 frontend/
   public/
   src/
-    assets/          Imagenes y recursos visuales
-    components/      Componentes reutilizables
-    pages/           Paginas principales
-    services/        Funciones para llamar a la API
-    styles/          Estilos globales
-    App.jsx          Componente principal
-    main.jsx         Punto de entrada de React
-  index.html
-  package.json
-  vite.config.js
+    assets/
+      about/
+      design/
+      galeria/
+      inicio/
+      logo/
+    components/
+      auth/
+      catalogo/
+      AuthModal.jsx
+      CartPanel.jsx
+      Navbar.jsx
+      ProfilePanel.jsx
+      SiteFooter.jsx
+    data/
+      productosDemo.js
+    hero/
+    pages/
+      AboutUs.jsx
+      Catalogo.jsx
+      Design.jsx
+      Facturacion.jsx
+      Galeria.jsx
+      Home.jsx
+      Login.jsx
+      Register.jsx
+      Usuarios.jsx
+    services/
+      api.js
+      authService.js
+      orderService.js
+      productService.js
+    styles/
+      about.css
+      app-base.css
+      auth-modal.css
+      cart-panel.css
+      catalogo.css
+      design.css
+      facturacion.css
+      galeria.css
+      home.css
+      legacy-pages.css
+      navbar.css
+      profile-panel.css
+      responsive.css
+      site-footer.css
+      usuarios.css
+      variables.css
+    utils/
+      text.js
+      validators.js
+    App.css
+    App.jsx
+    index.css
+    main.jsx
 ```
 
-## Responsabilidad de cada parte
+## Responsabilidad de cada carpeta
 
-| Carpeta o archivo | Funcion |
+| Carpeta o archivo | Responsabilidad |
 | --- | --- |
-| `components/` | Elementos reutilizables como `Navbar` o `ProductCard`. |
-| `pages/` | Vistas completas como `Home`, `Catalogo`, `Login` o `Register`. |
-| `services/` | Codigo que se comunica con el backend. |
-| `assets/` | Imagenes, logos e iconos. |
-| `styles/` | Estilos globales y variables CSS. |
-| `App.jsx` | Organiza la estructura principal de la aplicacion. |
-| `main.jsx` | Monta React dentro de `index.html`. |
+| `assets/` | Imagenes usadas por home, galeria, about, design y logo. |
+| `components/` | Componentes reutilizables que no son una pagina completa. |
+| `components/auth/` | Piezas internas del modal de autenticacion. |
+| `components/catalogo/` | Filtros y tarjetas del catalogo. |
+| `data/` | Datos demo o fallback. Actualmente contiene productos demo para catalogo. |
+| `pages/` | Vistas principales renderizadas desde `App.jsx`. |
+| `services/` | Capa de comunicacion con backend y helpers de API. |
+| `styles/` | CSS propio separado por dominio, pagina o componente. |
+| `utils/` | Funciones auxiliares como normalizacion de texto y validacion de email. |
+| `App.jsx` | Estado principal, navegacion interna, usuario actual, carrito y proteccion de vistas admin. |
+| `App.css` | Indice de imports CSS. No contiene ya toda la hoja de estilos grande. |
+| `main.jsx` | Importa Bootstrap, CSS base y monta React en `index.html`. |
 
-## Comunicacion con el backend
+## Navegacion interna
 
-El frontend consume la API REST del backend mediante peticiones HTTP.
+El proyecto no usa React Router. La navegacion se controla con estado en `App.jsx`.
 
-Ejemplo de flujo:
+`App.jsx` mantiene:
 
-```text
-Usuario abre catalogo -> React llama a /api/productos -> Express consulta MySQL -> React muestra productos
-```
+- pagina activa (`page`);
+- termino de busqueda enviado al catalogo;
+- seccion inicial del catalogo;
+- usuario autenticado;
+- estado del modal de autenticacion;
+- estado del carrito lateral;
+- estado del panel de perfil.
+
+Cuando el usuario pulsa un boton del navbar, `handleNavigate` cambia la pagina activa. Segun ese valor, `renderPage` devuelve una pagina u otra.
+
+Las vistas `Usuarios` y `Facturacion` estan protegidas: si no hay usuario o el usuario no es admin, `App.jsx` redirige a `Home`.
 
 ## Paginas principales
 
-- `Home.jsx`: pagina de inicio.
-- `Catalogo.jsx`: listado de productos conectado al backend.
-- `Products.jsx`: seccion interna de productos dentro del catalogo.
-- `Galeria.jsx`: ejemplos visuales de aplicaciones de bloques.
-- `Design.jsx`: maqueta inicial del futuro disenador de planos.
-- `Carrito.jsx`: vista MVP del carrito enlazada desde el icono de la navbar.
-- `Login.jsx`: inicio de sesion.
-- `Register.jsx`: registro de usuario.
-- `AboutUs.jsx`: informacion del proyecto y carrusel accesible desde el logo.
-- `Perfil.jsx`: datos del usuario autenticado.
-- `Usuarios.jsx`: gestion basica de usuarios para administracion.
+| Pagina | Estado actual |
+| --- | --- |
+| `Home.jsx` | Pantalla principal con carrusel e imagenes. Enlaza a catalogo, galeria y Design. |
+| `Catalogo.jsx` | Conectada a `/api/productos`. Si falla backend, muestra productos demo. Tiene busqueda, orden, categorias y anadir al carrito visual. |
+| `Galeria.jsx` | Vista visual de inspiracion con imagenes locales. |
+| `Design.jsx` | Maqueta del futuro disenador. Muestra paneles, piezas, resumen y controles visuales, pero no tiene motor 3D real. |
+| `AboutUs.jsx` | Presentacion del proyecto/equipo con contenido visual. |
+| `Login.jsx` | Login como pagina tradicional. |
+| `Register.jsx` | Registro como pagina tradicional. |
+| `Usuarios.jsx` | Gestion admin conectada al backend: lista usuarios y permite cambiar rol entre `usuario` y `admin`. |
+| `Facturacion.jsx` | Panel visual administrativo con datos de maqueta. |
 
-## Responsive y coherencia visual
+## Componentes principales
 
-El diseno se organiza para tres tipos de pantalla:
+| Componente | Funcion |
+| --- | --- |
+| `Navbar.jsx` | Navegacion principal, buscador, usuario, carrito, idioma visual y accesos admin. |
+| `SiteFooter.jsx` | Footer de paginas publicas. |
+| `AuthModal.jsx` | Controla estado y envio de login/registro en modal. |
+| `LoginForm.jsx` | Formulario de login dentro del modal. |
+| `RegisterForm.jsx` | Formulario de registro dentro del modal. |
+| `AuthErrorMessage.jsx` | Mensaje de error reusable para autenticacion. |
+| `CartPanel.jsx` | Panel lateral de carrito en cliente. Permite cantidades, eliminar productos y calcula total. |
+| `ProfilePanel.jsx` | Panel lateral de perfil; refresca datos de usuario y da acceso a gestion de usuarios si es admin. |
+| `CatalogFilters.jsx` | Filtros laterales del catalogo. Algunos controles son visuales/provisionales. |
+| `CatalogProductCard.jsx` | Tarjeta de producto con datos, medidas, precio y boton de anadir. |
+
+## Servicios
+
+| Archivo | Responsabilidad |
+| --- | --- |
+| `api.js` | Crea funciones comunes `getRequest`, `postRequest`, `putRequest`, `deleteRequest`. Usa `VITE_API_URL` o `/api`. Anade token JWT si existe. |
+| `authService.js` | Registro, login, logout, usuario actual, caducidad de token, perfil, usuarios admin y actualizacion de usuarios. |
+| `productService.js` | Obtiene productos y filtra en cliente por texto. |
+| `orderService.js` | Base para crear y consultar pedidos con `/orders`. La integracion completa desde el carrito queda pendiente. |
+
+## Comunicacion con backend
+
+El frontend consume la API REST del backend:
+
+```text
+React -> services/api.js -> /api -> Express -> MySQL
+```
+
+Durante desarrollo, Vite usa proxy:
+
+```text
+/api -> http://localhost:3000
+```
+
+Por eso los servicios pueden llamar a rutas como:
+
+- `/usuarios/register`
+- `/usuarios/login`
+- `/usuarios`
+- `/productos`
+- `/orders`
+
+Si se define `VITE_API_URL`, `api.js` usara ese valor como base. Si no, usara `/api`.
+
+## Autenticacion y token
+
+El login recibe un JWT del backend. El frontend guarda:
+
+- `authToken`;
+- `currentUser`.
+
+En peticiones protegidas, `api.js` envia:
+
+```text
+Authorization: Bearer <token>
+```
+
+`authService.js` comprueba si el token ha caducado. Si no es valido, limpia la sesion local para evitar que la interfaz muestre un usuario conectado cuando el backend ya no acepta el token.
+
+## Estilos
+
+Bootstrap aporta estructura y componentes base. El aspecto propio de SquareStruct se define con CSS en `src/styles/`.
+
+`App.css` importa los bloques principales:
+
+```text
+app-base.css
+home.css
+about.css
+galeria.css
+catalogo.css
+site-footer.css
+design.css
+legacy-pages.css
+responsive.css
+```
+
+Algunos componentes tienen CSS dedicado:
+
+- `navbar.css`
+- `auth-modal.css`
+- `cart-panel.css`
+- `profile-panel.css`
+- `usuarios.css`
+- `facturacion.css`
+- `variables.css`
+
+## Responsive
+
+El responsive combina Bootstrap con CSS propio. Las reglas principales estan en `responsive.css` y en los CSS especificos de cada modulo cuando la pantalla exige ajustes concretos.
+
+Rangos usados como referencia:
 
 | Pantalla | Rango |
 | --- | --- |
 | Movil | Menos de `768px` |
 | Tablet | Entre `768px` y `1199.98px` |
 | PC | Desde `1200px` |
+| PC grande | Desde `1600px` |
 
-Las paginas principales usan `container-fluid` para ocupar el ancho disponible.
+## Estado del MVP
 
-El archivo `src/App.css` contiene las reglas responsive principales.
+El frontend cubre el flujo principal del MVP:
 
-## Bootstrap
+- home y navegacion;
+- catalogo conectado al backend;
+- registro y login;
+- sesion con JWT;
+- carrito visual;
+- base de pedidos en servicios;
+- gestion de usuarios admin;
+- vistas visuales de galeria, about, design y facturacion.
 
-Bootstrap se usa para:
+Partes provisionales:
 
-- Navbar y menu hamburguesa.
-- Botones.
-- Formularios.
-- Grid responsive.
-- Cards.
-- Tablas.
-- Modal.
-- Alerts.
-- Carousel.
-
-El CSS propio completa la identidad visual de SquareStruct.
-
-## Revision de calidad con ESLint
-
-El frontend incluye un script de revision:
-
-```bash
-npm run lint
-```
-
-Este comando ejecuta ESLint y ayuda a detectar problemas de codigo antes de subir cambios.
-
-Tambien se comprueba la compilacion con:
-
-```bash
-npm run build
-```
-
-## Servicios
-
-Los archivos de `src/services/` ayudan a separar la logica de conexion con el backend.
-
-Esto evita escribir `fetch` o llamadas HTTP directamente en todas las paginas.
-
-## Como arrancar el frontend
-
-```bash
-cd frontend
-npm install
-npm run dev
-```
-
-URL local:
-
-```text
-http://localhost:5173
-```
+- `Design.jsx` es una maqueta visual, no un diseno 3D funcional.
+- `Facturacion.jsx` usa datos de ejemplo.
+- algunos filtros del catalogo son visuales y no aplican logica real todavia.
+- el checkout completo de pedidos desde carrito sigue pendiente.
 
 ## Idea clave para explicar
 
-El frontend muestra la interfaz al usuario, usa Bootstrap para componentes visuales, React para organizar vistas y servicios para comunicarse con el backend.
+El frontend esta organizado en paginas, componentes, servicios y estilos. React gestiona la interfaz, Bootstrap aporta estructura visual y `src/services/` centraliza la comunicacion con el backend.

@@ -2,173 +2,151 @@
 
 ## Objetivo
 
-El frontend es la interfaz de usuario de SquareStruct.
+El frontend es la interfaz de usuario de SquareStruct. Esta desarrollado con React y Vite, y permite navegar por la web, consultar el catalogo, registrarse, iniciar sesion, usar un carrito visual y acceder a vistas de administracion cuando el usuario tiene rol `admin`.
 
-Esta desarrollado con React y Vite, y permite navegar por la aplicacion, consultar productos, registrarse e iniciar sesion.
+Esta guia resume lo necesario para instalar, arrancar y validar el frontend. La explicacion mas detallada de arquitectura esta en `docs/03-arquitectura/`.
 
-La version actual del MVP tambien trabaja la parte visual para que la web sea coherente en movil, tablet y PC.
+## Tecnologias
+
+- React
+- Vite
+- JavaScript
+- Bootstrap 5
+- CSS propio organizado en `src/styles/`
+- ESLint
 
 ## Estructura
 
 ```text
 frontend/
-  public/          Recursos publicos
+  public/             Recursos publicos de Vite
   src/
-    assets/        Imagenes y recursos visuales
-    components/    Componentes reutilizables
-    pages/         Paginas principales
-    services/      Llamadas a la API
-    styles/        Estilos globales
-    App.jsx        Componente principal
-    main.jsx       Punto de entrada
+    assets/           Imagenes, logos y recursos visuales
+    components/       Componentes reutilizables
+      auth/           Formularios y mensajes del modal de autenticacion
+      catalogo/       Filtros y tarjetas del catalogo
+    data/             Datos demo usados como fallback
+    pages/            Vistas principales
+    services/         Comunicacion con la API REST
+    styles/           CSS separado por dominio o componente
+    utils/            Helpers y validadores
+    App.jsx           Componente principal y navegacion interna
+    main.jsx          Punto de entrada de React
   package.json
   vite.config.js
 ```
 
-## Paginas actuales
+`App.css` funciona como indice de imports CSS. Los estilos reales estan repartidos en `src/styles/` para que cada pagina o componente tenga su archivo.
+
+## Paginas principales
 
 | Pagina | Funcion |
 | --- | --- |
-| `Home.jsx` | Entrada principal del usuario, con accesos a catalogo, productos y Design. |
-| `AboutUs.jsx` | Pagina abierta desde el logo. Conserva el carrusel visual inicial hecho por el companero, adaptado a React y Bootstrap. |
-| `Galeria.jsx` | Muestra ejemplos de aplicaciones de los bloques modulares. |
-| `Catalogo.jsx` | Carga productos reales desde el backend y contiene la seccion de productos. |
-| `Products.jsx` | Seccion interna usada dentro del catalogo; no aparece como pagina independiente en la navbar. |
-| `Design.jsx` | Maqueta inicial para explicar la futura herramienta de diseno de planos. |
-| `Carrito.jsx` | Vista MVP del carrito, enlazada desde el icono del carrito en la navbar. |
-| `Login.jsx` y `Register.jsx` | Formularios de acceso y registro. |
-| `Perfil.jsx` y `Usuarios.jsx` | Vistas de usuario autenticado y administracion. |
+| `Home.jsx` | Portada con carrusel, accesos a catalogo, galeria y Design. |
+| `Catalogo.jsx` | Carga productos desde backend y usa productos demo si la API falla. Permite buscar, filtrar por categoria, ordenar y anadir al carrito visual. |
+| `Galeria.jsx` | Muestra proyectos e imagenes de inspiracion. |
+| `Design.jsx` | Maqueta visual del futuro disenador de estructuras. Todavia no es una herramienta 3D real. |
+| `AboutUs.jsx` | Presentacion del proyecto y del equipo. |
+| `Login.jsx` | Vista de login tradicional. |
+| `Register.jsx` | Vista de registro tradicional. |
+| `Usuarios.jsx` | Vista protegida para administradores. Lista usuarios y permite cambiar rol entre `usuario` y `admin`. |
+| `Facturacion.jsx` | Panel administrativo visual de facturacion. Sus datos actuales son de maqueta. |
 
-## Responsive
+Ademas, la autenticacion principal del navbar se gestiona con `AuthModal`, que muestra login y registro en un modal reutilizable.
 
-El responsive general se organiza en `src/App.css` siguiendo los puntos de corte de Bootstrap.
-La navbar tiene sus ajustes propios en `src/styles/navbar.css`, porque necesitaba copiar un boceto concreto.
+## Componentes principales
 
-| Tipo de pantalla | Rango usado |
+| Componente | Funcion |
 | --- | --- |
-| Movil | Menos de `768px` |
-| Tablet | Entre `768px` y `1199.98px` |
-| PC | Desde `1200px` |
-| PC grande | Desde `1600px` |
+| `Navbar.jsx` | Barra superior, navegacion, busqueda, dropdown de usuario, acceso al carrito y selector visual de idioma. |
+| `SiteFooter.jsx` | Footer para paginas publicas. |
+| `AuthModal.jsx` | Modal de autenticacion con modo login/registro. |
+| `auth/LoginForm.jsx` | Formulario de login dentro del modal. |
+| `auth/RegisterForm.jsx` | Formulario de registro dentro del modal. |
+| `auth/AuthErrorMessage.jsx` | Mensaje de error reutilizable del modal. |
+| `CartPanel.jsx` | Panel lateral del carrito. Calcula cantidades y total en cliente. |
+| `ProfilePanel.jsx` | Panel lateral de perfil. Muestra datos del usuario y acceso admin a usuarios. |
+| `catalogo/CatalogFilters.jsx` | Sidebar de filtros del catalogo. |
+| `catalogo/CatalogProductCard.jsx` | Tarjeta de producto del catalogo. |
 
-La idea es que todas las paginas usen el ancho disponible con `container-fluid`, y que el contenido se reorganice segun el tamano de pantalla.
+## Servicios y backend
 
-En la navbar:
+Los servicios viven en `src/services/` y evitan hacer `fetch` directamente desde todas las paginas.
 
-- PC: logo grande, menu, buscador y acciones en una sola fila.
-- Tablet: todo sigue en una fila, pero con controles mas pequenos.
-- Movil: arriba quedan logo, buscador y hamburguesa; al desplegar, los botones salen en una fila horizontal.
+| Servicio | Funcion |
+| --- | --- |
+| `api.js` | Base comun para `GET`, `POST`, `PUT` y `DELETE`. Lee `VITE_API_URL` o usa `/api` por defecto. Anade `Authorization: Bearer <token>` si hay token. |
+| `authService.js` | Registro, login, logout, usuario actual, validacion de expiracion JWT, perfil, listado y actualizacion de usuarios. |
+| `productService.js` | Carga productos con `/productos` y filtra productos en cliente. |
+| `orderService.js` | Funciones para crear y consultar pedidos usando `/orders`. Existe la base, pero la integracion completa de checkout sigue pendiente. |
 
-## Bootstrap
+Durante desarrollo, `vite.config.js` redirige `/api` a `http://localhost:3000`, por lo que normalmente no hace falta configurar nada si el backend esta arrancado en ese puerto.
 
-Bootstrap se usa para:
+Si se quiere apuntar a otra API, se puede crear un `.env` del frontend con:
 
-- Navbar, collapse y menu hamburguesa.
-- Dropdown de usuario.
-- `input-group`, `form-control` y `btn` del buscador.
-- Botones.
-- Formularios.
-- Grid y columnas.
-- Cards.
-- Tablas.
-- Modal.
-- Alerts.
-- Carousel.
-
-En `src/components/Navbar.jsx` se mantiene la estructura de Bootstrap. Las clases usadas en la barra son:
-
-- `navbar`, `navbar-expand-md`, `navbar-light`
-- `container-fluid`
-- `navbar-brand`
-- `navbar-toggler`, `collapse`, `navbar-collapse`
-- `navbar-nav`, `nav-item`
-- `dropdown`, `dropdown-toggle`, `dropdown-menu`, `dropdown-item`
-- `input-group`, `form-control`, `btn`
-
-En `src/styles/navbar.css` se pisa el aspecto visual para ajustar medidas, colores y responsive al boceto. La referencia principal es la documentacion oficial de Bootstrap:
-
-- Navbar: https://getbootstrap.com/docs/5.3/components/navbar/
-- Collapse: https://getbootstrap.com/docs/5.3/components/collapse/
-- Dropdowns: https://getbootstrap.com/docs/5.3/components/dropdowns/
-- Input group: https://getbootstrap.com/docs/5.3/forms/input-group/
-- Buttons: https://getbootstrap.com/docs/5.3/components/buttons/
-
-Para trabajar dos personas sin pisarse:
-
-- Si cambia la navegacion o las acciones, tocar primero `Navbar.jsx`.
-- Si cambia el tamano, color, espaciado o responsive de la barra, tocar `navbar.css`.
-- Mantener `data-bs-target="#mainNavbar"` y `id="mainNavbar"` sincronizados; si no, la hamburguesa deja de abrir.
-- Evitar mover estilos de la navbar a `App.css`, porque se vuelve mas dificil saber que regla gana.
-
-## ESLint
-
-ESLint es la herramienta que usamos para revisar la calidad del codigo JavaScript y React.
-
-No instala nada nuevo ni arranca la web. Solo analiza el codigo y avisa de problemas como:
-
-- Variables declaradas pero no usadas.
-- `catch` con errores que no se utilizan.
-- Malas practicas con hooks de React.
-- Codigo innecesario o dificil de mantener.
-
-Comando:
-
-```bash
-npm run lint
+```text
+VITE_API_URL=http://localhost:3000/api
 ```
 
-Uso en el proyecto:
+## Comandos
 
-1. Antes de subir cambios.
-2. Antes de una pull request.
-3. Antes de presentar, para demostrar que el frontend no tiene errores basicos de calidad.
-
-Si el comando termina sin errores, significa que ESLint no ha detectado problemas.
-
-## Requisitos
-
-- Node.js.
-- Backend arrancado si se quieren cargar datos reales.
-
-## Instalar dependencias
+Instalar dependencias:
 
 ```bash
 npm install
 ```
 
-## Arrancar frontend
+Arrancar en desarrollo:
 
 ```bash
 npm run dev
 ```
 
-URL local:
+URL local habitual:
 
 ```text
 http://localhost:5173
 ```
 
-## Comprobar frontend antes de entregar
+Revisar calidad del codigo:
 
 ```bash
 npm run lint
+```
+
+Comprobar compilacion de produccion:
+
+```bash
 npm run build
 ```
 
-`npm run lint` revisa el codigo.
+## Comprobacion antes de entregar
 
-`npm run build` comprueba que la aplicacion puede compilar para produccion.
+Antes de abrir una pull request o dar por terminada una tarea de frontend:
 
-## Comunicacion con backend
+1. Arrancar backend si la tarea usa datos reales.
+2. Ejecutar `npm run lint`.
+3. Ejecutar `npm run build`.
+4. Probar en navegador las rutas afectadas.
+5. Si hay login/admin, cerrar sesion e iniciar sesion de nuevo para renovar el JWT.
+6. Revisar que no quedan errores visibles en consola.
 
-El frontend se comunica con la API REST del backend, normalmente en:
+## Relacion con el MVP
 
-```text
-http://localhost:3000
-```
+El frontend cubre las partes principales del MVP:
 
-Las llamadas estan organizadas en `src/services/`.
+- registro e inicio de sesion;
+- catalogo conectado al backend;
+- carrito visual en cliente;
+- base de pedidos preparada en servicios;
+- vistas protegidas para administracion;
+- gestion de usuarios admin;
+- maqueta de Design como base del futuro disenador.
 
-## Idea clave
+## Pendiente o mejorable
 
-React construye la interfaz, Bootstrap ayuda con componentes visuales y los servicios se encargan de pedir datos al backend.
+- Integrar por completo el flujo de pedidos desde el carrito.
+- Sustituir datos de maqueta en `Facturacion.jsx` por datos reales.
+- Evolucionar `Design.jsx` hacia una herramienta real de diseno o calculo.
+- Anadir tests automatizados de frontend.
+- Revisar textos con caracteres especiales si aparecen problemas de codificacion.
