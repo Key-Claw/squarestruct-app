@@ -1,0 +1,330 @@
+﻿/* ============================================================================
+   PÃGINA CATÃLOGO - Filtros + Grid de productos con bÃºsqueda y ordenamiento
+   - catalog-page: Contenedor principal
+   - catalog-sidebar: Sidebar sticky con 5 secciones de filtros
+   - catalog-results-bar: Barra con bÃºsqueda, ordenamiento y botones de vista
+   - catalog-products-grid: Grid responsivo (1-5 columnas segÃºn pantalla)
+   - catalog-product-card: Card individual con: imagen, nombre, precio, specs, botones
+   - catalog-filter-card: Cards de filtros (categorÃ­a, tipo, medidas, material, precio)
+   ============================================================================ */
+
+.catalog-heading {
+  margin-bottom: 26px;
+  padding: 0 clamp(6px, 1vw, 14px);
+}
+
+.catalog-heading h1 {
+  margin: 0;
+  color: #0f172a;
+  font-size: clamp(2rem, 3vw, 3rem);
+  font-weight: 850;
+}
+
+.catalog-heading p {
+  margin: 10px 0 0;
+  color: #475569;
+  font-size: 1rem;
+}
+
+.catalog-sidebar {
+  position: sticky;
+  top: 110px;
+}
+
+.catalog-filter-title,
+.catalog-apply-btn {
+  width: 100%;
+  min-height: 52px;
+  border: 1px solid rgba(23, 63, 95, 0.18);
+  border-radius: 8px;
+  background: #fff;
+  color: #0f172a;
+  font-size: 0.9rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.catalog-filter-title {
+  margin-bottom: 18px;
+  font-size: 1.05rem;
+  text-align: left;
+  padding-left: 20px;
+}
+
+.catalog-filter-card {
+  margin-bottom: 18px;
+  border-color: rgba(23, 63, 95, 0.18);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.04);
+}
+
+.catalog-filter-card .card-header {
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  background: #fff;
+  color: #173f5f;
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.catalog-filter-card .list-group-item {
+  min-height: 46px;
+  display: flex;
+  align-items: center;
+  border-color: rgba(23, 63, 95, 0.12);
+  color: #0f172a;
+  font-size: 0.82rem;
+}
+
+.catalog-filter-card .list-group-item.active {
+  border-color: rgba(23, 63, 95, 0.18);
+  background: #f4fbef;
+  color: #4f8f2f;
+  font-weight: 800;
+}
+
+.catalog-filter-card .card-body {
+  min-height: 52px;
+  display: flex;
+  align-items: center;
+  padding: 12px 14px;
+}
+
+.catalog-filter-card .card-body p {
+  margin: 0;
+  color: #0f172a;
+  font-size: 0.82rem;
+}
+
+.catalog-check-list {
+  display: grid;
+  gap: 12px;
+}
+
+.catalog-check-list label {
+  display: flex;
+  gap: 9px;
+  align-items: center;
+  color: #475569;
+  font-size: 0.86rem;
+}
+
+.catalog-check-list input {
+  width: 16px;
+  height: 16px;
+  accent-color: #5f9f38;
+}
+
+.catalog-apply-btn {
+  border-color: #5f9f38;
+  color: #4f8f2f;
+}
+
+.catalog-results-bar {
+  min-height: 72px;
+  margin-bottom: 26px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  border-color: rgba(23, 63, 95, 0.14);
+  border-radius: 8px;
+  padding: 14px 18px;
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.04);
+}
+
+.catalog-results-count {
+  color: #0f172a;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.catalog-results-actions {
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.catalog-results-actions span {
+  color: #0f172a;
+  font-size: 0.92rem;
+}
+
+.catalog-search-input {
+  max-width: 300px;
+  min-height: 42px;
+  border-color: rgba(23, 63, 95, 0.18);
+}
+
+.catalog-sort-select {
+  max-width: 190px;
+  min-height: 42px;
+  border-color: rgba(23, 63, 95, 0.18);
+  color: #173f5f;
+}
+
+.catalog-view-btn {
+  width: 42px;
+  height: 42px;
+  border: 1px solid rgba(23, 63, 95, 0.18);
+  border-radius: 7px;
+  background: #fff;
+  color: #173f5f;
+}
+
+.catalog-view-btn.active {
+  background: #5f9f38;
+  color: #fff;
+}
+
+.catalog-products-grid {
+  scroll-margin-top: 120px;
+}
+
+.catalog-product-card {
+  border-color: rgba(23, 63, 95, 0.18);
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 14px 32px rgba(15, 23, 42, 0.06);
+}
+
+.catalog-product-media {
+  position: relative;
+  min-height: 210px;
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(circle at 50% 42%, rgba(255, 255, 255, 0.9), rgba(235, 239, 242, 0.5) 42%, transparent 66%),
+    linear-gradient(135deg, #eef2f5, #d9dee3);
+  color: #8d969d;
+  font-weight: 800;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.catalog-product-media::after {
+  content: "â™¡";
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  background: #fff;
+  color: #0f172a;
+  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.1);
+}
+
+.catalog-product-card .card-body {
+  min-height: 226px;
+  padding: 18px 18px 20px;
+}
+
+.catalog-product-tag {
+  display: inline-flex;
+  align-items: center;
+  min-height: 22px;
+  margin-bottom: 8px;
+  border-radius: 4px;
+  background: #e7f4df;
+  color: #4f8f2f;
+  padding: 2px 7px;
+  font-size: 0.75rem;
+  font-weight: 800;
+}
+
+.catalog-product-card h2 {
+  margin: 0;
+  color: #0f172a;
+  font-size: 1rem;
+  font-weight: 800;
+}
+
+.catalog-product-card p {
+  margin: 10px 0 0;
+  color: #0f172a;
+  font-size: 0.85rem;
+  line-height: 1.45;
+}
+
+.catalog-product-price {
+  display: block;
+  margin-top: 10px;
+  color: #0f172a;
+  font-size: 1.12rem;
+}
+
+.catalog-product-meta {
+  display: grid;
+  gap: 5px;
+  margin: 10px 0 0;
+}
+
+.catalog-product-meta div {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.catalog-product-meta dt,
+.catalog-product-meta dd {
+  margin: 0;
+  color: #173f5f;
+  font-size: 0.78rem;
+}
+
+.catalog-product-meta dt {
+  font-weight: 800;
+}
+
+.catalog-product-meta dd {
+  text-align: right;
+}
+
+.catalog-card-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.catalog-detail-btn,
+.catalog-add-btn {
+  min-height: 38px;
+  border-radius: 6px;
+  font-size: 0.82rem;
+  font-weight: 800;
+}
+
+.catalog-detail-btn {
+  border: 1px solid rgba(23, 63, 95, 0.18);
+  background: #fff;
+  color: #0f172a;
+}
+
+.catalog-add-btn {
+  border: 1px solid #5f9f38;
+  background: #5f9f38;
+  color: #fff;
+}
+
+.catalog-state {
+  color: #173f5f;
+}
+
+.catalog-demo-alert {
+  border-color: rgba(143, 109, 35, 0.28);
+  background: #fff7df;
+  color: #654b12;
+  font-size: 0.9rem;
+}
+
+.catalog-pagination {
+  margin-top: 34px;
+}
+

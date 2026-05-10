@@ -145,7 +145,7 @@ export const isAuthenticated = () => {
  */
 export const isAdmin = () => {
   const user = getCurrentUser()
-  return user && user.rol === 'admin'
+  return user?.rol?.toLowerCase() === 'admin'
 }
 
 /**

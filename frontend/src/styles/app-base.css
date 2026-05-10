@@ -1,0 +1,247 @@
+﻿/* Bootstrap responsive reference:
+   https://getbootstrap.com/docs/5.3/layout/breakpoints/
+   Mobile: default styles, < 768px.
+   Tablet: md/lg range, 768px - 1199.98px.
+   PC: xl and above, >= 1200px.
+*/
+
+/* ============================================================================
+   ESTRUCTURA BASE DE LA APLICACIÃ“N
+   - app-shell: Contenedor principal (flex, 100vh)
+   - app-main: Ãrea de contenido (flex: 1, background)
+   - app-navbar: Barra de navegaciÃ³n con sombra
+   ============================================================================ */
+
+.app-shell {
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.app-main {
+  flex: 1;
+  width: 100%;
+  background: #f4f6f4;
+}
+
+.app-navbar {
+  gap: 10px;
+  flex-wrap: nowrap;
+  align-items: center;
+  position: relative;
+  padding-top: 0.9rem;
+  padding-bottom: 0.9rem;
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.14);
+}
+
+/* ============================================================================
+   NAVBAR - NavegaciÃ³n responsiva (desktop/mobile, logo, menÃº, bÃºsqueda, usuario)
+   - navbar-desktop: Layout para pantallas >= 992px
+   - navbar-mobile: Layout para pantallas < 992px
+   - brand-mark, navbar-logo: Logo y marca
+   - nav-strip, nav-button: Botones de navegaciÃ³n
+   - search-group, search-bar: BÃºsqueda de productos
+   - user-dropdown-menu: MenÃº desplegable usuario
+   ============================================================================ */
+
+
+
+.navbar-desktop,
+.navbar-mobile {
+  width: 100%;
+  align-items: center;
+}
+
+.navbar-desktop {
+  gap: 12px;
+  flex-wrap: nowrap;
+}
+
+.navbar-mobile {
+  gap: 8px;
+}
+
+.brand-mark {
+  background: transparent;
+  border: 0;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+}
+
+.brand-mark-mobile {
+  margin-right: -0.15rem;
+}
+
+.navbar-logo {
+  display: block;
+  height: auto;
+  object-fit: contain;
+}
+
+.navbar-logo-desktop {
+  width: 150px;
+  max-width: 150px;
+}
+
+.brand-button,
+.nav-button,
+.page-link-button,
+.home-card-button {
+  background: transparent;
+  border: 0;
+  color: inherit;
+}
+
+.brand-button {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.nav-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.nav-strip-desktop {
+  margin-right: 0.5rem;
+  flex: 0 1 auto;
+}
+
+.desktop-search {
+  flex: 1 1 360px;
+  min-width: 0;
+}
+
+.nav-button {
+  padding: 0.45rem 0.8rem;
+  border-radius: 10px;
+  color: rgba(255, 255, 255, 0.75);
+  white-space: nowrap;
+}
+
+.nav-button.is-active,
+.nav-button:hover,
+.brand-button:hover {
+  color: #fff;
+}
+
+.nav-button.is-active {
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.user-button {
+  border-radius: 12px;
+}
+
+.search-group {
+  width: 100%;
+  min-width: 240px;
+  max-width: 520px;
+}
+
+.search-group .form-control,
+.search-group .btn {
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+.search-bar {
+  background: rgba(255, 255, 255, 0.04);
+  color: #fff;
+}
+
+.search-bar::placeholder {
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.search-submit {
+  white-space: nowrap;
+}
+
+.user-dropdown-menu {
+  min-width: 12rem;
+  background: #1e2228;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 0.5rem;
+}
+
+.dropdown-action {
+  border-radius: 0.75rem;
+  color: #fff;
+}
+
+.dropdown-action:hover,
+.dropdown-action:focus {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+}
+
+.mobile-search-wrap {
+  min-width: 0;
+}
+
+.search-group-mobile {
+  min-width: 0;
+  max-width: none;
+}
+
+.search-bar-mobile {
+  min-width: 0;
+}
+
+.search-submit-mobile {
+  padding-inline: 0.7rem;
+}
+
+.cart-button,
+.cart-button-mobile,
+.user-button {
+  flex: 0 0 auto;
+}
+
+.navbar-auth-section {
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+
+.mobile-menu-row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 0.75rem 0 0.25rem;
+  justify-content: flex-start;
+}
+
+#navbarMenu {
+  width: 100%;
+  flex-basis: 100%;
+}
+
+.mobile-menu-row .nav-button {
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.mobile-menu-row .nav-button[data-auth="true"] {
+  color: #fff;
+  font-style: italic;
+  opacity: 0.95;
+}
+
+.page-shell {
+  padding: 28px clamp(16px, 3vw, 44px) 40px;
+  width: 100%;
+}
+
+.home-page {
+  padding: 28px clamp(16px, 3vw, 44px) 40px;
+  width: 100%;
+  background: linear-gradient(180deg, #f6f8f5 0%, #eef3ef 100%);
+}
+

@@ -1,185 +1,14 @@
 import { useEffect, useMemo, useState } from 'react'
+import CatalogFilters from '../components/catalogo/CatalogFilters'
+import CatalogProductCard from '../components/catalogo/CatalogProductCard'
+import { productosDemo } from '../data/productosDemo'
 import { getProductos, filtrarProductos } from '../services/productService'
-
-const normalizarTexto = (value) => {
-  if (typeof value !== 'string' || !/[ÃƒÃ‚ï¿½]/.test(value)) {
-    return value
-  }
-
-  try {
-    const bytes = Uint8Array.from([...value].map((character) => character.charCodeAt(0)))
-    return new TextDecoder('utf-8').decode(bytes)
-  } catch {
-    return value
-  }
-}
-
-const normalizarProducto = (product) => ({
-  ...product,
-  nombre: normalizarTexto(product.nombre),
-  descripcion: normalizarTexto(product.descripcion),
-  tipo: normalizarTexto(product.tipo),
-  material: normalizarTexto(product.material)
-})
-
-const productosDemo = [
-  {
-    idProducto: 901,
-    nombre: 'Bloque EcoBase',
-    descripcion: 'Bloque ligero de plastico reciclable para primeras hiladas y tramos medios de muro modular.',
-    tipo: 'Bloque',
-    material: 'Plastico reciclable',
-    proveedor: 'Plasticos renovables ByFusion',
-    precio: 42.5,
-    alto: 22.7,
-    ancho: 19.7,
-    largo: 39.4
-  },
-  {
-    idProducto: 902,
-    nombre: 'Bloque EcoPlano',
-    descripcion: 'Bloque de plastico reciclable con superficie plana para remates superiores y zonas bajo huecos.',
-    tipo: 'Bloque',
-    material: 'Plastico reciclable',
-    proveedor: 'Plasticos renovables ByFusion',
-    precio: 41,
-    alto: 20.3,
-    ancho: 19.7,
-    largo: 39.4
-  },
-  {
-    idProducto: 903,
-    nombre: 'Bloque EcoUnion',
-    descripcion: 'Bloque de plastico reciclable para encuentros, huecos de ventana y transiciones escalonadas.',
-    tipo: 'Bloque',
-    material: 'Plastico reciclable',
-    proveedor: 'Plasticos renovables ByFusion',
-    precio: 44,
-    alto: 22.7,
-    ancho: 19.7,
-    largo: 39.4
-  },
-  {
-    idProducto: 904,
-    nombre: 'Columna EcoStruct 120',
-    descripcion: 'Columna modular de plastico reciclable para muros, particiones y cerramientos ligeros.',
-    tipo: 'Pilar',
-    material: 'Plastico reciclable',
-    proveedor: 'Plasticos renovables ByFusion',
-    precio: 180,
-    alto: 120,
-    ancho: 39.4,
-    largo: 39.4
-  },
-  {
-    idProducto: 905,
-    nombre: 'Columna EcoStruct 180',
-    descripcion: 'Columna alta de plastico reciclable para puntos de refuerzo en cerramientos modulares.',
-    tipo: 'Pilar',
-    material: 'Plastico reciclable',
-    proveedor: 'Plasticos renovables ByFusion',
-    precio: 258,
-    alto: 180,
-    ancho: 39.4,
-    largo: 39.4
-  },
-  {
-    idProducto: 906,
-    nombre: 'Columna EcoCorner',
-    descripcion: 'Pilar de plastico reciclable pensado para esquinas, encuentros y cambios de direccion.',
-    tipo: 'Pilar',
-    material: 'Plastico reciclable',
-    proveedor: 'Plasticos renovables ByFusion',
-    precio: 195,
-    alto: 120,
-    ancho: 39.4,
-    largo: 39.4
-  },
-  {
-    idProducto: 907,
-    nombre: 'Bloque H80 Max',
-    descripcion: 'Bloque de hormigon de gran formato para muros de contencion de tierras y cargas exigentes.',
-    tipo: 'Bloque',
-    material: 'Hormigon',
-    proveedor: 'Hormigon Forpol Group',
-    precio: 152,
-    alto: 80,
-    ancho: 80,
-    largo: 160
-  },
-  {
-    idProducto: 908,
-    nombre: 'Pilar H80 Refuerzo',
-    descripcion: 'Pilar de hormigon pesado para refuerzo vertical en muros de contencion y zonas de carga.',
-    tipo: 'Pilar',
-    material: 'Hormigon',
-    proveedor: 'Hormigon Forpol Group',
-    precio: 210,
-    alto: 160,
-    ancho: 80,
-    largo: 80
-  },
-  {
-    idProducto: 909,
-    nombre: 'Bloque H60 Max',
-    descripcion: 'Bloque de hormigon para separadores de aridos, desechos y materiales a granel.',
-    tipo: 'Bloque',
-    material: 'Hormigon',
-    proveedor: 'Hormigon Forpol Group',
-    precio: 168,
-    alto: 60,
-    ancho: 60,
-    largo: 240
-  },
-  {
-    idProducto: 910,
-    nombre: 'Pilar H60 Modular',
-    descripcion: 'Pilar de hormigon para apoyo intermedio en separadores de materiales y muros industriales.',
-    tipo: 'Pilar',
-    material: 'Hormigon',
-    proveedor: 'Hormigon Forpol Group',
-    precio: 148,
-    alto: 120,
-    ancho: 60,
-    largo: 60
-  },
-  {
-    idProducto: 911,
-    nombre: 'Bloque H40 Cerramiento',
-    descripcion: 'Bloque de hormigon para vallas y cerramientos perimetrales sin contencion de tierras.',
-    tipo: 'Bloque',
-    material: 'Hormigon',
-    proveedor: 'Hormigon Forpol Group',
-    precio: 112,
-    alto: 80,
-    ancho: 40,
-    largo: 160
-  },
-  {
-    idProducto: 912,
-    nombre: 'Pilar H40 Cerramiento',
-    descripcion: 'Pilar de hormigon para esquinas y remates en vallas y cerramientos perimetrales.',
-    tipo: 'Pilar',
-    material: 'Hormigon',
-    proveedor: 'Hormigon Forpol Group',
-    precio: 98,
-    alto: 120,
-    ancho: 40,
-    largo: 80
-  }
-]
+import { normalizarProducto } from '../utils/text'
 
 function Catalogo({ onNavigate, onAddToCart, searchTerm = '', initialSection = '' }) {
-  // ============================================================================
-  // ESTADO - DATA
-  // ============================================================================
   const [productos, setProductos] = useState([])
   const [cargando, setCargando] = useState(true)
   const [error, setError] = useState('')
-  
-  // ============================================================================
-  // ESTADO - FILTROS Y BÚSQUEDA
-  // ============================================================================
   const [busqueda, setBusqueda] = useState(searchTerm)
   const [categoriaActiva, setCategoriaActiva] = useState('todos')
   const [orden, setOrden] = useState('reciente')
@@ -214,10 +43,6 @@ function Catalogo({ onNavigate, onAddToCart, searchTerm = '', initialSection = '
     onNavigate('catalogo', '')
   }
 
-  /**
-   * Añade un producto al carrito desde la tarjeta del catálogo.
-   * @param {object} product - Producto seleccionado.
-   */
   const handleAddProduct = (product) => {
     if (typeof onAddToCart === 'function') {
       onAddToCart(product)
@@ -276,83 +101,18 @@ function Catalogo({ onNavigate, onAddToCart, searchTerm = '', initialSection = '
 
   return (
     <section className="page-shell catalog-page container-fluid">
-      {/* ====================================================================
-          ENCABEZADO - Título y descripción de la página
-          ==================================================================== */}
       <header className="catalog-heading">
         <h1>Catalogo de productos</h1>
         <p>Encuentra los bloques modulares, pilares y accesorios que necesitas para tu proyecto.</p>
       </header>
 
       <div className="row g-4 align-items-start">
-        {/* ====================================================================
-            SIDEBAR IZQUIERDO - Filtros (categoría, tipo, medidas, material, precio)
-            ==================================================================== */}
-        <aside className="col-12 col-lg-2 catalog-sidebar">
-          <button type="button" className="btn catalog-filter-title">
-            Filtros
-          </button>
+        <CatalogFilters
+          categorias={categorias}
+          categoriaActiva={categoriaActiva}
+          onSelectCategoria={setCategoriaActiva}
+        />
 
-          <section className="card catalog-filter-card">
-            <div className="card-header">Categoria</div>
-            <div className="list-group list-group-flush">
-              {categorias.map((category) => (
-                <button
-                  type="button"
-                  className={`list-group-item list-group-item-action ${categoriaActiva === category.id ? 'active' : ''}`}
-                  key={category.id}
-                  onClick={() => setCategoriaActiva(category.id)}
-                >
-                  {category.label} ({category.count})
-                </button>
-              ))}
-            </div>
-          </section>
-
-          <section className="card catalog-filter-card">
-            <div className="card-header">Tipo de bloque</div>
-            <div className="card-body catalog-check-list">
-              <label><input type="checkbox" /> Estructural</label>
-              <label><input type="checkbox" /> Esquina</label>
-              <label><input type="checkbox" /> Refuerzo</label>
-              <label><input type="checkbox" /> Decorativo</label>
-            </div>
-          </section>
-
-          <section className="card catalog-filter-card">
-            <div className="card-header">Medidas (cm)</div>
-            <div className="list-group list-group-flush">
-              <button type="button" className="list-group-item list-group-item-action">Ancho</button>
-              <button type="button" className="list-group-item list-group-item-action">Alto</button>
-              <button type="button" className="list-group-item list-group-item-action">Largo</button>
-            </div>
-          </section>
-
-          <section className="card catalog-filter-card">
-            <div className="card-header">Material</div>
-            <div className="card-body catalog-check-list">
-              <label><input type="checkbox" /> Hormigon</label>
-              <label><input type="checkbox" /> Fibrocemento</label>
-              <label><input type="checkbox" /> Mixto</label>
-            </div>
-          </section>
-
-          <section className="card catalog-filter-card">
-            <div className="card-header">Rango de precio</div>
-            <div className="card-body">
-              <p>0-1000</p>
-            </div>
-          </section>
-
-          <button type="button" className="btn catalog-apply-btn">
-            Aplicar filtro
-          </button>
-        </aside>
-
-        {/* ====================================================================
-            CONTENIDO PRINCIPAL - Barra de resultados, búsqueda, ordenamiento
-            y grid de productos con paginación
-            ==================================================================== */}
         <div className="col-12 col-lg-10 catalog-content">
           <div className="card catalog-results-bar">
             <div className="catalog-results-count">
@@ -391,10 +151,10 @@ function Catalogo({ onNavigate, onAddToCart, searchTerm = '', initialSection = '
               </select>
 
               <button type="button" className="btn catalog-view-btn active" aria-label="Vista cuadricula">
-                ▦
+                â–¦
               </button>
               <button type="button" className="btn catalog-view-btn" aria-label="Vista lista">
-                ≡
+                â‰¡
               </button>
             </div>
           </div>
@@ -405,62 +165,16 @@ function Catalogo({ onNavigate, onAddToCart, searchTerm = '', initialSection = '
             </div>
           )}
 
-          {/* Alerta si hay error conectando con BD (muestra demo) */}
           {error && (
             <div className="alert alert-warning catalog-demo-alert text-center">
               No se pudo conectar con la base de datos. Mostrando productos provisionales.
             </div>
           )}
 
-          {/* ================================================================
-              GRID DE PRODUCTOS - Muestra tarjetas con filtros y búsqueda aplicados
-              ================================================================ */}
           <div className="row g-4 catalog-products-grid" id="productos">
             {!cargando && productosFiltrados.map((product) => (
               <div className="col-12 col-sm-6 col-xl-3" key={product.idProducto}>
-                {/* ============================================================
-                    TARJETA DE PRODUCTO
-                    - Muestra: imagen, nombre, precio, material, medidas, botones
-                    ============================================================ */}
-                <article className="card h-100 catalog-product-card" id={`producto-${product.idProducto}`}>
-                  <div className="catalog-product-media">
-                    <span>{product.tipo || 'Producto'}</span>
-                  </div>
-                  <div className="card-body">
-                    <span className="catalog-product-tag">{product.tipo || 'Producto'}</span>
-                    <h2>{product.nombre}</h2>
-                    <p>{product.descripcion || 'Sin descripcion disponible.'}</p>
-                    <strong className="catalog-product-price">
-                      {Number(product.precio).toFixed(2)} EUR
-                    </strong>
-                    <dl className="catalog-product-meta">
-                      <div>
-                        <dt>Material</dt>
-                        <dd>{product.material || 'Sin material'}</dd>
-                      </div>
-                      <div>
-                        <dt>Medidas</dt>
-                        <dd>
-                          {product.alto || product.ancho || product.largo
-                            ? `${product.alto} x ${product.ancho} x ${product.largo} cm`
-                            : 'Sin medidas'}
-                        </dd>
-                      </div>
-                    </dl>
-                    <div className="catalog-card-actions">
-                      <button type="button" className="btn catalog-detail-btn">
-                        Ver detalle
-                      </button>
-                      <button
-                        type="button"
-                        className="btn catalog-add-btn"
-                        onClick={() => handleAddProduct(product)}
-                      >
-                        Anadir
-                      </button>
-                    </div>
-                  </div>
-                </article>
+                <CatalogProductCard product={product} onAddProduct={handleAddProduct} />
               </div>
             ))}
           </div>
@@ -480,7 +194,6 @@ function Catalogo({ onNavigate, onAddToCart, searchTerm = '', initialSection = '
           </nav>
         </div>
       </div>
-
     </section>
   )
 }

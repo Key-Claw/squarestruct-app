@@ -49,6 +49,7 @@ function Navbar({
   const [searchValue, setSearchValue] = useState('')
   // Estado del idioma
   const [language, setLanguage] = useState('ES')
+  const isAdminUser = user?.rol?.toLowerCase() === 'admin'
 
   /**
    * Determina si un item de menú está activo.
@@ -184,7 +185,7 @@ function Navbar({
                   {user && (
                     // Mostrar solo opciones esenciales para usuarios normales.
                     // Si es admin, mostrar el menú completo; si no, mostrar únicamente "Mi perfil" y la opción de cerrar sesión.
-                    user.rol === 'admin' ? (
+                    isAdminUser ? (
                       <>
                         <li>
                           <button
@@ -192,6 +193,14 @@ function Navbar({
                             onClick={() => onOpenProfilePanel()}
                           >
                             Mi perfil
+                          </button>
+                        </li>
+                        <li>
+                          <button
+                            className="dropdown-item"
+                            onClick={() => onNavigate('usuarios')}
+                          >
+                            Gestionar usuarios
                           </button>
                         </li>
                         <li>

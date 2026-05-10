@@ -1,4 +1,4 @@
-import { useState } from 'react'
+﻿import { useState } from 'react'
 import Navbar from './components/Navbar'
 import SiteFooter from './components/SiteFooter'
 import Home from './pages/Home'
@@ -18,31 +18,31 @@ import './App.css'
 
 function App() {
   // ============================================================================
-  // ESTADO DE PÁGINAS Y NAVEGACIÓN
+  // ESTADO DE PÃGINAS Y NAVEGACIÃ“N
   // ============================================================================
   
-  // Página visible en cada momento.
+  // PÃ¡gina visible en cada momento.
   const [page, setPage] = useState('home')
-  // Texto de búsqueda que viaja desde el navbar al catálogo.
+  // Texto de bÃºsqueda que viaja desde el navbar al catÃ¡logo.
   const [searchTerm, setSearchTerm] = useState('')
   const [catalogSection, setCatalogSection] = useState('')
   
   // ============================================================================
-  // ESTADO DE AUTENTICACIÓN
+  // ESTADO DE AUTENTICACIÃ“N
   // ============================================================================
   
-  // Usuario autenticado (null si no hay sesión).
+  // Usuario autenticado (null si no hay sesiÃ³n).
   const [user, setUser] = useState(() => getCurrentUser())
-  // Flag para indicar que la app está cargando la sesión guardada.
+  // Flag para indicar que la app estÃ¡ cargando la sesiÃ³n guardada.
   const isLoading = false
   
   // ============================================================================
   // ESTADO DE MODALES Y PANELES DESLIZANTES
   // ============================================================================
   
-  // Control del modal de autenticación (login/register)
+  // Control del modal de autenticaciÃ³n (login/register)
   const [authModalOpen, setAuthModalOpen] = useState(false)
-  // Indica si el modal está en modo login (true) o registro (false)
+  // Indica si el modal estÃ¡ en modo login (true) o registro (false)
   const [authIsLoginMode, setAuthIsLoginMode] = useState(true)
   
   // Control del panel deslizante del carrito
@@ -54,7 +54,7 @@ function App() {
   const [profilePanelOpen, setProfilePanelOpen] = useState(false)
 
   /**
-   * Actualiza el usuario autenticado (después de login exitoso).
+   * Actualiza el usuario autenticado (despuÃ©s de login exitoso).
    * @param {object} userData - Datos del usuario autenticado.
    */
   const handleUserLogin = (userData) => {
@@ -72,9 +72,9 @@ function App() {
   }
 
   /**
-   * Cambia la página activa y, si aplica, guarda el término de búsqueda.
-   * @param {string} nextPage - Página destino.
-   * @param {string} term - Término de búsqueda opcional.
+   * Cambia la pÃ¡gina activa y, si aplica, guarda el tÃ©rmino de bÃºsqueda.
+   * @param {string} nextPage - PÃ¡gina destino.
+   * @param {string} term - TÃ©rmino de bÃºsqueda opcional.
    */
   const handleNavigate = (nextPage, term = '', section = '') => {
     setPage(nextPage)
@@ -83,7 +83,7 @@ function App() {
   }
 
   /**
-   * Abre el modal de autenticación en modo login.
+   * Abre el modal de autenticaciÃ³n en modo login.
    */
   const handleOpenAuthModal = (isLogin = true) => {
     setAuthIsLoginMode(isLogin)
@@ -91,7 +91,7 @@ function App() {
   }
 
   /**
-   * Cierra el modal de autenticación.
+   * Cierra el modal de autenticaciÃ³n.
    */
   const handleCloseAuthModal = () => {
     setAuthModalOpen(false)
@@ -120,7 +120,7 @@ function App() {
 
   /**
    * Elimina un item del carrito.
-   * @param {number} index - Índice del item a eliminar
+   * @param {number} index - Ãndice del item a eliminar
    */
   const handleRemoveCartItem = (index) => {
     setCartItems(cartItems.filter((_, i) => i !== index))
@@ -128,7 +128,7 @@ function App() {
 
   /**
    * Actualiza la cantidad de un item en el carrito.
-   * @param {number} index - Índice del item
+   * @param {number} index - Ãndice del item
    * @param {number} newQuantity - Nueva cantidad
    */
   const handleUpdateCartQuantity = (index, newQuantity) => {
@@ -138,8 +138,8 @@ function App() {
   }
 
   /**
-   * Añade un producto al carrito o incrementa su cantidad si ya existe.
-   * @param {object} product - Producto seleccionado en el catálogo.
+   * AÃ±ade un producto al carrito o incrementa su cantidad si ya existe.
+   * @param {object} product - Producto seleccionado en el catÃ¡logo.
    */
   const handleAddToCart = (product) => {
     setCartItems((currentItems) => {
@@ -174,12 +174,12 @@ function App() {
   }
 
   /**
-   * Renderiza la vista principal según la página seleccionada.
-   * Incluye renderizado condicional de páginas protegidas según autenticación.
+   * Renderiza la vista principal segÃºn la pÃ¡gina seleccionada.
+   * Incluye renderizado condicional de pÃ¡ginas protegidas segÃºn autenticaciÃ³n.
    * @returns {JSX.Element}
    */
   const renderPage = () => {
-    // Mostrar spinner mientras se carga la sesión
+    // Mostrar spinner mientras se carga la sesiÃ³n
     if (isLoading) {
       return <div className="text-center p-5">Cargando...</div>
     }
@@ -190,7 +190,7 @@ function App() {
     }
 
     if (page === 'catalogo') {
-      // El catálogo recibe el término de búsqueda para abrirse ya filtrado.
+      // El catÃ¡logo recibe el tÃ©rmino de bÃºsqueda para abrirse ya filtrado.
       return (
         <Catalogo
           key={`${searchTerm}-${catalogSection}`}
@@ -217,12 +217,12 @@ function App() {
     }
 
     if (page === 'aboutus') {
-      // Página informativa de presentación de la marca.
+      // PÃ¡gina informativa de presentaciÃ³n de la marca.
       return <AboutUs onNavigate={handleNavigate} />
     }
 
     if (page === 'usuarios') {
-      // Panel de administración - solo para usuarios admin
+      // Panel de administraciÃ³n - solo para usuarios admin
       if (!user || !isAdmin()) {
         // Si intenta acceder sin ser admin, redirige a home
         setPage('home')
@@ -244,7 +244,7 @@ function App() {
     return <Home onNavigate={handleNavigate} />
   }
 
-  // Determina si mostrar el footer (solo en ciertas páginas)
+  // Determina si mostrar el footer (solo en ciertas pÃ¡ginas)
   const showSiteFooter = ['home', 'galeria', 'catalogo', 'design', 'aboutus'].includes(page)
 
   return (
@@ -262,7 +262,7 @@ function App() {
       <main className="app-main">{renderPage()}</main>
       {showSiteFooter && <SiteFooter showBenefits={page !== 'aboutus'} />}
 
-      {/* MODAL DE AUTENTICACIÓN (LOGIN/REGISTER CON FLIP) */}
+      {/* MODAL DE AUTENTICACIÃ“N (LOGIN/REGISTER CON FLIP) */}
       <AuthModal
         isOpen={authModalOpen}
         isLoginMode={authIsLoginMode}
@@ -295,128 +295,3 @@ function App() {
 }
 
 export default App
-
-// PLANTILLA DE VITE + REACT (ELIMINADA PARA LIMPIAR EL PROYECTO, PERO SE DEJA AQUÍ POR SI QUEDÓ ALGÚN RESTO O PARA REFERENCIA FUTURA)
-// import { useState } from 'react'
-// import reactLogo from './assets/react.svg'
-// import viteLogo from './assets/vite.svg'
-// import heroImg from './assets/hero.png'
-// import './App.css'
-
-// function App() {
-//   const [count, setCount] = useState(0)
-
-//   return (
-//     <>
-//       <section id="center">
-//         <div className="hero">
-//           <img src={heroImg} className="base" width="170" height="179" alt="" />
-//           <img src={reactLogo} className="framework" alt="React logo" />
-//           <img src={viteLogo} className="vite" alt="Vite logo" />
-//         </div>
-//         <div>
-//           <h1>Get started</h1>
-//           <p>
-//             Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-//           </p>
-//         </div>
-//         <button
-//           type="button"
-//           className="counter"
-//           onClick={() => setCount((count) => count + 1)}
-//         >
-//           Count is {count}
-//         </button>
-//       </section>
-
-//       <div className="ticks"></div>
-
-//       <section id="next-steps">
-//         <div id="docs">
-//           <svg className="icon" role="presentation" aria-hidden="true">
-//             <use href="/icons.svg#documentation-icon"></use>
-//           </svg>
-//           <h2>Documentation</h2>
-//           <p>Your questions, answered</p>
-//           <ul>
-//             <li>
-//               <a href="https://vite.dev/" target="_blank">
-//                 <img className="logo" src={viteLogo} alt="" />
-//                 Explore Vite
-//               </a>
-//             </li>
-//             <li>
-//               <a href="https://react.dev/" target="_blank">
-//                 <img className="button-icon" src={reactLogo} alt="" />
-//                 Learn more
-//               </a>
-//             </li>
-//           </ul>
-//         </div>
-//         <div id="social">
-//           <svg className="icon" role="presentation" aria-hidden="true">
-//             <use href="/icons.svg#social-icon"></use>
-//           </svg>
-//           <h2>Connect with us</h2>
-//           <p>Join the Vite community</p>
-//           <ul>
-//             <li>
-//               <a href="https://github.com/vitejs/vite" target="_blank">
-//                 <svg
-//                   className="button-icon"
-//                   role="presentation"
-//                   aria-hidden="true"
-//                 >
-//                   <use href="/icons.svg#github-icon"></use>
-//                 </svg>
-//                 GitHub
-//               </a>
-//             </li>
-//             <li>
-//               <a href="https://chat.vite.dev/" target="_blank">
-//                 <svg
-//                   className="button-icon"
-//                   role="presentation"
-//                   aria-hidden="true"
-//                 >
-//                   <use href="/icons.svg#discord-icon"></use>
-//                 </svg>
-//                 Discord
-//               </a>
-//             </li>
-//             <li>
-//               <a href="https://x.com/vite_js" target="_blank">
-//                 <svg
-//                   className="button-icon"
-//                   role="presentation"
-//                   aria-hidden="true"
-//                 >
-//                   <use href="/icons.svg#x-icon"></use>
-//                 </svg>
-//                 X.com
-//               </a>
-//             </li>
-//             <li>
-//               <a href="https://bsky.app/profile/vite.dev" target="_blank">
-//                 <svg
-//                   className="button-icon"
-//                   role="presentation"
-//                   aria-hidden="true"
-//                 >
-//                   <use href="/icons.svg#bluesky-icon"></use>
-//                 </svg>
-//                 Bluesky
-//               </a>
-//             </li>
-//           </ul>
-//         </div>
-//       </section>
-
-//       <div className="ticks"></div>
-//       <section id="spacer"></section>
-//     </>
-//   )
-// }
-
-// export default App
-
