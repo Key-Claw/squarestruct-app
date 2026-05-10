@@ -2,7 +2,7 @@
   <img src="./frontend/src/assets/logo/squarestruct-logo.png" alt="SquareStruct Logo" width="240" />
 </p>
 
-<h1 align="center">SquareStruct</h1>
+<h1 align="center"></h1>
 
 <p align="center">
   <a href="https://img.shields.io/badge/version-1.0-blue?style=flat-square"><img src="https://img.shields.io/badge/version-1.0-blue?style=flat-square" alt="version"/></a>
