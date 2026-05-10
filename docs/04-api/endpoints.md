@@ -43,9 +43,10 @@ Prefijo general:
 | `POST` | `/api/usuarios/register` | Registrar un usuario. |
 | `POST` | `/api/usuarios/login` | Iniciar sesión y obtener token JWT. |
 | `GET` | `/api/productos` | Consultar productos. |
+| `GET` | `/api/productos/:id` | Consultar un producto concreto. |
 | `POST` | `/api/pedidos` | Crear un pedido. |
-| `POST` | `/api/orders` | Crear un pedido (alias de `/api/pedidos`). |
 | `GET` | `/api/orders` | Listar pedidos del usuario autenticado. |
+| `POST` | `/api/orders` | Crear un pedido (alias de `/api/pedidos`). |
 | `GET` | `/api/perfil` | Consultar datos del usuario autenticado. |
 
 ## Seguridad
@@ -67,7 +68,11 @@ Authorization: Bearer <TOKEN>
   "descripcion": "Bloque para construcción modular",
   "precio": 25.5,
   "tipo": "bloque",
-  "stock": 100
+  "material": "Hormigon",
+  "alto": 80,
+  "ancho": 80,
+  "largo": 160,
+  "idProveedor": 2
 }
 ```
 

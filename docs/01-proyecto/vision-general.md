@@ -23,14 +23,16 @@ Esto hace que el proceso sea menos claro y que el usuario tenga dudas antes de t
 
 ## Solución propuesta
 
-SquareStruct propone una plataforma centralizada donde el usuario puede:
+SquareStruct propone la base de una futura plataforma SaaS donde el usuario puede:
 
 - Registrarse e iniciar sesión.
 - Consultar productos de construcción modular.
 - Ver información básica de cada producto.
 - Realizar pedidos.
 
-En una versión futura, la aplicación podría añadir un configurador visual para diseñar viviendas con bloques modulares y calcular el presupuesto automáticamente.
+En una versión futura, la aplicación podría añadir un configurador visual para diseñar viviendas con bloques modulares y calcular el presupuesto automáticamente. Esa herramienta 3D sería la parte más diferencial del SaaS.
+
+SaaS significa *Software as a Service*: una aplicación accesible desde el navegador, mantenida en un servidor y pensada para que los usuarios usen el servicio sin instalar el sistema completo en su equipo. En este MVP se construye la base técnica, y el SaaS completo queda como evolución futura.
 
 ## Tipos de usuario
 

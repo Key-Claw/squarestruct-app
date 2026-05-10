@@ -54,7 +54,10 @@ Ejemplo:
     "descripcion": "Bloque para construcción modular",
     "precio": 25.5,
     "tipo": "bloque",
-    "stock": 100,
+    "material": "Hormigon",
+    "alto": 80,
+    "ancho": 80,
+    "largo": 160,
     "idProveedor": 1
   }
 ]
@@ -139,10 +142,12 @@ Ejemplo:
 
 ```json
 {
-  "idUsuario": 1,
-  "nombre": "Test User",
-  "email": "testuser@mail.com",
-  "rol": "cliente"
+  "usuario": {
+    "idUsuario": 1,
+    "nombre": "Test User",
+    "email": "testuser@mail.com",
+    "rol": "usuario"
+  }
 }
 ```
 

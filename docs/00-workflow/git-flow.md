@@ -121,48 +121,16 @@ Closes #X
 
 Las issues sirven para organizar el trabajo antes de crear una rama o un Pull Request.
 
-Una issue bien definida debería incluir:
+La plantilla completa de issues, milestones y labels está documentada en:
 
-- Descripción del problema o mejora.
-- Rama de trabajo propuesta.
-- Rama destino, normalmente `dev`.
-- Pull Request asociado, si ya existe.
-- Dependencias con otras issues.
-- Tareas en formato checklist.
-- Criterios de aceptación.
+```text
+docs/00-workflow/issues-y-milestones.md
+```
 
-Estructura recomendada:
+En este documento de Git Flow solo se recoge cómo se relacionan las issues con ramas y Pull Requests:
 
-```md
-## Descripción
-
-...
-
-## Rama de trabajo
-
-`feature/...`
-
-## Rama destino
-
-`dev`
-
-## Pull Request
-
-Pendiente.
-
-## Dependencias
-
-- Ninguna.
-
-## Tareas
-
-- [ ] Tarea 1
-- [ ] Tarea 2
-
-## Criterios de aceptación
-
-- [ ] Criterio 1
-- [ ] Criterio 2
+```text
+issue -> rama de trabajo -> commits -> Pull Request -> merge en dev
 ```
 
 Cuando se cree el Pull Request, se recomienda enlazarlo desde la issue y usar `Closes #numero` en la descripción del PR si ese PR termina la tarea.
@@ -177,6 +145,26 @@ feature/backend/mvp
 feature/frontend/mvp
 feature/docs/documentacion-general
 ```
+
+## Posible evolución de nombres de ramas
+
+```text
+main               → Versión estable y preparada para producción
+dev                → Rama principal de desarrollo e integración
+
+feat/db            → Desarrollo y cambios de base de datos
+feat/api           → Desarrollo general del backend y API
+feat/orders        → Sistema de pedidos, carrito y presupuestos
+feat/ui            → Diseño y estructura visual del frontend
+feat/login         → Autenticación, usuarios y roles
+
+docs/general       → Documentación y organización del proyecto
+hotfix/auth        → Corrección urgente de errores de autenticación
+refactor/navbar    → Reorganización y limpieza interna del navbar
+test/frontend      → Tests y validaciones del frontend
+```
+
+Esta evolución queda documentada como referencia por si se decide simplificar la nomenclatura más adelante. Mientras tanto, el proyecto sigue usando el flujo descrito en las secciones anteriores.
 
 ## Frase útil para la presentación
 

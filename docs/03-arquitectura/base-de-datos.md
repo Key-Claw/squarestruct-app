@@ -65,6 +65,8 @@ La relación más importante es `pedidoDetalles`, porque conecta pedidos con pro
 - `idProveedor`: clave primaria.
 - `nombreEmpresa`: nombre del proveedor.
 - `telefono`: teléfono de contacto.
+- `sitioWeb`: página web del proveedor.
+- `categoria`: categoría comercial del proveedor.
 - `validado`: indica si el proveedor está validado.
 - `creadoEn`: fecha de creación.
 
@@ -75,9 +77,11 @@ La relación más importante es `pedidoDetalles`, porque conecta pedidos con pro
 - `descripcion`: explicación breve.
 - `precio`: precio unitario.
 - `tipo`: categoría del producto.
-- `stock`: unidades disponibles.
+- `material`: material comercial del producto.
+- `alto`: altura de la pieza.
+- `ancho`: anchura de la pieza.
+- `largo`: longitud de la pieza.
 - `idProveedor`: proveedor asociado.
-- `creadoEn`: fecha de creación.
 
 ### `pedidos`
 
@@ -117,7 +121,7 @@ Archivos principales:
 
 - `schema.sql`: crea las tablas.
 - `seeds.sql`: inserta datos de prueba.
-- `consultas.sql`: consultas útiles para revisar la base de datos.
+- `consultas.md`: consultas útiles para revisar y explicar la base de datos.
 - `migrations/`: cambios incrementales de estructura.
 
 ## Idea clave para explicar
