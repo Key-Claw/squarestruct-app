@@ -1,0 +1,29 @@
+import adminMiddleware from '../middlewares/admin.js';
+
+// Rutas de usuarios
+import express from 'express';
+import { 
+  registerUsuario, 
+  loginUsuario,
+  getUsuarios,
+  getUsuarioById,
+  actualizarUsuario,
+  eliminarUsuario 
+} from '../controllers/usuariosController.js';
+
+import { validarRegistro, validarLogin } from '../middlewares/validacion.js';
+import authMiddleware from '../middlewares/auth.js';
+
+const router = express.Router();
+
+// Rutas públicas
+router.post('/register', validarRegistro, registerUsuario);
+router.post('/login', validarLogin, loginUsuario);
+
+// Rutas privadas CRUD usuarios
+router.get('/', authMiddleware, adminMiddleware, getUsuarios);
+router.get('/:id', authMiddleware, adminMiddleware, getUsuarioById);
+router.put('/:id', authMiddleware, adminMiddleware, actualizarUsuario);
+router.delete('/:id', authMiddleware, adminMiddleware, eliminarUsuario);
+
+export default router;
