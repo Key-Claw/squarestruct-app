@@ -88,4 +88,4 @@ Provisional:
 - Design es maqueta visual.
 - Facturacion usa datos mock.
 - checkout/pedidos no esta integrado por completo desde carrito.
-- no hay tests automatizados de frontend.
+- hay una base inicial de tests automatizados de frontend con Vitest.

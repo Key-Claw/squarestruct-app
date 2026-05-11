@@ -127,9 +127,10 @@ Antes de abrir una pull request o dar por terminada una tarea de frontend:
 1. Arrancar backend si la tarea usa datos reales.
 2. Ejecutar `npm run lint`.
 3. Ejecutar `npm run build`.
-4. Probar en navegador las rutas afectadas.
-5. Si hay login/admin, cerrar sesion e iniciar sesion de nuevo para renovar el JWT.
-6. Revisar que no quedan errores visibles en consola.
+4. Ejecutar `npm test`.
+5. Probar en navegador las rutas afectadas.
+6. Si hay login/admin, cerrar sesion e iniciar sesion de nuevo para renovar el JWT.
+7. Revisar que no quedan errores visibles en consola.
 
 ## Relacion con MVP v1
 
@@ -148,5 +149,5 @@ El frontend cubre las partes principales de `MVP v1 - Funcional`:
 - Integrar por completo el flujo de pedidos desde el carrito.
 - Sustituir datos de maqueta en `Facturacion.jsx` por datos reales.
 - Evolucionar `Design.jsx` hacia una herramienta real de diseno o calculo.
-- Anadir tests automatizados de frontend.
+- Ampliar la cobertura de tests automatizados de frontend.
 - Revisar textos con caracteres especiales si aparecen problemas de codificacion.
