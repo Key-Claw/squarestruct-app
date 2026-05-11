@@ -2,77 +2,139 @@
 
 ## Objetivo
 
-La carpeta `docker/` contiene la configuración necesaria para levantar servicios de infraestructura del proyecto.
+La carpeta `docker/` contiene la configuración necesaria para levantar el entorno local completo de SquareStruct mediante Docker Compose.
 
-Actualmente se usa principalmente para arrancar MySQL.
+El entorno se divide en tres servicios independientes:
 
-## Requisitos por sistema operativo
+- `frontend`: aplicación React/Vite.
+- `backend`: API Node.js/Express.
+- `mysql`: base de datos MySQL 8.4.
 
-Los comandos para usar Docker en este proyecto son los mismos en Windows, macOS y Linux. Lo que cambia es la instalación previa de Docker.
+La idea es que cualquier persona del equipo pueda arrancar el proyecto sin instalar Node.js ni MySQL directamente en su equipo.
 
-### Windows
+## Requisitos
 
-Antes de ejecutar los comandos, asegúrate de tener:
+Antes de ejecutar los comandos, asegúrese de tener:
 
-- Docker Desktop instalado en Windows.
-- Docker Desktop abierto y en ejecución.
-- WSL 2 habilitado si Docker Desktop lo solicita.
-- El repositorio clonado en una carpeta local de Windows.
+- Docker instalado.
+- Docker Desktop abierto y en ejecución si usa Windows o macOS.
+- El repositorio clonado en una carpeta local.
 
-### macOS
-
-Antes de ejecutar los comandos, asegúrate de tener:
-
-- Docker Desktop instalado en el Mac.
-- Docker Desktop abierto y en ejecución.
-- El repositorio clonado en una carpeta local del Mac.
-
-### Linux
-
-En Ubuntu y Fedora puedes usar Docker Engine o Docker Desktop.
-
-Si el comando falla por permisos, puede que necesites añadir tu usuario al grupo `docker`:
+En Linux, si Docker falla por permisos, puede que necesite añadir su usuario al grupo `docker`:
 
 ```bash
 sudo usermod -aG docker $USER
 ```
 
-Después cierra sesión y vuelve a entrar para que el cambio tenga efecto.
+Después cierre sesión y vuelva a entrar para que el cambio tenga efecto.
 
 ## Comprobar Docker
 
-En cualquier sistema operativo, puedes comprobar que Docker está funcionando con:
+Desde cualquier sistema operativo:
 
 ```bash
 docker info
 ```
 
-## Levantar servicios
+Si el comando responde con información del motor de Docker, puede continuar.
+
+## Levantar el proyecto completo
 
 Desde la raíz del repositorio:
 
 ```bash
-docker compose -f docker/docker-compose.yml up -d
+docker compose -f docker/docker-compose.yml up --build
 ```
 
 Este comando:
 
-- descarga la imagen `mysql:8.4` si no existe todavía;
+- construye la imagen del backend desde `backend/Dockerfile`;
+- construye la imagen del frontend desde `frontend/Dockerfile`;
+- descarga la imagen `mysql:8.4` si no existe en local;
 - crea el contenedor `squarestruct-mysql`;
-- crea automáticamente el volumen de Docker para guardar los datos de MySQL;
-- ejecuta `schema.sql` y `seeds.sql` solo la primera vez, cuando la base de datos está vacía.
+- crea el contenedor `squarestruct-backend`;
+- crea el contenedor `squarestruct-frontend`;
+- crea un volumen para persistir los datos de MySQL;
+- ejecuta `backend/db/schema.sql` y `backend/db/seeds.sql` la primera vez que la base de datos está vacía.
 
-No tienes que crear el volumen manualmente. Docker Compose lo crea automáticamente la primera vez que levantas el servicio.
+## Puertos disponibles
 
-## Comprobar que se ha creado correctamente
+Cuando los contenedores estén levantados:
 
-Ver servicios levantados:
+```text
+Frontend: http://localhost:5173
+Backend:  http://localhost:3000
+Health:   http://localhost:3000/api/health
+DB check: http://localhost:3000/api/db-status
+MySQL:    localhost:3306
+```
+
+## Servicios
+
+### Frontend
+
+El frontend se ejecuta con Vite dentro del contenedor:
+
+```bash
+npm run dev -- --host 0.0.0.0
+```
+
+Se usa `--host 0.0.0.0` para que Vite sea accesible desde el navegador del equipo anfitrión.
+
+La variable principal es:
+
+```text
+VITE_API_URL=http://localhost:3000/api
+```
+
+### Backend
+
+El backend se ejecuta con:
+
+```bash
+npm start
+```
+
+Dentro de Docker, el backend se conecta a MySQL usando el nombre del servicio:
+
+```text
+DB_HOST=mysql
+```
+
+No se usa `localhost` dentro del contenedor porque `localhost` apuntaría al propio contenedor del backend, no al contenedor de base de datos.
+
+### MySQL
+
+MySQL se levanta con la imagen:
+
+```text
+mysql:8.4
+```
+
+La base de datos inicial se crea con:
+
+```text
+MYSQL_DATABASE=squarestruct
+MYSQL_USER=admin
+```
+
+Los scripts iniciales se montan en:
+
+```text
+/docker-entrypoint-initdb.d/
+```
+
+MySQL solo ejecuta esos scripts automáticamente cuando el volumen de datos está vacío.
+
+## Comprobar contenedores
+
+Ver el estado de los servicios:
 
 ```bash
 docker compose -f docker/docker-compose.yml ps
 ```
 
-Ver contenedores:
+Ver todos los contenedores:
 
 ```bash
 docker ps -a
@@ -84,13 +146,39 @@ Ver volúmenes:
 docker volume ls
 ```
 
-El volumen puede aparecer con un nombre parecido a:
+El volumen de datos puede aparecer con un nombre parecido a:
 
 ```text
 docker_squarestruct_mysql_data
 ```
 
-El prefijo puede cambiar según el nombre de la carpeta o del proyecto de Docker Compose.
+El prefijo puede cambiar según el nombre del proyecto de Docker Compose.
+
+## Ver logs
+
+Todos los servicios:
+
+```bash
+docker compose -f docker/docker-compose.yml logs
+```
+
+Solo backend:
+
+```bash
+docker compose -f docker/docker-compose.yml logs backend
+```
+
+Solo frontend:
+
+```bash
+docker compose -f docker/docker-compose.yml logs frontend
+```
+
+Solo MySQL:
+
+```bash
+docker compose -f docker/docker-compose.yml logs mysql
+```
 
 ## Parar servicios
 
@@ -98,36 +186,82 @@ El prefijo puede cambiar según el nombre de la carpeta o del proyecto de Docker
 docker compose -f docker/docker-compose.yml down
 ```
 
+Este comando para y elimina los contenedores, pero conserva el volumen de MySQL.
+
 ## Reiniciar la base de datos desde cero
 
-Si cambias `schema.sql` o `seeds.sql`, puede que necesites borrar el volumen anterior para que MySQL vuelva a ejecutar los scripts iniciales.
+Si cambia `schema.sql` o `seeds.sql`, puede que necesite borrar el volumen anterior para que MySQL vuelva a ejecutar los scripts iniciales.
 
 ```bash
 docker compose -f docker/docker-compose.yml down -v
-docker compose -f docker/docker-compose.yml up -d
+docker compose -f docker/docker-compose.yml up --build
 ```
 
-El parámetro `-v` elimina el volumen de datos. Úsalo solo si quieres reconstruir la base de datos desde cero.
+El parámetro `-v` elimina el volumen de datos. Úselo solo si quiere reconstruir la base de datos desde cero.
 
-## Comprobar logs
+## Acceso manual a MySQL
 
-```bash
-docker logs squarestruct-mysql
-```
-
-## Acceso a MySQL
-
-Según la configuración del `docker-compose.yml`, MySQL se expone en el puerto local correspondiente.
-
-También puedes entrar al contenedor:
+Entrar al cliente MySQL dentro del contenedor:
 
 ```bash
 docker exec -it squarestruct-mysql mysql -uadmin -p
 ```
 
-Cuando pida la contraseña, usa la definida en `docker/docker-compose.yml`.
+Cuando pida la contraseña, use la definida en `docker/docker-compose.yml`.
+
+## Validación recomendada
+
+Después de levantar el entorno, compruebe:
+
+```text
+http://localhost:5173
+http://localhost:3000/api/health
+http://localhost:3000/api/db-status
+```
+
+Resultado esperado:
+
+- el frontend carga correctamente;
+- `/api/health` responde `OK`;
+- `/api/db-status` devuelve información de tablas y totales de la base de datos.
 
 ## Problemas comunes
+
+### El frontend no carga
+
+Compruebe los logs:
+
+```bash
+docker compose -f docker/docker-compose.yml logs frontend
+```
+
+Revise también que el puerto `5173` no esté ocupado por otro proceso.
+
+### El backend no conecta con MySQL
+
+Compruebe que `DB_HOST` tenga el valor:
+
+```text
+mysql
+```
+
+También puede revisar los logs:
+
+```bash
+docker compose -f docker/docker-compose.yml logs backend
+docker compose -f docker/docker-compose.yml logs mysql
+```
+
+### Los cambios en schema.sql o seeds.sql no aparecen
+
+MySQL solo ejecuta los scripts iniciales cuando el volumen está vacío. Reinicie la base de datos con:
+
+```bash
+docker compose -f docker/docker-compose.yml down -v
+docker compose -f docker/docker-compose.yml up --build
+```
+
+### Error de descarga de imagen
 
 Si aparece un error parecido a:
 
@@ -135,13 +269,13 @@ Si aparece un error parecido a:
 context deadline exceeded
 ```
 
-normalmente significa que Docker no ha podido descargar la imagen por red lenta o inestable. Puedes volver a ejecutar:
+normalmente significa que Docker no ha podido descargar una imagen por red lenta o inestable. Puede volver a ejecutar:
 
 ```bash
-docker compose -f docker/docker-compose.yml up -d
+docker compose -f docker/docker-compose.yml up --build
 ```
 
-O descargar primero la imagen:
+O descargar primero la imagen de MySQL:
 
 ```bash
 docker pull mysql:8.4
@@ -149,10 +283,6 @@ docker pull mysql:8.4
 
 ## Nota para AWS
 
-Estos comandos están pensados para desarrollo local. Si el proyecto se levanta en AWS, la inicialización con Docker Compose puede ser parecida, pero habrá que revisar la configuración de red, puertos, variables de entorno y persistencia de datos.
+Esta configuración está pensada para desarrollo local. En un futuro despliegue en AWS habrá que revisar red, puertos, variables de entorno, secretos y persistencia de datos.
 
-En AWS no conviene depender de una base de datos dentro de un contenedor sin planificar bien el volumen o el servicio de almacenamiento. Para producción suele ser mejor usar un servicio gestionado como Amazon RDS para MySQL.
-
-## Idea clave
-
-Docker ayuda a que todos puedan usar una base de datos parecida sin instalar MySQL manualmente en su equipo.
+Para producción no conviene depender de una base de datos dentro de un contenedor sin planificar bien almacenamiento, backups y recuperación. Normalmente sería mejor usar un servicio gestionado como Amazon RDS para MySQL.
