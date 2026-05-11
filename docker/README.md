@@ -62,11 +62,11 @@ Este comando:
 Cuando los contenedores estén levantados:
 
 ```text
-Frontend: http://localhost:5173
-Backend:  http://localhost:3000
-Health:   http://localhost:3000/api/health
-DB check: http://localhost:3000/api/db-status
-MySQL:    localhost:3306
+Frontend: http://localhost:5174
+Backend:  http://localhost:3001
+Health:   http://localhost:3001/api/health
+DB check: http://localhost:3001/api/db-status
+MySQL:    localhost:3307
 ```
 
 ## Servicios
@@ -84,7 +84,7 @@ Se usa `--host 0.0.0.0` para que Vite sea accesible desde el navegador del equip
 La variable principal es:
 
 ```text
-VITE_API_URL=http://localhost:3000/api
+VITE_API_URL=http://localhost:3001/api
 ```
 
 ### Backend
@@ -214,9 +214,9 @@ Cuando pida la contraseña, use la definida en `docker/docker-compose.yml`.
 Después de levantar el entorno, compruebe:
 
 ```text
-http://localhost:5173
-http://localhost:3000/api/health
-http://localhost:3000/api/db-status
+http://localhost:5174
+http://localhost:3001/api/health
+http://localhost:3001/api/db-status
 ```
 
 Resultado esperado:
@@ -224,6 +224,75 @@ Resultado esperado:
 - el frontend carga correctamente;
 - `/api/health` responde `OK`;
 - `/api/db-status` devuelve información de tablas y totales de la base de datos.
+
+## Diferencia entre local, Docker y AWS
+
+### Desarrollo local sin Docker
+
+En desarrollo local tradicional, el frontend y el backend se arrancan manualmente:
+
+```bash
+cd backend
+npm run dev
+```
+
+```bash
+cd frontend
+npm run dev
+```
+
+En este caso se suelen usar los puertos originales del proyecto:
+
+```text
+Frontend local: http://localhost:5173
+Backend local:  http://localhost:3000
+MySQL local:    localhost:3306
+```
+
+### Desarrollo local con Docker
+
+Con Docker no es necesario arrancar `npm run dev` manualmente en frontend ni backend. Docker Compose levanta todos los servicios:
+
+```bash
+docker compose -f docker/docker-compose.yml up --build -d
+```
+
+En esta configuración se usan puertos externos alternativos para evitar conflictos con procesos locales:
+
+```text
+Frontend Docker: http://localhost:5174
+Backend Docker:  http://localhost:3001
+MySQL Docker:    localhost:3307
+```
+
+Dentro de la red interna de Docker, el backend se conecta a MySQL usando el nombre del servicio y el puerto interno del contenedor:
+
+```text
+DB_HOST=mysql
+DB_PORT=3306
+```
+
+### Futuro despliegue en AWS
+
+Esta configuración Docker está pensada para desarrollo local y como base para futuros despliegues.
+
+En AWS no bastaría con desplegar solo el frontend. La aplicación completa necesita:
+
+```text
+Frontend
+Backend/API
+Base de datos MySQL
+```
+
+En un despliegue real, estos servicios podrían separarse, por ejemplo:
+
+```text
+Frontend -> S3/CloudFront o contenedor
+Backend  -> ECS, EC2, App Runner u otro servicio
+MySQL    -> Amazon RDS
+```
+
+Por eso Docker ayuda a preparar el proyecto, pero la configuración final de AWS deberá revisar red, variables de entorno, secretos, dominios, HTTPS y persistencia de datos.
 
 ## Problemas comunes
 
@@ -235,7 +304,7 @@ Compruebe los logs:
 docker compose -f docker/docker-compose.yml logs frontend
 ```
 
-Revise también que el puerto `5173` no esté ocupado por otro proceso.
+Revise también que el puerto `5174` no esté ocupado por otro proceso.
 
 ### El backend no conecta con MySQL
 
