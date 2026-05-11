@@ -1,0 +1,703 @@
+﻿/* Bootstrap navbar mobile/tablet: d-lg-none is active below 992px. */
+@media (max-width: 991.98px) {
+  .app-navbar {
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .navbar-mobile {
+    flex: 0 0 100%;
+  }
+
+  #navbarMenu {
+    order: 2;
+  }
+
+  .mobile-menu-row {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    padding-top: 0.75rem;
+    justify-content: stretch;
+  }
+
+  .mobile-menu-row .nav-button {
+    width: 100%;
+    text-align: center;
+  }
+
+  .mobile-menu-row hr {
+    grid-column: 1 / -1;
+    width: 100%;
+  }
+}
+
+/* Mobile responsive: < 768px. One-column content, compact hero and mobile navbar. */
+@media (max-width: 767.98px) {
+
+  .navbar-logo-mobile {
+    width: 104px;
+    max-width: 104px;
+  }
+
+  .brand-mark-mobile {
+    margin-right: 0;
+  }
+
+  .search-group-mobile .search-bar {
+    font-size: 0.92rem;
+  }
+
+  .desktop-search {
+    min-width: 180px;
+  }
+
+  .cart-button-mobile {
+    font-size: 1.05rem;
+    padding: 0.35rem 0.55rem;
+  }
+
+  .navbar-toggler {
+    padding: 0.3rem 0.5rem;
+  }
+
+  .page-shell,
+  .home-page {
+    padding-inline: 14px;
+  }
+
+  .home-hero-grid {
+    min-height: 560px;
+  }
+
+  .home-hero-copy {
+    width: 100%;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(255, 255, 255, 0.88) 66%, rgba(255, 255, 255, 0.18));
+  }
+
+  .page-card {
+    min-height: auto;
+  }
+
+  .product-link-block,
+  .products-intro,
+  .cart-summary {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .cart-total {
+    text-align: left;
+  }
+
+  .design-board {
+    grid-template-columns: 1fr;
+  }
+
+  .mvp-hero {
+    padding: 34px 20px;
+    min-height: 235px;
+  }
+
+  .home-highlight-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .home-cta-block {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .home-cta-button {
+    width: 100%;
+  }
+
+  .home-carousel-image {
+    min-height: 560px;
+  }
+
+  .home-carousel-caption {
+    right: 18px;
+    left: 18px;
+    bottom: 18px;
+    max-width: none;
+    text-align: left;
+  }
+
+  .about-carousel {
+    border-radius: 10px;
+  }
+
+  .about-carousel-image {
+    height: 280px;
+  }
+
+  .about-carousel-caption {
+    right: 1rem;
+    left: 1rem;
+    bottom: 1.2rem;
+  }
+
+  .about-team-photo {
+    min-height: 230px;
+    margin-bottom: 22px;
+  }
+
+  .about-story-card {
+    min-height: auto;
+    padding: 20px;
+    margin-bottom: 28px;
+  }
+
+  .about-person-grid,
+  .about-person-grid-cristian {
+    grid-template-columns: 1fr;
+    gap: 18px;
+    margin-bottom: 24px;
+  }
+
+  .about-person-grid-cristian .about-photo-card {
+    order: -1;
+  }
+
+  .about-photo-placeholder {
+    min-height: 180px;
+  }
+
+  .about-person-text {
+    min-height: auto;
+    padding: 22px;
+  }
+
+  .mvp-hero h1 {
+    max-width: 12ch;
+  }
+
+  .hero-actions .btn,
+  .page-actions .page-link-button,
+  .product-link-block .btn,
+  .products-intro .btn {
+    width: 100%;
+  }
+}
+
+/* Tablet responsive: 768px - 1199.98px. Two-column grids and medium spacing. */
+@media (min-width: 768px) and (max-width: 1199.98px) {
+  .page-shell,
+  .home-page {
+    padding-inline: 28px;
+  }
+
+  .home-hero-grid {
+    min-height: 520px;
+  }
+
+  .home-carousel-caption {
+    right: 26px;
+    left: auto;
+    max-width: 320px;
+  }
+
+  .page-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .catalog-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .product-link-block,
+  .products-intro,
+  .cart-summary {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .design-board {
+    grid-template-columns: minmax(220px, 280px) 1fr;
+  }
+
+  .mvp-hero h1 {
+    max-width: 16ch;
+  }
+
+  .about-team-photo {
+    min-height: 320px;
+  }
+
+  .about-story-card {
+    min-height: 230px;
+  }
+
+  .about-person-grid {
+    grid-template-columns: minmax(190px, 270px) minmax(0, 1fr);
+    gap: 52px;
+  }
+
+  .about-person-grid-cristian {
+    grid-template-columns: minmax(0, 1fr) minmax(190px, 270px);
+  }
+
+  .navbar-logo-mobile {
+    width: 128px;
+    max-width: 128px;
+  }
+}
+
+/* Bootstrap lg navbar adjustment: tablets from 992px can use the desktop menu. */
+@media (min-width: 992px) and (max-width: 1199.98px) {
+  .navbar-desktop {
+    gap: 10px;
+  }
+}
+
+/* PC responsive: >= 1200px. Full-width layout with more columns and wider hero. */
+@media (min-width: 1200px) {
+  .app-navbar {
+    padding-inline: clamp(1.5rem, 3vw, 3.5rem) !important;
+  }
+
+  .page-shell,
+  .home-page {
+    padding-top: 34px;
+    padding-bottom: 48px;
+  }
+
+  .mvp-hero {
+    min-height: 300px;
+    padding: 54px clamp(36px, 6vw, 88px);
+  }
+
+  .catalog-hero h1,
+  .home-hero h1,
+  .gallery-hero h1 {
+    max-width: 20ch;
+  }
+
+  .catalog-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .page-grid:not(.catalog-grid) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* Large PC responsive: more products fit without wasting horizontal space. */
+@media (min-width: 1600px) {
+  .catalog-grid {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+}
+
+/* About Us responsive actual: layout con perfil | historia | perfil. */
+@media (min-width: 768px) and (max-width: 991.98px) {
+  .about-layout-row {
+    --bs-gutter-x: 18px;
+    --bs-gutter-y: 18px;
+  }
+
+  .about-layout-row > main {
+    order: 1;
+    width: 100%;
+  }
+
+  .about-layout-row > .about-profile-col {
+    order: 2;
+    width: 50%;
+  }
+
+  .about-team-image {
+    aspect-ratio: 3.1 / 1;
+  }
+
+  .about-editorial-card {
+    min-height: auto;
+  }
+
+  .about-story-card .card-body {
+    padding: 34px 32px;
+  }
+
+  .about-profile-text-card,
+  .about-profile-text-card .card-body {
+    min-height: 360px;
+  }
+
+  .gallery-intro-card {
+    height: 300px;
+    min-height: 300px;
+    margin-bottom: 22px;
+    background: #8d969d;
+  }
+
+  .gallery-intro-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.82), rgba(255, 255, 255, 0.7)),
+      url("../assets/galeria/hero-galeria-casa-modular.jpeg") center / cover no-repeat;
+    z-index: 0;
+  }
+
+  .gallery-intro-card .row {
+    position: relative;
+    z-index: 1;
+  }
+
+  .gallery-intro-card .col-lg-5 {
+    width: 100%;
+  }
+
+  .gallery-intro-card .col-lg-7 {
+    display: none;
+  }
+
+  .gallery-feature-card {
+    min-height: 720px;
+  }
+
+  .gallery-intro-copy,
+  .gallery-feature-copy {
+    padding: 34px 28px;
+  }
+
+  .catalog-sidebar {
+    position: static;
+  }
+
+  .catalog-filter-title {
+    margin-bottom: 12px;
+  }
+
+  .catalog-sidebar {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  .catalog-filter-title,
+  .catalog-apply-btn,
+  .catalog-filter-card {
+    margin-bottom: 0;
+  }
+
+  .catalog-products-grid {
+    --bs-gutter-x: 18px;
+    --bs-gutter-y: 18px;
+  }
+
+  .catalog-results-bar {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .catalog-results-actions {
+    justify-content: flex-start;
+  }
+
+  .site-benefits-footer {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 767.98px) {
+  .about-layout-row {
+    --bs-gutter-y: 16px;
+  }
+
+  .about-layout-row > main {
+    order: 1;
+  }
+
+  .about-layout-row > .about-profile-col {
+    order: 2;
+  }
+
+  .about-profile-col {
+    gap: 8px;
+  }
+
+  .about-name-card .card-body {
+    min-height: 38px;
+    padding: 9px 14px;
+  }
+
+  .about-team-image {
+    aspect-ratio: 2.1 / 1;
+  }
+
+  .about-story-card {
+    min-height: auto;
+    padding: 0;
+    margin-bottom: 0;
+  }
+
+  .about-story-card .card-body {
+    padding: 28px 20px;
+  }
+
+  .about-text-content h1 {
+    font-size: 1.75rem;
+  }
+
+  .about-lead {
+    font-size: 0.98rem;
+  }
+
+  .about-newspaper-text {
+    margin-top: 24px;
+  }
+
+  .about-history-column p,
+  .about-profile-text-card p {
+    font-size: 0.94rem;
+    line-height: 1.62;
+  }
+
+  .about-profile-text-card,
+  .about-profile-text-card .card-body {
+    min-height: auto;
+  }
+
+  .about-profile-text-card .card-body {
+    padding: 22px 20px;
+  }
+
+  .gallery-intro-card,
+  .gallery-feature-card {
+    height: auto;
+    min-height: auto;
+  }
+
+  .gallery-intro-card {
+    position: relative;
+    min-height: 300px;
+    background: #8d969d;
+  }
+
+  .gallery-intro-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.86), rgba(255, 255, 255, 0.68)),
+      url("../assets/galeria/hero-galeria-casa-modular.jpeg") center / cover no-repeat;
+    z-index: 0;
+  }
+
+  .gallery-intro-card .row {
+    position: relative;
+    z-index: 1;
+  }
+
+  .gallery-intro-card [class^="col-"],
+  .gallery-feature-card [class^="col-"] {
+    display: block;
+  }
+
+  .gallery-intro-card .col-lg-7 {
+    display: none;
+  }
+
+  .gallery-intro-copy,
+  .gallery-feature-copy,
+  .gallery-cta-card .card-body {
+    padding: 28px 20px;
+  }
+
+  .gallery-feature-media {
+    min-height: 260px;
+    height: auto;
+  }
+
+  .gallery-feature-card {
+    min-height: 620px;
+  }
+
+  .gallery-feature-copy {
+    width: 100%;
+    min-height: 620px;
+    background: linear-gradient(180deg, rgba(5, 18, 26, 0.9), rgba(5, 18, 26, 0.58) 68%, rgba(5, 18, 26, 0.42));
+  }
+
+  .gallery-project-media {
+    aspect-ratio: 16 / 8;
+  }
+
+  .gallery-sort-select {
+    max-width: none;
+  }
+
+  .catalog-sidebar {
+    position: static;
+  }
+
+  .catalog-filter-title,
+  .catalog-apply-btn {
+    min-height: 46px;
+  }
+
+  .catalog-topbar {
+    margin-bottom: 18px;
+  }
+
+  .catalog-heading h1 {
+    font-size: 1.9rem;
+  }
+
+  .catalog-results-bar {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .catalog-results-actions {
+    align-items: stretch !important;
+    flex-direction: column;
+  }
+
+  .catalog-search-input,
+  .catalog-sort-select {
+    max-width: none;
+  }
+
+  .catalog-results-actions span {
+    display: none;
+  }
+
+  .catalog-product-media {
+    min-height: 190px;
+  }
+
+  .catalog-product-card .card-body {
+    min-height: auto;
+  }
+
+  .catalog-pagination .pagination {
+    justify-content: center !important;
+  }
+
+  .site-benefits-footer {
+    grid-template-columns: 1fr;
+    width: calc(100% - 24px);
+    padding: 18px;
+  }
+}
+
+@media (max-width: 1199.98px) {
+  .design-topbar {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .design-topbar-actions {
+    justify-content: flex-start;
+  }
+
+  .design-pieces-panel,
+  .design-summary-panel,
+  .design-canvas-card {
+    min-height: auto;
+  }
+
+  .design-piece-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .design-canvas-card {
+    min-height: 660px;
+  }
+
+  .design-house-plan {
+    inset: 130px 110px 92px 140px;
+  }
+
+  .design-summary-panel {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+  }
+
+  .design-summary-panel h2,
+  .design-summary-panel h3 {
+    grid-column: 1 / -1;
+  }
+
+  .design-price-box {
+    margin: 0;
+  }
+
+  .design-help-card {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .design-topbar {
+    padding: 24px 20px;
+  }
+
+  .design-topbar-actions,
+  .design-topbar-actions .btn {
+    width: 100%;
+  }
+
+  .design-piece-list,
+  .design-summary-panel,
+  .design-help-step-row {
+    grid-template-columns: 1fr;
+  }
+
+  .design-piece-card {
+    grid-template-columns: 94px 1fr;
+  }
+
+  .design-pieces-panel,
+  .design-summary-panel {
+    padding: 22px 18px;
+  }
+
+  .design-canvas-card {
+    min-height: 540px;
+  }
+
+  .design-toolbar {
+    top: 18px;
+    left: 18px;
+    flex-wrap: wrap;
+    max-width: 220px;
+  }
+
+  .design-toolbar button,
+  .design-zoom button {
+    width: 38px;
+    height: 38px;
+  }
+
+  .design-cube {
+    display: none;
+  }
+
+  .design-zoom {
+    left: 18px;
+    bottom: 96px;
+  }
+
+  .design-house-plan {
+    inset: 130px 48px 92px 72px;
+  }
+
+  .design-measure {
+    font-size: 1rem;
+  }
+
+  .design-guide-box {
+    align-items: stretch;
+    flex-direction: column;
+    padding: 24px 20px;
+  }
+
+  .design-guide-btn {
+    width: 100%;
+  }
+}

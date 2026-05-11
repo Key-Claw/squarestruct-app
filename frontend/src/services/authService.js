@@ -9,6 +9,25 @@ import { postRequest, getRequest, putRequest } from './api'
 const TOKEN_KEY = 'authToken'
 const USER_KEY = 'currentUser'
 
+const decodeTokenPayload = (token) => {
+  try {
+    const [, payload] = token.split('.')
+    return JSON.parse(atob(payload))
+  } catch {
+    return null
+  }
+}
+
+const isTokenExpired = (token) => {
+  const payload = decodeTokenPayload(token)
+
+  if (!payload?.exp) {
+    return true
+  }
+
+  return payload.exp * 1000 <= Date.now()
+}
+
 /**
  * Corrige texto con mojibake típico de una mala decodificación UTF-8/latin1.
  * En frontend usamos una heurística para no tocar textos que ya están correctos.
@@ -87,7 +106,7 @@ export const loginUser = async ({ email, nombre, primerApellido, contrasena }) =
     // El backend devuelve { token }
     if (response.token) {
       localStorage.setItem(TOKEN_KEY, response.token)
-      const jwtPayload = JSON.parse(atob(response.token.split('.')[1]))
+      const jwtPayload = decodeTokenPayload(response.token)
       const userData = {
         idUsuario: jwtPayload.idUsuario,
         nombre: normalizarTexto(jwtPayload.nombre),
@@ -127,6 +146,13 @@ export const getToken = () => {
  * @returns {object|null} Objeto con datos del usuario o null si no está autenticado.
  */
 export const getCurrentUser = () => {
+  const token = getToken()
+
+  if (!token || isTokenExpired(token)) {
+    logoutUser()
+    return null
+  }
+
   const userJson = localStorage.getItem(USER_KEY)
   return userJson ? normalizarUsuario(JSON.parse(userJson)) : null
 }
@@ -136,7 +162,8 @@ export const getCurrentUser = () => {
  * @returns {boolean} true si el usuario tiene sesión activa.
  */
 export const isAuthenticated = () => {
-  return !!getToken()
+  const token = getToken()
+  return !!token && !isTokenExpired(token)
 }
 
 /**
@@ -145,7 +172,7 @@ export const isAuthenticated = () => {
  */
 export const isAdmin = () => {
   const user = getCurrentUser()
-  return user && user.rol === 'admin'
+  return user?.rol?.toLowerCase() === 'admin'
 }
 
 /**

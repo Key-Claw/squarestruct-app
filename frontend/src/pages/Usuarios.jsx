@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { getAllUsers, updateUser } from '../services/authService'
+import { getAllUsers, logoutUser, updateUser } from '../services/authService'
 import '../styles/usuarios.css'
 
 /**
@@ -8,7 +8,7 @@ import '../styles/usuarios.css'
  * @param {function} onNavigate - Callback para cambiar de página.
  * @param {object} user - Datos del usuario autenticado (admin).
  */
-function Usuarios({ onNavigate, user }) {
+function Usuarios({ onNavigate, user, onAuthExpired }) {
   // Lista de usuarios del sistema.
   const [usuarios, setUsuarios] = useState([])
   // Flag para mostrar spinner mientras se cargan datos.
@@ -34,15 +34,27 @@ function Usuarios({ onNavigate, user }) {
       try {
         const data = await getAllUsers()
         setUsuarios(data)
-      } catch {
-        setError('No se pudo cargar la lista de usuarios.')
+      } catch (err) {
+        const message = err.message || 'No se pudo cargar la lista de usuarios.'
+
+        if (message.includes('Token')) {
+          if (typeof onAuthExpired === 'function') {
+            onAuthExpired()
+          } else {
+            logoutUser()
+          }
+          setError(`${message}. Vuelve a iniciar sesion como administrador.`)
+          return
+        }
+
+        setError(message)
       } finally {
         setIsLoading(false)
       }
     }
 
     loadUsuarios()
-  }, [])
+  }, [onAuthExpired])
 
   /**
    * Abre el modal para editar el rol de un usuario.
@@ -109,8 +121,6 @@ function Usuarios({ onNavigate, user }) {
     switch (rol) {
       case 'admin':
         return 'badge bg-danger'
-      case 'moderador':
-        return 'badge bg-warning text-dark'
       default:
         return 'badge bg-info'
     }
@@ -133,7 +143,7 @@ function Usuarios({ onNavigate, user }) {
       <section className="page-shell usuarios-shell container-fluid">
         <div className="container-fluid usuarios-container">
           <div className="text-center py-5">
-            <div className="spinner-border text-light" role="status">
+            <div className="spinner-border text-success" role="status">
               <span className="visually-hidden">Cargando...</span>
             </div>
           </div>
@@ -156,7 +166,7 @@ function Usuarios({ onNavigate, user }) {
       <div className="container-fluid usuarios-container">
         <div className="row">
           <div className="col-12">
-            <div className="card bg-dark text-white usuarios-card">
+            <div className="card usuarios-card">
               <div className="card-body p-4">
                 {/* Encabezado con título y botón de retorno. */}
                 <div className="d-flex justify-content-between align-items-center mb-4">
@@ -198,7 +208,7 @@ function Usuarios({ onNavigate, user }) {
 
                 {/* Tabla de usuarios. */}
                 <div className="table-responsive">
-                  <table className="table table-dark table-hover mb-0">
+                  <table className="table table-hover mb-0">
                     <thead>
                       <tr>
                         <th>ID</th>
@@ -268,17 +278,17 @@ function Usuarios({ onNavigate, user }) {
       {/* Modal para editar rol de usuario. */}
       {editingUsuario && (
         <div
-          className="modal d-block bg-dark bg-opacity-50"
+          className="modal d-block usuarios-modal-backdrop"
           style={{ display: 'block' }}
           tabIndex="-1"
         >
           <div className="modal-dialog modal-dialog-centered">
-            <div className="modal-content bg-dark text-white">
-              <div className="modal-header border-secondary">
+            <div className="modal-content usuarios-modal-content">
+              <div className="modal-header">
                 <h5 className="modal-title">Editar rol de usuario</h5>
                 <button
                   type="button"
-                  className="btn-close btn-close-white"
+                  className="btn-close"
                   onClick={handleCloseModal}
                   disabled={isEditLoading}
                   aria-label="Cerrar"
@@ -304,13 +314,12 @@ function Usuarios({ onNavigate, user }) {
                   </label>
                   <select
                     id="rolSelect"
-                    className="form-select form-select-sm bg-secondary text-white"
+                    className="form-select form-select-sm"
                     value={nuevoRol}
                     onChange={(e) => setNuevoRol(e.target.value)}
                     disabled={isEditLoading}
                   >
                     <option value="usuario">Usuario</option>
-                    <option value="moderador">Moderador</option>
                     <option value="admin">Administrador</option>
                   </select>
                 </div>
@@ -323,7 +332,7 @@ function Usuarios({ onNavigate, user }) {
                 )}
               </div>
 
-              <div className="modal-footer border-secondary">
+              <div className="modal-footer">
                 {/* Botón para cancelar. */}
                 <button
                   type="button"

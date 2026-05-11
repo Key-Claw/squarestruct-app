@@ -61,8 +61,6 @@ function ProfilePanel({ isOpen, user, onClose, onLogout, isAdmin, onNavigateToUs
     switch (rol) {
       case 'admin':
         return 'profile-role-badge admin'
-      case 'moderador':
-        return 'profile-role-badge moderador'
       default:
         return 'profile-role-badge usuario'
     }
@@ -77,8 +75,6 @@ function ProfilePanel({ isOpen, user, onClose, onLogout, isAdmin, onNavigateToUs
     switch (rol) {
       case 'admin':
         return 'Administrador'
-      case 'moderador':
-        return 'Moderador'
       default:
         return 'Usuario'
     }
