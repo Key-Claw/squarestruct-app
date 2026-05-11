@@ -9,19 +9,44 @@ Esta carpeta reune la documentacion del proyecto. Esta organizada para consultar
 3. [`02-mvp/metodologia-mvp.md`](02-mvp/metodologia-mvp.md): explica que incluye la primera version funcional.
 4. [`02-mvp/decisiones-tecnicas-mvp.md`](02-mvp/decisiones-tecnicas-mvp.md): justifica las decisiones tecnicas principales.
 5. [`03-arquitectura/backend-estructura.md`](03-arquitectura/backend-estructura.md): explica la organizacion del backend.
-6. [`03-arquitectura/frontend-estructura.md`](03-arquitectura/frontend-estructura.md): explica la organizacion real del frontend, sus paginas, componentes, servicios y CSS.
-7. [`03-arquitectura/tecnologias-frontend.md`](03-arquitectura/tecnologias-frontend.md): resume las tecnologias usadas en el frontend y por que se usan.
-8. [`03-arquitectura/base-de-datos.md`](03-arquitectura/base-de-datos.md): resume la base de datos.
-9. [`04-api/endpoints.md`](04-api/endpoints.md): resume los endpoints principales.
-10. [`05-testing/postman-mvp-ejemplos.md`](05-testing/postman-mvp-ejemplos.md): explica como probar el backend con Postman.
-11. [`05-testing/backend-tests.md`](05-testing/backend-tests.md): documenta los tests actuales del backend.
-12. [`05-testing/frontend-lint-build.md`](05-testing/frontend-lint-build.md): explica como revisar el frontend con ESLint, build y comprobacion manual.
-13. [`06-debug/generar-hash-bcrypt.md`](06-debug/generar-hash-bcrypt.md): explica como crear hashes bcrypt para usuarios de prueba.
-14. [`07-recursos/resumen-frontend.md`](07-recursos/resumen-frontend.md): chuleta rapida para explicar el frontend.
-15. [`00-workflow/`](00-workflow/): recoge normas de ramas, commits, issues y milestones.
+6. [`03-arquitectura/backend-autenticacion.md`](03-arquitectura/backend-autenticacion.md): explica registro, login, JWT, roles y rutas protegidas.
+7. [`03-arquitectura/backend-flujo-peticiones.md`](03-arquitectura/backend-flujo-peticiones.md): explica como viaja una peticion por rutas, middlewares, controladores y base de datos.
+8. [`03-arquitectura/tecnologias-backend.md`](03-arquitectura/tecnologias-backend.md): resume las tecnologias usadas en el backend y por que se usan.
+9. [`03-arquitectura/base-de-datos.md`](03-arquitectura/base-de-datos.md): resume la base de datos.
+10. [`04-api/endpoints.md`](04-api/endpoints.md): resume los endpoints principales.
+11. [`05-testing/postman-mvp-ejemplos.md`](05-testing/postman-mvp-ejemplos.md): explica como probar el backend con Postman.
+12. [`05-testing/backend-tests.md`](05-testing/backend-tests.md): documenta los tests actuales del backend.
+13. [`03-arquitectura/frontend-estructura.md`](03-arquitectura/frontend-estructura.md): explica la organizacion real del frontend, sus paginas, componentes, servicios y CSS.
+14. [`03-arquitectura/tecnologias-frontend.md`](03-arquitectura/tecnologias-frontend.md): resume las tecnologias usadas en el frontend y por que se usan.
+15. [`05-testing/frontend-lint-build.md`](05-testing/frontend-lint-build.md): explica como revisar el frontend con ESLint, build y comprobacion manual.
+16. [`06-debug/generar-hash-bcrypt.md`](06-debug/generar-hash-bcrypt.md): explica como crear hashes bcrypt para usuarios de prueba.
+17. [`07-recursos/resumen-frontend.md`](07-recursos/resumen-frontend.md): chuleta rapida para explicar el frontend.
+18. [`00-workflow/`](00-workflow/): recoge normas de ramas, commits, issues y milestones.
 
-## Documentacion frontend actualizada
+## Documentacion backend
+La documentacion del backend esta repartida entre la guia practica del servidor, la arquitectura, la API, la base de datos, las pruebas y los documentos de depuracion:
 
+| Documento | Uso |
+| --- | --- |
+| [`../backend/README.md`](../backend/README.md) | Guia practica para instalar, configurar, arrancar, probar y entender el backend desde la carpeta `backend`. |
+| [`03-arquitectura/backend-estructura.md`](03-arquitectura/backend-estructura.md) | Explica la organizacion por capas: rutas, controladores, servicios, middlewares, utils y base de datos. |
+| [`03-arquitectura/backend-autenticacion.md`](03-arquitectura/backend-autenticacion.md) | Explica registro, login, bcrypt, JWT, roles y rutas publicas o protegidas. |
+| [`03-arquitectura/backend-flujo-peticiones.md`](03-arquitectura/backend-flujo-peticiones.md) | Explica el recorrido de una peticion desde el frontend hasta la respuesta JSON. |
+| [`03-arquitectura/tecnologias-backend.md`](03-arquitectura/tecnologias-backend.md) | Resume Node.js, Express, MySQL, mysql2, bcrypt, JWT, dotenv, CORS, Jest, Supertest y Nodemon. |
+| [`04-api/endpoints.md`](04-api/endpoints.md) | Resume los endpoints REST principales del backend. |
+| [`03-arquitectura/base-de-datos.md`](03-arquitectura/base-de-datos.md) | Resume el modelo de base de datos del proyecto. |
+| [`03-arquitectura/modelo-datos-detallado.md`](03-arquitectura/modelo-datos-detallado.md) | Detalla entidades, relaciones y reglas del modelo de datos. |
+| [`../backend/db/schema.sql`](../backend/db/schema.sql) | Script SQL que crea las tablas, relaciones, indices y restricciones. |
+| [`../backend/db/seeds.sql`](../backend/db/seeds.sql) | Datos iniciales para desarrollo, pruebas y demo. |
+| [`../backend/db/consultas.md`](../backend/db/consultas.md) | Consultas SQL utiles para comprobar datos, preparar demos y explicar el modelo. |
+| [`05-testing/postman-mvp-ejemplos.md`](05-testing/postman-mvp-ejemplos.md) | Explica como probar el backend con Postman. |
+| [`05-testing/backend-tests.md`](05-testing/backend-tests.md) | Documenta los tests unitarios e integracion disponibles. |
+| [`06-debug/debug-backend-errores.md`](06-debug/debug-backend-errores.md) | Recoge errores frecuentes del backend y como diagnosticarlos. |
+| [`06-debug/errores-bd-tablas-no-existen.md`](06-debug/errores-bd-tablas-no-existen.md) | Ayuda a resolver problemas cuando MySQL no tiene las tablas esperadas. |
+| [`06-debug/generar-hash-bcrypt.md`](06-debug/generar-hash-bcrypt.md) | Explica como crear hashes bcrypt para usuarios de prueba. |
+| [`07-recursos/revision-backend-mvp-copilot.md`](07-recursos/revision-backend-mvp-copilot.md) | Revision de apoyo del estado del backend MVP. |
+
+## Documentacion frontend
 La documentacion del frontend esta repartida en dos niveles:
 
 | Documento | Uso |
@@ -71,4 +96,4 @@ docs/
 
 ## Idea clave
 
-`docs/` explica el proyecto completo y `frontend/README.md` funciona como guia practica del cliente React. Si una persona nueva entra al proyecto, puede leer primero este README y despues ir al documento especifico que necesite.
+`docs/` explica el proyecto completo, `frontend/README.md` funciona como guia practica del cliente React y `backend/README.md` funciona como guia practica del servidor Express. Si una persona nueva entra al proyecto, puede leer primero este README y despues ir al documento especifico que necesite.
