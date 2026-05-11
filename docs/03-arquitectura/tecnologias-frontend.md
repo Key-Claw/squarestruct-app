@@ -1,77 +1,172 @@
-# Tecnologías del frontend
+# Tecnologias del frontend
 
 ## Objetivo
 
-El frontend busca ofrecer una interfaz clara para que el usuario pueda navegar por SquareStruct y consumir los datos del backend.
+Este documento explica las tecnologias usadas en el frontend de SquareStruct y por que encajan con el MVP.
 
-## Tecnologías utilizadas
+El objetivo no es listar herramientas sin contexto, sino poder defender como se construye la interfaz, como se conecta con backend y como se revisa antes de entregar.
 
-| Tecnología | Uso en el proyecto |
+## Stack principal
+
+| Tecnologia | Uso en SquareStruct |
 | --- | --- |
-| React | Construcción de la interfaz mediante componentes. |
-| Vite | Entorno de desarrollo rápido para React. |
+| React | Construccion de la interfaz mediante componentes y estado. |
+| Vite | Servidor de desarrollo, build de produccion y proxy hacia backend. |
 | JavaScript | Lenguaje principal del frontend. |
-| Bootstrap | Ayuda con estilos y componentes visuales. |
-| CSS | Personalización del diseño. |
-| ESLint | Revision automatica de calidad del codigo frontend. |
+| Bootstrap | Base para grid, navbar, dropdowns, botones, formularios, tablas y cards. |
+| CSS propio | Personalizacion visual y responsive en `src/styles/`. |
+| ESLint | Revision automatica de calidad de codigo. |
 
-## Por qué React
+## React
 
-React permite dividir la interfaz en componentes reutilizables.
+React permite separar la interfaz en piezas reutilizables.
 
-Por ejemplo:
+En SquareStruct se usa para:
 
-- `Navbar` para la navegación.
-- `ProductCard` para mostrar productos.
-- Páginas como `Home`, `Catalogo`, `Login` o `Register`.
+- renderizar paginas segun el estado de `App.jsx`;
+- mantener estado de usuario, carrito, modal y busqueda;
+- crear componentes reutilizables como `Navbar`, `CartPanel`, `AuthModal` o tarjetas de catalogo;
+- actualizar la interfaz cuando cambia el estado, por ejemplo al anadir productos al carrito.
 
-Esto hace que el código sea más ordenado y fácil de ampliar.
+El proyecto no usa React Router. La navegacion del MVP se gestiona en `App.jsx` con un estado `page`.
 
-## Por qué Vite
+## Vite
 
-Vite facilita el desarrollo porque:
+Vite se usa como entorno de desarrollo y herramienta de build.
 
-- Arranca rápido.
-- Actualiza la página al guardar cambios.
-- Tiene una configuración sencilla.
+Funciones principales:
 
-## Por que Bootstrap
+- arranca el frontend con `npm run dev`;
+- sirve la aplicacion en `http://localhost:5173`;
+- recompila rapido al guardar cambios;
+- genera una version de produccion con `npm run build`;
+- configura un proxy para que `/api` apunte al backend local.
 
-Bootstrap se usa para apoyarnos en componentes ya preparados y conocidos:
+La configuracion del proxy esta en `frontend/vite.config.js`.
 
-- Navbar y menu hamburguesa.
-- Botones.
-- Formularios.
-- Grid responsive.
-- Cards.
-- Tablas.
-- Modal.
-- Alerts.
-- Carousel.
+## JavaScript
 
-El diseno propio de SquareStruct se completa con CSS en `src/App.css`.
+El frontend esta escrito en JavaScript con JSX.
 
-## Por que ESLint
+No se usa TypeScript en esta version del MVP. Por eso es importante mantener nombres claros, servicios separados y pasar `npm run lint` antes de entregar.
 
-ESLint ayuda a detectar problemas de codigo antes de subir cambios.
+## Bootstrap
 
-En este proyecto se usa con:
+Bootstrap se usa como apoyo para componentes visuales conocidos y responsivos.
+
+Ejemplos de uso:
+
+- navbar y menu hamburguesa;
+- dropdown de usuario;
+- grid responsive (`container-fluid`, `row`, `col-*`);
+- botones;
+- formularios;
+- cards;
+- tablas;
+- alerts;
+- modal;
+- carousel.
+
+Bootstrap no define toda la identidad visual. El aspecto final se ajusta con CSS propio.
+
+## CSS propio modularizado
+
+Antes el CSS estaba concentrado en `App.css`. Ahora `App.css` actua como indice de imports, y los estilos se reparten en `src/styles/`.
+
+Ejemplos:
+
+| Archivo | Uso |
+| --- | --- |
+| `app-base.css` | Estructura general de la app. |
+| `home.css` | Portada. |
+| `catalogo.css` | Catalogo, filtros y tarjetas de producto. |
+| `design.css` | Maqueta de Design. |
+| `galeria.css` | Galeria de inspiracion. |
+| `about.css` | Pagina About Us. |
+| `navbar.css` | Navbar y responsive especifico. |
+| `auth-modal.css` | Modal de autenticacion. |
+| `cart-panel.css` | Panel lateral de carrito. |
+| `profile-panel.css` | Panel lateral de perfil. |
+| `usuarios.css` | Gestion de usuarios. |
+| `facturacion.css` | Panel visual de facturacion. |
+| `responsive.css` | Ajustes responsive generales. |
+| `variables.css` | Variables CSS globales. |
+
+Esta separacion reduce archivos grandes y facilita encontrar donde cambiar un estilo.
+
+## ESLint
+
+ESLint revisa el codigo JavaScript y React.
+
+Sirve para detectar:
+
+- imports o variables no usados;
+- errores comunes con hooks;
+- problemas de mantenimiento;
+- codigo innecesario.
+
+Comando:
 
 ```bash
 cd frontend
 npm run lint
 ```
 
-Este comando revisa el codigo JavaScript y React. No arranca la web ni sustituye las pruebas funcionales, pero ayuda a encontrar errores de mantenimiento.
+## Comunicacion con backend
 
-## Comunicación con backend
+El frontend consume la API REST del backend usando `fetch` centralizado en `src/services/api.js`.
 
-El frontend no accede directamente a la base de datos. Se comunica con el backend mediante la API REST.
+La base de la API se calcula asi:
 
-```text
-React -> API REST -> MySQL
+```js
+const API_BASE_URL = import.meta.env.VITE_API_URL || '/api'
 ```
 
-## Idea clave para explicar
+En desarrollo, `/api` se redirige por proxy a `http://localhost:3000`.
 
-React construye la parte visual, Vite facilita el desarrollo y los servicios del frontend se encargan de comunicarse con la API.
+Flujos principales:
+
+| Flujo | Ruta usada |
+| --- | --- |
+| Registro | `POST /api/usuarios/register` |
+| Login | `POST /api/usuarios/login` |
+| Perfil/usuarios admin | `GET /api/usuarios`, `GET /api/usuarios/:id`, `PUT /api/usuarios/:id` |
+| Catalogo | `GET /api/productos` |
+| Pedidos | `/api/orders` desde `orderService.js` |
+
+## JWT y vistas protegidas
+
+Cuando el backend devuelve un token, el frontend lo guarda en `localStorage`.
+
+Datos guardados:
+
+- `authToken`;
+- `currentUser`.
+
+En peticiones autenticadas, `api.js` anade:
+
+```text
+Authorization: Bearer <token>
+```
+
+`authService.js` comprueba si el JWT ha caducado. Si ha caducado, limpia la sesion local.
+
+Las paginas `Usuarios` y `Facturacion` solo se muestran si el usuario tiene rol `admin`.
+
+## Relacion con MVP v1
+
+Estas tecnologias permiten cubrir `MVP v1 - Funcional` sin sobrecargar el proyecto:
+
+- React organiza vistas y componentes;
+- Vite simplifica desarrollo y build;
+- Bootstrap acelera la parte visual;
+- CSS propio da identidad a SquareStruct;
+- los servicios conectan con backend;
+- ESLint ayuda a mantener calidad.
+
+## Pendiente tecnico
+
+- Anadir tests automatizados de frontend.
+- Completar integracion real de pedidos desde el carrito.
+- Sustituir datos mock de facturacion por datos reales.
+- Evolucionar Design hacia una herramienta funcional de diseno o calculo.

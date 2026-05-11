@@ -1,79 +1,92 @@
-# Metodología del MVP
+# Metodologia del MVP
 
-## Qué significa MVP
+## Que significa MVP
 
-MVP significa Producto Mínimo Viable.
+MVP significa Producto Minimo Viable.
 
-En este proyecto, el MVP es la primera versión funcional de SquareStruct. No incluye todas las ideas futuras, pero sí permite comprobar que el flujo principal funciona de principio a fin.
+En este proyecto, `MVP v1 - Funcional` es la primera fase del roadmap de SquareStruct. No incluye todas las ideas futuras, pero permite comprobar que la base tecnica funciona y que el proyecto puede seguir creciendo hacia `v2` y `v3`.
 
 ## Flujo principal
 
 El flujo que se quiere validar es:
 
 ```text
-registro -> login -> consulta de productos -> creación de pedido
+registro -> login -> consulta de productos -> carrito/base de pedido -> administracion inicial
 ```
 
-Este recorrido es importante porque conecta las partes principales del sistema:
+Este recorrido conecta las partes principales del sistema:
 
 - Frontend: interfaz que usa el cliente.
 - Backend: API que procesa las peticiones.
-- Base de datos: almacena usuarios, productos y pedidos.
+- Base de datos: almacena usuarios, productos, proveedores, pedidos y detalles de pedido.
+- Administracion: primera gestion de usuarios para el rol `admin`.
 
 ## Funcionalidades incluidas
 
 - Registro de usuarios.
-- Autenticación con JWT.
-- Consulta de productos.
-- Gestión básica de pedidos.
+- Autenticacion con JWT.
+- Consulta de productos reales desde backend.
+- Catalogo con busqueda, orden y filtros basicos.
+- Carrito visual en cliente.
+- Base tecnica de pedidos en backend y servicios frontend.
+- Gestion de usuarios para administradores.
 - API REST funcional.
 - Pruebas manuales con Postman.
+- Revision de frontend con lint y build.
 
-## Funcionalidades no incluidas todavía
+## Funcionalidades no incluidas todavia
 
-Estas funcionalidades quedan fuera del MVP para no aumentar demasiado la complejidad:
+Estas funcionalidades quedan fuera de `MVP v1` para no aumentar demasiado la complejidad:
 
-- Configurador 3D.
-- Presupuesto automático avanzado.
+- Configurador 3D real.
+- Presupuesto automatico avanzado.
 - Comparador completo de proveedores.
 - Panel administrativo completo.
+- Flujo completo de proveedor.
+- Checkout completo desde carrito.
 - Pasarela de pago real.
+- Tests automatizados de frontend.
 
 ## Fases de desarrollo
 
-1. Configuración inicial del repositorio.
-2. Diseño de la base de datos.
-3. Creación del backend con Express.
-4. Conexión con MySQL.
+1. Configuracion inicial del repositorio.
+2. Diseno de la base de datos.
+3. Creacion del backend con Express.
+4. Conexion con MySQL.
 5. Registro y login de usuarios.
-6. Catálogo de productos.
-7. Pedidos.
+6. Catalogo de productos.
+7. Base de pedidos.
 8. Frontend en React.
-9. Pruebas con Postman y tests automáticos iniciales.
-10. Documentación del proyecto.
+9. Carrito visual y conexion parcial con servicios.
+10. Gestion inicial de usuarios admin.
+11. Pruebas con Postman y tests automaticos iniciales de backend.
+12. Documentacion del proyecto.
 
-## Organización del trabajo
+## Organizacion del trabajo
 
 El proyecto usa una forma de trabajo basada en ramas:
 
-- `main`: versión estable.
+- `main`: version estable.
 - `dev`: rama principal de desarrollo.
 - `feature/*`: ramas para nuevas funcionalidades.
 - Pull Requests para integrar cambios.
 
 Esto ayuda a trabajar de forma ordenada y a evitar mezclar cambios sin revisar.
 
-## Criterio de éxito del MVP
+## Criterio de exito del MVP
 
-El MVP se considera válido si:
+`MVP v1` se considera valido si:
 
 - El backend arranca correctamente.
 - La base de datos tiene las tablas necesarias.
 - Un usuario puede registrarse.
-- El usuario puede iniciar sesión.
+- El usuario puede iniciar sesion.
 - El frontend puede consultar productos.
-- Se puede crear o preparar el flujo de pedido.
+- El usuario puede anadir productos a un carrito visual.
+- Existe base tecnica para pedidos.
+- Un admin puede acceder a gestion de usuarios.
+- La documentacion explica que entra en `MVP v1` y que queda para fases siguientes.
 
 ## Idea clave para explicar
 
-El MVP no es el proyecto final. Es una primera versión que demuestra que la base técnica funciona y que el proyecto puede seguir creciendo.
+`MVP v1` no es el proyecto final. Es la primera version que demuestra que la base tecnica funciona: frontend, backend, base de datos, autenticacion, catalogo, carrito visual y administracion inicial. Despues, `v2` y `v3` completaran la aplicacion y el disenador 3D.

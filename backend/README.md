@@ -12,7 +12,7 @@ Actualmente gestiona:
 - perfil de usuario autenticado;
 - administración básica de usuarios;
 - catálogo de productos modulares;
-- creación y consulta de pedidos;
+- base técnica para creación y consulta de pedidos;
 - conexión con MySQL;
 - consultas y scripts SQL para explicar y validar el modelo de datos.
 
@@ -277,6 +277,8 @@ Las dimensiones se guardan porque el catálogo está pensado para piezas modular
 
 ### Pedidos
 
+El backend ya tiene endpoints y tablas para pedidos. En la fase actual se documenta como base técnica, porque el checkout completo desde el carrito del frontend queda para fases siguientes.
+
 | Método | Ruta | Protección | Descripción |
 | --- | --- | --- | --- |
 | GET | `/api/pedidos` | Usuario autenticado | Lista los pedidos del usuario autenticado. |
@@ -388,15 +390,17 @@ Además, la base de datos refuerza reglas importantes con restricciones:
 Existe una colección en:
 
 ```text
-backend/postman/mvp-coleccion-ejemplo.postman_collection.json
+backend/postman/squarestruct-mvp.postman_collection.json
 ```
 
-Sirve para probar manualmente el flujo básico:
+Sirve para probar manualmente el flujo básico del MVP:
 
 - registro;
 - login;
 - acceso a perfil con token;
-- llamadas a endpoints principales.
+- productos;
+- gestión admin de usuarios;
+- base de pedidos.
 
 ## Tests automatizados
 

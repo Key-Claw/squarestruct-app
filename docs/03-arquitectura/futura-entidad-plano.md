@@ -2,26 +2,26 @@
 
 ## Objetivo
 
-Este documento explica cómo podría crecer la base de datos cuando se implemente el diseñador de planos 3D.
+Este documento explica como podria crecer la base de datos cuando se implemente el disenador de planos 3D.
 
-En el MVP todavía no existe la entidad `plano`. La prioridad actual es validar registro, login, catálogo y pedidos.
+En `MVP v1` todavia no existe la entidad `plano`. La prioridad actual es validar registro, login, catalogo, carrito/base de pedidos y administracion inicial.
 
-## Por qué no está en el MVP
+## Por que no esta en el MVP
 
-El diseñador 3D es una funcionalidad más compleja que requiere:
+El disenador 3D es una funcionalidad mas compleja que requiere:
 
 - interfaz visual;
-- colocación de piezas;
-- cálculo de medidas;
+- colocacion de piezas;
+- calculo de medidas;
 - guardado de posiciones;
-- cálculo de presupuesto;
-- posible visualización 3D.
+- calculo de presupuesto;
+- posible visualizacion 3D.
 
-Por eso se deja para una fase posterior.
+Por eso se deja para una fase posterior. La pagina `Design.jsx` existe como maqueta visual para explicar la direccion futura, pero no guarda planos ni calcula estructuras reales.
 
-## Qué problema resolvería
+## Que problema resolveria
 
-La entidad `plano` permitiría guardar diseños creados por los usuarios.
+La entidad `plano` permitiria guardar disenos creados por los usuarios.
 
 Ejemplo:
 
@@ -29,13 +29,13 @@ Ejemplo:
 usuario -> plano -> piezas colocadas -> productos
 ```
 
-Así un usuario podría:
+Asi un usuario podria:
 
 - crear un proyecto;
 - colocar bloques o pilares;
-- guardar el diseño;
+- guardar el diseno;
 - consultar el coste estimado;
-- convertir el diseño en pedido.
+- convertir el diseno en pedido.
 
 ## Posible tabla `planos`
 
@@ -46,16 +46,16 @@ Campos posibles:
 | `idPlano` | Identificador del plano. |
 | `idUsuario` | Usuario propietario. |
 | `nombre` | Nombre del proyecto. |
-| `descripcion` | Descripción opcional. |
+| `descripcion` | Descripcion opcional. |
 | `anchoTerreno` | Medida base del espacio. |
 | `largoTerreno` | Medida base del espacio. |
 | `costeEstimado` | Presupuesto calculado. |
-| `creadoEn` | Fecha de creación. |
-| `actualizadoEn` | Última modificación. |
+| `creadoEn` | Fecha de creacion. |
+| `actualizadoEn` | Ultima modificacion. |
 
 ## Posible tabla `planoPiezas`
 
-Para guardar las piezas colocadas haría falta una tabla intermedia.
+Para guardar las piezas colocadas haria falta una tabla intermedia.
 
 Campos posibles:
 
@@ -63,24 +63,26 @@ Campos posibles:
 | --- | --- |
 | `idPlano` | Plano al que pertenece la pieza. |
 | `idProducto` | Producto usado. |
-| `cantidad` | Número de piezas iguales. |
-| `posX` | Posición horizontal. |
-| `posY` | Posición de profundidad. |
+| `cantidad` | Numero de piezas iguales. |
+| `posX` | Posicion horizontal. |
+| `posY` | Posicion de profundidad. |
 | `posZ` | Altura o nivel. |
-| `rotacion` | Orientación de la pieza. |
+| `rotacion` | Orientacion de la pieza. |
 
-## Relación con el modelo actual
+## Relacion con el modelo actual
 
-La futura entidad se conectaría con:
+La futura entidad se conectaria con:
 
 - `usuarios`, porque cada plano pertenece a un usuario;
-- `productos`, porque el plano usa piezas del catálogo;
-- `pedidos`, si el usuario decide comprar las piezas del diseño.
+- `productos`, porque el plano usa piezas del catalogo;
+- `pedidos`, si el usuario decide comprar las piezas del diseno.
 
-## Relación con el SaaS
+El modelo actual ya prepara parte de esta evolucion porque los productos tienen dimensiones y los pedidos pueden guardar varias lineas mediante `pedidoDetalles`.
 
-Guardar planos es una funcionalidad típica de SaaS porque permite que el usuario conserve proyectos en su cuenta y vuelva a ellos desde cualquier dispositivo.
+## Relacion con el SaaS
+
+Guardar planos es una funcionalidad tipica de SaaS porque permite que el usuario conserve proyectos en su cuenta y vuelva a ellos desde cualquier dispositivo.
 
 ## Idea clave para explicar
 
-El MVP prepara la base para el futuro diseñador 3D porque los productos ya tienen dimensiones. La entidad `plano` será la evolución natural para guardar diseños modulares creados por usuarios.
+`MVP v1` prepara la base para el futuro disenador 3D porque ya separa usuarios, productos, pedidos y roles. La entidad `plano` seria la evolucion natural para guardar disenos modulares creados por usuarios en `v3`.

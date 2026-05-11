@@ -2,9 +2,9 @@
 
 ## Objetivo
 
-Este documento amplía la explicación de la base de datos del MVP.
+Este documento amplia la explicacion de la base de datos del MVP.
 
-La base de datos se ha diseñado con MySQL porque el proyecto necesita relaciones claras entre usuarios, proveedores, productos y pedidos.
+La base de datos se ha disenado con MySQL porque el proyecto necesita relaciones claras entre usuarios, proveedores, productos y pedidos.
 
 ## Entidades del MVP
 
@@ -12,11 +12,11 @@ La base de datos se ha diseñado con MySQL porque el proyecto necesita relacione
 | --- | --- |
 | `usuarios` | Personas registradas y administradores. |
 | `proveedores` | Empresas que ofrecen productos modulares. |
-| `productos` | Bloques y pilares disponibles en el catálogo. |
+| `productos` | Bloques y pilares disponibles en el catalogo. |
 | `pedidos` | Compras o solicitudes de usuarios. |
 | `pedidoDetalles` | Productos concretos dentro de cada pedido. |
 
-## Relación principal
+## Relacion principal
 
 ```text
 usuarios -> pedidos -> pedidoDetalles -> productos -> proveedores
@@ -24,10 +24,10 @@ usuarios -> pedidos -> pedidoDetalles -> productos -> proveedores
 
 Este recorrido permite responder preguntas como:
 
-- qué usuario hizo un pedido;
-- qué productos contiene ese pedido;
-- qué proveedor suministra cada producto;
-- cuánto cuesta cada línea del pedido.
+- que usuario hizo un pedido;
+- que productos contiene ese pedido;
+- que proveedor suministra cada producto;
+- cuanto cuesta cada linea del pedido.
 
 ## Usuarios
 
@@ -35,14 +35,14 @@ La tabla `usuarios` guarda los datos de acceso y rol.
 
 Campos importantes:
 
-- `idUsuario`: identificador único.
-- `nombre`, `primerApellido`, `segundoApellido`: datos personales básicos.
-- `email`: usado para login y marcado como único.
+- `idUsuario`: identificador unico.
+- `nombre`, `primerApellido`, `segundoApellido`: datos personales basicos.
+- `email`: usado para login y marcado como unico.
 - `contrasena`: hash bcrypt.
 - `rol`: `usuario` o `admin`.
 - `creadoEn`: fecha de alta.
 
-Restricción importante:
+Restriccion importante:
 
 ```text
 rol IN ('usuario', 'admin')
@@ -50,16 +50,16 @@ rol IN ('usuario', 'admin')
 
 ## Proveedores
 
-La tabla `proveedores` guarda empresas relacionadas con el catálogo.
+La tabla `proveedores` guarda empresas relacionadas con el catalogo.
 
 Campos importantes:
 
-- `idProveedor`: identificador único.
+- `idProveedor`: identificador unico.
 - `nombreEmpresa`: nombre comercial.
 - `telefono`: contacto.
 - `sitioWeb`: web del proveedor.
 - `categoria`: tipo de proveedor.
-- `validado`: indica si está validado.
+- `validado`: indica si esta validado.
 
 Esta entidad permite separar el producto de la empresa que lo proporciona.
 
@@ -69,16 +69,16 @@ La tabla `productos` representa piezas modulares.
 
 Campos importantes:
 
-- `idProducto`: identificador único.
+- `idProducto`: identificador unico.
 - `nombre`: nombre comercial.
-- `descripcion`: explicación del producto.
+- `descripcion`: explicacion del producto.
 - `precio`: precio unitario.
 - `tipo`: `bloque` o `pilar`.
 - `material`: `Plastico reciclable` u `Hormigon`.
-- `alto`, `ancho`, `largo`: dimensiones físicas.
+- `alto`, `ancho`, `largo`: dimensiones fisicas.
 - `idProveedor`: proveedor asociado.
 
-Las dimensiones preparan el sistema para cálculos de volumen, presupuesto y diseño 3D.
+Las dimensiones preparan el sistema para calculos de volumen, presupuesto y diseno 3D.
 
 ## Pedidos
 
@@ -86,11 +86,11 @@ La tabla `pedidos` funciona como cabecera del pedido.
 
 Campos importantes:
 
-- `idPedido`: identificador único.
-- `fecha`: momento de creación.
+- `idPedido`: identificador unico.
+- `fecha`: momento de creacion.
 - `total`: importe total calculado.
-- `estado`: situación del pedido.
-- `direccionEnvio`: dirección del usuario.
+- `estado`: situacion del pedido.
+- `direccionEnvio`: direccion del usuario.
 - `metodoPago`: forma de pago elegida.
 - `idUsuario`: usuario que realiza el pedido.
 
@@ -100,11 +100,13 @@ Estados permitidos:
 pendiente, pagado, enviado, entregado, cancelado
 ```
 
-Métodos de pago permitidos:
+Metodos de pago permitidos:
 
 ```text
 tarjeta, transferencia, paypal, efectivo
 ```
+
+En `MVP v1`, estas tablas existen como base tecnica. El frontend ya tiene carrito visual y servicio de pedidos, pero el checkout completo desde carrito todavia no esta integrado.
 
 ## PedidoDetalles
 
@@ -122,20 +124,20 @@ Campos importantes:
 - `cantidad`: unidades solicitadas.
 - `precioUnitario`: precio del producto en el momento del pedido.
 
-Guardar `precioUnitario` evita que un pedido antiguo cambie si más adelante cambia el precio del producto.
+Guardar `precioUnitario` evita que un pedido antiguo cambie si mas adelante cambia el precio del producto.
 
 ## Integridad
 
 El modelo usa:
 
 - claves primarias;
-- claves foráneas;
+- claves foraneas;
 - restricciones `CHECK`;
-- índices;
+- indices;
 - motor `InnoDB`.
 
-Esto ayuda a que los datos sean coherentes y evita registros huérfanos.
+Esto ayuda a que los datos sean coherentes y evita registros huerfanos.
 
 ## Idea clave para explicar
 
-La base de datos no solo almacena datos: también protege relaciones y reglas del negocio, como roles válidos, precios positivos, dimensiones positivas y pedidos vinculados a usuarios reales.
+La base de datos no solo almacena datos: tambien protege relaciones y reglas del negocio, como roles validos, precios positivos, dimensiones positivas y pedidos vinculados a usuarios reales.

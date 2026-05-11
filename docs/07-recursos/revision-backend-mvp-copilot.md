@@ -91,14 +91,14 @@ El proyecto tiene `schema.sql` y migraciones.
 
 Hay que evitar que ambos archivos definan cosas contradictorias sobre la misma tabla.
 
-## Estado del MVP
+## Estado de MVP v1
 
-El backend cumple una parte importante del MVP:
+El backend cumple una parte importante de `MVP v1 - Funcional`:
 
 - Permite trabajar con usuarios.
 - Tiene autenticación.
 - Tiene productos.
-- Tiene pedidos básicos.
+- Tiene base de pedidos.
 - Se puede probar con Postman.
 
 Pero todavía conviene revisar bien:
@@ -107,6 +107,7 @@ Pero todavía conviene revisar bien:
 - Validaciones.
 - Seguridad de configuración.
 - Tests de integración.
+- Integración completa del checkout desde el carrito.
 
 ## Recomendaciones
 
@@ -119,4 +120,4 @@ Pero todavía conviene revisar bien:
 
 ## Idea clave para explicar
 
-El backend ya tiene forma de MVP, pero un MVP también debe poder arrancarse, probarse y explicarse de manera clara.
+El backend ya sostiene una parte importante de `MVP v1`, pero esta fase también debe poder arrancarse, probarse y explicarse de manera clara.
