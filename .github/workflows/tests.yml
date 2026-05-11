@@ -1,0 +1,91 @@
+name: Backend tests
+
+# Este workflow se ejecuta cuando hay cambios en dev.
+on:
+  push:
+    branches:
+      - dev
+  pull_request:
+    branches:
+      - dev
+
+jobs:
+  backend-tests:
+    # GitHub Actions ejecuta el job en un runner Linux limpio.
+    runs-on: ubuntu-latest
+
+    # Servicio de base de datos necesario para los tests de integración.
+    services:
+      mysql:
+        image: mysql:8.4
+        env:
+          MYSQL_ROOT_PASSWORD: root1234
+          MYSQL_ROOT_HOST: "%"
+          MYSQL_DATABASE: squarestruct
+          MYSQL_USER: admin
+          MYSQL_PASSWORD: 20doblajepuro37
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h 127.0.0.1 -uroot -proot1234"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=20
+
+    # Variables de entorno que el backend necesita para conectarse a MySQL y arrancar.
+    env:
+      DB_HOST: 127.0.0.1
+      DB_PORT: 3306
+      DB_USER: admin
+      DB_PASSWORD: 20doblajepuro37
+      DB_NAME: squarestruct
+      PORT: 3000
+      JWT_SECRET: github-actions-test-secret
+      NODE_ENV: test
+
+    # Todo lo que se ejecute aquí se hará dentro de backend/.
+    defaults:
+      run:
+        shell: bash
+        working-directory: backend
+
+    steps:
+      # Descarga el código del repositorio para poder ejecutar los tests.
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Instala Node.js y activa la caché de npm para acelerar futuras ejecuciones.
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: backend/package-lock.json
+
+      # El runner necesita el cliente mysql para cargar el esquema y los seeds.
+      - name: Install MySQL client
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y mysql-client
+
+      # Espera a que el servicio MySQL esté listo antes de seguir.
+      - name: Wait for MySQL
+        run: |
+          until mysqladmin ping -h 127.0.0.1 -uroot -proot1234 --silent; do
+            echo "Waiting for MySQL..."
+            sleep 2
+          done
+
+      # Carga el esquema y los datos iniciales que usan los tests de integración.
+      - name: Load schema and seeds
+        run: |
+          mysql -h 127.0.0.1 -P 3306 -u root -proot1234 squarestruct < db/schema.sql
+          mysql -h 127.0.0.1 -P 3306 -u root -proot1234 squarestruct < db/seeds.sql
+
+      # Instala las dependencias del backend desde backend/package.json.
+      - name: Install backend dependencies
+        run: npm install
+
+      # Ejecuta Jest con el script definido en package.json.
+      - name: Run backend tests
+        run: npm test
