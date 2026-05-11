@@ -20,5 +20,39 @@ services:
       - ../backend/db/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
       - ../backend/db/seeds.sql:/docker-entrypoint-initdb.d/02-seeds.sql:ro
 
+  backend:
+    build:
+      context: ../backend
+      dockerfile: Dockerfile
+    container_name: squarestruct-backend
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      PORT: 3000
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_USER: admin
+      DB_PASSWORD: 20doblajepuro37
+      DB_NAME: squarestruct
+      JWT_SECRET: cambia_esta_clave_en_local
+      NODE_ENV: development
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  frontend:
+    build:
+      context: ../frontend
+      dockerfile: Dockerfile
+    container_name: squarestruct-frontend
+    restart: unless-stopped
+    ports:
+      - "5173:5173"
+    environment:
+      VITE_API_URL: http://localhost:3000/api
+    depends_on:
+      - backend
+      
 volumes:
   squarestruct_mysql_data:
