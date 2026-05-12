@@ -100,3 +100,11 @@ Para esas partes se usan comprobaciones manuales con Postman y la revision de fr
 ## Idea clave para explicar
 
 Los tests actuales validan la base de disponibilidad y autenticacion del backend. Son un punto de partida, pero la cobertura deberia ampliarse en una fase posterior para productos, pedidos y administracion.
+
+## Integracion continua
+
+El proyecto tiene un workflow de GitHub Actions en [.github/workflows/tests.yml](../../.github/workflows/tests.yml) que se ejecuta en `push` y `pull_request` hacia `dev`.
+
+El pipeline levanta MySQL como servicio, carga `backend/db/schema.sql` y `backend/db/seeds.sql`, instala las dependencias del backend y ejecuta `npm test`.
+
+Esto permite comprobar automaticamente que el backend sigue funcionando antes de fusionar cambios a `dev`.
