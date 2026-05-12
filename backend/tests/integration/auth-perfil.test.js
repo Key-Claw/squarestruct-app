@@ -1,15 +1,10 @@
 import request from 'supertest';
-import app, { db } from '../../src/app.js';
+import app from '../../src/app.js';
 
 describe('Registro y login de usuario', () => {
   const email = `test${Date.now()}@mail.com`;
   const password = '12345678';
   let token;
-
-  // Cerramos la conexión al final para que el proceso de Jest termine limpio.
-  afterAll(async () => {
-    await db.end();
-  });
 
   it('POST /api/usuarios/register debe registrar un usuario', async () => {
     const res = await request(app)
