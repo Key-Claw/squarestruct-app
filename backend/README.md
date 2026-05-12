@@ -407,7 +407,10 @@ Sirve para probar manualmente el flujo básico del MVP:
 Actualmente hay:
 
 - test unitario para `GET /api/health`;
-- test de integración para registro, login y perfil autenticado.
+- test de integracion para registro, login y perfil autenticado;
+- test de integracion para `GET /api/productos`;
+- test de integracion para rutas protegidas de pedidos con y sin token;
+- test de integracion para creacion de pedidos autenticada.
 
 Comandos:
 
@@ -416,6 +419,9 @@ npm test
 npm run test:unit
 npm run test:integration
 ```
+
+La suite cubre health, registro, login, perfil autenticado, listado de productos, rutas protegidas de pedidos con y sin token y creacion de pedidos autenticada.
+
 
 Los tests de integración necesitan que la base de datos esté disponible.
 
