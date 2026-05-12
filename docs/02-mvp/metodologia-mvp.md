@@ -60,6 +60,7 @@ Estas funcionalidades quedan fuera de `MVP v1` para no aumentar demasiado la com
 9. Carrito visual y conexion parcial con servicios.
 10. Gestion inicial de usuarios admin.
 11. Pruebas con Postman y tests automaticos iniciales de backend.
+- Base inicial de tests automatizados de frontend.
 12. Documentacion del proyecto.
 
 ## Organizacion del trabajo

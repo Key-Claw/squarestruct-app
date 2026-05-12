@@ -1,13 +1,14 @@
-# Verificacion del frontend con lint y build
+# Verificacion del frontend con lint, build y tests basicos
 
 ## Objetivo
 
 Este documento explica como comprobar el frontend antes de entregar cambios o abrir una pull request.
 
-En esta version no hay una suite de tests automatizados de frontend. Por eso se combinan:
+Ahora ya existe una base de tests automatizados de frontend, pero sigue siendo una cobertura inicial. Por eso se combinan:
 
 - revision automatica con ESLint;
 - build de produccion;
+- tests basicos con Vitest y React Testing Library;
 - prueba manual de los flujos afectados.
 
 ## Comandos principales
@@ -63,12 +64,31 @@ El build valida que:
 
 Si aparecen warnings, hay que revisar si son nuevos y si estan relacionados con el cambio. Por ejemplo, una ruta de imagen mal movida en CSS puede compilar con aviso, pero debe corregirse antes de entregar.
 
+## `npm test`
+
+Ejecuta la suite basica de frontend con Vitest:
+
+```bash
+npm test
+```
+
+Sirve para comprobar que los componentes principales siguen renderizando sin errores.
+
+La cobertura actual valida:
+
+- `App`;
+- `Navbar`;
+- `Home`.
+
+Estos tests no sustituyen la prueba manual completa del frontend, pero ayudan a detectar regresiones rapidas en la base visual.
+
 ## Diferencia entre lint y build
 
 | Comando | Que comprueba |
 | --- | --- |
 | `npm run lint` | Calidad y reglas de codigo JavaScript/React. |
 | `npm run build` | Compilacion de produccion con Vite. |
+| `npm test` | Renderizado basico de componentes principales con Vitest. |
 
 Un cambio puede pasar `build` y fallar `lint`, o al reves. Por eso se ejecutan ambos.
 
@@ -139,7 +159,7 @@ Checklist minimo:
 
 ## Limitaciones actuales
 
-- No hay tests unitarios o E2E de frontend.
+- La cobertura de tests de frontend es basica y solo valida renderizados principales.
 - Algunas vistas son visuales/provisionales, como `Design.jsx` y `Facturacion.jsx`.
 - El flujo completo de pedido desde el carrito todavia no esta cerrado.
 

@@ -91,7 +91,7 @@ Estas funcionalidades no forman parte obligatoria de `MVP v1`, pero muestran hac
 - Panel completo de administracion.
 - Flujo completo de proveedores.
 - Recomendaciones de materiales.
-- Tests automatizados de frontend.
+- Ampliar la cobertura de tests automatizados de frontend.
 
 ## Frase util para la presentacion
 

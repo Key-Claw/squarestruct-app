@@ -166,7 +166,7 @@ Estas tecnologias permiten cubrir `MVP v1 - Funcional` sin sobrecargar el proyec
 
 ## Pendiente tecnico
 
-- Anadir tests automatizados de frontend.
+- Ampliar la base inicial de tests automatizados de frontend.
 - Completar integracion real de pedidos desde el carrito.
 - Sustituir datos mock de facturacion por datos reales.
 - Evolucionar Design hacia una herramienta funcional de diseno o calculo.
