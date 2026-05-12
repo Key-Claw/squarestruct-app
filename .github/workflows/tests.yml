@@ -21,28 +21,28 @@ jobs:
       mysql:
         image: mysql:8.4
         env:
-          MYSQL_ROOT_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          MYSQL_ROOT_PASSWORD: ci_root_password
           MYSQL_ROOT_HOST: "%"
-          MYSQL_DATABASE: ${{ secrets.DB_NAME }}
-          MYSQL_USER: ${{ secrets.DB_USER }}
-          MYSQL_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          MYSQL_DATABASE: squarestruct_test
+          MYSQL_USER: ci_user
+          MYSQL_PASSWORD: ci_password
         ports:
           - 3306:3306
         options: >-
-          --health-cmd="mysqladmin ping -h 127.0.0.1 -uroot -p${{ secrets.DB_PASSWORD }}"
+          --health-cmd="mysqladmin ping -h 127.0.0.1 -uroot -pci_root_password"
           --health-interval=10s
           --health-timeout=5s
           --health-retries=20
 
     # Variables de entorno que el backend necesita para conectarse a MySQL y arrancar.
     env:
-      DB_HOST: ${{ secrets.DB_HOST }}
-      DB_PORT: ${{ secrets.DB_PORT }}
-      DB_USER: ${{ secrets.DB_USER }}
-      DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-      DB_NAME: ${{ secrets.DB_NAME }}
+      DB_HOST: 127.0.0.1
+      DB_PORT: 3306
+      DB_USER: ci_user
+      DB_PASSWORD: ci_password
+      DB_NAME: squarestruct_test
       PORT: 3000
-      JWT_SECRET: ${{ secrets.JWT_SECRET }}
+      JWT_SECRET: ci_jwt_secret
       NODE_ENV: test
 
     # Todo lo que se ejecute aqui se hara dentro de backend/.
@@ -73,7 +73,7 @@ jobs:
       # Espera a que el servicio MySQL este listo antes de seguir.
       - name: Wait for MySQL
         run: |
-          until mysqladmin ping -h 127.0.0.1 -uroot -p${{ secrets.DB_PASSWORD }} --silent; do
+          until mysqladmin ping -h 127.0.0.1 -uroot -pci_root_password --silent; do
             echo "Waiting for MySQL..."
             sleep 2
           done
@@ -81,8 +81,9 @@ jobs:
       # Carga el esquema y los datos iniciales que usan los tests de integracion.
       - name: Load schema and seeds
         run: |
-          mysql -h 127.0.0.1 -P 3306 -u root -p${{ secrets.DB_PASSWORD }} ${{ secrets.DB_NAME }} < db/schema.sql
-          mysql -h 127.0.0.1 -P 3306 -u root -p${{ secrets.DB_PASSWORD }} ${{ secrets.DB_NAME }} < db/seeds.sql
+          mysql -h 127.0.0.1 -P 3306 -u root -pci_root_password squarestruct_test < db/schema.sql
+          mysql -h 127.0.0.1 -P 3306 -u root -pci_root_password squarestruct_test < db/seeds.sql
+
 
       # Instala las dependencias del backend desde backend/package.json.
       - name: Install backend dependencies
