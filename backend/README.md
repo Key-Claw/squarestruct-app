@@ -404,10 +404,7 @@ Sirve para probar manualmente el flujo básico del MVP:
 
 ## Tests automatizados
 
-Actualmente hay:
-
-- test unitario para `GET /api/health`;
-- test de integración para registro, login y perfil autenticado.
+Los tests del backend estan documentados en `tests/README.md`.
 
 Comandos:
 
@@ -416,8 +413,6 @@ npm test
 npm run test:unit
 npm run test:integration
 ```
-
-Los tests de integración necesitan que la base de datos esté disponible.
 
 ## Notas de desarrollo
 
