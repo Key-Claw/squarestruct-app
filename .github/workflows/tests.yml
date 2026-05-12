@@ -1,4 +1,4 @@
-name: Backend tests
+name: Backend and Frontend CI
 
 # Este workflow se ejecuta cuando hay cambios en dev.
 on:
@@ -16,47 +16,47 @@ jobs:
     # GitHub Actions ejecuta el job en un runner Linux limpio.
     runs-on: ubuntu-latest
 
-    # Servicio de base de datos necesario para los tests de integración.
+    # Servicio de base de datos necesario para los tests de integracion.
     services:
       mysql:
         image: mysql:8.4
         env:
-          MYSQL_ROOT_PASSWORD: root1234
+          MYSQL_ROOT_PASSWORD: ${{ secrets.DB_PASSWORD }}
           MYSQL_ROOT_HOST: "%"
-          MYSQL_DATABASE: squarestruct
-          MYSQL_USER: admin
-          MYSQL_PASSWORD: 20doblajepuro37
+          MYSQL_DATABASE: ${{ secrets.DB_NAME }}
+          MYSQL_USER: ${{ secrets.DB_USER }}
+          MYSQL_PASSWORD: ${{ secrets.DB_PASSWORD }}
         ports:
           - 3306:3306
         options: >-
-          --health-cmd="mysqladmin ping -h 127.0.0.1 -uroot -proot1234"
+          --health-cmd="mysqladmin ping -h 127.0.0.1 -uroot -p${{ secrets.DB_PASSWORD }}"
           --health-interval=10s
           --health-timeout=5s
           --health-retries=20
 
     # Variables de entorno que el backend necesita para conectarse a MySQL y arrancar.
     env:
-      DB_HOST: 127.0.0.1
-      DB_PORT: 3306
-      DB_USER: admin
-      DB_PASSWORD: 20doblajepuro37
-      DB_NAME: squarestruct
+      DB_HOST: ${{ secrets.DB_HOST }}
+      DB_PORT: ${{ secrets.DB_PORT }}
+      DB_USER: ${{ secrets.DB_USER }}
+      DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+      DB_NAME: ${{ secrets.DB_NAME }}
       PORT: 3000
-      JWT_SECRET: github-actions-test-secret
+      JWT_SECRET: ${{ secrets.JWT_SECRET }}
       NODE_ENV: test
 
-    # Todo lo que se ejecute aquí se hará dentro de backend/.
+    # Todo lo que se ejecute aqui se hara dentro de backend/.
     defaults:
       run:
         shell: bash
         working-directory: backend
 
     steps:
-      # Descarga el código del repositorio para poder ejecutar los tests.
+      # Descarga el codigo del repositorio para poder ejecutar los tests.
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Instala Node.js y activa la caché de npm para acelerar futuras ejecuciones.
+      # Instala Node.js y activa la cache de npm para acelerar futuras ejecuciones.
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
@@ -70,19 +70,19 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y mysql-client
 
-      # Espera a que el servicio MySQL esté listo antes de seguir.
+      # Espera a que el servicio MySQL este listo antes de seguir.
       - name: Wait for MySQL
         run: |
-          until mysqladmin ping -h 127.0.0.1 -uroot -proot1234 --silent; do
+          until mysqladmin ping -h 127.0.0.1 -uroot -p${{ secrets.DB_PASSWORD }} --silent; do
             echo "Waiting for MySQL..."
             sleep 2
           done
 
-      # Carga el esquema y los datos iniciales que usan los tests de integración.
+      # Carga el esquema y los datos iniciales que usan los tests de integracion.
       - name: Load schema and seeds
         run: |
-          mysql -h 127.0.0.1 -P 3306 -u root -proot1234 squarestruct < db/schema.sql
-          mysql -h 127.0.0.1 -P 3306 -u root -proot1234 squarestruct < db/seeds.sql
+          mysql -h 127.0.0.1 -P 3306 -u root -p${{ secrets.DB_PASSWORD }} ${{ secrets.DB_NAME }} < db/schema.sql
+          mysql -h 127.0.0.1 -P 3306 -u root -p${{ secrets.DB_PASSWORD }} ${{ secrets.DB_NAME }} < db/seeds.sql
 
       # Instala las dependencias del backend desde backend/package.json.
       - name: Install backend dependencies
@@ -91,3 +91,35 @@ jobs:
       # Ejecuta Jest con el script definido en package.json.
       - name: Run backend tests
         run: npm test
+
+  # Este segundo job se ejecuta en paralelo al primero, tambien en un runner Linux limpio.
+  frontend-build:
+    runs-on: ubuntu-latest
+
+    # El frontend necesita que el backend este corriendo para poder hacer las llamadas a la API durante el build.
+    env:
+      VITE_API_URL: http://localhost:3000/api
+
+    # Todo lo que se ejecute aqui se hara dentro de frontend/.
+    defaults:
+      run:
+        shell: bash
+        working-directory: frontend
+
+    # Los pasos para el frontend son mas simples: solo necesitamos instalar las dependencias y construir la aplicacion.
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install frontend dependencies
+        run: npm install
+
+      - name: Build frontend
+        run: npm run build
