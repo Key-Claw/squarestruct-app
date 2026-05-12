@@ -13,7 +13,11 @@ export default function authMiddleware(req, res, next) {
     });
   }
 
-  jwt.verify(token, process.env.JWT_SECRET || 'secret', (err, user) => {
+  if (!process.env.JWT_SECRET) {
+    return res.status(500).json({ error: 'JWT_SECRET no esta configurado' });
+  }
+
+  jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
     if (err) {
       return res.status(403).json({
         error: 'Token inválido'

@@ -53,6 +53,11 @@ export const checkDbConnection = async () => {
   connection.release();
 };
 
+// Cierra la pool de MySQL al terminar la suite para que Jest no deje handles abiertos.
+export const closeDbConnection = async () => {
+  await db.end();
+};
+
 // Ruta base para validación rápida desde navegador
 app.get('/', (req, res) => {
   res.status(200).send('Backend OK');
