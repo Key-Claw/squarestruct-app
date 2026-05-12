@@ -95,6 +95,9 @@ export const loginUsuario = async (req, res) => {
     if (!match) {
       return res.status(401).json({ error: 'Credenciales inválidas' });
     }
+    if (!process.env.JWT_SECRET) {
+      return res.status(500).json({ error: 'JWT_SECRET no esta configurado' });
+    }
 
     // Generar JWT
     const token = jwt.sign(
@@ -104,7 +107,7 @@ export const loginUsuario = async (req, res) => {
         email: normalizarTexto(usuario.email),
         rol: normalizarTexto(usuario.rol)
       },
-      process.env.JWT_SECRET || 'secret',
+      process.env.JWT_SECRET,
       { expiresIn: '2h' }
     );
 
