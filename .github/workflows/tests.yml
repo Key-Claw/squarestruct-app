@@ -96,7 +96,7 @@ jobs:
   frontend-build:
     runs-on: ubuntu-latest
 
-    # El frontend necesita que el backend este corriendo para poder hacer las llamadas a la API durante el build.
+    # Variable usada por Vite para configurar la URL base de la API durante el build.
     env:
       VITE_API_URL: http://localhost:3000/api
 
