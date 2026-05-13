@@ -35,6 +35,7 @@ En el frontend, Vite usa proxy para que las llamadas a `/api` apunten al backend
 | --- | --- |
 | `GET` | Consultar datos. |
 | `POST` | Crear datos o iniciar una accion. |
+| `PATCH` | Actualizar parcialmente un dato o ejecutar una accion concreta. |
 | `PUT` | Actualizar datos. |
 | `DELETE` | Eliminar datos. |
 
@@ -62,6 +63,8 @@ Authorization: Bearer <TOKEN>
 | `GET` | `/api/perfil` | Consultar datos del usuario autenticado desde el JWT. |
 | `GET` | `/api/pedidos` | Listar pedidos del usuario autenticado. |
 | `POST` | `/api/pedidos` | Crear un pedido. |
+| `GET` | `/api/pedidos/:id` | Consultar un pedido concreto si pertenece al usuario o si el usuario es admin. |
+| `PATCH` | `/api/pedidos/:id/cancelar` | Cancelar logicamente un pedido permitido. |
 | `GET` | `/api/orders` | Alias de pedidos para clientes que usan nomenclatura en ingles. |
 | `POST` | `/api/orders` | Alias para crear pedido. |
 
@@ -79,7 +82,7 @@ Requieren token JWT y rol `admin`.
 | `PUT` | `/api/productos/:id` | Actualizar producto. |
 | `DELETE` | `/api/productos/:id` | Eliminar producto. |
 
-Nota: las rutas de productos de escritura existen en backend, aunque el frontend actual se centra sobre todo en la consulta del catalogo.
+Nota: las rutas de productos de escritura requieren token de administrador. El frontend actual se centra sobre todo en la consulta del catalogo.
 
 ## Seguridad
 
@@ -125,6 +128,32 @@ Para rutas de administracion, tambien se usa `adminMiddleware`, que comprueba qu
 }
 ```
 
+## Ejemplo de cancelacion de pedido
+
+```text
+PATCH /api/pedidos/1/cancelar
+Authorization: Bearer <TOKEN>
+```
+
+Respuesta esperada:
+
+```json
+{
+  "message": "Pedido cancelado correctamente",
+  "pedido": {
+    "idPedido": 1,
+    "estado": "cancelado"
+  }
+}
+```
+
+Reglas principales:
+
+- Solo puede cancelar el propietario del pedido o un admin.
+- No se puede cancelar un pedido ya cancelado.
+- No se puede cancelar un pedido `enviado` o `entregado`.
+- La cancelacion es logica: el pedido se conserva y se actualiza `estado = cancelado`.
+
 ## Ejemplo de error
 
 ```json
@@ -133,12 +162,14 @@ Para rutas de administracion, tambien se usa `adminMiddleware`, que comprueba qu
 }
 ```
 
-## Estado actual de MVP v1
+## Estado actual
 
 - Catalogo conectado a `/api/productos`.
+- Escritura de productos protegida con rol `admin`.
 - Login y registro conectados a `/api/usuarios`.
 - Gestion de usuarios admin conectada a `/api/usuarios`.
-- Pedidos tienen backend y servicios, pero el checkout completo desde carrito queda para fases siguientes.
+- Pedidos tienen backend para creacion, listado, detalle y cancelacion logica.
+- El checkout completo desde carrito queda para fases siguientes.
 
 ## Idea clave para explicar
 

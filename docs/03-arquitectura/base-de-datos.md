@@ -89,6 +89,7 @@ La relacion mas importante es `pedidoDetalles`, porque conecta pedidos con produ
 - `fecha`: fecha del pedido.
 - `total`: importe total.
 - `estado`: estado del pedido.
+- `fechaCancelacion`: fecha en la que se cancela logicamente el pedido, si aplica.
 - `direccionEnvio`: direccion de entrega.
 - `metodoPago`: forma de pago.
 - `idUsuario`: usuario que realiza el pedido.
@@ -110,6 +111,12 @@ La relacion mas importante es `pedidoDetalles`, porque conecta pedidos con produ
 
 El checkout completo desde el carrito queda para fases siguientes, pero la estructura relacional ya esta preparada para ese crecimiento.
 
+## Cancelacion logica de pedidos
+
+Los pedidos no se eliminan fisicamente cuando se cancelan. El backend cambia su `estado` a `cancelado` y guarda `fechaCancelacion`.
+
+Esto mantiene historial y trazabilidad: se puede saber que pedido existio, quien lo hizo, que productos tenia y cuando se cancelo.
+
 ## Scripts del proyecto
 
 Los scripts SQL estan en:
@@ -127,4 +134,4 @@ Archivos principales:
 
 ## Idea clave para explicar
 
-La base de datos es relacional porque los datos estan conectados: usuarios, productos y pedidos dependen unos de otros. En `MVP v1` ya existe la base tecnica para pedidos, aunque el flujo visual completo de checkout queda para fases siguientes.
+La base de datos es relacional porque los datos estan conectados: usuarios, productos y pedidos dependen unos de otros. En `MVP v1` ya existe la base tecnica para pedidos, y en la revision V2 se conserva trazabilidad mediante estado y fecha de cancelacion.

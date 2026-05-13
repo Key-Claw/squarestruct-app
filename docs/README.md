@@ -75,7 +75,7 @@ Una forma sencilla de explicar el proyecto es seguir este orden:
 6. Frontend: paginas, componentes, servicios, CSS modularizado y comunicacion con `/api`.
 7. Backend: rutas, controladores, middlewares, JWT y base de datos.
 8. Demostracion: abrir la web, iniciar sesion, consultar productos, anadir al carrito y mostrar gestion admin si aplica.
-9. Calidad: explicar tests del backend, Postman, `npm run lint` y `npm run build`.
+9. Calidad: explicar tests del backend, Postman, `npm test`, `npm run lint` y `npm run build`.
 10. Roadmap: explicar `MVP v1`, `v2` y `v3`.
 
 ## Roadmap resumido

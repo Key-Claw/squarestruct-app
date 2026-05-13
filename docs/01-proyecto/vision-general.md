@@ -33,6 +33,7 @@ SquareStruct propone la base de una futura plataforma SaaS donde el usuario pued
 - Preparar la base para pedidos.
 - Acceder a vistas protegidas si tiene rol administrador.
 - Gestionar usuarios desde el panel admin.
+- Mantener trazabilidad de pedidos mediante estado y cancelacion logica.
 
 En una version futura, la aplicacion podria anadir un configurador visual para disenar viviendas con bloques modulares y calcular el presupuesto automaticamente. Esa herramienta 3D seria la parte mas diferencial del SaaS.
 
@@ -43,7 +44,7 @@ SaaS significa *Software as a Service*: una aplicacion accesible desde el navega
 | Usuario | Funcion |
 | --- | --- |
 | Cliente | Consulta productos y puede preparar un carrito/pedido. |
-| Administrador | Accede a vistas protegidas y gestiona usuarios. |
+| Administrador | Accede a vistas protegidas, gestiona usuarios y puede administrar productos desde la API. |
 | Proveedor | Publicaria o gestionaria productos modulares en una fase futura. |
 
 En `MVP v1` se priorizan el flujo de cliente y una primera administracion basica. El rol de proveedor queda como parte de la evolucion futura.
@@ -54,8 +55,9 @@ En `MVP v1` se priorizan el flujo de cliente y una primera administracion basica
 - Login con JWT.
 - Catalogo de productos conectado al backend.
 - Carrito visual en cliente.
-- Base de servicios para pedidos.
+- Base de servicios para pedidos, con detalle y cancelacion logica en backend.
 - Gestion de usuarios para administradores.
+- Escritura de productos protegida para administradores.
 - API REST para comunicar frontend y backend.
 - Vistas visuales de apoyo como galeria, Design y facturacion.
 
@@ -65,7 +67,7 @@ Algunas secciones existen como base visual o tecnica, pero no representan todavi
 
 - `Design`: maqueta del futuro disenador de estructuras.
 - `Facturacion`: panel visual con datos de ejemplo.
-- Pedidos: existe base de backend/servicios, pero el checkout completo desde carrito queda para fases siguientes.
+- Pedidos: el backend permite crear, consultar y cancelar logicamente; el checkout completo desde carrito queda para fases siguientes.
 - Proveedor: se contempla en la vision del producto, pero no esta desarrollado como flujo propio del MVP.
 
 ## Roadmap del proyecto
@@ -95,4 +97,4 @@ Estas funcionalidades no forman parte obligatoria de `MVP v1`, pero muestran hac
 
 ## Frase util para la presentacion
 
-SquareStruct es una plataforma web que simplifica la construccion modular: en `MVP v1` permite consultar productos, iniciar sesion, preparar un carrito y administrar usuarios; en `v2` y `v3` podria completar pedidos, facturacion y diseno de viviendas por bloques con calculo de presupuestos.
+SquareStruct es una plataforma web que simplifica la construccion modular: en `MVP v1` permite consultar productos, iniciar sesion, preparar un carrito y administrar usuarios; en la revision V2 refuerza permisos, pedidos y validaciones; y en `v3` podria completar facturacion y diseno de viviendas por bloques con calculo de presupuestos.

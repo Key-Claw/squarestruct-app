@@ -17,16 +17,16 @@
 
 <h2 align="center">Plataforma web para consultar productos de construccion modular, validar un MVP funcional y evolucionar hacia una experiencia SaaS</h2>
 
-SquareStruct es una aplicacion web planteada por fases. Actualmente el proyecto esta trabajando en `MVP v1 - Funcional`, una primera version centrada en validar la base del sistema: usuarios, autenticacion, catalogo, carrito visual, base de pedidos y gestion administrativa inicial.
+SquareStruct es una aplicacion web planteada por fases. El `MVP v1 - Funcional` ya cubre la base del sistema: usuarios, autenticacion, catalogo, carrito visual, base de pedidos y gestion administrativa inicial.
 
-Despues del MVP, el roadmap continua con `v2 - Aplicacion completa y estilizada` y `v3 - Disenador de planos 3D`, donde se ampliaran la experiencia visual, la gestion real de pedidos, la facturacion y el futuro disenador de estructuras modulares.
+La revision actual se centra en estabilizar la `v2 - Aplicacion completa y estilizada`: mejorar validaciones, permisos, pedidos, documentacion, tests y colecciones Postman. Despues, el roadmap continua con `v3 - Disenador de planos 3D`, donde se ampliaran la facturacion y el futuro disenador de estructuras modulares.
 
 ---
 
 ## Tabla de Contenidos
 
 - [Caracteristicas](#caracteristicas)
-- [Estado del MVP](#estado-del-mvp)
+- [Estado del Proyecto](#estado-del-proyecto)
 - [Tecnologias](#tecnologias)
 - [Instalacion y Uso](#instalacion-y-uso)
 - [Inicializacion del Backend y Base de Datos](#inicializacion-del-backend-y-base-de-datos)
@@ -45,17 +45,17 @@ Despues del MVP, el roadmap continua con `v2 - Aplicacion completa y estilizada`
 - **Autenticacion de usuarios**: registro, login, JWT, cierre de sesion y validacion de token.
 - **Catalogo conectado al backend**: productos obtenidos desde la API REST, con fallback de productos demo en frontend.
 - **Carrito visual**: seleccion de productos, cantidades y calculo de total en cliente.
-- **Gestion admin inicial**: vista protegida para listar usuarios y cambiar rol entre `usuario` y `admin`.
-- **API REST**: backend en Express con rutas para usuarios, productos, perfil, pedidos y estado de base de datos.
-- **Base de datos relacional**: MySQL con usuarios, proveedores, productos, pedidos y detalles de pedido.
+- **Gestion admin inicial**: vista protegida para listar usuarios, cambiar rol entre `usuario` y `admin` y gestionar escritura de productos desde API.
+- **API REST**: backend en Express con rutas para usuarios, productos, perfil, pedidos, cancelacion logica y estado de base de datos.
+- **Base de datos relacional**: MySQL con usuarios, proveedores, productos, pedidos, detalles de pedido, estado y fecha de cancelacion.
 - **Frontend modularizado**: React, Vite, Bootstrap y CSS separado por dominios en `frontend/src/styles/`.
 - **Documentacion tecnica**: explicacion de arquitectura, API, MVP, testing, workflow y recursos de defensa.
 
 ---
 
-## Estado del MVP
+## Estado del Proyecto
 
-La fase actual del proyecto es `MVP v1 - Funcional`. No es la version final del producto, sino el primer hito del roadmap. Su objetivo es demostrar que la base tecnica funciona antes de pasar a `v2` y `v3`:
+El `MVP v1 - Funcional` es el primer hito del roadmap. Su objetivo es demostrar que la base tecnica funciona:
 
 ```text
 registro -> login -> catalogo -> carrito/base de pedidos -> gestion admin inicial
@@ -65,12 +65,14 @@ registro -> login -> catalogo -> carrito/base de pedidos -> gestion admin inicia
 
 - Registro e inicio de sesion.
 - Catalogo de productos conectado al backend.
+- Escritura de productos protegida para usuarios `admin`.
 - Carrito visual en frontend.
 - Gestion de usuarios para administradores.
 - Backend con API REST y conexion a MySQL.
-- Base tecnica de pedidos en backend y servicios frontend.
-- Pruebas manuales con Postman.
-- Lint y build del frontend.
+- Pedidos autenticados en backend, consulta de detalle y cancelacion logica.
+- Pruebas manuales con Postman MVP y V2.
+- Tests backend con Jest/Supertest.
+- Tests, lint y build del frontend.
 
 ### Queda para fases siguientes
 
@@ -78,7 +80,7 @@ registro -> login -> catalogo -> carrito/base de pedidos -> gestion admin inicia
 - Facturacion conectada con datos reales.
 - Herramienta `Design` como disenador 3D real.
 - Panel administrativo completo.
-- Tests automatizados de frontend.
+- Ampliar cobertura de tests automatizados de frontend.
 
 ---
 
@@ -215,6 +217,7 @@ squarestruct-app/
 
 ```bash
 cd frontend
+npm test
 npm run lint
 npm run build
 ```
@@ -237,19 +240,20 @@ npm run test:integration
 
 ## Coleccion Postman
 
-La coleccion oficial del MVP esta en:
+Las colecciones Postman estan en:
 
 ```text
 backend/postman/squarestruct-mvp.postman_collection.json
+backend/postman/squarestruct-v2.postman_collection.json
 ```
 
 Incluye pruebas manuales para:
 
 - health y estado de base de datos;
-- productos;
+- productos publicos y escritura de productos con token admin;
 - registro, login y perfil;
 - gestion admin de usuarios;
-- pedidos con `/api/pedidos`;
+- pedidos con `/api/pedidos`, detalle y cancelacion logica;
 - alias `/api/orders`.
 
 La coleccion usa variables como `baseUrl`, `token`, `adminToken`, `idUsuario` e `idProducto`.
@@ -271,6 +275,7 @@ La documentacion extendida esta en [`docs/`](docs/):
 - [`docs/04-api/endpoints.md`](docs/04-api/endpoints.md): endpoints principales.
 - [`docs/05-testing/frontend-lint-build.md`](docs/05-testing/frontend-lint-build.md): validacion del frontend.
 - [`docs/05-testing/postman-mvp-ejemplos.md`](docs/05-testing/postman-mvp-ejemplos.md): pruebas manuales con Postman.
+- [`docs/05-testing/revision-v2-validaciones.md`](docs/05-testing/revision-v2-validaciones.md): validaciones ejecutadas en la revision V2.
 
 ---
 

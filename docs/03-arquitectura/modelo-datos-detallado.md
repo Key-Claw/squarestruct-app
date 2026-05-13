@@ -90,6 +90,7 @@ Campos importantes:
 - `fecha`: momento de creacion.
 - `total`: importe total calculado.
 - `estado`: situacion del pedido.
+- `fechaCancelacion`: momento en el que se cancela logicamente, si el pedido llega a estado `cancelado`.
 - `direccionEnvio`: direccion del usuario.
 - `metodoPago`: forma de pago elegida.
 - `idUsuario`: usuario que realiza el pedido.
@@ -106,7 +107,9 @@ Metodos de pago permitidos:
 tarjeta, transferencia, paypal, efectivo
 ```
 
-En `MVP v1`, estas tablas existen como base tecnica. El frontend ya tiene carrito visual y servicio de pedidos, pero el checkout completo desde carrito todavia no esta integrado.
+En `MVP v1`, estas tablas existen como base tecnica. En la revision V2 el backend ya permite crear pedidos, consultar detalle y cancelarlos de forma logica. El checkout completo desde carrito todavia no esta integrado.
+
+La cancelacion no borra registros: cambia `estado` a `cancelado` y conserva el historial del pedido y sus lineas.
 
 ## PedidoDetalles
 

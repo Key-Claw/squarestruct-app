@@ -32,7 +32,7 @@ Este recorrido conecta las partes principales del sistema:
 - Gestion de usuarios para administradores.
 - API REST funcional.
 - Pruebas manuales con Postman.
-- Revision de frontend con lint y build.
+- Revision de frontend con tests, lint y build.
 
 ## Funcionalidades no incluidas todavia
 
@@ -45,7 +45,7 @@ Estas funcionalidades quedan fuera de `MVP v1` para no aumentar demasiado la com
 - Flujo completo de proveedor.
 - Checkout completo desde carrito.
 - Pasarela de pago real.
-- Tests automatizados de frontend.
+- Ampliar la cobertura de tests automatizados de frontend.
 
 ## Fases de desarrollo
 
@@ -60,8 +60,8 @@ Estas funcionalidades quedan fuera de `MVP v1` para no aumentar demasiado la com
 9. Carrito visual y conexion parcial con servicios.
 10. Gestion inicial de usuarios admin.
 11. Pruebas con Postman y tests automaticos iniciales de backend.
-- Base inicial de tests automatizados de frontend.
-12. Documentacion del proyecto.
+12. Base inicial de tests automatizados de frontend.
+13. Documentacion del proyecto.
 
 ## Organizacion del trabajo
 
@@ -84,8 +84,9 @@ Esto ayuda a trabajar de forma ordenada y a evitar mezclar cambios sin revisar.
 - El usuario puede iniciar sesion.
 - El frontend puede consultar productos.
 - El usuario puede anadir productos a un carrito visual.
-- Existe base tecnica para pedidos.
+- Existe base tecnica para pedidos, detalle y cancelacion logica.
 - Un admin puede acceder a gestion de usuarios.
+- Las rutas de escritura de productos estan protegidas para admin.
 - La documentacion explica que entra en `MVP v1` y que queda para fases siguientes.
 
 ## Idea clave para explicar

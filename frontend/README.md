@@ -51,6 +51,7 @@ frontend/
 | `Register.jsx` | Vista de registro tradicional. |
 | `Usuarios.jsx` | Vista protegida para administradores. Lista usuarios y permite cambiar rol entre `usuario` y `admin`. |
 | `Facturacion.jsx` | Panel administrativo visual de facturacion. Sus datos actuales son de maqueta. |
+| `Settings.jsx` | Pantalla de ajustes visuales de usuario/interfaz. |
 
 Ademas, la autenticacion principal del navbar se gestiona con `AuthModal`, que muestra login y registro en un modal reutilizable.
 
@@ -120,6 +121,12 @@ Comprobar compilacion de produccion:
 npm run build
 ```
 
+Ejecutar tests automatizados:
+
+```bash
+npm test
+```
+
 ## Comprobacion antes de entregar
 
 Antes de abrir una pull request o dar por terminada una tarea de frontend:
@@ -143,6 +150,7 @@ El frontend cubre las partes principales de `MVP v1 - Funcional`:
 - vistas protegidas para administracion;
 - gestion de usuarios admin;
 - maqueta de Design como base del futuro disenador.
+- base de tests automatizados con Vitest.
 
 ## Queda para fases siguientes
 

@@ -97,7 +97,7 @@ El MVP trabaja con dos roles:
 | Rol | Uso |
 | --- | --- |
 | `usuario` | Usuario normal de la plataforma. |
-| `admin` | Usuario con permisos para gestionar usuarios. |
+| `admin` | Usuario con permisos para gestionar usuarios, escribir productos y cancelar pedidos de cualquier usuario. |
 
 El middleware `admin.js` comprueba:
 
@@ -120,6 +120,18 @@ Se normaliza a minusculas para evitar problemas si el rol llega como `Admin` o `
 | `GET /api/usuarios` | Protegida y admin |
 | `GET /api/usuarios/:id` | Protegida y admin |
 | `PUT /api/usuarios/:id` | Protegida y admin |
+
+Rutas protegidas anadidas en V2:
+
+| Ruta | Tipo |
+| --- | --- |
+| `GET /api/productos/:id` | Publica |
+| `POST /api/productos` | Protegida y admin |
+| `PUT /api/productos/:id` | Protegida y admin |
+| `DELETE /api/productos/:id` | Protegida y admin |
+| `GET /api/pedidos/:id` | Protegida: propietario o admin |
+| `PATCH /api/pedidos/:id/cancelar` | Protegida: propietario o admin |
+| `DELETE /api/usuarios/:id` | Protegida y admin |
 
 ## Seguridad en el MVP
 

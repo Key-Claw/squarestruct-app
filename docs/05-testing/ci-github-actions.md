@@ -101,4 +101,12 @@ Para considerar correcta la CI:
 
 La CI valida el backend con tests automatizados y el frontend con lint/build.
 
-Todavia no existen tests automatizados especificos de componentes React. Esa mejora se puede anadir mas adelante con Vitest y Testing Library si el frontend gana mas logica interactiva.
+El frontend ya tiene una base de tests con Vitest y Testing Library, pero el workflow actual todavia no ejecuta `npm test` dentro del job `frontend-build`. En local, la revision de frontend recomendada es:
+
+```bash
+npm test
+npm run lint
+npm run build
+```
+
+Como mejora futura, se puede anadir `npm test -- --run` al job de frontend para que GitHub Actions valide tambien los tests de componentes.

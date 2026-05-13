@@ -40,6 +40,23 @@ Flujo:
 
 Este endpoint es publico porque el catalogo debe poder consultarse sin iniciar sesion.
 
+## Ejemplo: crear producto como admin
+
+```text
+POST /api/productos
+```
+
+Flujo:
+
+1. El cliente envia el token JWT en `Authorization`.
+2. `authMiddleware` comprueba que el token sea valido.
+3. `adminMiddleware` comprueba que el rol sea `admin`.
+4. `validarProducto` revisa nombre, precio, tipo, material, dimensiones y proveedor.
+5. El controlador crea el producto en MySQL.
+6. El backend devuelve el producto creado.
+
+Esto evita que un usuario normal pueda modificar el catalogo.
+
 ## Ejemplo: login
 
 ```text
@@ -86,7 +103,7 @@ Flujo:
 
 Esta parte demuestra que el MVP ya tiene una primera administracion protegida por rol.
 
-## Ejemplo: base de pedido
+## Ejemplo: pedido
 
 ```text
 POST /api/pedidos
@@ -104,6 +121,24 @@ Flujo previsto en backend:
 8. Se confirma la transaccion.
 
 En el frontend actual existe carrito visual y servicio de pedidos, pero el checkout completo desde el carrito queda para fases siguientes. Por eso se documenta como base tecnica de pedidos, no como flujo final cerrado.
+
+## Ejemplo: cancelar pedido
+
+```text
+PATCH /api/pedidos/:id/cancelar
+```
+
+Flujo:
+
+1. El usuario envia el token JWT.
+2. `authMiddleware` valida el token.
+3. El controlador busca el pedido.
+4. Se comprueba que el usuario sea propietario del pedido o tenga rol `admin`.
+5. Se rechaza si el pedido ya esta `cancelado`, `enviado` o `entregado`.
+6. Se actualiza `estado = cancelado` y `fechaCancelacion = NOW()`.
+7. El backend responde con el id del pedido y su nuevo estado.
+
+La cancelacion es logica: no borra el pedido ni sus lineas, mantiene trazabilidad.
 
 ## Idea clave para explicar
 
