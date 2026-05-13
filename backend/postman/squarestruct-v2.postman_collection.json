@@ -1,7 +1,7 @@
 {
   "info": {
-    "_postman_id": "20dc8ce2-fc6c-439c-bbfe-53a4e4793378",
-    "name": "squarestruct-mvp",
+    "_postman_id": "2d48f84d-22e3-494a-b24f-2baf4917de37",
+    "name": "squarestruct-v2",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "_exporter_id": "49087894"
   },
@@ -440,6 +440,16 @@
         {
           "name": "Obtener pedidos",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZFVzdWFyaW8iOjEsIm5vbWJyZSI6IkFkbWluIiwiZW1haWwiOiJhZG1pbkBzcXVhcmVzdHJ1Y3QuY29tIiwicm9sIjoiYWRtaW4iLCJpYXQiOjE3Nzg2NzIwMjAsImV4cCI6MTc3ODY3OTIyMH0.5eont3InZ7b8e1nsgGDGkqwn4UYKXOp0An9AuRUU-HU",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "GET",
             "header": [],
             "url": {
@@ -535,6 +545,139 @@
               "path": [
                 "api",
                 "pedidos"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Actualizar pedido",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZFVzdWFyaW8iOjEsIm5vbWJyZSI6IkFkbWluIiwiZW1haWwiOiJhZG1pbkBzcXVhcmVzdHJ1Y3QuY29tIiwicm9sIjoiYWRtaW4iLCJpYXQiOjE3Nzg2NzIwMjAsImV4cCI6MTc3ODY3OTIyMH0.5eont3InZ7b8e1nsgGDGkqwn4UYKXOp0An9AuRUU-HU",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"motivo\": \"El usuario ha solicitado cancelar el pedido\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "PATCH /api/pedidos/1/cancelar",
+              "host": [
+                "PATCH "
+              ],
+              "path": [
+                "api",
+                "pedidos",
+                "1",
+                "cancelar"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Auth / Seguridad",
+      "item": [
+        {
+          "name": "Obtener pedidos - 401 (sin token)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/pedidos",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "pedidos"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Obtener perfil - 401 (sin token)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/perfil",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "perfil"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Obtener usuario - 401 (sin token)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/usuarios",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "usuarios"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Crear producto - 401 (sin token)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"nombre\": \"TEST Bloque EcoBase\",\r\n  \"descripcion\": \"TEST Bloque ligero de plastico reciclable para primeras hiladas y tramos medios de muro modular.\",\r\n  \"precio\": 42.50,\r\n  \"tipo\": \"bloque\",\r\n  \"material\": \"Plastico reciclable\",\r\n  \"alto\": 22.70,\r\n  \"ancho\": 19.70,\r\n  \"largo\": 39.40,\r\n  \"idProveedor\": 1\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/productos",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "productos"
               ]
             }
           },
