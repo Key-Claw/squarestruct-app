@@ -1,40 +1,13 @@
 {
   "info": {
-    "_postman_id": "squarestruct-mvp-2026",
-    "name": "SquareStruct MVP - API",
-    "description": "Coleccion oficial para probar el MVP de SquareStruct: health, productos, autenticacion, perfil, gestion admin de usuarios y base de pedidos.",
-    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    "_postman_id": "20dc8ce2-fc6c-439c-bbfe-53a4e4793378",
+    "name": "squarestruct-mvp",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "49087894"
   },
-  "variable": [
-    {
-      "key": "baseUrl",
-      "value": "http://localhost:3000",
-      "type": "string"
-    },
-    {
-      "key": "token",
-      "value": "",
-      "type": "string"
-    },
-    {
-      "key": "adminToken",
-      "value": "",
-      "type": "string"
-    },
-    {
-      "key": "idUsuario",
-      "value": "1",
-      "type": "string"
-    },
-    {
-      "key": "idProducto",
-      "value": "1",
-      "type": "string"
-    }
-  ],
   "item": [
     {
-      "name": "Estado",
+      "name": "Sistema",
       "item": [
         {
           "name": "Health",
@@ -42,10 +15,12 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{baseUrl}}/api/health",
+              "raw": "http://localhost:3000/api/health",
+              "protocol": "http",
               "host": [
-                "{{baseUrl}}"
+                "localhost"
               ],
+              "port": "3000",
               "path": [
                 "api",
                 "health"
@@ -55,15 +30,17 @@
           "response": []
         },
         {
-          "name": "Estado de base de datos",
+          "name": "DB status",
           "request": {
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{baseUrl}}/api/db-status",
+              "raw": "http://localhost:3000/api/db-status",
+              "protocol": "http",
               "host": [
-                "{{baseUrl}}"
+                "localhost"
               ],
+              "port": "3000",
               "path": [
                 "api",
                 "db-status"
@@ -78,15 +55,17 @@
       "name": "Productos",
       "item": [
         {
-          "name": "Listar productos",
+          "name": "Obtener productos",
           "request": {
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{baseUrl}}/api/productos",
+              "raw": "http://localhost:3000/api/productos",
+              "protocol": "http",
               "host": [
-                "{{baseUrl}}"
+                "localhost"
               ],
+              "port": "3000",
               "path": [
                 "api",
                 "productos"
@@ -96,19 +75,21 @@
           "response": []
         },
         {
-          "name": "Obtener producto por id",
+          "name": "Obtener producto por ID",
           "request": {
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{baseUrl}}/api/productos/{{idProducto}}",
+              "raw": "http://localhost:3000/api/productos/28",
+              "protocol": "http",
               "host": [
-                "{{baseUrl}}"
+                "localhost"
               ],
+              "port": "3000",
               "path": [
                 "api",
                 "productos",
-                "{{idProducto}}"
+                "28"
               ]
             }
           },
@@ -118,15 +99,10 @@
           "name": "Crear producto",
           "request": {
             "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
+            "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"nombre\": \"Bloque EcoBase\",\n  \"descripcion\": \"Bloque ligero de plastico reciclable para muros modulares.\",\n  \"precio\": 42.5,\n  \"tipo\": \"bloque\",\n  \"material\": \"Plastico reciclable\",\n  \"alto\": 22.7,\n  \"ancho\": 19.7,\n  \"largo\": 39.4,\n  \"idProveedor\": 1\n}",
+              "raw": "{\r\n  \"nombre\": \"TEST Bloque EcoBase\",\r\n  \"descripcion\": \"TEST Bloque ligero de plastico reciclable para primeras hiladas y tramos medios de muro modular.\",\r\n  \"precio\": 42.50,\r\n  \"tipo\": \"bloque\",\r\n  \"material\": \"Plastico reciclable\",\r\n  \"alto\": 22.70,\r\n  \"ancho\": 19.70,\r\n  \"largo\": 39.40,\r\n  \"idProveedor\": 1\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -134,10 +110,12 @@
               }
             },
             "url": {
-              "raw": "{{baseUrl}}/api/productos",
+              "raw": "http://localhost:3000/api/productos",
+              "protocol": "http",
               "host": [
-                "{{baseUrl}}"
+                "localhost"
               ],
+              "port": "3000",
               "path": [
                 "api",
                 "productos"
@@ -150,15 +128,10 @@
           "name": "Actualizar producto",
           "request": {
             "method": "PUT",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
+            "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"nombre\": \"Bloque EcoBase actualizado\",\n  \"descripcion\": \"Bloque ligero de plastico reciclable para primeras hiladas.\",\n  \"precio\": 45,\n  \"tipo\": \"bloque\",\n  \"material\": \"Plastico reciclable\",\n  \"alto\": 22.7,\n  \"ancho\": 19.7,\n  \"largo\": 39.4,\n  \"idProveedor\": 1\n}",
+              "raw": "{\r\n  \"nombre\": \"TEST Bloque\",\r\n  \"descripcion\": \"TEST\",\r\n  \"precio\": 42.50,\r\n  \"tipo\": \"bloque\",\r\n  \"material\": \"Plastico reciclable\",\r\n  \"alto\": 22.70,\r\n  \"ancho\": 19.60,\r\n  \"largo\": 39.40,\r\n  \"idProveedor\": 1\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -166,14 +139,16 @@
               }
             },
             "url": {
-              "raw": "{{baseUrl}}/api/productos/{{idProducto}}",
+              "raw": "http://localhost:3000/api/productos/26",
+              "protocol": "http",
               "host": [
-                "{{baseUrl}}"
+                "localhost"
               ],
+              "port": "3000",
               "path": [
                 "api",
                 "productos",
-                "{{idProducto}}"
+                "26"
               ]
             }
           },
@@ -185,14 +160,16 @@
             "method": "DELETE",
             "header": [],
             "url": {
-              "raw": "{{baseUrl}}/api/productos/{{idProducto}}",
+              "raw": "http://localhost:3000/api/productos/27",
+              "protocol": "http",
               "host": [
-                "{{baseUrl}}"
+                "localhost"
               ],
+              "port": "3000",
               "path": [
                 "api",
                 "productos",
-                "{{idProducto}}"
+                "27"
               ]
             }
           },
@@ -201,10 +178,71 @@
       ]
     },
     {
-      "name": "Autenticacion y perfil",
+      "name": "Usuarios",
       "item": [
         {
-          "name": "Registrar usuario",
+          "name": "Obtener usuarios",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZFVzdWFyaW8iOjEsIm5vbWJyZSI6IkFkbWluIiwiZW1haWwiOiJhZG1pbkBzcXVhcmVzdHJ1Y3QuY29tIiwicm9sIjoiYWRtaW4iLCJpYXQiOjE3Nzg2NzIwMjAsImV4cCI6MTc3ODY3OTIyMH0.5eont3InZ7b8e1nsgGDGkqwn4UYKXOp0An9AuRUU-HU",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/usuarios",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "usuarios"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Obtener usuario por ID",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZFVzdWFyaW8iOjEsIm5vbWJyZSI6IkFkbWluIiwiZW1haWwiOiJhZG1pbkBzcXVhcmVzdHJ1Y3QuY29tIiwicm9sIjoiYWRtaW4iLCJpYXQiOjE3Nzg2NzIwMjAsImV4cCI6MTc3ODY3OTIyMH0.5eont3InZ7b8e1nsgGDGkqwn4UYKXOp0An9AuRUU-HU",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/usuarios/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "usuarios",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Crear Usuario / Register",
           "request": {
             "method": "POST",
             "header": [
@@ -215,18 +253,15 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"nombre\": \"Test User\",\n  \"primerApellido\": \"MVP\",\n  \"email\": \"testuser@squarestruct.com\",\n  \"contrasena\": \"12345678\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
+              "raw": "{\n  \"nombre\": \"Test\",\n  \"primerApellido\": \"Admin\",\n  \"segundoApellido\": \"\",\n  \"email\": \"testadmin@squarestruct.com\",\n  \"contrasena\": \"123456\",\n  \"rol\": \"admin\"\n}"
             },
             "url": {
-              "raw": "{{baseUrl}}/api/usuarios/register",
+              "raw": "http://localhost:3000/api/usuarios/register",
+              "protocol": "http",
               "host": [
-                "{{baseUrl}}"
+                "localhost"
               ],
+              "port": "3000",
               "path": [
                 "api",
                 "usuarios",
@@ -238,20 +273,6 @@
         },
         {
           "name": "Login usuario",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "const data = pm.response.json();",
-                  "if (data.token) {",
-                  "  pm.collectionVariables.set('token', data.token);",
-                  "}"
-                ]
-              }
-            }
-          ],
           "request": {
             "method": "POST",
             "header": [
@@ -262,18 +283,15 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"email\": \"juan.perez@email.com\",\n  \"contrasena\": \"123456\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
+              "raw": "{\n  \"email\": \"juan.perez@email.com\",\n  \"contrasena\": \"123456\"\n}"
             },
             "url": {
-              "raw": "{{baseUrl}}/api/usuarios/login",
+              "raw": "http://localhost:3000/api/usuarios/login",
+              "protocol": "http",
               "host": [
-                "{{baseUrl}}"
+                "localhost"
               ],
+              "port": "3000",
               "path": [
                 "api",
                 "usuarios",
@@ -285,20 +303,6 @@
         },
         {
           "name": "Login admin",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "const data = pm.response.json();",
-                  "if (data.token) {",
-                  "  pm.collectionVariables.set('adminToken', data.token);",
-                  "}"
-                ]
-              }
-            }
-          ],
           "request": {
             "method": "POST",
             "header": [
@@ -309,18 +313,15 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"email\": \"admin@squarestruct.com\",\n  \"contrasena\": \"123456\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
+              "raw": "{\n  \"email\": \"admin@squarestruct.com\",\n  \"contrasena\": \"123456\"\n}"
             },
             "url": {
-              "raw": "{{baseUrl}}/api/usuarios/login",
+              "raw": "http://localhost:3000/api/usuarios/login",
+              "protocol": "http",
               "host": [
-                "{{baseUrl}}"
+                "localhost"
               ],
+              "port": "3000",
               "path": [
                 "api",
                 "usuarios",
@@ -331,25 +332,98 @@
           "response": []
         },
         {
-          "name": "Obtener perfil",
+          "name": "Actualizar Usuario",
           "request": {
             "auth": {
               "type": "bearer",
               "bearer": [
                 {
                   "key": "token",
-                  "value": "{{token}}",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZFVzdWFyaW8iOjEsIm5vbWJyZSI6IkFkbWluIiwiZW1haWwiOiJhZG1pbkBzcXVhcmVzdHJ1Y3QuY29tIiwicm9sIjoiYWRtaW4iLCJpYXQiOjE3Nzg2NzIwMjAsImV4cCI6MTc3ODY3OTIyMH0.5eont3InZ7b8e1nsgGDGkqwn4UYKXOp0An9AuRUU-HU",
                   "type": "string"
                 }
               ]
             },
-            "method": "GET",
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"nombre\": \"Admin2\",\r\n  \"primerApellido\": \"SquareStruct\",\r\n  \"segundoApellido\": \"\",\r\n  \"email\": \"admin3@squarestruct.com\",\r\n  \"contrasena\": \"$2b$10$hashadmin\",\r\n  \"rol\": \"admin\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/usuarios/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "usuarios",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Eliminar Usuario",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZFVzdWFyaW8iOjEsIm5vbWJyZSI6IkFkbWluIiwiZW1haWwiOiJhZG1pbkBzcXVhcmVzdHJ1Y3QuY29tIiwicm9sIjoiYWRtaW4iLCJpYXQiOjE3Nzg2NzIwMjAsImV4cCI6MTc3ODY3OTIyMH0.5eont3InZ7b8e1nsgGDGkqwn4UYKXOp0An9AuRUU-HU",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
             "header": [],
             "url": {
-              "raw": "{{baseUrl}}/api/perfil",
+              "raw": "http://localhost:3000/api/usuarios/21",
+              "protocol": "http",
               "host": [
-                "{{baseUrl}}"
+                "localhost"
               ],
+              "port": "3000",
+              "path": [
+                "api",
+                "usuarios",
+                "21"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Perfil",
+      "item": [
+        {
+          "name": "Obtener perfil",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer <JWT>"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:3000/api/perfil",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
               "path": [
                 "api",
                 "perfil"
@@ -361,176 +435,20 @@
       ]
     },
     {
-      "name": "Usuarios admin",
-      "item": [
-        {
-          "name": "Listar usuarios",
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{adminToken}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/usuarios",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "usuarios"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Obtener usuario por id",
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{adminToken}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/usuarios/{{idUsuario}}",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "usuarios",
-                "{{idUsuario}}"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Actualizar rol de usuario",
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{adminToken}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "PUT",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"nombre\": \"Test User\",\n  \"email\": \"testuser@squarestruct.com\",\n  \"rol\": \"usuario\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{baseUrl}}/api/usuarios/{{idUsuario}}",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "usuarios",
-                "{{idUsuario}}"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Eliminar usuario",
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{adminToken}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "DELETE",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/usuarios/{{idUsuario}}",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "usuarios",
-                "{{idUsuario}}"
-              ]
-            }
-          },
-          "response": []
-        }
-      ]
-    },
-    {
       "name": "Pedidos",
       "item": [
         {
-          "name": "Crear pedido",
+          "name": "Obtener pedidos",
           "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{token}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"direccionEnvio\": \"Calle Ejemplo 123, Madrid\",\n  \"metodoPago\": \"tarjeta\",\n  \"productos\": [\n    {\n      \"idProducto\": 1,\n      \"cantidad\": 2\n    }\n  ]\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
+            "method": "GET",
+            "header": [],
             "url": {
-              "raw": "{{baseUrl}}/api/pedidos",
+              "raw": "http://localhost:3000/api/pedidos",
+              "protocol": "http",
               "host": [
-                "{{baseUrl}}"
+                "localhost"
               ],
+              "port": "3000",
               "path": [
                 "api",
                 "pedidos"
@@ -540,14 +458,14 @@
           "response": []
         },
         {
-          "name": "Listar mis pedidos",
+          "name": "Obtener pedido por ID",
           "request": {
             "auth": {
               "type": "bearer",
               "bearer": [
                 {
                   "key": "token",
-                  "value": "{{token}}",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZFVzdWFyaW8iOjEsIm5vbWJyZSI6IkFkbWluIiwiZW1haWwiOiJhZG1pbkBzcXVhcmVzdHJ1Y3QuY29tIiwicm9sIjoiYWRtaW4iLCJpYXQiOjE3Nzg2NzIwMjAsImV4cCI6MTc3ODY3OTIyMH0.5eont3InZ7b8e1nsgGDGkqwn4UYKXOp0An9AuRUU-HU",
                   "type": "string"
                 }
               ]
@@ -555,41 +473,52 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{baseUrl}}/api/pedidos",
+              "raw": "http://localhost:3000/api/pedidos/1",
+              "protocol": "http",
               "host": [
-                "{{baseUrl}}"
+                "localhost"
               ],
+              "port": "3000",
               "path": [
                 "api",
-                "pedidos"
+                "pedidos",
+                "1"
               ]
             }
           },
           "response": []
         },
         {
-          "name": "Crear pedido usando alias orders",
+          "name": "Crear un pedido",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
           "request": {
             "auth": {
               "type": "bearer",
               "bearer": [
                 {
                   "key": "token",
-                  "value": "{{token}}",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZFVzdWFyaW8iOjEsIm5vbWJyZSI6IkFkbWluIiwiZW1haWwiOiJhZG1pbkBzcXVhcmVzdHJ1Y3QuY29tIiwicm9sIjoiYWRtaW4iLCJpYXQiOjE3Nzg2NzIwMjAsImV4cCI6MTc3ODY3OTIyMH0.5eont3InZ7b8e1nsgGDGkqwn4UYKXOp0An9AuRUU-HU",
                   "type": "string"
                 }
               ]
             },
             "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
+            "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"direccionEnvio\": \"Calle Ejemplo 123, Madrid\",\n  \"metodoPago\": \"tarjeta\",\n  \"productos\": [\n    {\n      \"idProducto\": 1,\n      \"cantidad\": 1\n    }\n  ]\n}",
+              "raw": "{\r\n  \"direccionEnvio\": \"Calle Test 123, Madrid\",\r\n  \"metodoPago\": \"tarjeta\",\r\n  \"productos\": [\r\n    {\r\n      \"idProducto\": 1,\r\n      \"cantidad\": 1\r\n    }\r\n  ]\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -597,41 +526,15 @@
               }
             },
             "url": {
-              "raw": "{{baseUrl}}/api/orders",
+              "raw": "http://localhost:3000/api/pedidos",
+              "protocol": "http",
               "host": [
-                "{{baseUrl}}"
+                "localhost"
               ],
+              "port": "3000",
               "path": [
                 "api",
-                "orders"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Listar mis pedidos usando alias orders",
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{token}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/orders",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "orders"
+                "pedidos"
               ]
             }
           },
