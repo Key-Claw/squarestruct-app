@@ -15,7 +15,7 @@ function LoginForm({
   return (
     <div className="auth-modal-card auth-modal-login">
       <div className="auth-modal-header">
-        <h2>Iniciar sesion</h2>
+        <h2>Iniciar sesión</h2>
         <button
           type="button"
           className="auth-modal-close-btn"
@@ -27,7 +27,7 @@ function LoginForm({
       </div>
 
       <p className="auth-modal-subtitle">
-        Accede con tu correo electronico y contrasena.
+        Accede con tu correo electrónico y contraseña.
       </p>
 
       <AuthErrorMessage error={error} onClear={onClearError} />
@@ -47,7 +47,7 @@ function LoginForm({
         </div>
 
         <div className="auth-modal-form-group">
-          <label htmlFor="login-password">Contrasena</label>
+          <label htmlFor="login-password">Contraseña</label>
           <input
             id="login-password"
             type="password"
@@ -64,20 +64,20 @@ function LoginForm({
           className="auth-modal-submit-btn"
           disabled={isLoading}
         >
-          {isLoading ? 'Iniciando sesion...' : 'Iniciar sesion'}
+          {isLoading ? 'Iniciando sesión...' : 'Iniciar sesión'}
         </button>
       </form>
 
       <div className="auth-modal-footer">
         <p>
-          No tienes cuenta?{' '}
+          ¿No tienes cuenta?{' '}
           <button
             type="button"
             className="auth-modal-toggle-btn"
             onClick={onToggleMode}
             disabled={isLoading}
           >
-            Registrate aqui
+            Regístrate aquí
           </button>
         </p>
       </div>

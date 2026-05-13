@@ -79,7 +79,7 @@ function RegisterForm({
         </div>
 
         <div className="auth-modal-form-group">
-          <label htmlFor="register-password">Contrasena</label>
+          <label htmlFor="register-password">Contraseña</label>
           <input
             id="register-password"
             type="password"
@@ -92,7 +92,7 @@ function RegisterForm({
         </div>
 
         <div className="auth-modal-form-group">
-          <label htmlFor="register-confirm-password">Confirmar contrasena</label>
+          <label htmlFor="register-confirm-password">Confirmar contraseña</label>
           <input
             id="register-confirm-password"
             type="password"
@@ -115,14 +115,14 @@ function RegisterForm({
 
       <div className="auth-modal-footer">
         <p>
-          Ya tienes cuenta?{' '}
+          ¿Ya tienes cuenta?{' '}
           <button
             type="button"
             className="auth-modal-toggle-btn"
             onClick={onToggleMode}
             disabled={isLoading}
           >
-            Inicia sesion aqui
+            Inicia sesión aquí
           </button>
         </p>
       </div>
