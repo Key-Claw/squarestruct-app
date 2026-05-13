@@ -9,6 +9,7 @@ import {
   obtenerPedidoById,
   cancelarPedido,
   listarPedidosPendientes,
+  listarPedidosAdmin,
   actualizarEstadoPedido
 } from '../controllers/pedidosController.js';
 
@@ -37,6 +38,9 @@ router.patch('/:id/cancelar', authMiddleware, cancelarPedido);
 // GET /api/pedidos/admin/pendientes - Listar todos los pedidos pendientes (solo admin)
 // Se coloca antes de las rutas con parámetro para evitar conflictos de enrutamiento
 router.get('/admin/pendientes', authMiddleware, adminMiddleware, listarPedidosPendientes);
+
+// GET /api/pedidos/admin/todos - Listar todo el historial de pedidos (solo admin)
+router.get('/admin/todos', authMiddleware, adminMiddleware, listarPedidosAdmin);
 
 // PATCH /api/pedidos/:id/estado - Actualizar estado de un pedido (aceptar/denegar, solo admin)
 router.patch('/:id/estado', authMiddleware, adminMiddleware, actualizarEstadoPedido);

@@ -37,6 +37,14 @@ export const obtenerPedidosPendientes = async () => {
 }
 
 /**
+ * Obtiene todo el historial de pedidos para administradores.
+ * @returns {Promise<any>} Listado completo de pedidos con su estado histórico.
+ */
+export const obtenerPedidosAdmin = async () => {
+	return getRequest('/orders/admin/todos')
+}
+
+/**
  * Actualiza el estado de un pedido a 'aceptado' o 'denegado' (solo para administradores).
  * Esta acción notifica al usuario del cambio mediante la actualización del estado.
  * @param {number} idPedido - ID del pedido a actualizar.
