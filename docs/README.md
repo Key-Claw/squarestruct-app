@@ -20,9 +20,10 @@ Esta carpeta reune la documentacion del proyecto. Esta organizada para consultar
 14. [`03-arquitectura/frontend-estructura.md`](03-arquitectura/frontend-estructura.md): explica la organizacion real del frontend, sus paginas, componentes, servicios y CSS.
 15. [`03-arquitectura/tecnologias-frontend.md`](03-arquitectura/tecnologias-frontend.md): resume las tecnologias usadas en el frontend y por que se usan.
 16. [`05-testing/frontend-lint-build.md`](05-testing/frontend-lint-build.md): explica como revisar el frontend con ESLint, build y comprobacion manual.
-17. [`06-debug/generar-hash-bcrypt.md`](06-debug/generar-hash-bcrypt.md): explica como crear hashes bcrypt para usuarios de prueba.
-18. [`07-recursos/resumen-frontend.md`](07-recursos/resumen-frontend.md): chuleta rapida para explicar el frontend.
-19. [`00-workflow/`](00-workflow/): recoge normas de ramas, commits, issues y milestones.
+17. [`05-testing/revision-v2-validaciones.md`](05-testing/revision-v2-validaciones.md): recoge las validaciones ejecutadas durante la revision general de V2.
+18. [`06-debug/generar-hash-bcrypt.md`](06-debug/generar-hash-bcrypt.md): explica como crear hashes bcrypt para usuarios de prueba.
+19. [`07-recursos/resumen-frontend.md`](07-recursos/resumen-frontend.md): chuleta rapida para explicar el frontend.
+20. [`00-workflow/`](00-workflow/): recoge normas de ramas, commits, issues y milestones.
 
 ## Documentacion backend
 La documentacion del backend esta repartida entre la guia practica del servidor, la arquitectura, la API, la base de datos, las pruebas y los documentos de depuracion:
@@ -42,6 +43,7 @@ La documentacion del backend esta repartida entre la guia practica del servidor,
 | [`../backend/db/consultas.md`](../backend/db/consultas.md) | Consultas SQL utiles para comprobar datos, preparar demos y explicar el modelo. |
 | [`05-testing/postman-mvp-ejemplos.md`](05-testing/postman-mvp-ejemplos.md) | Explica como probar el backend con Postman. |
 | [`05-testing/backend-tests.md`](05-testing/backend-tests.md) | Documenta los tests unitarios e integracion disponibles. |
+| [`05-testing/revision-v2-validaciones.md`](05-testing/revision-v2-validaciones.md) | Recoge la validacion automatica de V2, pendientes de Postman, seguridad y revision manual. |
 | [`05-testing/ci-github-actions.md`](05-testing/ci-github-actions.md) | Explica el workflow de GitHub Actions que valida backend y frontend. |
 | [`06-debug/debug-backend-errores.md`](06-debug/debug-backend-errores.md) | Recoge errores frecuentes del backend y como diagnosticarlos. |
 | [`06-debug/errores-bd-tablas-no-existen.md`](06-debug/errores-bd-tablas-no-existen.md) | Ayuda a resolver problemas cuando MySQL no tiene las tablas esperadas. |
@@ -57,6 +59,7 @@ La documentacion del frontend esta repartida en dos niveles:
 | [`03-arquitectura/frontend-estructura.md`](03-arquitectura/frontend-estructura.md) | Explicacion profunda de estructura, paginas, componentes, servicios, CSS, responsive y estado del MVP. |
 | [`03-arquitectura/tecnologias-frontend.md`](03-arquitectura/tecnologias-frontend.md) | Explica React, Vite, JavaScript, Bootstrap, CSS modularizado y ESLint. |
 | [`05-testing/frontend-lint-build.md`](05-testing/frontend-lint-build.md) | Explica que son `lint` y `build`, como ejecutarlos y que revisar antes de entregar. |
+| [`05-testing/revision-v2-validaciones.md`](05-testing/revision-v2-validaciones.md) | Recoge la validacion automatica de V2 y los pendientes de revision manual del frontend. |
 | [`05-testing/ci-github-actions.md`](05-testing/ci-github-actions.md) | Resume como GitHub Actions valida el frontend junto al backend. |
 | [`07-recursos/resumen-frontend.md`](07-recursos/resumen-frontend.md) | Resumen corto para defensa o repaso rapido. |
 
