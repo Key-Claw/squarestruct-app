@@ -26,7 +26,7 @@ El workflow se lanza automaticamente en:
 | Job | Que comprueba |
 | --- | --- |
 | `backend-tests` | Levanta MySQL, carga schema/seeds y ejecuta los tests del backend. |
-| `frontend-build` | Ejecuta lint y build del frontend React/Vite. |
+| `frontend-build` | Ejecuta tests, lint y build del frontend React/Vite. |
 
 ## Backend
 
@@ -56,8 +56,11 @@ El job `frontend-build` trabaja dentro de `frontend/` y realiza estos pasos:
 1. Descarga el codigo del repositorio.
 2. Configura Node.js 20.
 3. Instala las dependencias del frontend.
-4. Ejecuta `npm run lint`.
-5. Ejecuta `npm run build`.
+4. Ejecuta `npm run test:run`.
+5. Ejecuta `npm run lint`.
+6. Ejecuta `npm run build`.
+
+`npm run test:run` ejecuta Vitest en modo no interactivo, adecuado para CI.
 
 `npm run lint` comprueba reglas basicas de calidad en JavaScript/React.
 
@@ -99,14 +102,12 @@ Para considerar correcta la CI:
 
 ## Limitaciones actuales
 
-La CI valida el backend con tests automatizados y el frontend con lint/build.
+La CI valida el backend con tests automatizados y el frontend con tests, lint y build.
 
-El frontend ya tiene una base de tests con Vitest y Testing Library, pero el workflow actual todavia no ejecuta `npm test` dentro del job `frontend-build`. En local, la revision de frontend recomendada es:
+La base de tests frontend todavia es inicial. En local, la revision de frontend recomendada es:
 
 ```bash
-npm test
+npm run test:run
 npm run lint
 npm run build
 ```
-
-Como mejora futura, se puede anadir `npm test -- --run` al job de frontend para que GitHub Actions valide tambien los tests de componentes.
