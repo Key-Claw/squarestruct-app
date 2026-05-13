@@ -51,6 +51,11 @@ Resultado:
 - Origen: dependencia `tar` a traves de `@mapbox/node-pre-gyp`.
 - Pendiente revisar si `npm audit fix` es seguro antes de aplicarlo.
 
+Nota:
+
+- En Windows se usa `npm.cmd` para evitar bloqueos de PowerShell con `npm.ps1`.
+- `npm audit fix` no se aplica automaticamente; antes hay que revisar que el cambio no rompa dependencias.
+
 ## Frontend
 
 ### Tests
@@ -59,7 +64,7 @@ Comando:
 
 ```bash
 cd frontend
-npm.cmd test -- --run
+npm.cmd run test:run
 ```
 
 Resultado:
@@ -112,18 +117,39 @@ Resultado:
 
 Se revisaron las colecciones Postman de forma estatica.
 
+Acciones realizadas:
+
+- Se sustituyeron JWTs hardcodeados por variables `{{adminToken}}`.
+- Se sustituyo el placeholder `Bearer <JWT>` por `Bearer {{token}}`.
+- En Postman v2, se corrigio el request de cancelacion para apuntar a `http://localhost:3000/api/pedidos/1/cancelar` con metodo `PATCH`.
+
 Pendientes detectados:
 
-- Hay JWTs hardcodeados en colecciones Postman.
-- Hay placeholders `Bearer <JWT>` en colecciones Postman.
-- En Postman v2, el request de cancelacion aparece mal formado como `PATCH PATCH /api/pedidos/1/cancelar`.
 - Faltan tests basicos de Postman en varios requests.
 
 ## Revision estatica de seguridad
 
-Pendientes detectados:
+Acciones realizadas:
 
-- `backend/src/app.js` imprime `DB_PASSWORD` por consola al arrancar el backend.
+- Se elimino el log de `backend/src/app.js` que imprimia `DB_PASSWORD` al arrancar el backend.
+
+## Comandos auxiliares usados
+
+Durante la revision se usaron estos comandos para comprobar estado y calidad sin modificar codigo:
+
+```bash
+git status --short
+git diff --check
+rg -n "patron" rutas
+npm.cmd audit --audit-level=high
+```
+
+Uso recomendado:
+
+- `git status --short`: comprobar que archivos estan modificados antes de commitear.
+- `git diff --check`: detectar espacios finales o errores de diff antes de abrir PR.
+- `rg`: buscar referencias rapidas en codigo y documentacion.
+- `npm.cmd audit --audit-level=high`: revisar vulnerabilidades altas sin entrar en modo interactivo.
 
 ## Pendiente de revision manual
 
@@ -146,4 +172,4 @@ La validacion automatica principal pasa correctamente:
 - Frontend build OK.
 - Frontend lint OK.
 
-Quedan pendientes ajustes de Postman, revision de logs sensibles, revision de vulnerabilidades backend y validacion manual del frontend.
+Quedan pendientes ampliar tests de Postman, revisar vulnerabilidades backend y validacion manual del frontend.

@@ -188,7 +188,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZFVzdWFyaW8iOjEsIm5vbWJyZSI6IkFkbWluIiwiZW1haWwiOiJhZG1pbkBzcXVhcmVzdHJ1Y3QuY29tIiwicm9sIjoiYWRtaW4iLCJpYXQiOjE3Nzg2NzIwMjAsImV4cCI6MTc3ODY3OTIyMH0.5eont3InZ7b8e1nsgGDGkqwn4UYKXOp0An9AuRUU-HU",
+                  "value": "{{adminToken}}",
                   "type": "string"
                 }
               ]
@@ -218,7 +218,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZFVzdWFyaW8iOjEsIm5vbWJyZSI6IkFkbWluIiwiZW1haWwiOiJhZG1pbkBzcXVhcmVzdHJ1Y3QuY29tIiwicm9sIjoiYWRtaW4iLCJpYXQiOjE3Nzg2NzIwMjAsImV4cCI6MTc3ODY3OTIyMH0.5eont3InZ7b8e1nsgGDGkqwn4UYKXOp0An9AuRUU-HU",
+                  "value": "{{adminToken}}",
                   "type": "string"
                 }
               ]
@@ -339,7 +339,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZFVzdWFyaW8iOjEsIm5vbWJyZSI6IkFkbWluIiwiZW1haWwiOiJhZG1pbkBzcXVhcmVzdHJ1Y3QuY29tIiwicm9sIjoiYWRtaW4iLCJpYXQiOjE3Nzg2NzIwMjAsImV4cCI6MTc3ODY3OTIyMH0.5eont3InZ7b8e1nsgGDGkqwn4UYKXOp0An9AuRUU-HU",
+                  "value": "{{adminToken}}",
                   "type": "string"
                 }
               ]
@@ -379,7 +379,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZFVzdWFyaW8iOjEsIm5vbWJyZSI6IkFkbWluIiwiZW1haWwiOiJhZG1pbkBzcXVhcmVzdHJ1Y3QuY29tIiwicm9sIjoiYWRtaW4iLCJpYXQiOjE3Nzg2NzIwMjAsImV4cCI6MTc3ODY3OTIyMH0.5eont3InZ7b8e1nsgGDGkqwn4UYKXOp0An9AuRUU-HU",
+                  "value": "{{adminToken}}",
                   "type": "string"
                 }
               ]
@@ -414,7 +414,7 @@
             "header": [
               {
                 "key": "Authorization",
-                "value": "Bearer <JWT>"
+                "value": "Bearer {{token}}"
               }
             ],
             "url": {
@@ -445,7 +445,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZFVzdWFyaW8iOjEsIm5vbWJyZSI6IkFkbWluIiwiZW1haWwiOiJhZG1pbkBzcXVhcmVzdHJ1Y3QuY29tIiwicm9sIjoiYWRtaW4iLCJpYXQiOjE3Nzg2NzIwMjAsImV4cCI6MTc3ODY3OTIyMH0.5eont3InZ7b8e1nsgGDGkqwn4UYKXOp0An9AuRUU-HU",
+                  "value": "{{adminToken}}",
                   "type": "string"
                 }
               ]
@@ -475,7 +475,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZFVzdWFyaW8iOjEsIm5vbWJyZSI6IkFkbWluIiwiZW1haWwiOiJhZG1pbkBzcXVhcmVzdHJ1Y3QuY29tIiwicm9sIjoiYWRtaW4iLCJpYXQiOjE3Nzg2NzIwMjAsImV4cCI6MTc3ODY3OTIyMH0.5eont3InZ7b8e1nsgGDGkqwn4UYKXOp0An9AuRUU-HU",
+                  "value": "{{adminToken}}",
                   "type": "string"
                 }
               ]
@@ -519,7 +519,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZFVzdWFyaW8iOjEsIm5vbWJyZSI6IkFkbWluIiwiZW1haWwiOiJhZG1pbkBzcXVhcmVzdHJ1Y3QuY29tIiwicm9sIjoiYWRtaW4iLCJpYXQiOjE3Nzg2NzIwMjAsImV4cCI6MTc3ODY3OTIyMH0.5eont3InZ7b8e1nsgGDGkqwn4UYKXOp0An9AuRUU-HU",
+                  "value": "{{adminToken}}",
                   "type": "string"
                 }
               ]
@@ -558,7 +558,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZFVzdWFyaW8iOjEsIm5vbWJyZSI6IkFkbWluIiwiZW1haWwiOiJhZG1pbkBzcXVhcmVzdHJ1Y3QuY29tIiwicm9sIjoiYWRtaW4iLCJpYXQiOjE3Nzg2NzIwMjAsImV4cCI6MTc3ODY3OTIyMH0.5eont3InZ7b8e1nsgGDGkqwn4UYKXOp0An9AuRUU-HU",
+                  "value": "{{adminToken}}",
                   "type": "string"
                 }
               ]
@@ -575,10 +575,12 @@
               }
             },
             "url": {
-              "raw": "PATCH /api/pedidos/1/cancelar",
+              "raw": "http://localhost:3000/api/pedidos/1/cancelar",
+              "protocol": "http",
               "host": [
-                "PATCH "
+                "localhost"
               ],
+              "port": "3000",
               "path": [
                 "api",
                 "pedidos",

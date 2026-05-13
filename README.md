@@ -217,7 +217,7 @@ squarestruct-app/
 
 ```bash
 cd frontend
-npm test
+npm run test:run
 npm run lint
 npm run build
 ```

@@ -124,7 +124,7 @@ npm run build
 Ejecutar tests automatizados:
 
 ```bash
-npm test
+npm run test:run
 ```
 
 ## Comprobacion antes de entregar
@@ -134,7 +134,7 @@ Antes de abrir una pull request o dar por terminada una tarea de frontend:
 1. Arrancar backend si la tarea usa datos reales.
 2. Ejecutar `npm run lint`.
 3. Ejecutar `npm run build`.
-4. Ejecutar `npm test`.
+4. Ejecutar `npm run test:run`.
 5. Probar en navegador las rutas afectadas.
 6. Si hay login/admin, cerrar sesion e iniciar sesion de nuevo para renovar el JWT.
 7. Revisar que no quedan errores visibles en consola.
