@@ -62,6 +62,7 @@ CREATE TABLE pedidos (
   fecha TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   total DECIMAL(12, 2) NOT NULL DEFAULT 0,
   estado VARCHAR(30) NOT NULL DEFAULT 'pendiente',
+  fechaCancelacion DATETIME NULL,
   direccionEnvio VARCHAR(250) NOT NULL,
   metodoPago VARCHAR(30) NOT NULL,
   idUsuario INT NOT NULL,
