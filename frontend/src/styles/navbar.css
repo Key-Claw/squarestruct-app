@@ -8,6 +8,8 @@
   --navbar-active-border: #76a7e6;
   --navbar-text: #0b0b0b;
   --navbar-muted-text: #6c7680;
+  --navbar-wordmark-width: 165px;
+  --navbar-wordmark-height: 34px;
 }
 
 /* Marco exterior propio: reproduce las bandas verde y azul del boceto. */
@@ -45,10 +47,18 @@
   flex-wrap: nowrap;
 }
 
+.navbar-brand-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  flex: 0 0 auto;
+  min-width: 0;
+}
+
 /* El logo usa margen negativo para acercarse al boceto sin cambiar el alto del nav. */
 .square-navbar-brand {
   width: 128px !important;
-  margin: -30px 6px -28px 0 !important;
+  margin: -30px -2px -28px 0 !important;
   padding: 0 !important;
   flex: 0 0 128px !important;
   justify-content: center;
@@ -60,6 +70,33 @@
   object-fit: contain;
   display: block;
   filter: drop-shadow(0 1px 0 rgba(0, 0, 0, 0.2));
+}
+
+.navbar-wordmark-btn {
+  width: var(--navbar-wordmark-width);
+  height: 52px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+}
+
+.navbar-wordmark-btn:hover,
+.navbar-wordmark-btn:focus-visible {
+  background: transparent;
+  outline: 2px solid rgba(95, 159, 56, 0.45);
+  outline-offset: 4px;
+}
+
+.navbar-wordmark {
+  width: var(--navbar-wordmark-width);
+  max-height: var(--navbar-wordmark-height);
+  object-fit: contain;
+  display: block;
 }
 
 .square-navbar-collapse {
@@ -86,12 +123,12 @@
 .navbar-actions .navbar-action-btn {
   height: 56px !important;
   min-width: 128px !important;
-  padding: 0 28px !important;
+  padding: 0 22px !important;
   background: var(--navbar-control) !important;
   border: 1px solid var(--navbar-control-border) !important;
   border-radius: 8px !important;
   color: var(--navbar-text) !important;
-  font-size: 23px !important;
+  font-size: 19px !important;
   font-weight: 400;
   line-height: 54px !important;
   text-align: center;
@@ -210,7 +247,6 @@
 
 .cart-icon {
   display: inline-block;
-  font-size: 23px;
   line-height: 1;
   transform: translateY(1px);
 }
@@ -254,15 +290,29 @@
     gap: 14px !important;
   }
 
+  .navbar-brand-group {
+    gap: 0;
+  }
+
   .square-navbar-brand {
     width: 88px !important;
     flex-basis: 88px !important;
-    margin: -22px 2px -20px 0 !important;
+    margin: -22px -2px -20px 0 !important;
   }
 
   .navbar-logo {
     width: 82px !important;
     height: 82px !important;
+  }
+
+  .navbar-wordmark-btn {
+    --navbar-wordmark-width: 122px;
+    --navbar-wordmark-height: 26px;
+    height: 42px;
+  }
+
+  .navbar-wordmark {
+    max-height: var(--navbar-wordmark-height);
   }
 
   .square-navbar-collapse {
@@ -349,6 +399,10 @@
     flex-wrap: nowrap;
   }
 
+  .navbar-brand-group {
+    gap: 0;
+  }
+
   .square-navbar-brand {
     width: 52px !important;
     flex-basis: 52px !important;
@@ -358,6 +412,17 @@
   .navbar-logo {
     width: 48px !important;
     height: 48px !important;
+  }
+
+  .navbar-wordmark-btn {
+    --navbar-wordmark-width: 86px;
+    --navbar-wordmark-height: 20px;
+    height: 34px;
+    border-radius: 5px;
+  }
+
+  .navbar-wordmark {
+    max-height: var(--navbar-wordmark-height);
   }
 
   .square-navbar-collapse {
@@ -461,10 +526,14 @@
     gap: 10px !important;
   }
 
+  .navbar-brand-group {
+    grid-column: 1;
+    gap: 0;
+  }
+
   .square-navbar-brand {
     width: 76px !important;
     flex-basis: 76px !important;
-    grid-column: 1;
     margin: -20px 0 -18px 0 !important;
     justify-content: flex-start;
   }
@@ -472,6 +541,17 @@
   .navbar-logo {
     width: 72px !important;
     height: 72px !important;
+  }
+
+  .navbar-wordmark-btn {
+    --navbar-wordmark-width: 88px;
+    --navbar-wordmark-height: 20px;
+    height: 38px;
+    border-radius: 5px;
+  }
+
+  .navbar-wordmark {
+    max-height: var(--navbar-wordmark-height);
   }
 
   .square-navbar .navbar-toggler {
@@ -500,7 +580,7 @@
 
   .navbar-menu {
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
   .navbar-menu .nav-item {
@@ -615,6 +695,10 @@
     padding: 7px !important;
   }
 
+  .navbar-brand-group {
+    gap: 0;
+  }
+
   .square-navbar-brand {
     width: 42px !important;
     flex-basis: 42px !important;
@@ -624,6 +708,16 @@
   .navbar-logo {
     width: 38px !important;
     height: 38px !important;
+  }
+
+  .navbar-wordmark-btn {
+    --navbar-wordmark-width: 68px;
+    --navbar-wordmark-height: 16px;
+    height: 28px;
+  }
+
+  .navbar-wordmark {
+    max-height: var(--navbar-wordmark-height);
   }
 
   .square-navbar .navbar-toggler {
@@ -656,7 +750,7 @@
   .navbar-menu {
     flex: 0 0 auto;
     width: auto;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 5px !important;
   }
 
