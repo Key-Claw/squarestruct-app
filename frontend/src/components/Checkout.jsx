@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import Icon from './ui/Icon'
 import { crearPedido } from '../services/orderService'
 import '../styles/checkout.css'
 
@@ -234,7 +235,7 @@ function Checkout({ isOpen, cartItems = [], onClose, onOrderCreated }) {
                 {/* MENSAJES DE ERROR */}
                 {error && (
                   <div className="checkout-alert checkout-error">
-                    <span className="checkout-alert-icon">⚠️</span>
+                    <span className="checkout-alert-icon"><Icon name="warning" size={18} /></span>
                     <span>{error}</span>
                   </div>
                 )}
@@ -242,7 +243,7 @@ function Checkout({ isOpen, cartItems = [], onClose, onOrderCreated }) {
                 {/* MENSAJES DE ÉXITO */}
                 {success && (
                   <div className="checkout-alert checkout-success">
-                    <span className="checkout-alert-icon">✓</span>
+                    <span className="checkout-alert-icon"><Icon name="checkCircle" size={18} /></span>
                     <span>{success}</span>
                   </div>
                 )}

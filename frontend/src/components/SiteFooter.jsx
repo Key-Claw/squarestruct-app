@@ -1,34 +1,36 @@
+import Icon from './ui/Icon'
+
 const footerBenefits = [
   {
-    icon: '▣',
-    title: 'Envios rapidos',
-    text: 'A todo el pais'
+    icon: 'box',
+    title: 'Envíos rápidos',
+    text: 'A todo el país',
   },
   {
-    icon: '✓',
+    icon: 'checkCircle',
     title: 'Calidad garantizada',
-    text: 'Materiales certificados'
+    text: 'Materiales certificados',
   },
   {
-    icon: '☏',
-    title: 'Atencion personalizada',
-    text: 'Te ayudamos a elegir'
+    icon: 'headset',
+    title: 'Atención personalizada',
+    text: 'Te ayudamos a elegir',
   },
   {
-    icon: '◇',
+    icon: 'shield',
     title: 'Compra segura',
-    text: 'Tus datos protegidos'
-  }
+    text: 'Tus datos protegidos',
+  },
 ]
 
 function SiteFooter({ showBenefits = true }) {
   return (
-    <footer className="site-footer" aria-label="Informacion de SquareStruct">
+    <footer className="site-footer" aria-label="Información de SquareStruct">
       {showBenefits && (
         <div className="site-benefits-footer">
           {footerBenefits.map((benefit) => (
             <article key={benefit.title}>
-              <span>{benefit.icon}</span>
+              <span><Icon name={benefit.icon} size={24} /></span>
               <div>
                 <h2>{benefit.title}</h2>
                 <p>{benefit.text}</p>
@@ -39,7 +41,7 @@ function SiteFooter({ showBenefits = true }) {
       )}
 
       <p className="site-footer-copy">
-        SquareStruct © 2026 · Proyecto academico de construccion modular desarrollado por Raúl Martín y Cristian Gil
+        SquareStruct © 2026 · Proyecto académico de construcción modular desarrollado por Raúl Martín y Cristian Gil
       </p>
     </footer>
   )

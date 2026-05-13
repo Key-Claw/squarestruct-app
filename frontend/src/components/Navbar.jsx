@@ -1,6 +1,8 @@
 import { useState } from 'react'
 
+import Icon from './ui/Icon'
 import logo from '../assets/logo/squarestruct-icon.png'
+import logoText from '../assets/logo/squarestruct-texto.png'
 import '../styles/navbar.css'
 
 /**
@@ -37,16 +39,16 @@ function Navbar({
 }) {
   // Elementos del menú de navegación principal
   const items = [
-    { id: 'home', label: 'Inicio' },
-    { id: 'galeria', label: 'Galeria' },
-    { id: 'catalogo', label: 'Catalogo' },
-    { id: 'design', label: 'Design' },
+    { id: 'galeria', label: 'Galería' },
+    { id: 'catalogo', label: 'Catálogo' },
+    { id: 'design', label: 'Diseñador' },
   ]
 
   // Estado del buscador
   const [searchValue, setSearchValue] = useState('')
   // Estado del idioma
   const [language, setLanguage] = useState('ES')
+  const accountName = user?.nombre?.trim().split(/\s+/)[0] || 'Cuenta'
 
   /**
    * Determina si un item de menú está activo.
@@ -62,8 +64,21 @@ function Navbar({
    * Maneja la búsqueda en el catálogo.
    */
   const handleSearch = () => {
-    const term = searchValue.trim()
-    onNavigate('catalogo', term, 'productos')
+    const term = searchValue.trim().toLowerCase()
+
+    if (!term) return
+
+    const globalSearchMap = [
+      { page: 'galeria', words: ['galeria', 'inspiracion', 'proyecto', 'casa', 'eco', 'hormigon'] },
+      { page: 'catalogo', words: ['catalogo', 'producto', 'bloque', 'pilar', 'material', 'precio', 'comprar'] },
+      { page: 'design', words: ['diseño', 'diseno', 'design', 'plano', 'estructura', 'presupuesto'] },
+      { page: 'aboutus', words: ['sobre', 'about', 'nosotros', 'equipo', 'squarestruct', 'proyecto'] },
+      { page: 'settings', words: ['perfil', 'cuenta', 'settings', 'factura', 'usuario', 'admin'] },
+    ]
+
+    const result = globalSearchMap.find((item) => item.words.some((word) => term.includes(word)))
+
+    onNavigate(result?.page || 'home')
     setSearchValue('')
   }
 
@@ -102,13 +117,13 @@ function Navbar({
         <input
           type="text"
           className="form-control navbar-search-input"
-          placeholder="Choose file"
+          placeholder="Buscar en la web"
           aria-label="Buscar"
           value={searchValue}
           onChange={(e) => setSearchValue(e.target.value)}
         />
         <button className="btn navbar-search-btn" type="button" onClick={handleSearch}>
-          Browse
+          Buscar
         </button>
       </div>
     </form>
@@ -119,9 +134,28 @@ function Navbar({
       {/* navbar-expand-md: en tablet queda todo en fila; en movil aparece hamburguesa. */}
       <nav className="navbar navbar-expand-md navbar-light app-navbar square-navbar">
         <div className="container-fluid square-navbar-inner">
-          <a className="navbar-brand square-navbar-brand d-flex align-items-center" href="#" onClick={() => onNavigate('aboutus')}>
-            <img src={logo} alt="SquareStruct" className="navbar-logo" />
-          </a>
+          <div className="navbar-brand-group">
+            <a
+              className="navbar-brand square-navbar-brand d-flex align-items-center"
+              href="#"
+              aria-label="Sobre nosotros"
+              onClick={(event) => {
+                event.preventDefault()
+                onNavigate('aboutus')
+              }}
+            >
+              <img src={logo} alt="SquareStruct" className="navbar-logo" />
+            </a>
+
+            <button
+              type="button"
+              className="navbar-wordmark-btn"
+              aria-label="Inicio"
+              onClick={() => onNavigate('home')}
+            >
+              <img src={logoText} alt="SquareStruct" className="navbar-wordmark" />
+            </button>
+          </div>
 
           {renderSearchForm('navbar-search-mobile')}
 
@@ -155,7 +189,7 @@ function Navbar({
                   aria-expanded="false"
                   type="button"
                 >
-                  USER<span className="ms-1">{user ? user.nombre : ''}</span>
+                  {accountName}
                 </button>
                 {/* Dropdown de Bootstrap. El contenido cambia según haya sesión o no. */}
                 <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
@@ -186,7 +220,7 @@ function Navbar({
                           className="dropdown-item"
                           onClick={() => onNavigate('settings')}
                         >
-                          Settings
+                          Mi cuenta
                         </button>
                       </li>
                       <li>
@@ -197,7 +231,7 @@ function Navbar({
                           className="dropdown-item text-danger"
                           onClick={handleLogout}
                         >
-                          Cerrar sesion
+                          Cerrar sesión
                         </button>
                       </li>
                     </>
@@ -213,7 +247,7 @@ function Navbar({
                   title="Carrito"
                   onClick={() => onOpenCartPanel()}
                 >
-                  <span className="cart-icon" aria-hidden="true">&#128722;</span>
+                  <Icon name="cart" className="cart-icon" size={22} />
                 </button>
               </li>
 
