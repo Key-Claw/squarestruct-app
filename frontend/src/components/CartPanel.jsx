@@ -9,6 +9,7 @@ import '../styles/cart-panel.css'
  * - Muestra items agregados al carrito
  * - Calcula y muestra el total
  * - Interfaz limpia y responsive
+ * - Integración con checkout para procesar compra
  * 
  * @param {object} props - Props del componente
  * @param {boolean} props.isOpen - Indica si el panel está visible
@@ -16,8 +17,9 @@ import '../styles/cart-panel.css'
  * @param {function} props.onClose - Callback para cerrar el panel
  * @param {function} props.onRemoveItem - Callback para eliminar un item
  * @param {function} props.onUpdateQuantity - Callback para actualizar cantidad
+ * @param {function} props.onCheckout - Callback para abrir el checkout (nueva compra)
  */
-function CartPanel({ isOpen, items = [], onClose, onRemoveItem, onUpdateQuantity }) {
+function CartPanel({ isOpen, items = [], onClose, onRemoveItem, onUpdateQuantity, onCheckout }) {
   /**
    * Calcula el total del carrito basado en los items.
    * @returns {number} Total en euros
@@ -189,6 +191,8 @@ function CartPanel({ isOpen, items = [], onClose, onRemoveItem, onUpdateQuantity
                 <button
                   type="button"
                   className="cart-action-btn cart-checkout-btn"
+                  onClick={onCheckout}
+                  disabled={items.length === 0}
                 >
                   Proceder al pedido
                 </button>

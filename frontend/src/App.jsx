@@ -11,6 +11,7 @@ import Design from './pages/Design'
 import Settings from './pages/Settings'
 import AuthModal from './components/AuthModal'
 import CartPanel from './components/CartPanel'
+import Checkout from './components/Checkout'
 import { getCurrentUser, logoutUser, isAdmin } from './services/authService'
 import './App.css'
 
@@ -49,6 +50,8 @@ function App() {
   const [cartPanelOpen, setCartPanelOpen] = useState(false)
   // Items guardados en el carrito (para demo)
   const [cartItems, setCartItems] = useState([])
+  // Control del modal de checkout
+  const [checkoutOpen, setCheckoutOpen] = useState(false)
 
   /**
    * Tabs de settings reservadas para administradores.
@@ -185,8 +188,37 @@ function App() {
   }
 
   /**
-   * Renderiza la vista principal segÃºn la pÃ¡gina seleccionada.
-   * Incluye renderizado condicional de pÃ¡ginas protegidas segÃºn autenticaciÃ³n.
+   * Abre el modal de checkout cuando el usuario quiere proceder al pedido.
+   * Cierra el panel del carrito para mostrar el checkout.
+   */
+  const handleOpenCheckout = () => {
+    setCheckoutOpen(true)
+    setCartPanelOpen(false)
+  }
+
+  /**
+   * Cierra el modal de checkout.
+   */
+  const handleCloseCheckout = () => {
+    setCheckoutOpen(false)
+  }
+
+  /**
+   * Maneja el evento de orden creada exitosamente.
+   * Limpia el carrito y notifica al usuario.
+   * @param {object} orderData - Datos de la orden creada
+   */
+  const handleOrderCreated = () => {
+    // Limpiar el carrito
+    setCartItems([])
+    // Llevamos al usuario a su pestaña de facturas para que vea el pedido en estado pendiente.
+    setPage('settings')
+    setSettingsTab('facturas')
+  }
+
+  /**
+   * Renderiza la vista principal según la página seleccionada.
+   * Incluye renderizado condicional de páginas protegidas según autenticación.
    * @returns {JSX.Element}
    */
   const renderPage = () => {
@@ -292,6 +324,15 @@ function App() {
         onClose={handleCloseCartPanel}
         onRemoveItem={handleRemoveCartItem}
         onUpdateQuantity={handleUpdateCartQuantity}
+        onCheckout={handleOpenCheckout}
+      />
+
+      {/* MODAL DE CHECKOUT (SELECCIÓN DE PAGO Y DIRECCIÓN) */}
+      <Checkout
+        isOpen={checkoutOpen}
+        cartItems={cartItems}
+        onClose={handleCloseCheckout}
+        onOrderCreated={handleOrderCreated}
       />
     </div>
   )
