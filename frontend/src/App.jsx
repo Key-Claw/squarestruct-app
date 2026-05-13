@@ -290,9 +290,6 @@ function App() {
     return <Home onNavigate={handleNavigate} />
   }
 
-  // Determina si mostrar el footer (solo en ciertas pÃ¡ginas)
-  const showSiteFooter = ['home', 'galeria', 'catalogo', 'design', 'aboutus'].includes(page)
-
   return (
     <div className="app-shell">
       <Navbar
@@ -305,7 +302,7 @@ function App() {
         onOpenCartPanel={handleOpenCartPanel}
       />
       <main className="app-main">{renderPage()}</main>
-      {showSiteFooter && <SiteFooter showBenefits={page !== 'aboutus'} />}
+      <SiteFooter />
 
       {/* MODAL DE AUTENTICACIÃ“N (LOGIN/REGISTER CON FLIP) */}
       <AuthModal
