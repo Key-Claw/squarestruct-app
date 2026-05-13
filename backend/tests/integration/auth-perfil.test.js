@@ -4,7 +4,10 @@ import app, { db } from '../../src/app.js';
 describe('Registro y login de usuario', () => {
   const email = `test${Date.now()}@mail.com`;
   const password = '12345678';
+  const adminEmail = 'admin@squarestruct.com';
+  const adminPassword = '123456';
   let token;
+  let adminToken;
 
   // Cerramos la conexión al final para que el proceso de Jest termine limpio.
   afterAll(async () => {
@@ -40,5 +43,45 @@ describe('Registro y login de usuario', () => {
     expect(res.statusCode).toBe(200);
     expect(res.body.usuario).toBeDefined();
     expect(res.body.usuario.email).toBe(email);
+  });
+
+  it('prepara un token de administrador para validar permisos', async () => {
+    const res = await request(app)
+      .post('/api/usuarios/login')
+      .send({ email: adminEmail, contrasena: adminPassword });
+
+    expect(res.statusCode).toBe(200);
+    expect(res.body.token).toBeDefined();
+    adminToken = res.body.token;
+  });
+
+  it('GET /api/usuarios debe rechazar usuarios sin rol admin', async () => {
+    const res = await request(app)
+      .get('/api/usuarios')
+      .set('Authorization', `Bearer ${token}`);
+
+    expect(res.statusCode).toBe(403);
+    expect(res.body.error).toBe('Acceso solo para administradores');
+  });
+
+  it('GET /api/usuarios debe permitir al administrador ver la lista', async () => {
+    const res = await request(app)
+      .get('/api/usuarios')
+      .set('Authorization', `Bearer ${adminToken}`);
+
+    expect(res.statusCode).toBe(200);
+    expect(Array.isArray(res.body)).toBe(true);
+    expect(res.body.length).toBeGreaterThan(0);
+  });
+
+  it('GET /api/usuarios/:id debe devolver el detalle de un usuario', async () => {
+    const res = await request(app)
+      .get('/api/usuarios/1')
+      .set('Authorization', `Bearer ${adminToken}`);
+
+    expect(res.statusCode).toBe(200);
+    expect(res.body.idUsuario).toBeDefined();
+    expect(res.body.email).toBeDefined();
+    expect(res.body.rol).toBeDefined();
   });
 });

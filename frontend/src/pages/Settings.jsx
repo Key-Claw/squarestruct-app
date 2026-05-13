@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { getAllUsers, getProfile, logoutUser, updateUser } from '../services/authService'
+import { getAllUsers, getProfile, getUserById, logoutUser, updateUser } from '../services/authService'
 import '../styles/settings.css'
 
 const getRoleBadgeClass = (role) => {
@@ -49,6 +49,9 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser }) {
   const [editingUsuario, setEditingUsuario] = useState(null)
   const [nuevoRol, setNuevoRol] = useState('usuario')
   const [isEditLoading, setIsEditLoading] = useState(false)
+  const [selectedUsuario, setSelectedUsuario] = useState(null)
+  const [isDetailLoading, setIsDetailLoading] = useState(false)
+  const [detailError, setDetailError] = useState('')
 
   const tabs = useMemo(() => {
     if (isAdminUser) {
@@ -125,9 +128,38 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser }) {
     setNuevoRol(usuario.rol)
   }
 
+  /**
+   * Carga el detalle completo de un usuario y abre el modal.
+   * Primero mostramos los datos ya visibles en la tabla para que la interfaz
+   * responda al instante; después se refresca con la ficha completa desde API.
+   * @param {object} usuario - Usuario seleccionado en la tabla.
+   */
+  const handleViewClick = async (usuario) => {
+    setSelectedUsuario(usuario)
+    setDetailError('')
+    setIsDetailLoading(true)
+
+    try {
+      const detalle = await getUserById(usuario.idUsuario)
+      setSelectedUsuario(detalle)
+    } catch {
+      setDetailError('No se pudo cargar el detalle actualizado del usuario.')
+    } finally {
+      setIsDetailLoading(false)
+    }
+  }
+
   const handleCloseModal = () => {
     setEditingUsuario(null)
     setNuevoRol('usuario')
+  }
+
+  /**
+   * Cierra el modal de detalle y limpia el estado auxiliar.
+   */
+  const handleCloseDetailModal = () => {
+    setSelectedUsuario(null)
+    setDetailError('')
   }
 
   const handleSaveChanges = async () => {
@@ -274,6 +306,14 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser }) {
                       <span className={getRoleBadgeClass(currentUser.rol)}>{getRoleText(currentUser.rol)}</span>
                     </td>
                     <td>
+                      <div className="settings-inline-actions">
+                        <button
+                          type="button"
+                          className="btn btn-sm btn-outline-info"
+                          onClick={() => handleViewClick(currentUser)}
+                        >
+                          Ver detalle
+                        </button>
                       <button
                         type="button"
                         className="btn btn-sm btn-outline-warning"
@@ -282,6 +322,7 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser }) {
                       >
                         Editar
                       </button>
+                      </div>
                     </td>
                   </tr>
                 ))
@@ -481,6 +522,84 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser }) {
                   disabled={isEditLoading}
                 >
                   {isEditLoading ? 'Guardando...' : 'Guardar cambios'}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {selectedUsuario && (
+        <div className="modal d-block usuarios-modal-backdrop" style={{ display: 'block' }} tabIndex="-1">
+          <div className="modal-dialog modal-dialog-centered modal-lg">
+            <div className="modal-content usuarios-modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title">Detalle de usuario</h5>
+                <button
+                  type="button"
+                  className="btn-close"
+                  onClick={handleCloseDetailModal}
+                  aria-label="Cerrar"
+                ></button>
+              </div>
+
+              <div className="modal-body">
+                {isDetailLoading && (
+                  <div className="settings-empty-state" style={{ minHeight: '120px' }}>
+                    <div className="spinner-border text-success" role="status">
+                      <span className="visually-hidden">Cargando...</span>
+                    </div>
+                    <p>Cargando detalle del usuario...</p>
+                  </div>
+                )}
+
+                {!isDetailLoading && (
+                  <>
+                    {detailError && <div className="alert alert-warning">{detailError}</div>}
+
+                    <div className="settings-profile-fields" style={{ width: '100%' }}>
+                      <div>
+                        <label>ID de usuario</label>
+                        <span>{selectedUsuario.idUsuario}</span>
+                      </div>
+
+                      <div>
+                        <label>Nombre</label>
+                        <span>{selectedUsuario.nombre}</span>
+                      </div>
+
+                      <div>
+                        <label>Primer apellido</label>
+                        <span>{selectedUsuario.primerApellido || 'N/A'}</span>
+                      </div>
+
+                      <div>
+                        <label>Segundo apellido</label>
+                        <span>{selectedUsuario.segundoApellido || 'N/A'}</span>
+                      </div>
+
+                      <div>
+                        <label>Correo electronico</label>
+                        <span>{selectedUsuario.email}</span>
+                      </div>
+
+                      <div>
+                        <label>Rol</label>
+                        <span className={getRoleBadgeClass(selectedUsuario.rol)}>{getRoleText(selectedUsuario.rol)}</span>
+                      </div>
+
+                      <div>
+                        <label>Fecha de alta</label>
+                        <span>{formatDate(selectedUsuario.creadoEn || selectedUsuario.fechaAlta)}</span>
+                      </div>
+                    </div>
+                  </>
+                )}
+              </div>
+
+              <div className="modal-footer">
+                <button type="button" className="btn btn-outline-secondary" onClick={handleCloseDetailModal}>
+                  Cerrar
                 </button>
               </div>
             </div>
