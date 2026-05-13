@@ -7,14 +7,16 @@ import {
   actualizarProducto,
   eliminarProducto
 } from '../controllers/productosController.js';
+import adminMiddleware from '../middlewares/admin.js';
+import authMiddleware from '../middlewares/auth.js';
 import { validarProducto } from '../middlewares/validacionProducto.js';
 
 const router = express.Router();
 
 router.get('/', getProductos);
 router.get('/:id', getProductoById);
-router.post('/', validarProducto, crearProducto);
-router.put('/:id', validarProducto, actualizarProducto);
-router.delete('/:id', eliminarProducto);
+router.post('/', authMiddleware, adminMiddleware, validarProducto, crearProducto);
+router.put('/:id', authMiddleware, adminMiddleware, validarProducto, actualizarProducto);
+router.delete('/:id', authMiddleware, adminMiddleware, eliminarProducto);
 
 export default router;
