@@ -260,6 +260,45 @@ export const listarPedidosPendientes = async (req, res) => {
 };
 
 /**
+ * Lista todo el historial de pedidos para administradores.
+ * @route GET /api/pedidos/admin/todos
+ * @middleware authMiddleware - Requiere autenticación
+ * @middleware adminMiddleware - Requiere rol de administrador
+ * @returns {json} Array de pedidos con estado histórico y datos del cliente
+ */
+export const listarPedidosAdmin = async (req, res) => {
+  try {
+    const [pedidos] = await db.query(
+      `SELECT 
+        p.idPedido,
+        p.fecha,
+        p.total,
+        p.estado,
+        p.direccionEnvio,
+        p.metodoPago,
+        u.idUsuario,
+        u.nombre,
+        u.primerApellido,
+        u.segundoApellido,
+        u.email,
+        COUNT(pd.idProducto) as totalProductos
+       FROM pedidos p
+       JOIN usuarios u ON p.idUsuario = u.idUsuario
+       LEFT JOIN pedidoDetalles pd ON p.idPedido = pd.idPedido
+       GROUP BY p.idPedido
+       ORDER BY p.fecha DESC`
+    );
+
+    res.json(pedidos);
+  } catch (error) {
+    res.status(500).json({
+      error: 'Error al obtener el historial de pedidos',
+      detalle: error.message
+    });
+  }
+};
+
+/**
  * Actualiza el estado de un pedido (aceptado o denegado).
  * Solo los administradores pueden cambiar el estado de un pedido.
  * Estados válidos: 'aceptado', 'denegado'

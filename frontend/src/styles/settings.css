@@ -81,19 +81,15 @@
   margin-bottom: 18px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   gap: 16px;
   padding-bottom: 12px;
   border-bottom: 1px solid rgba(23, 63, 95, 0.12);
 }
 
 .settings-header-bar > div {
-  flex: 1;
+  flex: 0 1 100%;
   text-align: center;
-}
-
-.settings-header-bar .settings-planos-btn {
-  flex: 0 0 auto;
 }
 
 .settings-header-bar h2 {
@@ -113,6 +109,258 @@
   border-color: rgba(23, 63, 95, 0.18) !important;
   color: #173f5f !important;
   background: #fff !important;
+}
+
+.settings-billing-dashboard {
+  display: grid;
+  gap: 16px;
+}
+
+.settings-billing-hero {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(23, 63, 95, 0.12);
+  text-align: center;
+}
+
+.settings-billing-hero > div:first-child {
+  flex: 1;
+  text-align: center;
+}
+
+.settings-billing-eyebrow {
+  margin: 0;
+  color: #64748b;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.settings-billing-hero h2 {
+  margin: 0;
+  color: #173f5f;
+  font-size: clamp(1.25rem, 1.8vw, 2rem);
+  font-weight: 850;
+}
+
+.settings-billing-hero p {
+  margin: 4px 0 0;
+  color: #475569;
+}
+
+.settings-billing-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+  display: none;
+}
+
+.settings-billing-metrics {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.settings-billing-metric {
+  min-height: 138px;
+  padding: 18px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  border: 1px solid rgba(23, 63, 95, 0.12);
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.05);
+  overflow: hidden;
+}
+
+.settings-billing-metric-icon {
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #74bd4e, #4f8f2f);
+  color: #fff;
+  font-size: 0.76rem;
+  font-weight: 900;
+  box-shadow: 0 10px 16px rgba(79, 143, 47, 0.24);
+  flex: 0 0 auto;
+  margin-top: 6px;
+}
+
+.settings-billing-metric p,
+.settings-billing-metric strong,
+.settings-billing-metric small {
+  display: block;
+  margin: 0;
+}
+
+.settings-billing-metric p {
+  color: #475569;
+  font-size: 0.88rem;
+  line-height: 1.1;
+}
+
+.settings-billing-metric strong {
+  margin-top: 4px;
+  color: #0f172a;
+  font-size: clamp(1rem, 1.5vw, 1.38rem);
+  font-weight: 900;
+  line-height: 1.05;
+  word-break: break-word;
+}
+
+.settings-billing-metric small {
+  margin-top: 4px;
+  color: #4f8f2f;
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+.settings-billing-table-block {
+  border-radius: 12px;
+  border: 1px solid rgba(23, 63, 95, 0.12);
+}
+
+.settings-billing-table-card,
+.settings-billing-chart-card {
+  padding: 16px;
+}
+
+.settings-billing-summary-card,
+.settings-billing-history-card {
+  padding: 16px;
+}
+
+.settings-billing-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(300px, 0.85fr);
+  gap: 18px;
+  align-items: stretch;
+}
+
+.settings-billing-summary-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.settings-billing-summary-card .settings-billing-metrics {
+  margin-top: 2px;
+}
+
+.settings-billing-chart-card {
+  height: 100%;
+}
+
+.settings-billing-chart-card .card {
+  border-radius: 12px;
+  height: 100%;
+}
+
+.settings-billing-chart-card .card-body {
+  padding: 18px 18px 16px;
+  min-height: 100%;
+  justify-content: space-between;
+}
+
+.settings-billing-donut-placeholder {
+  /* legacy placeholder - no longer used */
+  display: none;
+}
+
+.settings-billing-donut-center {
+  width: 96px;
+  aspect-ratio: 1 / 1;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #fff;
+  text-align: center;
+}
+
+.settings-billing-donut-svg {
+  width: 180px;
+  height: 180px;
+  display: grid;
+  place-items: center;
+}
+
+.donut-center-label {
+  font-size: 12px;
+  fill: #64748b;
+}
+
+.donut-center-value {
+  font-size: 18px;
+  fill: #0f172a;
+  font-weight: 900;
+}
+
+.donut-center-small {
+  font-size: 11px;
+  fill: #94a3b8;
+}
+
+.settings-billing-donut-center span,
+.settings-billing-donut-center small {
+  color: #64748b;
+  font-size: 0.74rem;
+}
+
+.settings-billing-donut-center strong {
+  color: #0f172a;
+  font-size: 1.2rem;
+  font-weight: 900;
+}
+
+.settings-billing-chart-card .d-grid.gap-3 {
+  gap: 11px !important;
+}
+
+.settings-billing-chart-card .d-grid.gap-3 > div {
+  display: grid;
+  gap: 2px;
+}
+
+.settings-billing-chart-card .small.text-dark {
+  font-weight: 700;
+}
+
+.settings-billing-chart-card .small.text-muted {
+  white-space: nowrap;
+}
+
+.settings-billing-chart-card .btn-outline-success {
+  min-height: 42px;
+}
+
+.settings-billing-chart-card .progress {
+  background: #edf2f7;
+}
+
+.settings-billing-chart-card .progress-bar.bg-success { background-color: #5f9f38 !important; }
+.settings-billing-chart-card .progress-bar.bg-primary { background-color: #3d8ed1 !important; }
+.settings-billing-chart-card .progress-bar.bg-info { background-color: #7b61c9 !important; }
+.settings-billing-chart-card .progress-bar.bg-warning { background-color: #ff8a3d !important; }
+.settings-billing-chart-card .progress-bar.bg-danger { background-color: #f2b84b !important; }
+
+.settings-billing-table-card .settings-table {
+  min-width: 820px;
+}
+
+.settings-billing-table-card .settings-card-head {
+  margin-bottom: 14px;
+}
+
+.settings-billing-table-card .settings-inline-actions {
+  gap: 6px;
 }
 
 .settings-card {
@@ -369,6 +617,29 @@
 
   .settings-profile-card {
     width: min(100%, 720px);
+  }
+
+  .settings-billing-metrics,
+  .settings-billing-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .settings-billing-hero {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .settings-billing-actions {
+    justify-content: center;
+  }
+
+  .settings-billing-hero > div:first-child {
+    text-align: center;
+  }
+
+  .settings-billing-donut-placeholder {
+    width: min(100%, 228px);
+    margin-inline: auto;
   }
 }
 
