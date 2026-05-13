@@ -215,6 +215,25 @@ export const getAllUsers = async () => {
 }
 
 /**
+ * Obtiene el detalle completo de un usuario por su ID.
+ * Se usa en el panel de administracion para abrir una vista detallada sin
+ * depender solo de los datos resumidos de la tabla.
+ * @param {number} idUsuario - ID del usuario a consultar.
+ * @returns {Promise<object>} Datos completos del usuario.
+ * @throws {Error} Si la petición falla.
+ */
+export const getUserById = async (idUsuario) => {
+  try {
+    const response = await getRequest(`/usuarios/${idUsuario}`)
+    const userData = response?.usuario ?? response
+    return normalizarUsuario(userData)
+  } catch (error) {
+    if (error instanceof Error) throw error
+    throw new Error(String(error), { cause: error })
+  }
+}
+
+/**
  * Actualiza los datos de un usuario (principalmente usado para cambiar rol por admin).
  * @param {number} idUsuario - ID del usuario a actualizar.
  * @param {object} userData - Objeto con los campos a actualizar (nombre, email, rol).

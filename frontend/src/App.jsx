@@ -49,6 +49,12 @@ function App() {
   const [cartPanelOpen, setCartPanelOpen] = useState(false)
   // Items guardados en el carrito (para demo)
   const [cartItems, setCartItems] = useState([])
+
+  /**
+   * Tabs de settings reservadas para administradores.
+   * La validacion vive aqui para que no dependa solo de ocultar botones.
+   */
+  const adminOnlySettingsTabs = new Set(['usuarios', 'facturacion'])
   
   /**
    * Actualiza el usuario autenticado (despuÃ©s de login exitoso).
@@ -84,7 +90,12 @@ function App() {
     }
 
     if (settingsTabByPage[nextPage]) {
-      setSettingsTab(settingsTabByPage[nextPage])
+      const requestedTab = settingsTabByPage[nextPage]
+      const nextTab = adminOnlySettingsTabs.has(requestedTab) && !isAdmin()
+        ? 'perfil'
+        : requestedTab
+
+      setSettingsTab(nextTab)
       setPage('settings')
       setSearchTerm('')
       setCatalogSection('')
@@ -228,11 +239,15 @@ function App() {
         return <Home onNavigate={handleNavigate} />
       }
 
+      const protectedTab = adminOnlySettingsTabs.has(settingsTab) && !isAdmin()
+        ? 'perfil'
+        : settingsTab
+
       return (
         <Settings
-          key={settingsTab}
+          key={protectedTab}
           user={user}
-          initialTab={settingsTab}
+          initialTab={protectedTab}
           onAuthExpired={handleUserLogout}
           isAdminUser={isAdmin()}
         />
