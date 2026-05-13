@@ -132,7 +132,7 @@ Comprueba que una ruta protegida solo funciona con token.
 ```text
 Metodo: GET
 URL: http://localhost:3000/api/perfil
-Header: Authorization: Bearer <JWT>
+Header: Authorization: Bearer {{token}}
 ```
 
 Respuesta esperada:
@@ -247,7 +247,7 @@ El backend tiene endpoints y tablas para pedidos. Esta prueba valida la base tec
 ```text
 Metodo: POST
 URL: http://localhost:3000/api/pedidos
-Header: Authorization: Bearer <JWT>
+Header: Authorization: Bearer {{token}}
 Header: Content-Type: application/json
 ```
 
@@ -277,7 +277,7 @@ Para listar pedidos del usuario autenticado:
 ```text
 Metodo: GET
 URL: http://localhost:3000/api/pedidos
-Header: Authorization: Bearer <JWT>
+Header: Authorization: Bearer {{token}}
 ```
 
 Para consultar un pedido concreto:
@@ -285,7 +285,7 @@ Para consultar un pedido concreto:
 ```text
 Metodo: GET
 URL: http://localhost:3000/api/pedidos/1
-Header: Authorization: Bearer <JWT>
+Header: Authorization: Bearer {{token}}
 ```
 
 Para cancelar un pedido:
@@ -293,7 +293,7 @@ Para cancelar un pedido:
 ```text
 Metodo: PATCH
 URL: http://localhost:3000/api/pedidos/1/cancelar
-Header: Authorization: Bearer <JWT>
+Header: Authorization: Bearer {{token}}
 ```
 
 Respuesta esperada:

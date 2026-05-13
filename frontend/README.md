@@ -13,6 +13,7 @@ Esta guia resume lo necesario para instalar, arrancar y validar el frontend. La 
 - JavaScript
 - Bootstrap 5
 - CSS propio organizado en `src/styles/`
+- Vitest y Testing Library
 - ESLint
 
 ## Estructura
@@ -139,9 +140,9 @@ Antes de abrir una pull request o dar por terminada una tarea de frontend:
 6. Si hay login/admin, cerrar sesion e iniciar sesion de nuevo para renovar el JWT.
 7. Revisar que no quedan errores visibles en consola.
 
-## Relacion con MVP v1
+## Estado V2 sobre base MVP
 
-El frontend cubre las partes principales de `MVP v1 - Funcional`:
+El frontend mantiene las partes principales de `MVP v1 - Funcional` y suma validacion automatica basica en V2:
 
 - registro e inicio de sesion;
 - catalogo conectado al backend;
@@ -149,7 +150,7 @@ El frontend cubre las partes principales de `MVP v1 - Funcional`:
 - base de pedidos preparada en servicios;
 - vistas protegidas para administracion;
 - gestion de usuarios admin;
-- maqueta de Design como base del futuro disenador.
+- maqueta de Design como base del futuro disenador;
 - base de tests automatizados con Vitest.
 
 ## Queda para fases siguientes

@@ -91,8 +91,8 @@ registro -> login -> catalogo -> carrito/base de pedidos -> gestion admin inicia
 | Frontend | React, Vite, JavaScript, Bootstrap, CSS |
 | Backend | Node.js, Express, JWT, bcrypt, dotenv, cors |
 | Base de datos | MySQL 8.4, mysql2 |
-| Testing | Jest, Supertest, Postman, ESLint |
-| Entorno | Docker Compose |
+| Testing y calidad | Jest, Supertest, Vitest, Testing Library, Postman, ESLint |
+| Entorno y CI | Docker Compose, GitHub Actions |
 
 ---
 
@@ -206,7 +206,7 @@ squarestruct-app/
 
   docker/            Docker Compose para MySQL
   docs/              Documentacion tecnica y de presentacion
-  scripts/           Scripts auxiliares
+  scripts/           Carpeta reservada para scripts auxiliares documentados
 ```
 
 ---
@@ -276,6 +276,7 @@ La documentacion extendida esta en [`docs/`](docs/):
 - [`docs/05-testing/frontend-lint-build.md`](docs/05-testing/frontend-lint-build.md): validacion del frontend.
 - [`docs/05-testing/postman-mvp-ejemplos.md`](docs/05-testing/postman-mvp-ejemplos.md): pruebas manuales con Postman.
 - [`docs/05-testing/revision-v2-validaciones.md`](docs/05-testing/revision-v2-validaciones.md): validaciones ejecutadas en la revision V2.
+- [`docs/07-recursos/tecnologias-y-comandos-defensa.md`](docs/07-recursos/tecnologias-y-comandos-defensa.md): tecnologias, comandos y checklist para defensa.
 
 ---
 

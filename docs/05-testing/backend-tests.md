@@ -106,7 +106,7 @@ No cubren todavia:
 - facturacion real;
 - flujo visual completo de administracion desde navegador.
 
-Para esas partes se usan comprobaciones manuales con Postman y la revision de frontend con `npm test`, `npm run lint` y `npm run build`.
+Para esas partes se usan comprobaciones manuales con Postman y la revision de frontend con `npm run test:run`, `npm run lint` y `npm run build`.
 
 ## Idea clave para explicar
 
