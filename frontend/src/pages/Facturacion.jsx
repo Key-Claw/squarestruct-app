@@ -39,13 +39,6 @@ function Facturacion() {
   // ============================================================================
 
   /**
-   * Carga las órdenes pendientes cuando el componente se monta.
-   */
-  useEffect(() => {
-    cargarOrdenesPendientes()
-  }, [])
-
-  /**
    * Obtiene las órdenes pendientes del servidor.
    * Maneja errores de autenticación y de servidor.
    */
@@ -63,6 +56,17 @@ function Facturacion() {
       setIsLoading(false)
     }
   }
+
+  /**
+   * Carga las órdenes pendientes cuando el componente se monta.
+   */
+  useEffect(() => {
+    const frameId = window.requestAnimationFrame(() => {
+      void cargarOrdenesPendientes()
+    })
+
+    return () => window.cancelAnimationFrame(frameId)
+  }, [])
 
   // ============================================================================
   // MANEJADORES DE ACCIONES

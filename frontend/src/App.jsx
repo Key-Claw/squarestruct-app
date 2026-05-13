@@ -208,7 +208,7 @@ function App() {
    * Limpia el carrito y notifica al usuario.
    * @param {object} orderData - Datos de la orden creada
    */
-  const handleOrderCreated = (orderData) => {
+  const handleOrderCreated = () => {
     // Limpiar el carrito
     setCartItems([])
     // Llevamos al usuario a su pestaña de facturas para que vea el pedido en estado pendiente.

@@ -29,13 +29,6 @@ function Facturas() {
   // ============================================================================
 
   /**
-   * Carga las órdenes del usuario cuando el componente se monta.
-   */
-  useEffect(() => {
-    cargarMisOrdenes()
-  }, [])
-
-  /**
    * Obtiene todas las órdenes del usuario autenticado.
    */
   const cargarMisOrdenes = async () => {
@@ -52,6 +45,17 @@ function Facturas() {
       setIsLoading(false)
     }
   }
+
+  /**
+   * Carga las órdenes del usuario cuando el componente se monta.
+   */
+  useEffect(() => {
+    const frameId = window.requestAnimationFrame(() => {
+      void cargarMisOrdenes()
+    })
+
+    return () => window.cancelAnimationFrame(frameId)
+  }, [])
 
   // ============================================================================
   // FUNCIONES AUXILIARES
