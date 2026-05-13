@@ -67,7 +67,7 @@ CREATE TABLE pedidos (
   metodoPago VARCHAR(30) NOT NULL,
   idUsuario INT NOT NULL,
   CONSTRAINT chkPedidoTotal CHECK (total >= 0),
-  CONSTRAINT chkPedidoEstado CHECK (estado IN ('pendiente', 'pagado', 'enviado', 'entregado', 'cancelado')),
+  CONSTRAINT chkPedidoEstado CHECK (estado IN ('pendiente', 'aceptado', 'denegado', 'pagado', 'enviado', 'entregado', 'cancelado')),
   CONSTRAINT chkPedidoMetodoPago CHECK (metodoPago IN ('tarjeta', 'transferencia', 'paypal', 'efectivo')),
   CONSTRAINT fkPedidosUsuarios
     FOREIGN KEY (idUsuario)

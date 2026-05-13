@@ -1,0 +1,371 @@
+/**
+ * Estilos para el componente Checkout
+ * Modal para completar la compra con selección de método de pago
+ */
+
+/* ============================================================================
+   BACKDROP Y CONTENEDOR PRINCIPAL
+   ============================================================================ */
+
+.checkout-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+}
+
+.checkout-container {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  width: 100%;
+  max-width: 900px;
+  max-height: 90vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ============================================================================
+   ENCABEZADO
+   ============================================================================ */
+
+.checkout-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  border-bottom: 1px solid #e5e7eb;
+  gap: 1rem;
+}
+
+.checkout-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: #1f2937;
+  flex: 1;
+}
+
+.checkout-close-btn {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #6b7280;
+  padding: 0.5rem;
+  transition: color 0.2s;
+  flex-shrink: 0;
+}
+
+.checkout-close-btn:hover {
+  color: #1f2937;
+}
+
+/* ============================================================================
+   CONTENIDO PRINCIPAL (Grid de 2 columnas)
+   ============================================================================ */
+
+.checkout-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  padding: 1.5rem;
+  flex: 1;
+}
+
+/* Responsive: En mobile, stackear verticalmente */
+@media (max-width: 768px) {
+  .checkout-content {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+}
+
+/* ============================================================================
+   SECCIÓN DE RESUMEN
+   ============================================================================ */
+
+.checkout-summary-section {
+  background: #f9fafb;
+  padding: 1.5rem;
+  border-radius: 6px;
+  border: 1px solid #e5e7eb;
+}
+
+.checkout-summary-section h3 {
+  margin: 0 0 1rem 0;
+  font-size: 1.1rem;
+  color: #1f2937;
+}
+
+.checkout-items-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.checkout-item-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.checkout-item-info {
+  flex: 1;
+}
+
+.checkout-item-name {
+  margin: 0 0 0.25rem 0;
+  font-weight: 500;
+  color: #1f2937;
+  font-size: 0.95rem;
+}
+
+.checkout-item-qty {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #6b7280;
+}
+
+.checkout-item-subtotal {
+  font-weight: 600;
+  color: #059669;
+  min-width: 80px;
+  text-align: right;
+}
+
+.checkout-divider {
+  height: 2px;
+  background: #d1d5db;
+  margin: 1rem 0;
+}
+
+.checkout-total-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 2px solid #d1d5db;
+}
+
+.checkout-total-label {
+  font-size: 1rem;
+  color: #1f2937;
+  font-weight: 600;
+}
+
+.checkout-total-amount {
+  font-size: 1.5rem;
+  color: #059669;
+  font-weight: 700;
+}
+
+.checkout-empty {
+  text-align: center;
+  color: #6b7280;
+  padding: 2rem;
+  margin: 0;
+  font-style: italic;
+}
+
+/* ============================================================================
+   SECCIÓN DE FORMULARIO
+   ============================================================================ */
+
+.checkout-form-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.checkout-form-section form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* ============================================================================
+   ELEMENTOS DEL FORMULARIO
+   ============================================================================ */
+
+.checkout-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.checkout-label {
+  font-weight: 600;
+  color: #1f2937;
+  font-size: 0.95rem;
+}
+
+.checkout-textarea,
+.checkout-select {
+  padding: 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  font-size: 0.95rem;
+  font-family: inherit;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.checkout-textarea {
+  resize: vertical;
+  min-height: 100px;
+  color: #1f2937;
+}
+
+.checkout-textarea::placeholder {
+  color: #9ca3af;
+}
+
+.checkout-textarea:focus,
+.checkout-select:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.checkout-textarea:disabled,
+.checkout-select:disabled {
+  background-color: #f3f4f6;
+  color: #9ca3af;
+  cursor: not-allowed;
+}
+
+.checkout-select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236b7280' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  padding-right: 2rem;
+  cursor: pointer;
+}
+
+.checkout-hint {
+  display: block;
+  color: #9ca3af;
+  font-size: 0.85rem;
+  margin-top: 0.25rem;
+}
+
+/* ============================================================================
+   ALERTAS (Error y Success)
+   ============================================================================ */
+
+.checkout-alert {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem;
+  border-radius: 4px;
+  font-size: 0.95rem;
+}
+
+.checkout-error {
+  background-color: #fee2e2;
+  border: 1px solid #fecaca;
+  color: #991b1b;
+}
+
+.checkout-success {
+  background-color: #dcfce7;
+  border: 1px solid #86efac;
+  color: #166534;
+}
+
+.checkout-alert-icon {
+  font-size: 1.25rem;
+  flex-shrink: 0;
+}
+
+/* ============================================================================
+   BOTONES DE ACCIÓN
+   ============================================================================ */
+
+.checkout-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.checkout-btn {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  flex: 1;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.checkout-cancel-btn {
+  background-color: #e5e7eb;
+  color: #1f2937;
+}
+
+.checkout-cancel-btn:hover:not(:disabled) {
+  background-color: #d1d5db;
+}
+
+.checkout-submit-btn {
+  background-color: #059669;
+  color: white;
+}
+
+.checkout-submit-btn:hover:not(:disabled) {
+  background-color: #047857;
+}
+
+.checkout-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ============================================================================
+   RESPONSIVE DESIGN
+   ============================================================================ */
+
+@media (max-width: 640px) {
+  .checkout-container {
+    max-width: 100%;
+    max-height: 95vh;
+  }
+
+  .checkout-content {
+    gap: 1rem;
+    padding: 1rem;
+  }
+
+  .checkout-header {
+    padding: 1rem;
+  }
+
+  .checkout-summary-section {
+    padding: 1rem;
+  }
+
+  .checkout-btn {
+    min-height: 40px;
+    font-size: 0.9rem;
+  }
+
+  .checkout-total-amount {
+    font-size: 1.25rem;
+  }
+}

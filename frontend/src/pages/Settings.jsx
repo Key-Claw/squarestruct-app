@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { getAllUsers, getProfile, getUserById, logoutUser, updateUser } from '../services/authService'
+import { actualizarEstadoPedido, obtenerMisPedidos, obtenerPedidosPendientes } from '../services/orderService'
 import '../styles/settings.css'
 
 const getRoleBadgeClass = (role) => {
@@ -21,6 +22,42 @@ const formatDate = (dateString) => {
     month: 'long',
     day: 'numeric',
   })
+}
+
+const formatMoney = (amount) => new Intl.NumberFormat('es-ES', {
+  style: 'currency',
+  currency: 'EUR',
+}).format(Number(amount || 0))
+
+const getStatusClass = (status) => {
+  const normalizedStatus = (status || '').toLowerCase()
+
+  if (normalizedStatus === 'pendiente') return 'settings-invoice-status pending'
+  if (normalizedStatus === 'aceptado') return 'settings-invoice-status accepted'
+  if (normalizedStatus === 'denegado') return 'settings-invoice-status rejected'
+
+  return 'settings-invoice-status'
+}
+
+const getStatusLabel = (status) => {
+  const normalizedStatus = (status || '').toLowerCase()
+
+  if (normalizedStatus === 'pendiente') return 'Pendiente'
+  if (normalizedStatus === 'aceptado') return 'Aceptada'
+  if (normalizedStatus === 'denegado') return 'Denegada'
+
+  return status || 'Sin estado'
+}
+
+const getPaymentLabel = (method) => {
+  const normalizedMethod = (method || '').toLowerCase()
+
+  if (normalizedMethod === 'tarjeta') return 'Tarjeta'
+  if (normalizedMethod === 'transferencia') return 'Transferencia'
+  if (normalizedMethod === 'paypal') return 'PayPal'
+  if (normalizedMethod === 'efectivo') return 'Efectivo'
+
+  return method || 'N/A'
 }
 
 const getInitialTab = (tab, isAdminUser) => {
@@ -52,6 +89,18 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser }) {
   const [selectedUsuario, setSelectedUsuario] = useState(null)
   const [isDetailLoading, setIsDetailLoading] = useState(false)
   const [detailError, setDetailError] = useState('')
+
+  // Facturas del usuario autenticado.
+  const [facturasUsuario, setFacturasUsuario] = useState([])
+  const [isFacturasLoading, setIsFacturasLoading] = useState(false)
+  const [facturasError, setFacturasError] = useState('')
+
+  // Facturación pendiente para administradores.
+  const [facturasAdmin, setFacturasAdmin] = useState([])
+  const [isFacturacionLoading, setIsFacturacionLoading] = useState(false)
+  const [facturacionError, setFacturacionError] = useState('')
+  const [facturacionSuccessMessage, setFacturacionSuccessMessage] = useState('')
+  const [processingPedidoId, setProcessingPedidoId] = useState(null)
 
   const tabs = useMemo(() => {
     if (isAdminUser) {
@@ -123,6 +172,56 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser }) {
     loadUsuarios()
   }, [activeTab, isAdminUser, onAuthExpired])
 
+  useEffect(() => {
+    if (activeTab !== 'facturas') return
+
+    const loadFacturas = async () => {
+      setIsFacturasLoading(true)
+      setFacturasError('')
+
+      try {
+        const pedidos = await obtenerMisPedidos()
+        setFacturasUsuario(pedidos)
+      } catch (err) {
+        setFacturasError(err.message || 'No se pudieron cargar tus facturas.')
+      } finally {
+        setIsFacturasLoading(false)
+      }
+    }
+
+    loadFacturas()
+  }, [activeTab])
+
+  useEffect(() => {
+    if (!isAdminUser || activeTab !== 'facturacion') return
+
+    const loadFacturacion = async () => {
+      setIsFacturacionLoading(true)
+      setFacturacionError('')
+
+      try {
+        const pedidos = await obtenerPedidosPendientes()
+        setFacturasAdmin(pedidos)
+      } catch (err) {
+        const message = err.message || 'No se pudieron cargar las facturas pendientes.'
+
+        if (message.includes('Token')) {
+          if (typeof onAuthExpired === 'function') {
+            onAuthExpired()
+          } else {
+            logoutUser()
+          }
+        }
+
+        setFacturacionError(message)
+      } finally {
+        setIsFacturacionLoading(false)
+      }
+    }
+
+    loadFacturacion()
+  }, [activeTab, isAdminUser, onAuthExpired])
+
   const handleEditClick = (usuario) => {
     setEditingUsuario(usuario)
     setNuevoRol(usuario.rol)
@@ -160,6 +259,37 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser }) {
   const handleCloseDetailModal = () => {
     setSelectedUsuario(null)
     setDetailError('')
+  }
+
+  const refrescarFacturacion = async () => {
+    setIsFacturacionLoading(true)
+    setFacturacionError('')
+
+    try {
+      const pedidos = await obtenerPedidosPendientes()
+      setFacturasAdmin(pedidos)
+    } catch (err) {
+      setFacturacionError(err.message || 'No se pudieron cargar las facturas pendientes.')
+    } finally {
+      setIsFacturacionLoading(false)
+    }
+  }
+
+  const actualizarFactura = async (idPedido, nuevoEstado) => {
+    setProcessingPedidoId(idPedido)
+    setFacturacionError('')
+    setFacturacionSuccessMessage('')
+
+    try {
+      await actualizarEstadoPedido(idPedido, nuevoEstado)
+      setFacturasAdmin((currentPedidos) => currentPedidos.filter((pedido) => pedido.idPedido !== idPedido))
+      setFacturacionSuccessMessage(`Pedido ${nuevoEstado === 'aceptado' ? 'aceptado' : 'denegado'} correctamente.`)
+      window.setTimeout(() => setFacturacionSuccessMessage(''), 3000)
+    } catch (err) {
+      setFacturacionError(err.message || 'No se pudo actualizar la factura.')
+    } finally {
+      setProcessingPedidoId(null)
+    }
   }
 
   const handleSaveChanges = async () => {
@@ -342,31 +472,90 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser }) {
     <div className="settings-card">
       <div className="settings-card-head">
         <h2>Facturacion</h2>
-        <small>Sin datos de facturacion por ahora</small>
+        <small>{facturasAdmin.length} pendientes</small>
       </div>
 
-      <div className="table-responsive settings-table-wrap">
-        <table className="table align-middle mb-0 settings-table">
-          <thead>
-            <tr>
-              <th>Factura</th>
-              <th>Direccion</th>
-              <th>Fecha</th>
-              <th>Producto</th>
-              <th>Total</th>
-              <th>Pago</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td colSpan="7" className="text-center py-4">
-                No hay facturas disponibles.
-              </td>
+      {facturacionError && <div className="alert alert-danger">{facturacionError}</div>}
+      {facturacionSuccessMessage && <div className="alert alert-success">{facturacionSuccessMessage}</div>}
+
+      {isFacturacionLoading ? (
+        <div className="settings-empty-state">
+          <div className="spinner-border text-success" role="status">
+            <span className="visually-hidden">Cargando...</span>
+          </div>
+          <p>Cargando facturas pendientes...</p>
+        </div>
+      ) : (
+        <div className="table-responsive settings-table-wrap">
+          <table className="table align-middle mb-0 settings-table">
+            <thead>
+              <tr>
+                <th>Factura</th>
+                <th>Cliente</th>
+                <th>Direccion</th>
+                <th>Fecha</th>
+                <th>Productos</th>
+                <th>Total</th>
+                <th>Pago</th>
+                <th>Estado</th>
+                <th>Acciones</th>
               </tr>
-          </tbody>
-        </table>
-      </div>
+            </thead>
+            <tbody>
+              {facturasAdmin.length > 0 ? (
+                facturasAdmin.map((factura) => (
+                  <tr key={factura.idPedido}>
+                    <td>#{factura.idPedido}</td>
+                    <td>
+                      <div>{factura.nombre}</div>
+                      <small>{factura.email}</small>
+                    </td>
+                    <td>{factura.direccionEnvio}</td>
+                    <td>{formatDate(factura.fecha)}</td>
+                    <td>{factura.totalProductos ?? 0}</td>
+                    <td>{formatMoney(factura.total)}</td>
+                    <td>{getPaymentLabel(factura.metodoPago)}</td>
+                    <td>
+                      <span className={getStatusClass(factura.estado)}>{getStatusLabel(factura.estado)}</span>
+                    </td>
+                    <td>
+                      <div className="settings-inline-actions">
+                        <button
+                          type="button"
+                          className="btn btn-sm btn-success"
+                          onClick={() => actualizarFactura(factura.idPedido, 'aceptado')}
+                          disabled={processingPedidoId === factura.idPedido}
+                        >
+                          Aceptar
+                        </button>
+                        <button
+                          type="button"
+                          className="btn btn-sm btn-danger"
+                          onClick={() => actualizarFactura(factura.idPedido, 'denegado')}
+                          disabled={processingPedidoId === factura.idPedido}
+                        >
+                          Denegar
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="9" className="text-center py-4">
+                    No hay facturas pendientes.
+                    <div className="mt-3">
+                      <button type="button" className="btn btn-outline-secondary btn-sm" onClick={refrescarFacturacion}>
+                        Refrescar
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+      )}
     </div>
   )
 
@@ -374,31 +563,56 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser }) {
     <div className="settings-card">
       <div className="settings-card-head">
         <h2>Facturas</h2>
-        <small>Sin datos de facturas por ahora</small>
+        <small>{facturasUsuario.length} pedidos</small>
       </div>
 
-      <div className="table-responsive settings-table-wrap">
-        <table className="table align-middle mb-0 settings-table">
-          <thead>
-            <tr>
-              <th>Factura</th>
-              <th>Direccion</th>
-              <th>Fecha</th>
-              <th>Producto</th>
-              <th>Total</th>
-              <th>Pago</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td colSpan="7" className="text-center py-4">
-                No tienes facturas disponibles.
-              </td>
+      {facturasError && <div className="alert alert-danger">{facturasError}</div>}
+
+      {isFacturasLoading ? (
+        <div className="settings-empty-state">
+          <div className="spinner-border text-success" role="status">
+            <span className="visually-hidden">Cargando...</span>
+          </div>
+          <p>Cargando tus facturas...</p>
+        </div>
+      ) : (
+        <div className="table-responsive settings-table-wrap">
+          <table className="table align-middle mb-0 settings-table">
+            <thead>
+              <tr>
+                <th>Factura</th>
+                <th>Direccion</th>
+                <th>Fecha</th>
+                <th>Total</th>
+                <th>Pago</th>
+                <th>Estado</th>
               </tr>
-          </tbody>
-        </table>
-      </div>
+            </thead>
+            <tbody>
+              {facturasUsuario.length > 0 ? (
+                facturasUsuario.map((factura) => (
+                  <tr key={factura.idPedido}>
+                    <td>#{factura.idPedido}</td>
+                    <td>{factura.direccionEnvio}</td>
+                    <td>{formatDate(factura.fecha)}</td>
+                    <td>{formatMoney(factura.total)}</td>
+                    <td>{getPaymentLabel(factura.metodoPago)}</td>
+                    <td>
+                      <span className={getStatusClass(factura.estado)}>{getStatusLabel(factura.estado)}</span>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="6" className="text-center py-4">
+                    No tienes facturas disponibles.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+      )}
     </div>
   )
 
