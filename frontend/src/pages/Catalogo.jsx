@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
+import Icon from '../components/ui/Icon'
 import CatalogFilters from '../components/catalogo/CatalogFilters'
 import CatalogProductCard from '../components/catalogo/CatalogProductCard'
 import { productosDemo } from '../data/productosDemo'
@@ -102,8 +103,8 @@ function Catalogo({ onNavigate, onAddToCart, searchTerm = '', initialSection = '
   return (
     <section className="page-shell catalog-page container-fluid">
       <header className="catalog-heading">
-        <h1>Catalogo de productos</h1>
-        <p>Encuentra los bloques modulares, pilares y accesorios que necesitas para tu proyecto.</p>
+        <h1>Catálogo de productos</h1>
+        <p>Encuentra bloques modulares, pilares y accesorios para tu proyecto.</p>
       </header>
 
       <div className="row g-4 align-items-start">
@@ -141,20 +142,20 @@ function Catalogo({ onNavigate, onAddToCart, searchTerm = '', initialSection = '
               <span>Ordenar por:</span>
               <select
                 className="form-select catalog-sort-select"
-                aria-label="Ordenar catalogo"
+                aria-label="Ordenar catálogo"
                 value={orden}
                 onChange={(event) => setOrden(event.target.value)}
               >
-                <option value="reciente">Mas reciente</option>
+                <option value="reciente">Más reciente</option>
                 <option value="precio-menor">Precio menor</option>
                 <option value="precio-mayor">Precio mayor</option>
               </select>
 
-              <button type="button" className="btn catalog-view-btn active" aria-label="Vista cuadricula">
-                â–¦
+              <button type="button" className="btn catalog-view-btn active" aria-label="Vista cuadrícula">
+                <Icon name="grid" size={17} />
               </button>
               <button type="button" className="btn catalog-view-btn" aria-label="Vista lista">
-                â‰¡
+                <Icon name="list" size={17} />
               </button>
             </div>
           </div>
@@ -181,11 +182,11 @@ function Catalogo({ onNavigate, onAddToCart, searchTerm = '', initialSection = '
 
           {!cargando && productosFiltrados.length === 0 && (
             <div className="text-center catalog-state mt-4">
-              No se encontraron productos con esa busqueda.
+              No se encontraron productos con esa búsqueda.
             </div>
           )}
 
-          <nav className="catalog-pagination" aria-label="Paginacion catalogo">
+          <nav className="catalog-pagination" aria-label="Paginación catálogo">
             <ul className="pagination pagination-sm justify-content-end">
               <li className="page-item active"><button className="page-link" type="button">1</button></li>
               <li className="page-item"><button className="page-link" type="button">2</button></li>

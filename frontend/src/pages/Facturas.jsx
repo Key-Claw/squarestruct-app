@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import Icon from '../components/ui/Icon'
 import { obtenerMisPedidos } from '../services/orderService'
 import '../styles/facturas.css'
 
@@ -134,7 +135,7 @@ function Facturas() {
       {/* ALERTA DE ERROR */}
       {error && (
         <div className="facturas-alert facturas-alert-error">
-          <span className="facturas-alert-icon">⚠️</span>
+          <span className="facturas-alert-icon"><Icon name="warning" size={18} /></span>
           <div>
             <strong>Error</strong>
             <p>{error}</p>

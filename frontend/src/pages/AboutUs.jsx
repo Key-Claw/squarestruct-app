@@ -18,22 +18,22 @@ function AboutUs() {
           <section className="card about-profile-text-card">
             <div className="card-body">
               <p>
-                Raúl Martín ha sentido desde pequeno una gran pasion por los
-                videojuegos y el mundo de la tecnologia, lo que le llevo a orientar su
-                formacion hacia este sector.
+                Raúl Martín ha sentido desde pequeño una gran pasión por los
+                videojuegos y el mundo de la tecnología, lo que le llevó a orientar su
+                formación hacia este sector.
               </p>
 
               <p>
-                Inicio sus estudios en Sistemas Microinformaticos y Redes en el Centro
-                San Valero, donde adquirio una base solida en sistemas y tecnologia y
-                desperto su interes por el desarrollo web.
+                Inició sus estudios en Sistemas Microinformáticos y Redes en el Centro
+                San Valero, donde adquirió una base sólida en sistemas y tecnología y
+                despertó su interés por el desarrollo web.
               </p>
 
               <p>
                 Actualmente cursa Desarrollo de Aplicaciones Web (DAW), aplicando sus
-                conocimientos en proyectos como SquareStruct mientras continua
-                formandose de manera autodidacta con el objetivo de crecer en el
-                ambito tecnologico.
+                conocimientos en proyectos como SquareStruct mientras continúa
+                formándose de manera autodidacta con el objetivo de crecer en el
+                ámbito tecnológico.
               </p>
             </div>
           </section>
@@ -41,17 +41,18 @@ function AboutUs() {
 
         <main className="col-12 col-lg-8">
           <div className="card about-team-card">
-            <img src={teamPhoto} className="card-img about-team-image" alt="Raul y Cristian" />
+            <img src={teamPhoto} className="card-img about-team-image" alt="Raúl y Cristian" />
           </div>
 
           <section className="card about-story-card about-editorial-card">
             <div className="card-body">
               <div className="about-text-content">
+                <p className="eyebrow">Sobre SquareStruct</p>
                 <h1>Nuestra historia</h1>
                 <p className="about-lead">
-                  SquareStruct es un proyecto academico con mentalidad practica: una
-                  tienda online para acercar la construccion modular a un usuario que
-                  quiere comparar, elegir y planificar con mas claridad.
+                  SquareStruct es un proyecto académico con mentalidad práctica: una
+                  tienda online para acercar la construcción modular a un usuario que
+                  quiere comparar, elegir y planificar con más claridad.
                 </p>
 
                 <div className="row g-4 about-newspaper-text align-items-stretch">
@@ -61,10 +62,9 @@ function AboutUs() {
                         SquareStruct nace como proyecto final del primer curso de
                         Desarrollo de Aplicaciones Web (DAW) en el Centro San Valero,
                         con la idea de crear una tienda online especializada en productos
-                        modulares para la construccion. El proyecto se centra
-                        principalmente en la comercializacion de bloques de distintas
-                        medidas y pilares, suministrados por una empresa que actuara
-                        como proveedora inicial.
+                        modulares para la construcción. El proyecto se centra
+                        principalmente en la comercialización de bloques de distintas
+                        medidas y pilares, suministrados por una empresa proveedora.
                       </p>
                     </div>
                   </div>
@@ -73,8 +73,8 @@ function AboutUs() {
                     <div className="about-history-column flex-fill h-100">
                       <p>
                         La finalidad de SquareStruct es facilitar al usuario la consulta,
-                        seleccion y compra de materiales modulares, ofreciendo una
-                        plataforma clara, moderna y orientada a la construccion de
+                        selección y compra de materiales modulares, ofreciendo una
+                        plataforma clara, moderna y orientada a la construcción de
                         viviendas o estructuras mediante piezas ensamblables.
                       </p>
                     </div>
@@ -83,13 +83,11 @@ function AboutUs() {
                   <div className="col-12 col-md-4 d-flex">
                     <div className="about-history-column flex-fill h-100">
                       <p>
-                        La idea surge tambien de nuestra experiencia previa en otros
-                        ciclos formativos y de la buena dinamica de trabajo que hemos
-                        construido como equipo. Aunque no comenzamos a trabajar juntos
-                        directamente hasta este curso, la confianza, la coordinacion y
-                        la forma de complementarnos nos han permitido plantear un
-                        proyecto mas completo, con una vision practica y cercana a un
-                        caso real.
+                        La idea surge también de nuestra experiencia previa en otros
+                        ciclos formativos y de la buena dinámica de trabajo construida
+                        como equipo. La confianza, la coordinación y la forma de
+                        complementarnos nos han permitido plantear un proyecto completo,
+                        con una visión práctica y cercana a un caso real.
                       </p>
                     </div>
                   </div>
@@ -101,7 +99,7 @@ function AboutUs() {
 
         <aside className="col-12 col-lg-2 about-profile-col">
           <div className="card about-name-card">
-            <div className="card-body">Cristian Gil Gz</div>
+            <div className="card-body">Cristian Gil</div>
           </div>
 
           <article className="card about-profile-photo-card">
@@ -111,20 +109,20 @@ function AboutUs() {
           <section className="card about-profile-text-card">
             <div className="card-body">
               <p>
-                Cristian Gil decidio reinventarse profesionalmente apostando por el
-                sector tecnologico, dejando atras un entorno laboral distinto para
+                Cristian Gil decidió reinventarse profesionalmente apostando por el
+                sector tecnológico, dejando atrás un entorno laboral distinto para
                 enfocarse en su desarrollo como programador.
               </p>
 
               <p>
-                Inicio su formacion en Sistemas Microinformaticos y Redes en el Centro
-                San Valero, donde adquirio una base solida en sistemas y redes que le
+                Inició su formación en Sistemas Microinformáticos y Redes en el Centro
+                San Valero, donde adquirió una base sólida en sistemas y redes que le
                 permite comprender mejor el funcionamiento de las aplicaciones.
               </p>
 
               <p>
                 Actualmente cursa Desarrollo de Aplicaciones Web (DAW), aplicando sus
-                conocimientos en proyectos como SquareStruct mientras continua
+                conocimientos en proyectos como SquareStruct mientras continúa
                 ampliando sus habilidades dentro del desarrollo web.
               </p>
             </div>
