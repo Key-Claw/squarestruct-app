@@ -1,0 +1,689 @@
+{
+  "info": {
+    "_postman_id": "2d48f84d-22e3-494a-b24f-2baf4917de37",
+    "name": "squarestruct-v2",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "49087894"
+  },
+  "item": [
+    {
+      "name": "Sistema",
+      "item": [
+        {
+          "name": "Health",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/health",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "health"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "DB status",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/db-status",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "db-status"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Productos",
+      "item": [
+        {
+          "name": "Obtener productos",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/productos",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "productos"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Obtener producto por ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/productos/28",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "productos",
+                "28"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Crear producto",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"nombre\": \"TEST Bloque EcoBase\",\r\n  \"descripcion\": \"TEST Bloque ligero de plastico reciclable para primeras hiladas y tramos medios de muro modular.\",\r\n  \"precio\": 42.50,\r\n  \"tipo\": \"bloque\",\r\n  \"material\": \"Plastico reciclable\",\r\n  \"alto\": 22.70,\r\n  \"ancho\": 19.70,\r\n  \"largo\": 39.40,\r\n  \"idProveedor\": 1\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/productos",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "productos"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Actualizar producto",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"nombre\": \"TEST Bloque\",\r\n  \"descripcion\": \"TEST\",\r\n  \"precio\": 42.50,\r\n  \"tipo\": \"bloque\",\r\n  \"material\": \"Plastico reciclable\",\r\n  \"alto\": 22.70,\r\n  \"ancho\": 19.60,\r\n  \"largo\": 39.40,\r\n  \"idProveedor\": 1\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/productos/26",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "productos",
+                "26"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Eliminar producto",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/productos/27",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "productos",
+                "27"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Usuarios",
+      "item": [
+        {
+          "name": "Obtener usuarios",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZFVzdWFyaW8iOjEsIm5vbWJyZSI6IkFkbWluIiwiZW1haWwiOiJhZG1pbkBzcXVhcmVzdHJ1Y3QuY29tIiwicm9sIjoiYWRtaW4iLCJpYXQiOjE3Nzg2NzIwMjAsImV4cCI6MTc3ODY3OTIyMH0.5eont3InZ7b8e1nsgGDGkqwn4UYKXOp0An9AuRUU-HU",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/usuarios",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "usuarios"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Obtener usuario por ID",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZFVzdWFyaW8iOjEsIm5vbWJyZSI6IkFkbWluIiwiZW1haWwiOiJhZG1pbkBzcXVhcmVzdHJ1Y3QuY29tIiwicm9sIjoiYWRtaW4iLCJpYXQiOjE3Nzg2NzIwMjAsImV4cCI6MTc3ODY3OTIyMH0.5eont3InZ7b8e1nsgGDGkqwn4UYKXOp0An9AuRUU-HU",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/usuarios/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "usuarios",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Crear Usuario / Register",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Test\",\n  \"primerApellido\": \"Admin\",\n  \"segundoApellido\": \"\",\n  \"email\": \"testadmin@squarestruct.com\",\n  \"contrasena\": \"123456\",\n  \"rol\": \"admin\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/usuarios/register",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "usuarios",
+                "register"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Login usuario",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"juan.perez@email.com\",\n  \"contrasena\": \"123456\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/usuarios/login",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "usuarios",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Login admin",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@squarestruct.com\",\n  \"contrasena\": \"123456\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/usuarios/login",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "usuarios",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Actualizar Usuario",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZFVzdWFyaW8iOjEsIm5vbWJyZSI6IkFkbWluIiwiZW1haWwiOiJhZG1pbkBzcXVhcmVzdHJ1Y3QuY29tIiwicm9sIjoiYWRtaW4iLCJpYXQiOjE3Nzg2NzIwMjAsImV4cCI6MTc3ODY3OTIyMH0.5eont3InZ7b8e1nsgGDGkqwn4UYKXOp0An9AuRUU-HU",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"nombre\": \"Admin2\",\r\n  \"primerApellido\": \"SquareStruct\",\r\n  \"segundoApellido\": \"\",\r\n  \"email\": \"admin3@squarestruct.com\",\r\n  \"contrasena\": \"$2b$10$hashadmin\",\r\n  \"rol\": \"admin\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/usuarios/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "usuarios",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Eliminar Usuario",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZFVzdWFyaW8iOjEsIm5vbWJyZSI6IkFkbWluIiwiZW1haWwiOiJhZG1pbkBzcXVhcmVzdHJ1Y3QuY29tIiwicm9sIjoiYWRtaW4iLCJpYXQiOjE3Nzg2NzIwMjAsImV4cCI6MTc3ODY3OTIyMH0.5eont3InZ7b8e1nsgGDGkqwn4UYKXOp0An9AuRUU-HU",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/usuarios/21",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "usuarios",
+                "21"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Perfil",
+      "item": [
+        {
+          "name": "Obtener perfil",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer <JWT>"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:3000/api/perfil",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "perfil"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Pedidos",
+      "item": [
+        {
+          "name": "Obtener pedidos",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZFVzdWFyaW8iOjEsIm5vbWJyZSI6IkFkbWluIiwiZW1haWwiOiJhZG1pbkBzcXVhcmVzdHJ1Y3QuY29tIiwicm9sIjoiYWRtaW4iLCJpYXQiOjE3Nzg2NzIwMjAsImV4cCI6MTc3ODY3OTIyMH0.5eont3InZ7b8e1nsgGDGkqwn4UYKXOp0An9AuRUU-HU",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/pedidos",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "pedidos"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Obtener pedido por ID",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZFVzdWFyaW8iOjEsIm5vbWJyZSI6IkFkbWluIiwiZW1haWwiOiJhZG1pbkBzcXVhcmVzdHJ1Y3QuY29tIiwicm9sIjoiYWRtaW4iLCJpYXQiOjE3Nzg2NzIwMjAsImV4cCI6MTc3ODY3OTIyMH0.5eont3InZ7b8e1nsgGDGkqwn4UYKXOp0An9AuRUU-HU",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/pedidos/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "pedidos",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Crear un pedido",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZFVzdWFyaW8iOjEsIm5vbWJyZSI6IkFkbWluIiwiZW1haWwiOiJhZG1pbkBzcXVhcmVzdHJ1Y3QuY29tIiwicm9sIjoiYWRtaW4iLCJpYXQiOjE3Nzg2NzIwMjAsImV4cCI6MTc3ODY3OTIyMH0.5eont3InZ7b8e1nsgGDGkqwn4UYKXOp0An9AuRUU-HU",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"direccionEnvio\": \"Calle Test 123, Madrid\",\r\n  \"metodoPago\": \"tarjeta\",\r\n  \"productos\": [\r\n    {\r\n      \"idProducto\": 1,\r\n      \"cantidad\": 1\r\n    }\r\n  ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/pedidos",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "pedidos"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Actualizar pedido",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZFVzdWFyaW8iOjEsIm5vbWJyZSI6IkFkbWluIiwiZW1haWwiOiJhZG1pbkBzcXVhcmVzdHJ1Y3QuY29tIiwicm9sIjoiYWRtaW4iLCJpYXQiOjE3Nzg2NzIwMjAsImV4cCI6MTc3ODY3OTIyMH0.5eont3InZ7b8e1nsgGDGkqwn4UYKXOp0An9AuRUU-HU",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"motivo\": \"El usuario ha solicitado cancelar el pedido\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "PATCH /api/pedidos/1/cancelar",
+              "host": [
+                "PATCH "
+              ],
+              "path": [
+                "api",
+                "pedidos",
+                "1",
+                "cancelar"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Auth / Seguridad",
+      "item": [
+        {
+          "name": "Obtener pedidos - 401 (sin token)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/pedidos",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "pedidos"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Obtener perfil - 401 (sin token)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/perfil",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "perfil"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Obtener usuario - 401 (sin token)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/usuarios",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "usuarios"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Crear producto - 401 (sin token)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"nombre\": \"TEST Bloque EcoBase\",\r\n  \"descripcion\": \"TEST Bloque ligero de plastico reciclable para primeras hiladas y tramos medios de muro modular.\",\r\n  \"precio\": 42.50,\r\n  \"tipo\": \"bloque\",\r\n  \"material\": \"Plastico reciclable\",\r\n  \"alto\": 22.70,\r\n  \"ancho\": 19.70,\r\n  \"largo\": 39.40,\r\n  \"idProveedor\": 1\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/productos",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "productos"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
