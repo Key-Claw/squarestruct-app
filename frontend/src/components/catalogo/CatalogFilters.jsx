@@ -1,4 +1,10 @@
+import { useState } from 'react'
+
+const materialTabs = ['Hormigón', 'ECO']
+
 function CatalogFilters({ categorias, categoriaActiva, onSelectCategoria }) {
+  const [activeMaterial, setActiveMaterial] = useState('Hormigón')
+
   return (
     <aside className="col-12 col-lg-2 catalog-sidebar">
       <button type="button" className="btn catalog-filter-title">
@@ -21,13 +27,19 @@ function CatalogFilters({ categorias, categoriaActiva, onSelectCategoria }) {
         </div>
       </section>
 
-      <section className="card catalog-filter-card">
-        <div className="card-header">Tipo de bloque</div>
-        <div className="card-body catalog-check-list">
-          <label><input type="checkbox" /> Estructural</label>
-          <label><input type="checkbox" /> Esquina</label>
-          <label><input type="checkbox" /> Refuerzo</label>
-          <label><input type="checkbox" /> Decorativo</label>
+      <section className="card catalog-filter-card catalog-material-card">
+        <div className="card-header">Material</div>
+        <div className="card-body catalog-material-tabs" role="tablist" aria-label="Material del producto">
+          {materialTabs.map((material) => (
+            <button
+              key={material}
+              type="button"
+              className={`btn catalog-material-tab${activeMaterial === material ? ' active' : ''}`}
+              onClick={() => setActiveMaterial(material)}
+            >
+              {material}
+            </button>
+          ))}
         </div>
       </section>
 
@@ -37,15 +49,6 @@ function CatalogFilters({ categorias, categoriaActiva, onSelectCategoria }) {
           <button type="button" className="list-group-item list-group-item-action">Ancho</button>
           <button type="button" className="list-group-item list-group-item-action">Alto</button>
           <button type="button" className="list-group-item list-group-item-action">Largo</button>
-        </div>
-      </section>
-
-      <section className="card catalog-filter-card">
-        <div className="card-header">Material</div>
-        <div className="card-body catalog-check-list">
-          <label><input type="checkbox" /> Hormigon</label>
-          <label><input type="checkbox" /> Fibrocemento</label>
-          <label><input type="checkbox" /> Mixto</label>
         </div>
       </section>
 
