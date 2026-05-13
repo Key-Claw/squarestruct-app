@@ -38,6 +38,7 @@ frontend/
       Home.jsx
       Login.jsx
       Register.jsx
+      Settings.jsx
       Usuarios.jsx
     services/
       api.js
@@ -58,6 +59,7 @@ frontend/
       navbar.css
       profile-panel.css
       responsive.css
+      settings.css
       site-footer.css
       usuarios.css
       variables.css
@@ -118,6 +120,7 @@ Las vistas `Usuarios` y `Facturacion` estan protegidas: si no hay usuario o el u
 | `Register.jsx` | Registro como pagina tradicional. |
 | `Usuarios.jsx` | Gestion admin conectada al backend: lista usuarios y permite cambiar rol entre `usuario` y `admin`. |
 | `Facturacion.jsx` | Panel visual administrativo con datos de maqueta. |
+| `Settings.jsx` | Vista de ajustes visuales de usuario/interfaz. |
 
 ## Componentes principales
 
@@ -208,6 +211,7 @@ Algunos componentes tienen CSS dedicado:
 - `profile-panel.css`
 - `usuarios.css`
 - `facturacion.css`
+- `settings.css`
 - `variables.css`
 
 ## Responsive
@@ -235,6 +239,7 @@ El frontend cubre el flujo principal de `MVP v1 - Funcional`:
 - base de pedidos en servicios;
 - gestion de usuarios admin;
 - vistas visuales de galeria, about, design y facturacion.
+- base de tests automatizados de frontend con Vitest.
 
 Queda para fases siguientes:
 

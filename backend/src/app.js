@@ -33,7 +33,6 @@ app.use('/api/pedidos', pedidosRouter);
 app.use('/api/orders', pedidosRouter);
 
 // Depuración: mostrar valores de conexión para comprobar que dotenv cargó bien.
-console.log('DB_USER:', process.env.DB_USER, 'DB_PASSWORD:', process.env.DB_PASSWORD);
 // Conexión a la base de datos usando las variables que cargó dotenv.
 export const db = mysql.createPool({
   host: process.env.DB_HOST,

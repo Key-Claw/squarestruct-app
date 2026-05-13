@@ -107,7 +107,7 @@ jobs:
         shell: bash
         working-directory: frontend
 
-    # Los pasos para el frontend son mas simples: solo necesitamos instalar las dependencias y construir la aplicacion.
+    # Los pasos para el frontend instalan dependencias, ejecutan tests, revisan lint y construyen la aplicacion.
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -121,6 +121,9 @@ jobs:
 
       - name: Install frontend dependencies
         run: npm install
+
+      - name: Run frontend tests
+        run: npm run test:run
 
       - name: Lint frontend # Esto es opcional, pero es buena practica tener un paso de lint para asegurarnos de que el codigo sigue las reglas de estilo definidas.
         run: npm run lint

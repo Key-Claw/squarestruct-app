@@ -29,7 +29,8 @@ http://localhost:3000
 4. Copiar el token JWT.
 5. Probar una ruta protegida.
 6. Si existe un usuario admin, probar gestion de usuarios.
-7. Probar la base de pedidos como comprobacion tecnica del backend.
+7. Si existe un usuario admin, probar escritura de productos.
+8. Probar pedidos, detalle y cancelacion logica como comprobacion tecnica del backend.
 
 ## 1. Obtener productos
 
@@ -131,7 +132,7 @@ Comprueba que una ruta protegida solo funciona con token.
 ```text
 Metodo: GET
 URL: http://localhost:3000/api/perfil
-Header: Authorization: Bearer <JWT>
+Header: Authorization: Bearer {{token}}
 ```
 
 Respuesta esperada:
@@ -200,14 +201,53 @@ Roles validos en el MVP:
 usuario, admin
 ```
 
-## 6. Base de pedidos
+## 6. Escritura de productos admin
+
+La lectura de productos es publica, pero crear, actualizar o eliminar productos requiere token admin.
+
+```text
+Metodo: POST
+URL: http://localhost:3000/api/productos
+Header: Authorization: Bearer <JWT_ADMIN>
+Header: Content-Type: application/json
+```
+
+Body:
+
+```json
+{
+  "nombre": "Bloque demo Postman",
+  "descripcion": "Producto de prueba creado desde Postman",
+  "precio": 25.5,
+  "tipo": "bloque",
+  "material": "Hormigon",
+  "alto": 80,
+  "ancho": 40,
+  "largo": 120,
+  "idProveedor": 1
+}
+```
+
+Respuesta esperada:
+
+```text
+201 Created
+```
+
+Con token de usuario normal, la respuesta esperada es:
+
+```text
+403 Forbidden
+```
+
+## 7. Base de pedidos
 
 El backend tiene endpoints y tablas para pedidos. Esta prueba valida la base tecnica, aunque el checkout completo desde el carrito del frontend queda para fases siguientes.
 
 ```text
 Metodo: POST
 URL: http://localhost:3000/api/pedidos
-Header: Authorization: Bearer <JWT>
+Header: Authorization: Bearer {{token}}
 Header: Content-Type: application/json
 ```
 
@@ -237,8 +277,38 @@ Para listar pedidos del usuario autenticado:
 ```text
 Metodo: GET
 URL: http://localhost:3000/api/pedidos
-Header: Authorization: Bearer <JWT>
+Header: Authorization: Bearer {{token}}
 ```
+
+Para consultar un pedido concreto:
+
+```text
+Metodo: GET
+URL: http://localhost:3000/api/pedidos/1
+Header: Authorization: Bearer {{token}}
+```
+
+Para cancelar un pedido:
+
+```text
+Metodo: PATCH
+URL: http://localhost:3000/api/pedidos/1/cancelar
+Header: Authorization: Bearer {{token}}
+```
+
+Respuesta esperada:
+
+```json
+{
+  "message": "Pedido cancelado correctamente",
+  "pedido": {
+    "idPedido": 1,
+    "estado": "cancelado"
+  }
+}
+```
+
+La cancelacion es logica: no elimina el pedido, solo actualiza `estado` y `fechaCancelacion`.
 
 ## Errores comunes
 
@@ -248,7 +318,7 @@ Header: Authorization: Bearer <JWT>
 | `401 Unauthorized` | El usuario no esta autenticado o el token no es valido. |
 | `403 Forbidden` | El usuario no tiene permisos de administrador. |
 | `404 Not Found` | El recurso solicitado no existe. |
-| `409 Conflict` | El email ya esta registrado o no se puede eliminar un usuario con dependencias. |
+| `409 Conflict` | El email ya esta registrado, no se puede eliminar un usuario con dependencias o el pedido no se puede cancelar por su estado. |
 | `500 Internal Server Error` | Error interno del servidor o base de datos. |
 
 ## Resultado esperado
@@ -261,7 +331,8 @@ Si estas pruebas funcionan, se puede explicar que:
 - El login genera un token.
 - Las rutas protegidas validan JWT.
 - Las rutas admin requieren rol `admin`.
-- Existe base tecnica para pedidos.
+- Las rutas de escritura de productos requieren rol `admin`.
+- Existe base tecnica para pedidos, detalle y cancelacion logica.
 
 ## Idea clave para explicar
 

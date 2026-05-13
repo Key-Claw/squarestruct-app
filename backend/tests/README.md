@@ -42,6 +42,15 @@ Actualmente la suite cubre:
 - Registro y login de usuarios.
 - Perfil autenticado.
 - `GET /api/productos`.
+- Escritura de productos protegida para administradores.
+- Rechazo de escritura de productos sin token o con usuario normal.
+- Gestion y consulta de usuarios con rol `admin`.
 - Rutas de pedidos protegidas sin token.
 - Rutas de pedidos protegidas con token.
 - Creacion de pedidos autenticada.
+- Consulta de detalle de pedido por propietario.
+- Cancelacion logica de pedidos.
+- Bloqueo de doble cancelacion.
+- Bloqueo de cancelacion de pedidos enviados o entregados.
+- Bloqueo de cancelacion por usuarios que no son propietarios.
+- Cancelacion de pedidos por administrador.

@@ -13,6 +13,7 @@ Esta guia resume lo necesario para instalar, arrancar y validar el frontend. La 
 - JavaScript
 - Bootstrap 5
 - CSS propio organizado en `src/styles/`
+- Vitest y Testing Library
 - ESLint
 
 ## Estructura
@@ -51,6 +52,7 @@ frontend/
 | `Register.jsx` | Vista de registro tradicional. |
 | `Usuarios.jsx` | Vista protegida para administradores. Lista usuarios y permite cambiar rol entre `usuario` y `admin`. |
 | `Facturacion.jsx` | Panel administrativo visual de facturacion. Sus datos actuales son de maqueta. |
+| `Settings.jsx` | Pantalla de ajustes visuales de usuario/interfaz. |
 
 Ademas, la autenticacion principal del navbar se gestiona con `AuthModal`, que muestra login y registro en un modal reutilizable.
 
@@ -120,6 +122,12 @@ Comprobar compilacion de produccion:
 npm run build
 ```
 
+Ejecutar tests automatizados:
+
+```bash
+npm run test:run
+```
+
 ## Comprobacion antes de entregar
 
 Antes de abrir una pull request o dar por terminada una tarea de frontend:
@@ -127,14 +135,14 @@ Antes de abrir una pull request o dar por terminada una tarea de frontend:
 1. Arrancar backend si la tarea usa datos reales.
 2. Ejecutar `npm run lint`.
 3. Ejecutar `npm run build`.
-4. Ejecutar `npm test`.
+4. Ejecutar `npm run test:run`.
 5. Probar en navegador las rutas afectadas.
 6. Si hay login/admin, cerrar sesion e iniciar sesion de nuevo para renovar el JWT.
 7. Revisar que no quedan errores visibles en consola.
 
-## Relacion con MVP v1
+## Estado V2 sobre base MVP
 
-El frontend cubre las partes principales de `MVP v1 - Funcional`:
+El frontend mantiene las partes principales de `MVP v1 - Funcional` y suma validacion automatica basica en V2:
 
 - registro e inicio de sesion;
 - catalogo conectado al backend;
@@ -142,7 +150,8 @@ El frontend cubre las partes principales de `MVP v1 - Funcional`:
 - base de pedidos preparada en servicios;
 - vistas protegidas para administracion;
 - gestion de usuarios admin;
-- maqueta de Design como base del futuro disenador.
+- maqueta de Design como base del futuro disenador;
+- base de tests automatizados con Vitest.
 
 ## Queda para fases siguientes
 

@@ -15,6 +15,7 @@ El objetivo no es listar herramientas sin contexto, sino poder defender como se 
 | JavaScript | Lenguaje principal del frontend. |
 | Bootstrap | Base para grid, navbar, dropdowns, botones, formularios, tablas y cards. |
 | CSS propio | Personalizacion visual y responsive en `src/styles/`. |
+| Vitest + Testing Library | Tests basicos de renderizado de componentes React. |
 | ESLint | Revision automatica de calidad de codigo. |
 
 ## React
@@ -89,6 +90,7 @@ Ejemplos:
 | `profile-panel.css` | Panel lateral de perfil. |
 | `usuarios.css` | Gestion de usuarios. |
 | `facturacion.css` | Panel visual de facturacion. |
+| `settings.css` | Vista de ajustes. |
 | `responsive.css` | Ajustes responsive generales. |
 | `variables.css` | Variables CSS globales. |
 
@@ -111,6 +113,19 @@ Comando:
 cd frontend
 npm run lint
 ```
+
+## Vitest y Testing Library
+
+Vitest ejecuta tests automaticos del frontend. Testing Library permite renderizar componentes como los veria el usuario.
+
+Comando recomendado para validacion y CI:
+
+```bash
+cd frontend
+npm run test:run
+```
+
+`npm test` tambien existe, pero deja Vitest en modo observacion. Para una pull request se usa `npm run test:run`.
 
 ## Comunicacion con backend
 
@@ -163,6 +178,7 @@ Estas tecnologias permiten cubrir `MVP v1 - Funcional` sin sobrecargar el proyec
 - CSS propio da identidad a SquareStruct;
 - los servicios conectan con backend;
 - ESLint ayuda a mantener calidad.
+- Vitest da una primera red de seguridad automatizada.
 
 ## Pendiente tecnico
 

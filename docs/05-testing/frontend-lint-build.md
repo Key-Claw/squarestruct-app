@@ -64,12 +64,12 @@ El build valida que:
 
 Si aparecen warnings, hay que revisar si son nuevos y si estan relacionados con el cambio. Por ejemplo, una ruta de imagen mal movida en CSS puede compilar con aviso, pero debe corregirse antes de entregar.
 
-## `npm test`
+## `npm run test:run`
 
-Ejecuta la suite basica de frontend con Vitest:
+Ejecuta la suite basica de frontend con Vitest en modo no interactivo:
 
 ```bash
-npm test
+npm run test:run
 ```
 
 Sirve para comprobar que los componentes principales siguen renderizando sin errores.
@@ -88,7 +88,7 @@ Estos tests no sustituyen la prueba manual completa del frontend, pero ayudan a 
 | --- | --- |
 | `npm run lint` | Calidad y reglas de codigo JavaScript/React. |
 | `npm run build` | Compilacion de produccion con Vite. |
-| `npm test` | Renderizado basico de componentes principales con Vitest. |
+| `npm run test:run` | Renderizado basico de componentes principales con Vitest en modo CI/local no interactivo. |
 
 Un cambio puede pasar `build` y fallar `lint`, o al reves. Por eso se ejecutan ambos.
 

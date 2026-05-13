@@ -81,25 +81,36 @@ Para los tests de integracion:
 
 ## Cobertura actual
 
-Los tests automaticos actuales no cubren todo el MVP.
+La suite actual combina tests unitarios e integracion.
 
 Cubren:
 
 - health check de la API;
-- registro, login y perfil autenticado.
+- registro, login y perfil autenticado;
+- listado y detalle de usuarios con rol `admin`;
+- consulta publica de productos;
+- creacion de productos solo con token admin;
+- rechazo de escritura de productos sin token o con usuario normal;
+- rutas de pedidos protegidas sin token;
+- creacion de pedidos autenticada;
+- consulta de pedidos y detalle por propietario;
+- cancelacion logica de pedidos;
+- bloqueo de doble cancelacion;
+- bloqueo de cancelacion de pedidos enviados o entregados;
+- bloqueo de cancelacion por usuarios que no son propietarios;
+- cancelacion por administrador.
 
 No cubren todavia:
 
-- catalogo de productos;
-- gestion de usuarios admin;
-- pedidos;
-- pruebas automatizadas de frontend.
+- checkout completo desde el carrito del frontend;
+- facturacion real;
+- flujo visual completo de administracion desde navegador.
 
-Para esas partes se usan comprobaciones manuales con Postman y la revision de frontend con `npm run lint` y `npm run build`.
+Para esas partes se usan comprobaciones manuales con Postman y la revision de frontend con `npm run test:run`, `npm run lint` y `npm run build`.
 
 ## Idea clave para explicar
 
-Los tests actuales validan la base de disponibilidad y autenticacion del backend. Son un punto de partida, pero la cobertura deberia ampliarse en una fase posterior para productos, pedidos y administracion.
+Los tests actuales validan disponibilidad, autenticacion, permisos de administrador, productos y reglas principales de pedidos. La cobertura deberia ampliarse cuando se cierre el checkout completo desde frontend.
 
 ## Integracion continua
 

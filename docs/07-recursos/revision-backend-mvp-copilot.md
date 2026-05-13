@@ -5,6 +5,7 @@
 Este documento resume una revisión técnica del backend de SquareStruct.
 
 La revisión sirve para detectar qué partes están bien encaminadas y qué puntos habría que mejorar antes de considerar el backend como completamente cerrado.
+La revision actualizada del estado del proyecto esta en: [revision-estado-proyecto-copilot.md](revision-estado-proyecto-copilot.md)
 
 ## Alcance
 

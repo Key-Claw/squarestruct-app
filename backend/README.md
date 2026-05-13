@@ -8,6 +8,8 @@ Su responsabilidad es actuar como capa intermedia entre el frontend y la base de
 
 Actualmente gestiona:
 
+Nota de revision V2: ademas de la base tecnica inicial, el backend ya protege la escritura de productos con rol `admin` y permite crear, consultar y cancelar pedidos de forma logica sin borrarlos de la base de datos.
+
 - autenticación de usuarios;
 - perfil de usuario autenticado;
 - administración básica de usuarios;
@@ -253,6 +255,8 @@ Ejemplo de login:
 
 ### Productos
 
+Las rutas `GET` son publicas. Las rutas `POST`, `PUT` y `DELETE` requieren JWT y rol `admin`.
+
 | Método | Ruta | Descripción |
 | --- | --- | --- |
 | GET | `/api/productos` | Lista productos con información del proveedor. |
@@ -277,14 +281,37 @@ Las dimensiones se guardan porque el catálogo está pensado para piezas modular
 
 ### Pedidos
 
-El backend ya tiene endpoints y tablas para pedidos. En la fase actual se documenta como base técnica, porque el checkout completo desde el carrito del frontend queda para fases siguientes.
+Revision V2: la API de pedidos permite crear pedidos autenticados, listar pedidos del usuario, consultar un pedido concreto y cancelarlo de forma logica. El checkout completo desde el carrito del frontend queda para fases siguientes.
 
 | Método | Ruta | Protección | Descripción |
 | --- | --- | --- | --- |
 | GET | `/api/pedidos` | Usuario autenticado | Lista los pedidos del usuario autenticado. |
 | POST | `/api/pedidos` | Usuario autenticado | Crea un pedido con varios productos. |
+| GET | `/api/pedidos/:id` | Propietario o admin | Consulta el detalle de un pedido. |
+| PATCH | `/api/pedidos/:id/cancelar` | Propietario o admin | Cambia el estado a `cancelado` y guarda `fechaCancelacion`. |
 | GET | `/api/orders` | Usuario autenticado | Alias de `/api/pedidos`. |
 | POST | `/api/orders` | Usuario autenticado | Alias de `/api/pedidos`. |
+
+Ejemplo de cancelacion logica:
+
+```text
+PATCH /api/pedidos/1/cancelar
+Authorization: Bearer TOKEN
+```
+
+Respuesta esperada:
+
+```json
+{
+  "message": "Pedido cancelado correctamente",
+  "pedido": {
+    "idPedido": 1,
+    "estado": "cancelado"
+  }
+}
+```
+
+No se elimina el pedido de la base de datos. Solo se actualiza el estado. No se pueden cancelar pedidos ya cancelados, enviados o entregados.
 
 Ejemplo de creación de pedido:
 
@@ -427,11 +454,13 @@ También se han añadido normalizadores de texto en usuarios y productos para co
 
 ## Pendiente o mejorable
 
+Nota de revision V2: la proteccion admin de escritura de productos y la cobertura principal de productos, pedidos y permisos admin ya existen. Los pendientes siguientes se mantienen como mejoras de evolucion.
+
 - Crear la entidad `plano` para guardar diseños 2D/3D de usuarios.
 - Revisar si el stock debe formar parte del modelo de productos antes de consolidar pedidos con control de inventario.
 - Extraer más lógica desde controllers hacia services cuando crezca el backend.
 - Añadir protección de administrador a creación, actualización y borrado de productos si el frontend lo requiere.
-- Ampliar tests para productos, pedidos y permisos de administrador.
+- Ampliar cobertura cuando se cierre el checkout completo desde frontend.
 - Cambiar secretos y credenciales antes de desplegar en AWS.
 
 ## Nota para AWS

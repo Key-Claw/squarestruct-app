@@ -122,7 +122,7 @@ Ademas, `pedidoDetalles` guarda:
 
 Guardar `precioUnitario` es importante porque conserva el precio del producto en el momento del pedido, aunque el precio del catalogo cambie mas adelante.
 
-En `MVP v1`, la base de datos y el backend ya preparan pedidos, y el frontend tiene un carrito visual y un servicio `orderService.js`. El checkout completo desde el carrito queda para fases siguientes.
+En `MVP v1`, la base de datos y el backend ya preparan pedidos, y el frontend tiene un carrito visual y un servicio `orderService.js`. En la revision V2 el backend permite detalle de pedido y cancelacion logica. El checkout completo desde el carrito queda para fases siguientes.
 
 ## Por que los productos tienen dimensiones
 
@@ -165,6 +165,7 @@ En esta fase:
 - el usuario admin puede acceder a gestion de usuarios;
 - puede listar usuarios desde el backend;
 - puede cambiar el rol entre `usuario` y `admin`;
+- puede crear, actualizar y eliminar productos desde rutas protegidas de la API;
 - el acceso se protege con JWT y middleware de admin.
 
 No se considera todavia un panel administrativo completo. Vistas como facturacion funcionan como base visual y quedan pendientes de conexion total con datos reales.
