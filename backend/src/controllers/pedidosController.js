@@ -106,7 +106,7 @@ export const listarPedidosUsuario = async (req, res) => {
     const idUsuario = req.user.idUsuario || req.user.id;
 
     const [pedidos] = await db.query(
-      `SELECT idPedido, fecha, total, estado, direccionEnvio, metodoPago
+      `SELECT idPedido, fecha, total, estado, fechaCancelacion, direccionEnvio, metodoPago
        FROM pedidos
        WHERE idUsuario = ?
        ORDER BY fecha DESC`,
@@ -117,6 +117,102 @@ export const listarPedidosUsuario = async (req, res) => {
   } catch (error) {
     res.status(500).json({
       error: 'Error al obtener los pedidos'
+    });
+  }
+};
+
+export const obtenerPedidoById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const idUsuario = req.user.idUsuario || req.user.id;
+    const esAdmin = req.user?.rol?.toLowerCase() === 'admin';
+
+    const [pedidos] = await db.query(
+      `SELECT idPedido, fecha, total, estado, fechaCancelacion, direccionEnvio, metodoPago, idUsuario
+       FROM pedidos
+       WHERE idPedido = ? ${esAdmin ? '' : 'AND idUsuario = ?'}`,
+      esAdmin ? [id] : [id, idUsuario]
+    );
+
+    if (pedidos.length === 0) {
+      return res.status(404).json({ error: 'Pedido no encontrado' });
+    }
+
+    const [detalles] = await db.query(
+      `SELECT
+        pd.idProducto,
+        pd.cantidad,
+        pd.precioUnitario,
+        p.nombre
+       FROM pedidoDetalles pd
+       JOIN productos p ON pd.idProducto = p.idProducto
+       WHERE pd.idPedido = ?`,
+      [id]
+    );
+
+    res.json({
+      ...pedidos[0],
+      productos: detalles
+    });
+  } catch (error) {
+    res.status(500).json({
+      error: 'Error al obtener el pedido',
+      detalle: error.message
+    });
+  }
+};
+
+export const cancelarPedido = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const idUsuario = req.user.idUsuario || req.user.id;
+    const esAdmin = req.user?.rol?.toLowerCase() === 'admin';
+
+    const [pedidos] = await db.query(
+      `SELECT idPedido, estado, idUsuario
+       FROM pedidos
+       WHERE idPedido = ?`,
+      [id]
+    );
+
+    if (pedidos.length === 0) {
+      return res.status(404).json({ error: 'Pedido no encontrado' });
+    }
+
+    const pedido = pedidos[0];
+
+    if (!esAdmin && Number(pedido.idUsuario) !== Number(idUsuario)) {
+      return res.status(403).json({ error: 'No puedes cancelar este pedido' });
+    }
+
+    if (pedido.estado === 'cancelado') {
+      return res.status(409).json({ error: 'El pedido ya esta cancelado' });
+    }
+
+    if (['enviado', 'entregado'].includes(pedido.estado)) {
+      return res.status(409).json({
+        error: 'No se puede cancelar un pedido completado o enviado'
+      });
+    }
+
+    await db.query(
+      `UPDATE pedidos
+       SET estado = 'cancelado', fechaCancelacion = NOW()
+       WHERE idPedido = ?`,
+      [id]
+    );
+
+    res.json({
+      message: 'Pedido cancelado correctamente',
+      pedido: {
+        idPedido: Number(id),
+        estado: 'cancelado'
+      }
+    });
+  } catch (error) {
+    res.status(500).json({
+      error: 'Error al cancelar el pedido',
+      detalle: error.message
     });
   }
 };
