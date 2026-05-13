@@ -188,7 +188,8 @@ export const getProfile = async () => {
   }
 
   try {
-    const userData = await getRequest(`/usuarios/${user.idUsuario}`)
+    const response = await getRequest('/perfil')
+    const userData = response?.usuario ?? response
     // Actualizar datos en localStorage
     const normalizedUser = normalizarUsuario(userData)
     localStorage.setItem(USER_KEY, JSON.stringify(normalizedUser))

@@ -25,7 +25,6 @@ import '../styles/navbar.css'
  * @param {function} props.onLogout - Callback para logout
  * @param {function} props.onOpenAuthModal - Callback para abrir modal de autenticación
  * @param {function} props.onOpenCartPanel - Callback para abrir panel del carrito
- * @param {function} props.onOpenProfilePanel - Callback para abrir panel del perfil
  */
 function Navbar({
   activePage,
@@ -35,7 +34,6 @@ function Navbar({
   onLogout,
   onOpenAuthModal,
   onOpenCartPanel,
-  onOpenProfilePanel,
 }) {
   // Elementos del menú de navegación principal
   const items = [
@@ -49,7 +47,6 @@ function Navbar({
   const [searchValue, setSearchValue] = useState('')
   // Estado del idioma
   const [language, setLanguage] = useState('ES')
-  const isAdminUser = user?.rol?.toLowerCase() === 'admin'
 
   /**
    * Determina si un item de menú está activo.
@@ -183,93 +180,27 @@ function Navbar({
                     </>
                   )}
                   {user && (
-                    // Mostrar solo opciones esenciales para usuarios normales.
-                    // Si es admin, mostrar el menú completo; si no, mostrar únicamente "Mi perfil" y la opción de cerrar sesión.
-                    isAdminUser ? (
-                      <>
-                        <li>
-                          <button
-                            className="dropdown-item"
-                            onClick={() => onOpenProfilePanel()}
-                          >
-                            Mi perfil
-                          </button>
-                        </li>
-                        <li>
-                          <button
-                            className="dropdown-item"
-                            onClick={() => onNavigate('usuarios')}
-                          >
-                            Gestionar usuarios
-                          </button>
-                        </li>
-                        <li>
-                          <button
-                            className="dropdown-item"
-                            onClick={() => onNavigate('facturacion')}
-                          >
-                            Facturacion
-                          </button>
-                        </li>
-                        <li>
-                          <button
-                            className="dropdown-item"
-                            onClick={() => onNavigate('pedidos')}
-                          >
-                            Mis pedidos
-                          </button>
-                        </li>
-                        <li>
-                          <button
-                            className="dropdown-item"
-                            onClick={() => onNavigate('presupuestos')}
-                          >
-                            Mis presupuestos
-                          </button>
-                        </li>
-                        <li>
-                          <button
-                            className="dropdown-item"
-                            onClick={() => onNavigate('configuracion')}
-                          >
-                            Configuración
-                          </button>
-                        </li>
-                        <li>
-                          <hr className="dropdown-divider" />
-                        </li>
-                        <li>
-                          <button
-                            className="dropdown-item text-danger"
-                            onClick={handleLogout}
-                          >
-                            Cerrar sesión
-                          </button>
-                        </li>
-                      </>
-                    ) : (
-                      <>
-                        <li>
-                          <button
-                            className="dropdown-item"
-                            onClick={() => onOpenProfilePanel()}
-                          >
-                            Mi perfil
-                          </button>
-                        </li>
-                        <li>
-                          <hr className="dropdown-divider" />
-                        </li>
-                        <li>
-                          <button
-                            className="dropdown-item text-danger"
-                            onClick={handleLogout}
-                          >
-                            Cerrar sesión
-                          </button>
-                        </li>
-                      </>
-                    )
+                    <>
+                      <li>
+                        <button
+                          className="dropdown-item"
+                          onClick={() => onNavigate('settings')}
+                        >
+                          Settings
+                        </button>
+                      </li>
+                      <li>
+                        <hr className="dropdown-divider" />
+                      </li>
+                      <li>
+                        <button
+                          className="dropdown-item text-danger"
+                          onClick={handleLogout}
+                        >
+                          Cerrar sesion
+                        </button>
+                      </li>
+                    </>
                   )}
                 </ul>
               </li>

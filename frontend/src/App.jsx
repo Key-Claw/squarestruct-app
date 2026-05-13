@@ -7,12 +7,10 @@ import Catalogo from './pages/Catalogo'
 import Login from './pages/Login'
 import Register from './pages/Register'
 import AboutUs from './pages/AboutUs'
-import Usuarios from './pages/Usuarios'
-import Facturacion from './pages/Facturacion'
 import Design from './pages/Design'
+import Settings from './pages/Settings'
 import AuthModal from './components/AuthModal'
 import CartPanel from './components/CartPanel'
-import ProfilePanel from './components/ProfilePanel'
 import { getCurrentUser, logoutUser, isAdmin } from './services/authService'
 import './App.css'
 
@@ -23,6 +21,8 @@ function App() {
   
   // PÃ¡gina visible en cada momento.
   const [page, setPage] = useState('home')
+  // Pestaña activa dentro de la pantalla settings.
+  const [settingsTab, setSettingsTab] = useState('perfil')
   // Texto de bÃºsqueda que viaja desde el navbar al catÃ¡logo.
   const [searchTerm, setSearchTerm] = useState('')
   const [catalogSection, setCatalogSection] = useState('')
@@ -50,9 +50,6 @@ function App() {
   // Items guardados en el carrito (para demo)
   const [cartItems, setCartItems] = useState([])
   
-  // Control del panel deslizante del perfil
-  const [profilePanelOpen, setProfilePanelOpen] = useState(false)
-
   /**
    * Actualiza el usuario autenticado (despuÃ©s de login exitoso).
    * @param {object} userData - Datos del usuario autenticado.
@@ -77,6 +74,23 @@ function App() {
    * @param {string} term - TÃ©rmino de bÃºsqueda opcional.
    */
   const handleNavigate = (nextPage, term = '', section = '') => {
+    const settingsTabByPage = {
+      settings: 'perfil',
+      perfil: 'perfil',
+      facturas: 'facturas',
+      facturacion: 'facturacion',
+      usuarios: 'usuarios',
+      planos: 'planos',
+    }
+
+    if (settingsTabByPage[nextPage]) {
+      setSettingsTab(settingsTabByPage[nextPage])
+      setPage('settings')
+      setSearchTerm('')
+      setCatalogSection('')
+      return
+    }
+
     setPage(nextPage)
     setSearchTerm(term)
     setCatalogSection(section)
@@ -160,20 +174,6 @@ function App() {
   }
 
   /**
-   * Abre el panel deslizante del perfil.
-   */
-  const handleOpenProfilePanel = () => {
-    setProfilePanelOpen(true)
-  }
-
-  /**
-   * Cierra el panel deslizante del perfil.
-   */
-  const handleCloseProfilePanel = () => {
-    setProfilePanelOpen(false)
-  }
-
-  /**
    * Renderiza la vista principal segÃºn la pÃ¡gina seleccionada.
    * Incluye renderizado condicional de pÃ¡ginas protegidas segÃºn autenticaciÃ³n.
    * @returns {JSX.Element}
@@ -221,23 +221,22 @@ function App() {
       return <AboutUs onNavigate={handleNavigate} />
     }
 
-    if (page === 'usuarios') {
-      // Panel de administraciÃ³n - solo para usuarios admin
-      if (!user || !isAdmin()) {
-        // Si intenta acceder sin ser admin, redirige a home
+    if (page === 'settings') {
+      // Zona privada de configuracion. Si no hay sesion, vuelve a home.
+      if (!user) {
         setPage('home')
         return <Home onNavigate={handleNavigate} />
       }
-      return <Usuarios onNavigate={handleNavigate} user={user} onAuthExpired={handleUserLogout} />
-    }
 
-    if (page === 'facturacion') {
-      if (!user || !isAdmin()) {
-        // Si intenta acceder sin ser admin, redirige a home
-        setPage('home')
-        return <Home onNavigate={handleNavigate} />
-      }
-      return <Facturacion onNavigate={handleNavigate} user={user} />
+      return (
+        <Settings
+          key={settingsTab}
+          user={user}
+          initialTab={settingsTab}
+          onAuthExpired={handleUserLogout}
+          isAdminUser={isAdmin()}
+        />
+      )
     }
 
     // Por defecto volvemos a la portada principal.
@@ -257,7 +256,6 @@ function App() {
         onLogout={handleUserLogout}
         onOpenAuthModal={handleOpenAuthModal}
         onOpenCartPanel={handleOpenCartPanel}
-        onOpenProfilePanel={handleOpenProfilePanel}
       />
       <main className="app-main">{renderPage()}</main>
       {showSiteFooter && <SiteFooter showBenefits={page !== 'aboutus'} />}
@@ -279,16 +277,6 @@ function App() {
         onClose={handleCloseCartPanel}
         onRemoveItem={handleRemoveCartItem}
         onUpdateQuantity={handleUpdateCartQuantity}
-      />
-
-      {/* PANEL DESLIZANTE DEL PERFIL (DESDE LA IZQUIERDA) */}
-      <ProfilePanel
-        isOpen={profilePanelOpen}
-        user={user}
-        onClose={handleCloseProfilePanel}
-        onLogout={handleUserLogout}
-        isAdmin={user && isAdmin()}
-        onNavigateToUsers={() => handleNavigate('usuarios')}
       />
     </div>
   )
