@@ -22,7 +22,8 @@
 .app-main {
   flex: 1;
   width: 100%;
-  background: #f4f6f4;
+  background:
+    linear-gradient(180deg, var(--ss-page-bg) 0%, var(--ss-blue-50) 46%, #eef8ee 100%);
 }
 
 .app-navbar {
@@ -235,13 +236,82 @@
 }
 
 .page-shell {
-  padding: 28px clamp(16px, 3vw, 44px) 40px;
   width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: clamp(26px, 3vw, 52px) clamp(18px, 3vw, 58px) clamp(42px, 4vw, 78px);
+  color: var(--ss-ink);
+}
+
+.page-shell > .card,
+.page-shell > header,
+.page-shell > section,
+.page-shell > .row,
+.page-shell > main {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.card {
+  border-color: var(--ss-border);
+  border-radius: var(--ss-radius);
+  box-shadow: var(--ss-shadow);
+}
+
+.form-control,
+.form-select {
+  min-height: 42px;
+  border-color: var(--ss-border);
+  border-radius: 8px;
+  color: var(--ss-ink);
+  font-family: var(--sans);
+  font-weight: 600;
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: rgba(76, 154, 58, 0.54);
+  box-shadow: 0 0 0 0.2rem rgba(76, 154, 58, 0.16);
+}
+
+.btn {
+  border-radius: 8px;
+}
+
+.btn-success,
+.btn-primary {
+  border-color: var(--ss-green-600);
+  background: linear-gradient(135deg, #63bb55, var(--ss-green-700));
+  color: #fff;
+}
+
+.btn-outline-secondary,
+.btn-outline-dark,
+.btn-outline-light {
+  border-color: var(--ss-border);
+}
+
+.table {
+  color: var(--ss-ink);
+}
+
+.table thead th {
+  color: var(--ss-blue-700);
+  font-size: 0.78rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.table-responsive {
+  border-radius: 10px;
+}
+
+.alert {
+  border-radius: 10px;
 }
 
 .home-page {
-  padding: 28px clamp(16px, 3vw, 44px) 40px;
   width: 100%;
-  background: linear-gradient(180deg, #f6f8f5 0%, #eef3ef 100%);
+  background: transparent;
 }
 

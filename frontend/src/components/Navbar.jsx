@@ -39,9 +39,9 @@ function Navbar({
 }) {
   // Elementos del menú de navegación principal
   const items = [
-    { id: 'galeria', label: 'Galería' },
-    { id: 'catalogo', label: 'Catálogo' },
-    { id: 'design', label: 'Diseñador' },
+    { id: 'galeria', label: 'Galería', icon: 'image' },
+    { id: 'catalogo', label: 'Catálogo', icon: 'cube' },
+    { id: 'design', label: 'Diseñador', icon: 'penTool' },
   ]
 
   // Estado del buscador
@@ -114,16 +114,20 @@ function Navbar({
     >
       {/* Bootstrap input-group + form-control + btn. Los tamaños se ajustan en navbar.css. */}
       <div className="input-group navbar-search-group">
+        <span className="navbar-search-icon" aria-hidden="true">
+          <Icon name="search" size={22} />
+        </span>
         <input
           type="text"
           className="form-control navbar-search-input"
-          placeholder="Buscar en la web"
+          placeholder="Buscar en la web..."
           aria-label="Buscar"
           value={searchValue}
           onChange={(e) => setSearchValue(e.target.value)}
         />
         <button className="btn navbar-search-btn" type="button" onClick={handleSearch}>
-          Buscar
+          <Icon name="search" className="navbar-search-button-icon" size={20} />
+          <span>Buscar</span>
         </button>
       </div>
     </form>
@@ -164,6 +168,28 @@ function Navbar({
             <span className="navbar-toggler-icon"></span>
           </button>
 
+          <div className="navbar-mobile-actions" aria-label="Acciones rápidas">
+            <button
+              className="btn navbar-action-btn"
+              type="button"
+              aria-label="Carrito"
+              title="Carrito"
+              onClick={() => onOpenCartPanel()}
+            >
+              <Icon name="cart" className="cart-icon" size={22} />
+            </button>
+
+            <button
+              className="btn navbar-action-btn navbar-language-btn"
+              type="button"
+              onClick={() => handleLanguageChange(language === 'ES' ? 'EN' : 'ES')}
+              aria-label={language === 'ES' ? 'Idioma actual: español' : 'Idioma actual: inglés'}
+            >
+              <Icon name="globe" size={20} />
+              <span>{language}</span>
+            </button>
+          </div>
+
           <div className="collapse navbar-collapse square-navbar-collapse" id="mainNavbar">
             <ul className="navbar-nav navbar-menu">
               {items.map((item) => (
@@ -172,7 +198,8 @@ function Navbar({
                     className={`navbar-menu-btn${isItemActive(item) ? ' active' : ''}`}
                     onClick={() => onNavigate(item.page || item.id, '', item.section || '')}
                   >
-                    {item.label}
+                    <Icon name={item.icon} size={25} />
+                    <span>{item.label}</span>
                   </button>
                 </li>
               ))}
@@ -189,7 +216,8 @@ function Navbar({
                   aria-expanded="false"
                   type="button"
                 >
-                  {accountName}
+                  <Icon name="user" size={22} />
+                  <span>{accountName}</span>
                 </button>
                 {/* Dropdown de Bootstrap. El contenido cambia según haya sesión o no. */}
                 <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
@@ -254,19 +282,23 @@ function Navbar({
               <li className="nav-item d-flex align-items-center">
                 {language === 'ES' ? (
                   <button
-                    className="btn navbar-action-btn"
+                    className="btn navbar-action-btn navbar-language-btn"
                     type="button"
                     onClick={() => handleLanguageChange('EN')}
+                    aria-label="Idioma actual: español"
                   >
-                    ES
+                    <Icon name="globe" size={22} />
+                    <span>ES</span>
                   </button>
                 ) : (
                   <button
-                    className="btn navbar-action-btn"
+                    className="btn navbar-action-btn navbar-language-btn"
                     type="button"
                     onClick={() => handleLanguageChange('ES')}
+                    aria-label="Idioma actual: inglés"
                   >
-                    EN
+                    <Icon name="globe" size={22} />
+                    <span>EN</span>
                   </button>
                 )}
               </li>

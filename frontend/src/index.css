@@ -1,17 +1,32 @@
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@400;500;600;700;800;900&display=swap');
 
 :root {
-  --text: #6b6375;
-  --text-h: #08060d;
-  --bg: #fff;
-  --border: #e5e4e7;
+  --ss-blue-50: #eef8ff;
+  --ss-blue-100: #d9ecff;
+  --ss-blue-700: #173f5f;
+  --ss-ink: #102736;
+  --ss-muted: #536879;
+  --ss-green-50: #e7f5df;
+  --ss-green-100: #d9efd8;
+  --ss-green-600: #4c9a3a;
+  --ss-green-700: #368f34;
+  --ss-page-bg: #d9ecff;
+  --ss-panel: rgba(255, 255, 255, 0.94);
+  --ss-border: rgba(16, 39, 54, 0.14);
+  --ss-shadow: 0 18px 40px rgba(16, 39, 54, 0.1);
+  --ss-radius: 12px;
+  --ss-content-max: 1760px;
+
+  --text: var(--ss-muted);
+  --text-h: var(--ss-ink);
+  --bg: var(--ss-page-bg);
+  --border: var(--ss-border);
   --code-bg: #f4f3ec;
-  --accent: #aa3bff;
-  --accent-bg: rgba(170, 59, 255, 0.1);
-  --accent-border: rgba(170, 59, 255, 0.5);
+  --accent: var(--ss-green-600);
+  --accent-bg: rgba(76, 154, 58, 0.1);
+  --accent-border: rgba(76, 154, 58, 0.42);
   --social-bg: rgba(244, 243, 236, 0.5);
-  --shadow:
-    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
+  --shadow: var(--ss-shadow);
 
   --sans: Montserrat, 'Segoe UI Variable', Aptos, 'Segoe UI', Roboto, system-ui, sans-serif;
   --heading: 'Bebas Neue', Montserrat, 'Segoe UI Variable', Aptos, 'Segoe UI', Roboto, system-ui, sans-serif;
@@ -35,7 +50,7 @@
 body {
   margin: 0;
   min-width: 320px;
-  background: #d9ecff;
+  background: var(--ss-page-bg);
 }
 
 #root {
@@ -77,6 +92,7 @@ h2 {
 
 p {
   margin: 0;
+  color: inherit;
 }
 
 button,
@@ -110,4 +126,13 @@ code {
   display: inline-block;
   vertical-align: middle;
   flex: 0 0 auto;
+}
+
+a {
+  color: inherit;
+}
+
+::selection {
+  background: rgba(76, 154, 58, 0.22);
+  color: var(--ss-ink);
 }

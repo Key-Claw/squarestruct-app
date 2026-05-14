@@ -1329,3 +1329,237 @@ button,
     font-size: 8px !important;
   }
 }
+
+/* ============================================================================
+   FASE 3: SISTEMA VISUAL GLOBAL V2
+   ============================================================================ */
+
+body,
+#root,
+.app-shell,
+.app-main,
+.page-shell,
+.home-page,
+.gallery-page,
+.catalog-page,
+.design-page,
+.settings-page-shell,
+.about-page,
+.facturas-page,
+.page-shell.usuarios-shell {
+  background-color: var(--ss-page-bg);
+}
+
+.app-main {
+  background:
+    linear-gradient(180deg, var(--ss-page-bg) 0%, var(--ss-blue-50) 48%, #eef8ee 100%) !important;
+}
+
+.page-shell,
+.settings-page-shell,
+.facturas-page,
+.page-shell.usuarios-shell {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding-inline: clamp(18px, 3vw, 58px);
+}
+
+.home-hero,
+.home-commerce-strip,
+.home-about,
+.home-product-showcase,
+.home-feature-grid,
+.home-cta-block,
+.gallery-intro-card,
+.gallery-toolbar,
+.gallery-grid,
+.gallery-feature-card,
+.gallery-cta-card,
+.catalog-heading,
+.catalog-page > .row,
+.design-topbar,
+.design-workspace,
+.design-help-card,
+.settings-layout,
+.about-layout-row,
+.facturas-container,
+.usuarios-container {
+  width: min(100%, var(--ss-content-max));
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.card,
+.catalog-filter-card,
+.catalog-results-bar,
+.catalog-product-card,
+.gallery-project-card,
+.gallery-feature-card,
+.gallery-cta-card,
+.design-topbar,
+.design-pieces-panel,
+.design-canvas-card,
+.design-summary-panel,
+.settings-card,
+.settings-layout,
+.usuarios-card,
+.checkout-container,
+.facturas-card {
+  border: 1px solid var(--ss-border);
+  border-radius: var(--ss-radius);
+  background: var(--ss-panel);
+  box-shadow: var(--ss-shadow);
+}
+
+.btn {
+  border-radius: 8px;
+  font-family: var(--sans);
+  font-weight: 850;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.btn-success,
+.btn-primary,
+.catalog-add-btn,
+.catalog-apply-btn,
+.gallery-cta-btn,
+.design-budget-btn,
+.cart-checkout-btn,
+.checkout-submit-btn {
+  border-color: var(--ss-green-600);
+  background: linear-gradient(135deg, #63bb55, var(--ss-green-700));
+  color: #ffffff;
+}
+
+.btn-success:hover,
+.btn-primary:hover,
+.catalog-add-btn:hover,
+.catalog-apply-btn:hover,
+.gallery-cta-btn:hover,
+.design-budget-btn:hover,
+.cart-checkout-btn:hover,
+.checkout-submit-btn:hover {
+  border-color: var(--ss-green-700);
+  background: linear-gradient(135deg, #54a947, #2f7d2e);
+  color: #ffffff;
+}
+
+.form-control,
+.form-select,
+input,
+select,
+textarea {
+  border-color: var(--ss-border);
+  border-radius: 8px;
+  color: var(--ss-ink);
+}
+
+.form-control:focus,
+.form-select:focus,
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: rgba(76, 154, 58, 0.54);
+  box-shadow: 0 0 0 0.2rem rgba(76, 154, 58, 0.16);
+}
+
+.table-responsive,
+.settings-table-wrap,
+.usuarios-card .table-responsive {
+  border: 1px solid var(--ss-border);
+  border-radius: 10px;
+  background: #ffffff;
+}
+
+.table thead th,
+.settings-table thead th {
+  color: var(--ss-blue-700);
+  font-size: 0.78rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.pagination .page-link {
+  min-width: 34px;
+  min-height: 34px;
+  border-color: var(--ss-border);
+  background: rgba(255, 255, 255, 0.96);
+  color: var(--ss-ink);
+  font-family: var(--sans);
+  font-weight: 850;
+}
+
+.pagination .page-link:hover {
+  border-color: var(--ss-green-600);
+  background: var(--ss-green-50);
+  color: var(--ss-ink);
+}
+
+.pagination .page-item.active .page-link {
+  border-color: var(--ss-blue-700);
+  background: var(--ss-blue-700);
+  color: #ffffff;
+}
+
+h1,
+h2,
+h3,
+.card h1,
+.card h2,
+.card h3 {
+  color: var(--ss-ink);
+  letter-spacing: 0;
+}
+
+p,
+label,
+td,
+th,
+small,
+input,
+select,
+textarea,
+button {
+  font-family: var(--sans);
+}
+
+/* Mantiene la navbar de Fase 2 por encima de antiguos ajustes responsive. */
+.square-navbar-stage {
+  padding: 18px 18px 22px !important;
+}
+
+.square-navbar-inner {
+  gap: clamp(18px, 2vw, 34px) !important;
+}
+
+.navbar-search-form {
+  min-width: 280px !important;
+}
+
+.navbar-search-btn {
+  color: #ffffff !important;
+}
+
+.navbar-menu .navbar-menu-btn,
+.navbar-user-btn,
+.navbar-actions .navbar-action-btn {
+  box-shadow: none;
+}
+
+.navbar-user-btn,
+.navbar-actions .navbar-action-btn,
+.navbar-search-group {
+  box-shadow: 0 10px 22px rgba(16, 39, 54, 0.06) !important;
+}
+
+@media (max-width: 767.98px) {
+  .square-navbar-stage {
+    padding: 12px 10px 14px !important;
+  }
+
+  .navbar-search-form {
+    min-width: 0 !important;
+  }
+}
