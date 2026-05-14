@@ -1,4 +1,5 @@
 import designBocetoImage from '../assets/design/design-boceto.jpeg'
+import Icon from '../components/ui/Icon'
 
 const designPieces = [
   { name: 'Bloque 200', material: 'Plastico reciclado', size: '20 x 15 x 20 cm' },
@@ -103,14 +104,14 @@ function Design({ onNavigate }) {
               <button type="button" aria-label="Mover">↕</button>
               <button type="button" aria-label="Desplazar">✥</button>
               <button type="button" aria-label="Rotar">↺</button>
-              <button type="button" aria-label="Pantalla completa">□</button>
+              <button type="button" aria-label="Pantalla completa"><Icon name="fullscreen" size={16} /></button>
               <button type="button" aria-label="Eliminar">⌫</button>
             </div>
 
             <div className="design-zoom">
               <button type="button" aria-label="Aumentar zoom">+</button>
               <button type="button" aria-label="Reducir zoom">-</button>
-              <button type="button" aria-label="Ajustar vista">□</button>
+              <button type="button" aria-label="Ajustar vista"><Icon name="fit" size={16} /></button>
             </div>
 
             <div className="design-view-switch" aria-label="Cambiar vista">

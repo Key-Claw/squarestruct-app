@@ -22,5 +22,6 @@ test('Navbar renderiza y muestra el botón Inicio', () => {
   )
 
   // Confirma que el menú contiene el botón Inicio
-  expect(screen.getByText(/Inicio/i)).toBeInTheDocument()
+  expect(screen.getByRole('button', { name: /Inicio/i })
+  ).toBeInTheDocument()
 })

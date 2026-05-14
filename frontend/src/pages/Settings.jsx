@@ -117,7 +117,7 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser }) {
     if (isAdminUser) {
       return [
         { id: 'perfil', label: 'Perfil' },
-        { id: 'facturacion', label: 'Facturacion' },
+        { id: 'facturacion', label: 'Facturación' },
         { id: 'usuarios', label: 'Usuarios' },
         { id: 'planos', label: 'Planos' },
       ]
@@ -170,7 +170,7 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser }) {
           } else {
             logoutUser()
           }
-          setUsersError(`${message}. Vuelve a iniciar sesion como administrador.`)
+          setUsersError(`${message}. Vuelve a iniciar sesión como administrador.`)
           return
         }
 
@@ -376,7 +376,7 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser }) {
             </div>
 
             <div>
-              <label>Correo electronico</label>
+              <label>Correo electrónico</label>
               <span>{profileData.email}</span>
             </div>
 
@@ -403,7 +403,7 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser }) {
 
   const renderUsersAdmin = () => {
     if (!isAdminUser) {
-      return <p className="settings-empty-state">Esta opcion solo esta disponible para administradores.</p>
+      return <p className="settings-empty-state">Esta opción solo está disponible para administradores.</p>
     }
 
     if (isUsersLoading) {
@@ -420,7 +420,7 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser }) {
     return (
       <div className="settings-card">
         <div className="settings-card-head">
-          <h2>Gestion de usuarios</h2>
+          <h2>Gestión de usuarios</h2>
           <small>Total: {usuarios.length}</small>
         </div>
 
@@ -782,7 +782,7 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser }) {
             <thead>
               <tr>
                 <th>Factura</th>
-                <th>Direccion</th>
+                <th>Dirección</th>
                 <th>Fecha</th>
                 <th>Total</th>
                 <th>Pago</th>
@@ -820,7 +820,7 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser }) {
   const renderPlanos = () => (
     <div className="settings-card settings-placeholder-card">
       <h2>Planos</h2>
-      <p>Seccion vacia de momento.</p>
+      <p>Aún no hay planos guardados. Cuando prepares diseños, aparecerán en esta sección.</p>
     </div>
   )
 
@@ -837,9 +837,9 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser }) {
   return (
     <section className="settings-page-shell">
       <div className="settings-layout">
-        <aside className="settings-sidebar" aria-label="Menu de settings">
+        <aside className="settings-sidebar" aria-label="Menú de cuenta">
           <div className="settings-sidebar-head">
-            <h1>Settings</h1>
+            <h1>Mi cuenta</h1>
             <small>{user?.nombre || 'Usuario'}</small>
           </div>
 
@@ -861,7 +861,7 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser }) {
           <header className="settings-header-bar">
             <div>
               <h2>{tabs.find((tab) => tab.id === activeTab)?.label || 'Perfil'}</h2>
-              <p>Gestiona tu cuenta y tus opciones en una sola pantalla.</p>
+              <p>Gestiona tu perfil, facturas y herramientas desde una sola pantalla.</p>
             </div>
           </header>
 
@@ -891,7 +891,7 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser }) {
                 </div>
 
                 <div className="mb-3">
-                  <label className="form-label text-muted">Correo electronico:</label>
+                  <label className="form-label text-muted">Correo electrónico:</label>
                   <p className="mb-0">{editingUsuario.email}</p>
                 </div>
 
@@ -986,7 +986,7 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser }) {
                       </div>
 
                       <div>
-                        <label>Correo electronico</label>
+                        <label>Correo electrónico</label>
                         <span>{selectedUsuario.email}</span>
                       </div>
 

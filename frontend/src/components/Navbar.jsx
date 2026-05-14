@@ -1,6 +1,8 @@
 import { useState } from 'react'
 
+import Icon from './ui/Icon'
 import logo from '../assets/logo/squarestruct-icon.png'
+import logoText from '../assets/logo/squarestruct-texto.png'
 import '../styles/navbar.css'
 
 /**
@@ -37,16 +39,16 @@ function Navbar({
 }) {
   // Elementos del menú de navegación principal
   const items = [
-    { id: 'home', label: 'Inicio' },
-    { id: 'galeria', label: 'Galeria' },
-    { id: 'catalogo', label: 'Catalogo' },
-    { id: 'design', label: 'Design' },
+    { id: 'galeria', label: 'Galería', icon: 'image' },
+    { id: 'catalogo', label: 'Catálogo', icon: 'cube' },
+    { id: 'design', label: 'Diseñador', icon: 'penTool' },
   ]
 
   // Estado del buscador
   const [searchValue, setSearchValue] = useState('')
   // Estado del idioma
   const [language, setLanguage] = useState('ES')
+  const accountName = user?.nombre?.trim().split(/\s+/)[0] || 'Cuenta'
 
   /**
    * Determina si un item de menú está activo.
@@ -62,8 +64,21 @@ function Navbar({
    * Maneja la búsqueda en el catálogo.
    */
   const handleSearch = () => {
-    const term = searchValue.trim()
-    onNavigate('catalogo', term, 'productos')
+    const term = searchValue.trim().toLowerCase()
+
+    if (!term) return
+
+    const globalSearchMap = [
+      { page: 'galeria', words: ['galeria', 'inspiracion', 'proyecto', 'casa', 'eco', 'hormigon'] },
+      { page: 'catalogo', words: ['catalogo', 'producto', 'bloque', 'pilar', 'material', 'precio', 'comprar'] },
+      { page: 'design', words: ['diseño', 'diseno', 'design', 'plano', 'estructura', 'presupuesto'] },
+      { page: 'aboutus', words: ['sobre', 'about', 'nosotros', 'equipo', 'squarestruct', 'proyecto'] },
+      { page: 'settings', words: ['perfil', 'cuenta', 'settings', 'factura', 'usuario', 'admin'] },
+    ]
+
+    const result = globalSearchMap.find((item) => item.words.some((word) => term.includes(word)))
+
+    onNavigate(result?.page || 'home')
     setSearchValue('')
   }
 
@@ -99,16 +114,20 @@ function Navbar({
     >
       {/* Bootstrap input-group + form-control + btn. Los tamaños se ajustan en navbar.css. */}
       <div className="input-group navbar-search-group">
+        <span className="navbar-search-icon" aria-hidden="true">
+          <Icon name="search" size={22} />
+        </span>
         <input
           type="text"
           className="form-control navbar-search-input"
-          placeholder="Choose file"
+          placeholder="Buscar en la web..."
           aria-label="Buscar"
           value={searchValue}
           onChange={(e) => setSearchValue(e.target.value)}
         />
         <button className="btn navbar-search-btn" type="button" onClick={handleSearch}>
-          Browse
+          <Icon name="search" className="navbar-search-button-icon" size={20} />
+          <span>Buscar</span>
         </button>
       </div>
     </form>
@@ -119,9 +138,28 @@ function Navbar({
       {/* navbar-expand-md: en tablet queda todo en fila; en movil aparece hamburguesa. */}
       <nav className="navbar navbar-expand-md navbar-light app-navbar square-navbar">
         <div className="container-fluid square-navbar-inner">
-          <a className="navbar-brand square-navbar-brand d-flex align-items-center" href="#" onClick={() => onNavigate('aboutus')}>
-            <img src={logo} alt="SquareStruct" className="navbar-logo" />
-          </a>
+          <div className="navbar-brand-group">
+            <a
+              className="navbar-brand square-navbar-brand d-flex align-items-center"
+              href="#"
+              aria-label="Sobre nosotros"
+              onClick={(event) => {
+                event.preventDefault()
+                onNavigate('aboutus')
+              }}
+            >
+              <img src={logo} alt="SquareStruct" className="navbar-logo" />
+            </a>
+
+            <button
+              type="button"
+              className={`navbar-wordmark-btn${activePage === 'home' ? ' active' : ''}`}
+              aria-label="Inicio"
+              onClick={() => onNavigate('home')}
+            >
+              <img src={logoText} alt="SquareStruct" className="navbar-wordmark" />
+            </button>
+          </div>
 
           {renderSearchForm('navbar-search-mobile')}
 
@@ -129,6 +167,28 @@ function Navbar({
           <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
             <span className="navbar-toggler-icon"></span>
           </button>
+
+          <div className="navbar-mobile-actions" aria-label="Acciones rápidas">
+            <button
+              className="btn navbar-action-btn"
+              type="button"
+              aria-label="Carrito"
+              title="Carrito"
+              onClick={() => onOpenCartPanel()}
+            >
+              <Icon name="cart" className="cart-icon" size={22} />
+            </button>
+
+            <button
+              className="btn navbar-action-btn navbar-language-btn"
+              type="button"
+              onClick={() => handleLanguageChange(language === 'ES' ? 'EN' : 'ES')}
+              aria-label={language === 'ES' ? 'Idioma actual: español' : 'Idioma actual: inglés'}
+            >
+              <Icon name="globe" size={20} />
+              <span>{language}</span>
+            </button>
+          </div>
 
           <div className="collapse navbar-collapse square-navbar-collapse" id="mainNavbar">
             <ul className="navbar-nav navbar-menu">
@@ -138,10 +198,69 @@ function Navbar({
                     className={`navbar-menu-btn${isItemActive(item) ? ' active' : ''}`}
                     onClick={() => onNavigate(item.page || item.id, '', item.section || '')}
                   >
-                    {item.label}
+                    <Icon name={item.icon} size={25} />
+                    <span>{item.label}</span>
                   </button>
                 </li>
               ))}
+
+              <li className="nav-item dropdown navbar-menu-account">
+                <button
+                  className="btn dropdown-toggle navbar-user-btn navbar-menu-account-btn"
+                  id="mobileUserDropdown"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                  type="button"
+                >
+                  <Icon name="user" size={18} />
+                  <span>{accountName}</span>
+                </button>
+                <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="mobileUserDropdown">
+                  {!user && (
+                    <>
+                      <li>
+                        <button
+                          className="dropdown-item"
+                          onClick={() => onOpenAuthModal(true)}
+                        >
+                          Iniciar sesiÃ³n
+                        </button>
+                      </li>
+                      <li>
+                        <button
+                          className="dropdown-item"
+                          onClick={() => onOpenAuthModal(false)}
+                        >
+                          Crear cuenta
+                        </button>
+                      </li>
+                    </>
+                  )}
+                  {user && (
+                    <>
+                      <li>
+                        <button
+                          className="dropdown-item"
+                          onClick={() => onNavigate('settings')}
+                        >
+                          Mi cuenta
+                        </button>
+                      </li>
+                      <li>
+                        <hr className="dropdown-divider" />
+                      </li>
+                      <li>
+                        <button
+                          className="dropdown-item text-danger"
+                          onClick={handleLogout}
+                        >
+                          Cerrar sesiÃ³n
+                        </button>
+                      </li>
+                    </>
+                  )}
+                </ul>
+              </li>
             </ul>
 
             {renderSearchForm('navbar-search-desktop')}
@@ -155,7 +274,8 @@ function Navbar({
                   aria-expanded="false"
                   type="button"
                 >
-                  USER<span className="ms-1">{user ? user.nombre : ''}</span>
+                  <Icon name="user" size={22} />
+                  <span>{accountName}</span>
                 </button>
                 {/* Dropdown de Bootstrap. El contenido cambia según haya sesión o no. */}
                 <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
@@ -186,7 +306,7 @@ function Navbar({
                           className="dropdown-item"
                           onClick={() => onNavigate('settings')}
                         >
-                          Settings
+                          Mi cuenta
                         </button>
                       </li>
                       <li>
@@ -197,7 +317,7 @@ function Navbar({
                           className="dropdown-item text-danger"
                           onClick={handleLogout}
                         >
-                          Cerrar sesion
+                          Cerrar sesión
                         </button>
                       </li>
                     </>
@@ -213,26 +333,30 @@ function Navbar({
                   title="Carrito"
                   onClick={() => onOpenCartPanel()}
                 >
-                  <span className="cart-icon" aria-hidden="true">&#128722;</span>
+                  <Icon name="cart" className="cart-icon" size={22} />
                 </button>
               </li>
 
               <li className="nav-item d-flex align-items-center">
                 {language === 'ES' ? (
                   <button
-                    className="btn navbar-action-btn"
+                    className="btn navbar-action-btn navbar-language-btn"
                     type="button"
                     onClick={() => handleLanguageChange('EN')}
+                    aria-label="Idioma actual: español"
                   >
-                    ES
+                    <Icon name="globe" size={22} />
+                    <span>ES</span>
                   </button>
                 ) : (
                   <button
-                    className="btn navbar-action-btn"
+                    className="btn navbar-action-btn navbar-language-btn"
                     type="button"
                     onClick={() => handleLanguageChange('ES')}
+                    aria-label="Idioma actual: inglés"
                   >
-                    EN
+                    <Icon name="globe" size={22} />
+                    <span>EN</span>
                   </button>
                 )}
               </li>

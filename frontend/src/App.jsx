@@ -52,6 +52,8 @@ function App() {
   const [cartItems, setCartItems] = useState([])
   // Control del modal de checkout
   const [checkoutOpen, setCheckoutOpen] = useState(false)
+  // Si el usuario intenta comprar sin sesion, se abre checkout justo despues del login.
+  const [pendingCheckoutAfterLogin, setPendingCheckoutAfterLogin] = useState(false)
 
   /**
    * Tabs de settings reservadas para administradores.
@@ -65,6 +67,12 @@ function App() {
    */
   const handleUserLogin = (userData) => {
     setUser(userData)
+
+    if (pendingCheckoutAfterLogin) {
+      setPendingCheckoutAfterLogin(false)
+      setAuthModalOpen(false)
+      setCheckoutOpen(true)
+    }
   }
 
   /**
@@ -123,6 +131,7 @@ function App() {
    */
   const handleCloseAuthModal = () => {
     setAuthModalOpen(false)
+    setPendingCheckoutAfterLogin(false)
   }
 
   /**
@@ -192,8 +201,16 @@ function App() {
    * Cierra el panel del carrito para mostrar el checkout.
    */
   const handleOpenCheckout = () => {
-    setCheckoutOpen(true)
     setCartPanelOpen(false)
+
+    if (!user) {
+      setPendingCheckoutAfterLogin(true)
+      setAuthIsLoginMode(true)
+      setAuthModalOpen(true)
+      return
+    }
+
+    setCheckoutOpen(true)
   }
 
   /**
@@ -290,9 +307,6 @@ function App() {
     return <Home onNavigate={handleNavigate} />
   }
 
-  // Determina si mostrar el footer (solo en ciertas pÃ¡ginas)
-  const showSiteFooter = ['home', 'galeria', 'catalogo', 'design', 'aboutus'].includes(page)
-
   return (
     <div className="app-shell">
       <Navbar
@@ -305,7 +319,7 @@ function App() {
         onOpenCartPanel={handleOpenCartPanel}
       />
       <main className="app-main">{renderPage()}</main>
-      {showSiteFooter && <SiteFooter showBenefits={page !== 'aboutus'} />}
+      <SiteFooter />
 
       {/* MODAL DE AUTENTICACIÃ“N (LOGIN/REGISTER CON FLIP) */}
       <AuthModal
