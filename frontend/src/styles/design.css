@@ -624,6 +624,53 @@ button.design-piece-card:focus-visible,
   font-size: 1.45rem;
 }
 
+.design-price-breakdown {
+  display: grid;
+  gap: 10px;
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(79, 143, 47, 0.24);
+}
+
+.design-price-breakdown > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.design-price-breakdown p,
+.design-price-breakdown b {
+  margin: 0;
+  color: #0f172a;
+  font-size: 0.78rem;
+}
+
+.design-price-breakdown p {
+  font-weight: 700;
+}
+
+.design-price-breakdown b {
+  text-align: right;
+}
+
+.design-price-breakdown-total {
+  padding-top: 8px;
+  border-top: 1px dashed rgba(23, 63, 95, 0.2);
+}
+
+.design-price-breakdown-total.is-final {
+  border-top-style: solid;
+  border-top-color: rgba(95, 159, 56, 0.34);
+}
+
+.design-price-breakdown-total.is-final p,
+.design-price-breakdown-total.is-final b {
+  color: #2f6f17;
+  font-size: 0.9rem;
+  font-weight: 850;
+}
+
 .design-summary-panel h3 {
   margin: 0 0 24px;
   color: #0f172a;

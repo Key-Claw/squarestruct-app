@@ -161,7 +161,7 @@ function Design({ onNavigate }) {
     const pieceMap = new Map(designPieces.map((piece) => [piece.id, piece]))
     const summaryMap = new Map()
     let totalPieces = 0
-    let totalBudget = 0
+    let materialsSubtotal = 0
 
     board.forEach((row) => {
       row.forEach((cell) => {
@@ -175,7 +175,7 @@ function Design({ onNavigate }) {
         }
 
         totalPieces += 1
-        totalBudget += piece.price
+        materialsSubtotal += piece.price
 
         const summaryKey = `${piece.name}-${piece.material}`
         const currentSummary = summaryMap.get(summaryKey)
@@ -188,17 +188,32 @@ function Design({ onNavigate }) {
         summaryMap.set(summaryKey, {
           name: piece.name,
           material: piece.material,
+          unitPrice: piece.price,
           amount: 1,
         })
       })
     })
 
+    const summaryItems = Array.from(summaryMap.values())
+      .map((item) => ({
+        ...item,
+        lineSubtotal: item.unitPrice * item.amount,
+      }))
+      .sort((a, b) => b.lineSubtotal - a.lineSubtotal)
+
+    const contingencyRate = 0.08
+    const contingencyAmount = materialsSubtotal * contingencyRate
+    const estimatedTotal = materialsSubtotal + contingencyAmount
+
     return {
       totalPieces,
-      totalBudget,
+      materialsSubtotal,
+      contingencyRate,
+      contingencyAmount,
+      estimatedTotal,
       totalArea: (totalPieces * 1.2).toFixed(1),
       wallHeight: `${(totalPieces > 0 ? 2.4 : 0).toFixed(2)} m`,
-      items: Array.from(summaryMap.values()),
+      items: summaryItems,
     }
   }, [board])
 
@@ -623,7 +638,37 @@ function Design({ onNavigate }) {
 
             <div className="design-price-box">
               <span>Precio estimado</span>
-              <strong>{boardStats.totalBudget.toFixed(2)} EUR</strong>
+              <strong>{boardStats.estimatedTotal.toFixed(2)} EUR</strong>
+              <div className="design-price-breakdown" aria-label="Desglose del presupuesto">
+                {boardStats.items.length > 0 ? (
+                  boardStats.items.map((item) => (
+                    <div key={`${item.name}-${item.material}`}>
+                      <p>{item.name} ({item.material})</p>
+                      <b>
+                        {item.amount} x {item.unitPrice.toFixed(2)} EUR = {item.lineSubtotal.toFixed(2)} EUR
+                      </b>
+                    </div>
+                  ))
+                ) : (
+                  <div>
+                    <p>No hay líneas de presupuesto todavía.</p>
+                    <b>Coloca bloques para ver el desglose.</b>
+                  </div>
+                )}
+
+                <div className="design-price-breakdown-total">
+                  <p>Subtotal materiales</p>
+                  <b>{boardStats.materialsSubtotal.toFixed(2)} EUR</b>
+                </div>
+                <div className="design-price-breakdown-total">
+                  <p>Reserva ({Math.round(boardStats.contingencyRate * 100)}%)</p>
+                  <b>{boardStats.contingencyAmount.toFixed(2)} EUR</b>
+                </div>
+                <div className="design-price-breakdown-total is-final">
+                  <p>Total estimado</p>
+                  <b>{boardStats.estimatedTotal.toFixed(2)} EUR</b>
+                </div>
+              </div>
             </div>
 
             <h3>Acciones rapidas</h3>
