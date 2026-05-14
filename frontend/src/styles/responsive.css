@@ -1554,6 +1554,12 @@ button {
   box-shadow: 0 10px 22px rgba(16, 39, 54, 0.06) !important;
 }
 
+.navbar-user-btn,
+.navbar-actions .navbar-action-btn {
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
 @media (max-width: 767.98px) {
   .square-navbar-stage {
     padding: 12px 10px 14px !important;
@@ -1561,5 +1567,81 @@ button {
 
   .navbar-search-form {
     min-width: 0 !important;
+  }
+}
+
+/* FASE 5: ajustes responsive finales */
+.navbar-menu .navbar-menu-btn.active {
+  border-color: transparent !important;
+  border-bottom-color: var(--navbar-accent) !important;
+  background: transparent !important;
+  color: var(--navbar-ink) !important;
+}
+
+.navbar-menu .navbar-menu-btn,
+.navbar-menu-account-btn,
+.navbar-menu-account-btn:hover,
+.navbar-menu-account-btn:focus {
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.navbar-actions .navbar-action-btn.active {
+  border-color: transparent !important;
+  border-bottom-color: var(--navbar-accent) !important;
+  background: transparent !important;
+  color: var(--navbar-ink) !important;
+}
+
+@media (min-width: 768px) and (max-width: 1199.98px) {
+  .square-navbar-inner {
+    gap: 10px 14px !important;
+  }
+
+  .navbar-search-desktop {
+    min-width: 0 !important;
+  }
+
+  .navbar-menu .navbar-menu-btn {
+    min-width: 0 !important;
+  }
+
+  .navbar-user-btn {
+    min-width: 96px !important;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .navbar-menu .navbar-menu-btn,
+  .navbar-menu-account-btn {
+    min-width: 0 !important;
+    font-size: 0.84rem !important;
+  }
+
+  .gallery-toolbar {
+    align-items: stretch;
+  }
+
+  .gallery-toolbar > [class*="col-"] {
+    width: 100%;
+  }
+
+  .gallery-search-input,
+  .gallery-sort-select {
+    width: 100%;
+    max-width: none;
+  }
+
+  .home-cta-block {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: left;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .navbar-menu .navbar-menu-btn,
+  .navbar-menu-account-btn {
+    font-size: 0.74rem !important;
   }
 }

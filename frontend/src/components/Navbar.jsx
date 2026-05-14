@@ -153,7 +153,7 @@ function Navbar({
 
             <button
               type="button"
-              className="navbar-wordmark-btn"
+              className={`navbar-wordmark-btn${activePage === 'home' ? ' active' : ''}`}
               aria-label="Inicio"
               onClick={() => onNavigate('home')}
             >
@@ -203,6 +203,64 @@ function Navbar({
                   </button>
                 </li>
               ))}
+
+              <li className="nav-item dropdown navbar-menu-account">
+                <button
+                  className="btn dropdown-toggle navbar-user-btn navbar-menu-account-btn"
+                  id="mobileUserDropdown"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                  type="button"
+                >
+                  <Icon name="user" size={18} />
+                  <span>{accountName}</span>
+                </button>
+                <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="mobileUserDropdown">
+                  {!user && (
+                    <>
+                      <li>
+                        <button
+                          className="dropdown-item"
+                          onClick={() => onOpenAuthModal(true)}
+                        >
+                          Iniciar sesiÃ³n
+                        </button>
+                      </li>
+                      <li>
+                        <button
+                          className="dropdown-item"
+                          onClick={() => onOpenAuthModal(false)}
+                        >
+                          Crear cuenta
+                        </button>
+                      </li>
+                    </>
+                  )}
+                  {user && (
+                    <>
+                      <li>
+                        <button
+                          className="dropdown-item"
+                          onClick={() => onNavigate('settings')}
+                        >
+                          Mi cuenta
+                        </button>
+                      </li>
+                      <li>
+                        <hr className="dropdown-divider" />
+                      </li>
+                      <li>
+                        <button
+                          className="dropdown-item text-danger"
+                          onClick={handleLogout}
+                        >
+                          Cerrar sesiÃ³n
+                        </button>
+                      </li>
+                    </>
+                  )}
+                </ul>
+              </li>
             </ul>
 
             {renderSearchForm('navbar-search-desktop')}
