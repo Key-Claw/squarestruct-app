@@ -95,6 +95,34 @@ p {
   color: inherit;
 }
 
+.app-main :where(p, li, .card-text, .lead) {
+  text-align: justify;
+  text-align-last: start;
+  text-wrap: pretty;
+  hyphens: auto;
+}
+
+.app-main :where(
+  .text-center,
+  .text-end,
+  .navbar,
+  .square-navbar,
+  .site-footer,
+  .auth-modal-card,
+  .cart-panel-container,
+  .checkout-container,
+  .table,
+  .pagination,
+  .dropdown-menu,
+  .alert,
+  .settings-sidebar,
+  .profile-photo-card,
+  .cart-empty-state
+) :where(p, li, .card-text, .lead) {
+  text-align: inherit;
+  text-align-last: auto;
+}
+
 button,
 .btn,
 [role="button"],
