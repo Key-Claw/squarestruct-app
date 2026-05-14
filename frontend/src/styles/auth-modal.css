@@ -57,6 +57,7 @@
   /* Dimensiones responsivas */
   width: min(92vw, 460px);
   max-width: 460px;
+  height: min(78dvh, 720px);
   max-height: calc(100dvh - 40px);
   
   /* Perspectiva para efecto 3D */
@@ -86,7 +87,8 @@
   /* Contenedor del flip 3D */
   position: relative;
   width: 100%;
-  min-height: min(78dvh, 720px);
+  height: 100%;
+  min-height: 100%;
   
   /* Transforma para el efecto flip */
   transition: transform 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
@@ -108,11 +110,12 @@
 .auth-modal-card {
   /* Dimensiones y espaciado */
   width: 100%;
-  min-height: min(78dvh, 720px);
+  height: 100%;
+  min-height: 100%;
   max-height: calc(100dvh - 40px);
   padding: 26px 24px;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-rows: auto auto auto minmax(0, 1fr);
   overflow-y: auto;
   
   /* Estilos visuales */
@@ -243,10 +246,24 @@
    =========================================================================== */
 
 .auth-modal-form {
-  display: flex;
-  flex-direction: column;
+  grid-row: 4;
+  height: 100%;
+  min-height: 0;
+  display: grid;
+  align-content: space-between;
   gap: 14px;
-  margin-bottom: 16px;
+  margin-bottom: 0;
+}
+
+.auth-modal-fields {
+  display: grid;
+  align-content: start;
+  gap: 14px;
+}
+
+.auth-modal-bottom {
+  display: grid;
+  gap: 14px;
 }
 
 /* Grupo de formulario (label + input) */
@@ -301,7 +318,7 @@
 
 .auth-modal-submit-btn {
   padding: 12px 16px;
-  margin-top: 4px;
+  margin-top: 0;
   background: linear-gradient(135deg, #63bb55, var(--ss-green-700, #2f7d2e));
   color: #fff;
   border: none;
@@ -339,7 +356,7 @@
    =========================================================================== */
 
 .auth-modal-footer {
-  margin-top: 2px;
+  margin-top: 0;
   text-align: center;
   font-size: 0.85rem;
   color: var(--ss-muted, #607386);
@@ -398,15 +415,17 @@
   .auth-modal-container {
     width: min(100%, 420px);
     max-width: 420px;
+    height: calc(100dvh - 24px);
     max-height: calc(100dvh - 24px);
   }
 
   .auth-modal-flip-wrapper {
-    min-height: min(620px, calc(100dvh - 24px));
+    height: 100%;
+    min-height: 100%;
   }
 
   .auth-modal-card {
-    min-height: min(620px, calc(100dvh - 24px));
+    min-height: 100%;
     max-height: calc(100dvh - 24px);
     padding: 22px 18px;
     border-radius: 16px;
@@ -419,6 +438,14 @@
 
   .auth-modal-form {
     gap: 14px;
+  }
+
+  .auth-modal-fields {
+    gap: 13px;
+  }
+
+  .auth-modal-bottom {
+    gap: 12px;
   }
 
   .auth-modal-register {
