@@ -430,3 +430,88 @@
   letter-spacing: 0.04em;
 }
 
+/* FASE 4: acabado v2 para portada */
+.home-hero,
+.home-about,
+.home-feature-card,
+.home-cta-block {
+  border-color: var(--ss-border);
+  border-radius: var(--ss-radius);
+  box-shadow: var(--ss-shadow);
+}
+
+.home-hero {
+  background: var(--ss-panel);
+}
+
+.home-hero-copy h1,
+.home-section-heading h2,
+.home-about-copy h2,
+.home-cta-block h2 {
+  color: var(--ss-ink);
+  font-family: var(--heading);
+  font-weight: 400;
+  letter-spacing: 0.01em;
+}
+
+.home-hero-copy h1 {
+  max-width: 12ch;
+  font-size: clamp(3rem, 5vw, 5.4rem);
+}
+
+.home-hero-copy h2 {
+  color: var(--ss-blue-700);
+  font-family: var(--sans);
+  font-size: clamp(1rem, 1.2vw, 1.22rem);
+  font-weight: 850;
+  text-transform: uppercase;
+}
+
+.home-hero-copy p,
+.home-about-copy p,
+.home-cta-block p,
+.home-highlight p,
+.home-feature-body p {
+  color: var(--ss-muted);
+}
+
+.home-hero .btn-light,
+.home-cta-block .btn-light {
+  border-color: var(--ss-green-600);
+  background: linear-gradient(135deg, #63bb55, var(--ss-green-700));
+  color: #ffffff;
+}
+
+.home-hero .home-design-btn {
+  border-color: var(--ss-border);
+  background: #ffffff;
+  color: var(--ss-ink);
+}
+
+.home-highlight {
+  border-color: var(--ss-border);
+  background: linear-gradient(180deg, #ffffff, var(--ss-blue-50));
+}
+
+.home-highlight-icon {
+  border-color: rgba(76, 154, 58, 0.35);
+  background: var(--ss-green-50);
+  color: var(--ss-green-700);
+}
+
+.home-feature-card {
+  background: var(--ss-ink);
+}
+
+.home-feature-body {
+  background: linear-gradient(180deg, rgba(16, 39, 54, 0.98), rgba(16, 39, 54, 0.94));
+}
+
+.home-feature-link {
+  color: #98d878;
+}
+
+.home-cta-block {
+  background: var(--ss-panel);
+}
+
