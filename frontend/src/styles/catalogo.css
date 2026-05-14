@@ -466,3 +466,55 @@
   color: #ffffff;
 }
 
+/* FASE 5: respiracion responsive del catalogo */
+@media (max-width: 991.98px) {
+  .catalog-sidebar {
+    position: static;
+    top: auto;
+  }
+
+  .catalog-results-bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .catalog-results-actions {
+    justify-content: flex-start;
+    align-items: stretch !important;
+  }
+
+  .catalog-search-input,
+  .catalog-sort-select {
+    width: 100%;
+    max-width: none;
+  }
+
+  .catalog-view-btn {
+    width: 42px;
+    flex: 0 0 42px;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .catalog-heading h1 {
+    font-size: clamp(2.6rem, 16vw, 4rem);
+  }
+
+  .catalog-results-actions {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .catalog-results-actions .catalog-search-input,
+  .catalog-results-actions .catalog-sort-select,
+  .catalog-results-actions .catalog-back-button {
+    grid-column: 1 / -1;
+    width: 100%;
+    max-width: none;
+  }
+
+  .catalog-results-actions span {
+    display: none;
+  }
+}
+
