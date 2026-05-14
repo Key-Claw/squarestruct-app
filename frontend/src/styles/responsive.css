@@ -1520,8 +1520,7 @@ th,
 small,
 input,
 select,
-textarea,
-button {
+textarea {
   font-family: var(--sans);
 }
 
@@ -1562,7 +1561,7 @@ button {
 
 @media (max-width: 767.98px) {
   .square-navbar-stage {
-    padding: 12px 10px 14px !important;
+    padding: 9px 10px 11px !important;
   }
 
   .navbar-search-form {
@@ -1595,7 +1594,7 @@ button {
 
 @media (min-width: 768px) and (max-width: 1199.98px) {
   .square-navbar-inner {
-    gap: 10px 14px !important;
+    gap: 12px 16px !important;
   }
 
   .navbar-search-desktop {

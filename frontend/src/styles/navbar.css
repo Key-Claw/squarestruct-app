@@ -144,6 +144,15 @@
   white-space: nowrap;
 }
 
+.navbar-menu .navbar-menu-btn span,
+.navbar-user-btn span,
+.navbar-actions .navbar-action-btn span,
+.navbar-language-btn span {
+  display: inline-flex;
+  align-items: center;
+  line-height: 1;
+}
+
 .navbar-menu .navbar-menu-btn .ss-icon {
   color: var(--navbar-ink);
   stroke-width: 1.75;
@@ -173,7 +182,7 @@
 
 .navbar-search-group {
   width: min(100%, 640px) !important;
-  min-height: 64px;
+  min-height: 50px;
   align-items: center;
   border: 1px solid rgba(16, 39, 54, 0.16);
   border-radius: 14px !important;
@@ -193,7 +202,7 @@
 }
 
 .navbar-search-input {
-  height: 62px !important;
+  height: 48px !important;
   border: 0 !important;
   background: transparent !important;
   color: var(--navbar-ink);
@@ -208,7 +217,7 @@
 
 .navbar-search-btn {
   min-width: 116px;
-  height: 54px;
+  height: 40px;
   margin-right: 5px;
   display: inline-flex;
   align-items: center;
@@ -247,8 +256,11 @@
   background: transparent;
   color: var(--navbar-ink);
   padding: 0 8px 8px;
-  font-size: 0.92rem;
-  font-weight: 900;
+  font-family: var(--heading);
+  font-size: clamp(1.16rem, 1.1vw, 1.45rem);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: 0;
   text-transform: uppercase;
   box-shadow: none;
 }
@@ -339,17 +351,17 @@
   }
 
   .navbar-search-group {
-    min-height: 52px;
+    min-height: 44px;
   }
 
   .navbar-search-input {
-    height: 50px !important;
+    height: 42px !important;
     font-size: 0.84rem !important;
   }
 
   .navbar-search-btn {
     min-width: 92px;
-    height: 44px;
+    height: 36px;
     font-size: 0.82rem;
   }
 
@@ -357,6 +369,7 @@
   .navbar-actions .navbar-action-btn {
     min-height: 50px;
     padding: 0 13px;
+    font-size: 1.14rem;
   }
 
   .navbar-user-btn {
@@ -412,14 +425,14 @@
 @media (min-width: 768px) and (max-width: 1199.98px) {
   .square-navbar.app-navbar {
     min-height: auto !important;
-    padding: 14px 16px !important;
+    padding: 14px 18px !important;
   }
 
   .square-navbar-inner {
     display: grid !important;
     grid-template-columns: auto minmax(0, 1fr) auto;
     align-items: center;
-    gap: 14px !important;
+    gap: 16px !important;
   }
 
   .navbar-brand-group {
@@ -448,7 +461,7 @@
     align-items: center;
     justify-content: flex-start;
     margin-left: 0 !important;
-    gap: clamp(10px, 1.5vw, 18px) !important;
+    gap: clamp(12px, 1.6vw, 20px) !important;
   }
 
   .navbar-actions {
@@ -468,30 +481,49 @@
   .navbar-user-btn span {
     display: inline;
   }
+
+  .navbar-menu .navbar-menu-btn {
+    min-height: 50px;
+    gap: 6px;
+    font-size: clamp(1rem, 1.3vw, 1.16rem);
+  }
+
+  .navbar-menu .navbar-menu-btn .ss-icon {
+    width: 19px;
+    height: 19px;
+  }
+
+  .navbar-user-btn,
+  .navbar-actions .navbar-action-btn {
+    min-height: 50px;
+    gap: 8px;
+    padding: 0 9px 8px;
+    font-size: clamp(1rem, 1.25vw, 1.12rem);
+  }
 }
 
 @media (min-width: 768px) and (max-width: 991.98px) {
   .square-navbar-inner {
-    gap: 10px !important;
+    gap: 12px !important;
   }
 
   .navbar-brand-group {
-    padding-right: 10px;
+    padding-right: 12px;
   }
 
   .square-navbar-brand {
-    width: 58px !important;
-    flex-basis: 58px !important;
+    width: 64px !important;
+    flex-basis: 64px !important;
   }
 
   .navbar-logo {
-    width: 56px !important;
-    height: 56px !important;
+    width: 62px !important;
+    height: 62px !important;
   }
 
   .navbar-wordmark-btn {
-    --navbar-wordmark-width: 96px;
-    --navbar-wordmark-height: 20px;
+    --navbar-wordmark-width: 108px;
+    --navbar-wordmark-height: 23px;
   }
 
   .navbar-menu,
@@ -500,15 +532,15 @@
   }
 
   .navbar-menu .navbar-menu-btn {
-    gap: 5px;
-    min-height: 44px;
+    gap: 6px;
+    min-height: 48px;
     padding-inline: 2px;
-    font-size: 0.92rem;
+    font-size: 1rem;
   }
 
   .navbar-menu .navbar-menu-btn .ss-icon {
-    width: 18px;
-    height: 18px;
+    width: 17px;
+    height: 17px;
   }
 
   .navbar-search-group {
@@ -540,28 +572,29 @@
 
   .navbar-user-btn,
   .navbar-actions .navbar-action-btn {
-    min-width: 44px;
-    min-height: 46px;
-    padding: 0 10px;
+    min-width: 48px;
+    min-height: 48px;
+    padding: 0 8px 8px;
+    font-size: 0.98rem;
   }
 
   .navbar-language-btn {
-    min-width: 62px !important;
+    min-width: 60px !important;
   }
 }
 
 @media (max-width: 767.98px) {
   .square-navbar-stage {
-    padding: 12px 10px 14px;
+    padding: 9px 10px 11px;
   }
 
   .square-navbar.app-navbar {
-    min-height: 74px !important;
-    padding: 10px 12px !important;
+    min-height: 68px !important;
+    padding: 8px 12px !important;
   }
 
   .square-navbar-inner {
-    min-height: 54px !important;
+    min-height: 50px !important;
     display: grid !important;
     grid-template-columns: 44px minmax(0, 1fr) auto auto;
     align-items: center;
@@ -643,7 +676,7 @@
   .square-navbar-collapse {
     grid-column: 1 / -1;
     grid-row: 2;
-    padding-top: 12px;
+    padding-top: 2px;
     position: relative;
     overflow: visible;
   }
@@ -677,7 +710,7 @@
   .navbar-menu-account-btn {
     width: 100%;
     min-width: 0;
-    min-height: 48px;
+    min-height: 34px;
     gap: 4px;
     align-items: center;
     justify-content: center;
@@ -686,8 +719,12 @@
     border-bottom: 2px solid transparent;
     border-radius: 10px;
     background: transparent;
-    padding: 0 3px;
+    padding: 0 2px;
     font-size: 0.84rem;
+    font-family: var(--heading);
+    font-weight: 400;
+    line-height: 1;
+    letter-spacing: 0;
     box-shadow: none;
   }
 
@@ -779,14 +816,14 @@
 
   .navbar-menu .navbar-menu-btn {
     gap: 3px;
-    min-height: 46px;
+    min-height: 32px;
     padding-inline: 2px;
     font-size: 0.74rem;
   }
 
   .navbar-menu-account-btn {
     gap: 3px;
-    min-height: 46px;
+    min-height: 32px;
     padding-inline: 2px;
     font-size: 0.74rem;
   }
