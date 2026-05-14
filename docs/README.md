@@ -24,7 +24,8 @@ Esta carpeta reune la documentacion del proyecto. Esta organizada para consultar
 18. [`06-debug/generar-hash-bcrypt.md`](06-debug/generar-hash-bcrypt.md): explica como crear hashes bcrypt para usuarios de prueba.
 19. [`07-recursos/tecnologias-y-comandos-defensa.md`](07-recursos/tecnologias-y-comandos-defensa.md): chuleta de tecnologias, comandos y puntos de defensa.
 20. [`07-recursos/resumen-frontend.md`](07-recursos/resumen-frontend.md): chuleta rapida para explicar el frontend.
-21. [`00-workflow/`](00-workflow/): recoge normas de ramas, commits, issues y milestones.
+21. [`08-design/README.md`](08-design/README.md): documentacion de la sesion, decisiones y aplicacion tecnica del area de diseno.
+22. [`00-workflow/`](00-workflow/): recoge normas de ramas, commits, issues y milestones.
 
 ## Documentacion backend
 La documentacion del backend esta repartida entre la guia practica del servidor, la arquitectura, la API, la base de datos, las pruebas y los documentos de depuracion:

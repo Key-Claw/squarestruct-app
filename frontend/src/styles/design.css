@@ -321,6 +321,72 @@ button.design-piece-card:focus-visible,
   background: #fff;
 }
 
+.design-floor-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.design-floor-btn {
+  width: 42px;
+  height: 42px;
+  min-width: 42px;
+  border: 1px solid rgba(23, 63, 95, 0.18);
+  border-radius: 999px;
+  background: #fff;
+  color: #0f172a;
+  font-size: 1.2rem;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.design-floor-indicator {
+  min-width: 140px;
+  padding: 10px 14px;
+  border: 1px solid rgba(95, 159, 56, 0.24);
+  border-radius: 999px;
+  background: #f4fbef;
+  color: #2f6f17;
+  text-align: center;
+}
+
+.design-floor-indicator span {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.design-floor-indicator strong {
+  display: block;
+  margin-top: 2px;
+  font-size: 1.15rem;
+}
+
+.design-view-switch-inline {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.design-view-switch-inline button {
+  min-width: 68px;
+  min-height: 36px;
+  border: 1px solid rgba(23, 63, 95, 0.18);
+  border-radius: 999px;
+  background: #fff;
+  color: #0f172a;
+  font-size: 0.78rem;
+  font-weight: 850;
+}
+
+.design-view-switch-inline button:hover {
+  border-color: #5f9f38;
+}
+
 .design-board {
   display: grid;
   grid-template-columns: repeat(10, minmax(0, 1fr));
@@ -356,8 +422,26 @@ button.design-piece-card:focus-visible,
 
 .design-board-cell.is-filled {
   border-style: solid;
-  border-color: rgba(91, 141, 239, 0.32);
-  background: linear-gradient(180deg, rgba(235, 243, 255, 0.96), rgba(226, 236, 255, 0.96));
+  border-color: color-mix(in srgb, var(--piece-color, #5b8def) 42%, white);
+  background: linear-gradient(180deg, color-mix(in srgb, var(--piece-color, #5b8def) 18%, white), color-mix(in srgb, var(--piece-color, #5b8def) 10%, #edf2f7));
+}
+
+.design-board-cell.is-anchor {
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.72);
+}
+
+.design-board-cell.is-occupied {
+  cursor: grab;
+}
+
+.design-board-cell.is-preview {
+  border-color: rgba(95, 159, 56, 0.76);
+  background: color-mix(in srgb, var(--piece-color, #5b8def) 14%, white);
+}
+
+.design-board-cell.is-invalid-preview {
+  border-color: rgba(216, 72, 72, 0.7);
+  background: color-mix(in srgb, #d84a4a 10%, white);
 }
 
 .design-piece-token {
@@ -374,6 +458,14 @@ button.design-piece-card:focus-visible,
   text-align: center;
   line-height: 1.1;
   cursor: grab;
+}
+
+.design-piece-token small {
+  display: block;
+  margin-top: 4px;
+  font-size: 0.62rem;
+  font-weight: 800;
+  opacity: 0.85;
 }
 
 .design-piece-token:active {

@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 
 import Icon from '../components/ui/Icon'
+import Design3D from '../components/design/Design3D'
 
 const DESIGN_STORAGE_KEY = 'squarestruct-design-draft'
 const DESIGN_DRAG_MIME = 'application/x-squarestruct-piece'
@@ -20,6 +21,7 @@ const designPieces = [
     size: '20 x 15 x 20 cm',
     price: 18.5,
     color: '#4f8f2f',
+    footprint: { width: 1, height: 1 },
   },
   {
     id: 'bloque-200-hormigon',
@@ -29,6 +31,7 @@ const designPieces = [
     size: '20 x 15 x 20 cm',
     price: 21.9,
     color: '#c2c7cf',
+    footprint: { width: 1, height: 1 },
   },
   {
     id: 'bloque-300-hormigon',
@@ -38,6 +41,7 @@ const designPieces = [
     size: '30 x 15 x 20 cm',
     price: 25.4,
     color: '#9aa4b2',
+    footprint: { width: 2, height: 1 },
   },
   {
     id: 'bloque-600-hormigon',
@@ -47,6 +51,7 @@ const designPieces = [
     size: '60 x 15 x 20 cm',
     price: 31.8,
     color: '#6b7280',
+    footprint: { width: 3, height: 1 },
   },
   {
     id: 'bloque-800-reciclado',
@@ -56,6 +61,7 @@ const designPieces = [
     size: '80 x 15 x 20 cm',
     price: 34.6,
     color: '#7fbf4d',
+    footprint: { width: 4, height: 1 },
   },
   {
     id: 'pilar-esquina',
@@ -65,6 +71,7 @@ const designPieces = [
     size: '20 x 20 x 240 cm',
     price: 45.0,
     color: '#8b949e',
+    footprint: { width: 1, height: 1 },
   },
   {
     id: 'pilar-medio',
@@ -74,6 +81,7 @@ const designPieces = [
     size: '20 x 20 x 240 cm',
     price: 39.5,
     color: '#d0d6de',
+    footprint: { width: 1, height: 1 },
   },
   {
     id: 'remate-superior',
@@ -83,35 +91,203 @@ const designPieces = [
     size: '20 x 15 x 10 cm',
     price: 12.2,
     color: '#9dd671',
+    footprint: { width: 1, height: 1 },
   },
 ]
 
 const gridColumns = 10
 const gridRows = 7
-const baseBoardState = () => Array.from({ length: gridRows }, () => Array(gridColumns).fill(null))
+const createEmptyPlacements = () => []
+
+function createPlacementId() {
+  if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
+    return crypto.randomUUID()
+  }
+
+  return `placement-${Date.now()}-${Math.random().toString(16).slice(2)}`
+}
+
+function getPieceFootprint(piece) {
+  return piece?.footprint || { width: 1, height: 1 }
+}
+
+function createPlacement(piece, row, column, floor = 0, placementId = createPlacementId()) {
+  const footprint = getPieceFootprint(piece)
+
+  return {
+    id: placementId,
+    pieceId: piece.id,
+    row,
+    column,
+    width: footprint.width,
+    height: footprint.height,
+    floor,
+  }
+}
+
+function placementCoversCell(placement, row, column, floor = placement.floor) {
+  return (
+    floor === placement.floor
+    && row >= placement.row
+    && row < placement.row + placement.height
+    && column >= placement.column
+    && column < placement.column + placement.width
+  )
+}
+
+function rectanglesOverlap(a, b) {
+  const aBottom = a.row + a.height
+  const aRight = a.column + a.width
+  const bBottom = b.row + b.height
+  const bRight = b.column + b.width
+
+  return a.row < bBottom && aBottom > b.row && a.column < bRight && aRight > b.column
+}
+
+// Un bloque está apoyado si toca la planta inferior o si se engancha a un bloque
+// del mismo piso por su lado izquierdo. Con esto evitamos piezas "flotando".
+function hasStructuralSupport(placements, candidatePlacement, ignorePlacementId = null) {
+  if (candidatePlacement.floor === 0) {
+    return true
+  }
+
+  const lowerFloor = candidatePlacement.floor - 1
+
+  const hasSupportBelow = placements.some((placement) => {
+    if (placement.id === ignorePlacementId || placement.floor !== lowerFloor) {
+      return false
+    }
+
+    return rectanglesOverlap(placement, candidatePlacement)
+  })
+
+  if (hasSupportBelow) {
+    return true
+  }
+
+  return placements.some((placement) => {
+    if (placement.id === ignorePlacementId || placement.floor !== candidatePlacement.floor) {
+      return false
+    }
+
+    const touchesLeftSide = placement.column + placement.width === candidatePlacement.column
+    const verticalOverlap = rectanglesOverlap(
+      { row: placement.row, height: placement.height, column: 0, width: 1 },
+      { row: candidatePlacement.row, height: candidatePlacement.height, column: 0, width: 1 },
+    )
+
+    return touchesLeftSide && verticalOverlap
+  })
+}
+
+function evaluatePlacement(placements, candidatePlacement, ignorePlacementId = null) {
+  if (candidatePlacement.row < 0 || candidatePlacement.column < 0) {
+    return { ok: false, reason: 'La pieza no cabe fuera del plano.' }
+  }
+
+  if (candidatePlacement.row + candidatePlacement.height > gridRows || candidatePlacement.column + candidatePlacement.width > gridColumns) {
+    return { ok: false, reason: 'La pieza no cabe en el borde del plano.' }
+  }
+
+  const collidesWithAnotherPlacement = placements.some((placement) => {
+    if (placement.id === ignorePlacementId) {
+      return false
+    }
+
+    if (placement.floor !== candidatePlacement.floor) {
+      return false
+    }
+
+    return rectanglesOverlap(placement, candidatePlacement)
+  })
+
+  if (collidesWithAnotherPlacement) {
+    return { ok: false, reason: 'La pieza choca con otra colocada.' }
+  }
+
+  if (!hasStructuralSupport(placements, candidatePlacement, ignorePlacementId)) {
+    return { ok: false, reason: 'La pieza necesita apoyo debajo o conexión lateral.' }
+  }
+
+  return { ok: true, reason: '' }
+}
+
+function buildBoardFromPlacements(placements, floor = 0) {
+  const board = Array.from({ length: gridRows }, () => Array(gridColumns).fill(null))
+
+  placements.forEach((placement) => {
+    if (placement.floor !== floor) {
+      return
+    }
+
+    for (let rowOffset = 0; rowOffset < placement.height; rowOffset += 1) {
+      for (let columnOffset = 0; columnOffset < placement.width; columnOffset += 1) {
+        const row = placement.row + rowOffset
+        const column = placement.column + columnOffset
+
+        if (row < 0 || row >= gridRows || column < 0 || column >= gridColumns) {
+          continue
+        }
+
+        board[row][column] = {
+          placementId: placement.id,
+          pieceId: placement.pieceId,
+          isAnchor: rowOffset === 0 && columnOffset === 0,
+          floor: placement.floor,
+        }
+      }
+    }
+  })
+
+  return board
+}
+
+function convertBoardToPlacements(board) {
+  if (!Array.isArray(board)) {
+    return createEmptyPlacements()
+  }
+
+  const placements = []
+
+  board.forEach((row, rowIndex) => {
+    row.forEach((cell, columnIndex) => {
+      if (!cell) {
+        return
+      }
+
+      placements.push({
+        id: createPlacementId(),
+        pieceId: cell.pieceId,
+        row: rowIndex,
+        column: columnIndex,
+        width: 1,
+        height: 1,
+        floor: cell.floor || 0,
+      })
+    })
+  })
+
+  return placements
+}
+
+function findPlacementAtCell(placements, row, column, floor = 0) {
+  return placements.find((placement) => placementCoversCell(placement, row, column, floor)) || null
+}
 
 const howItWorks = [
   {
     title: 'Elige una pieza',
-    text: 'Selecciona un bloque, pilar o accesorio desde el panel izquierdo.'
+    text: 'Selecciona un bloque, pilar o accesorio desde el panel izquierdo.',
   },
   {
     title: 'Coloca en la cuadricula',
-    text: 'Haz clic sobre una celda para dejar la pieza en el plano 2D.'
+    text: 'Haz clic sobre una zona libre para dejar la pieza en el plano 2D.',
   },
   {
     title: 'Revisa el resumen',
-    text: 'El panel derecho se actualiza con piezas, materiales y coste estimado.'
+    text: 'El panel derecho se actualiza con piezas, materiales y coste estimado.',
   },
 ]
-
-function createEmptyBoard() {
-  return baseBoardState()
-}
-
-function cloneBoard(board) {
-  return board.map((row) => [...row])
-}
 
 function loadDraft() {
   if (typeof window === 'undefined') {
@@ -126,14 +302,17 @@ function loadDraft() {
 
     const parsedDraft = JSON.parse(rawDraft)
 
-    if (!Array.isArray(parsedDraft.board) || !parsedDraft.activeCategory) {
+    if (!parsedDraft.activeCategory) {
       return null
     }
 
     return {
-      board: parsedDraft.board,
+      placements: Array.isArray(parsedDraft.placements)
+        ? parsedDraft.placements
+        : convertBoardToPlacements(parsedDraft.board),
       activeCategory: parsedDraft.activeCategory,
       selectedPieceId: parsedDraft.selectedPieceId || null,
+      activeFloor: Number.isFinite(parsedDraft.activeFloor) ? parsedDraft.activeFloor : 0,
     }
   } catch {
     return null
@@ -141,56 +320,55 @@ function loadDraft() {
 }
 
 function Design({ onNavigate }) {
-  // El diseñador comienza en una versión 2D simple para cerrar bien la lógica modular.
   const initialDraft = loadDraft()
   const [activeCategory, setActiveCategory] = useState(initialDraft?.activeCategory || 'bloques')
   const [selectedPieceId, setSelectedPieceId] = useState(
     initialDraft?.selectedPieceId || designPieces.find((piece) => piece.category === 'bloques')?.id || designPieces[0].id,
   )
-  const [board, setBoard] = useState(initialDraft?.board || createEmptyBoard())
+  const [placements, setPlacements] = useState(() => initialDraft?.placements || createEmptyPlacements())
   const [hoverCell, setHoverCell] = useState(null)
   const [dragPayload, setDragPayload] = useState(null)
   const [dragOverCell, setDragOverCell] = useState(null)
   const [draggingPieceId, setDraggingPieceId] = useState(null)
+  const [activeFloor, setActiveFloor] = useState(initialDraft?.activeFloor || 0)
+  const [viewMode, setViewMode] = useState('2d')
   const [statusMessage, setStatusMessage] = useState('Selecciona una pieza y colócala en la cuadricula.')
 
   const visiblePieces = designPieces.filter((piece) => piece.category === activeCategory)
   const selectedPiece = designPieces.find((piece) => piece.id === selectedPieceId) || visiblePieces[0] || designPieces[0]
+  const board = useMemo(() => buildBoardFromPlacements(placements, activeFloor), [placements, activeFloor])
+  const placementMap = useMemo(() => new Map(placements.map((placement) => [placement.id, placement])), [placements])
 
   const boardStats = useMemo(() => {
     const pieceMap = new Map(designPieces.map((piece) => [piece.id, piece]))
     const summaryMap = new Map()
     let totalPieces = 0
     let materialsSubtotal = 0
+    let occupiedCells = 0
 
-    board.forEach((row) => {
-      row.forEach((cell) => {
-        if (!cell) {
-          return
-        }
+    placements.forEach((placement) => {
+      const piece = pieceMap.get(placement.pieceId)
+      if (!piece) {
+        return
+      }
 
-        const piece = pieceMap.get(cell.pieceId)
-        if (!piece) {
-          return
-        }
+      totalPieces += 1
+      materialsSubtotal += piece.price
+      occupiedCells += placement.width * placement.height
 
-        totalPieces += 1
-        materialsSubtotal += piece.price
+      const summaryKey = `${piece.name}-${piece.material}`
+      const currentSummary = summaryMap.get(summaryKey)
 
-        const summaryKey = `${piece.name}-${piece.material}`
-        const currentSummary = summaryMap.get(summaryKey)
+      if (currentSummary) {
+        currentSummary.amount += 1
+        return
+      }
 
-        if (currentSummary) {
-          currentSummary.amount += 1
-          return
-        }
-
-        summaryMap.set(summaryKey, {
-          name: piece.name,
-          material: piece.material,
-          unitPrice: piece.price,
-          amount: 1,
-        })
+      summaryMap.set(summaryKey, {
+        name: piece.name,
+        material: piece.material,
+        unitPrice: piece.price,
+        amount: 1,
       })
     })
 
@@ -211,11 +389,11 @@ function Design({ onNavigate }) {
       contingencyRate,
       contingencyAmount,
       estimatedTotal,
-      totalArea: (totalPieces * 1.2).toFixed(1),
+      totalArea: (occupiedCells * 1.2).toFixed(1),
       wallHeight: `${(totalPieces > 0 ? 2.4 : 0).toFixed(2)} m`,
       items: summaryItems,
     }
-  }, [board])
+  }, [placements])
 
   const handlePieceSelect = (pieceId) => {
     setSelectedPieceId(pieceId)
@@ -238,16 +416,16 @@ function Design({ onNavigate }) {
       return
     }
 
-    setBoard((currentBoard) => {
-      const nextBoard = cloneBoard(currentBoard)
-      nextBoard[rowIndex][columnIndex] = {
-        pieceId: selectedPiece.id,
-        label: `${selectedPiece.name} · ${selectedPiece.material}`,
-      }
-      return nextBoard
-    })
+    const candidatePlacement = createPlacement(selectedPiece, rowIndex, columnIndex, activeFloor)
+    const evaluation = evaluatePlacement(placements, candidatePlacement)
 
-    setStatusMessage(`${selectedPiece.name} colocado en la celda ${rowIndex + 1}-${columnIndex + 1}.`)
+    if (!evaluation.ok) {
+      setStatusMessage(evaluation.reason)
+      return
+    }
+
+    setPlacements((currentPlacements) => [...currentPlacements, candidatePlacement])
+    setStatusMessage(`${selectedPiece.name} colocado ocupando ${candidatePlacement.width}x${candidatePlacement.height} celdas.`)
   }
 
   const buildDragPayload = (payload) => JSON.stringify(payload)
@@ -286,9 +464,12 @@ function Design({ onNavigate }) {
   }
 
   const handlePlacedPieceDragStart = (event, rowIndex, columnIndex, pieceId) => {
+    const placement = findPlacementAtCell(placements, rowIndex, columnIndex, activeFloor)
+
     const payload = {
       source: 'board',
       pieceId,
+      placementId: placement?.id || null,
       from: {
         row: rowIndex,
         column: columnIndex,
@@ -327,74 +508,74 @@ function Design({ onNavigate }) {
       return
     }
 
-    setBoard((currentBoard) => {
-      const nextBoard = cloneBoard(currentBoard)
-      const targetCell = nextBoard[rowIndex][columnIndex]
+    const targetPlacement = createPlacement(pieceFromPayload, rowIndex, columnIndex)
 
-      if (payload.source === 'palette') {
-        if (targetCell) {
-          setStatusMessage('Posición inválida: la celda ya está ocupada por otra pieza.')
-          return currentBoard
-        }
+    if (payload.source === 'palette') {
+      const evaluation = evaluatePlacement(placements, targetPlacement)
 
-        nextBoard[rowIndex][columnIndex] = {
-          pieceId: payload.pieceId,
-          label: `${pieceFromPayload.name} · ${pieceFromPayload.material}`,
-        }
-        setSelectedPieceId(payload.pieceId)
-        setStatusMessage(`${pieceFromPayload.name} añadido en la celda ${rowIndex + 1}-${columnIndex + 1}.`)
-        return nextBoard
+      if (!evaluation.ok) {
+        setStatusMessage(evaluation.reason)
+        clearDragState()
+        return
       }
 
-      if (payload.source === 'board') {
-        const sourceRow = payload.from?.row
-        const sourceColumn = payload.from?.column
+      setPlacements((currentPlacements) => [...currentPlacements, targetPlacement])
+      setSelectedPieceId(payload.pieceId)
+      setStatusMessage(`${pieceFromPayload.name} añadido ocupando ${targetPlacement.width}x${targetPlacement.height} celdas.`)
+      clearDragState()
+      return
+    }
 
-        if (typeof sourceRow !== 'number' || typeof sourceColumn !== 'number') {
-          setStatusMessage('No se pudo mover el bloque. Vuelve a intentarlo.')
-          return currentBoard
-        }
+    if (payload.source === 'board') {
+      const sourcePlacementId = payload.placementId || findPlacementAtCell(placements, payload.from?.row, payload.from?.column)?.id
+      const sourcePlacement = placements.find((placement) => placement.id === sourcePlacementId)
 
-        if (sourceRow === rowIndex && sourceColumn === columnIndex) {
-          return currentBoard
-        }
-
-        if (targetCell) {
-          setStatusMessage('Posición inválida: mueve el bloque a una celda vacía.')
-          return currentBoard
-        }
-
-        const sourceCell = nextBoard[sourceRow][sourceColumn]
-        if (!sourceCell) {
-          setStatusMessage('No se pudo mover el bloque porque la celda origen está vacía.')
-          return currentBoard
-        }
-
-        nextBoard[sourceRow][sourceColumn] = null
-        nextBoard[rowIndex][columnIndex] = sourceCell
-        setSelectedPieceId(sourceCell.pieceId)
-        setStatusMessage(`Bloque recolocado en la celda ${rowIndex + 1}-${columnIndex + 1}.`)
-        return nextBoard
+      if (!sourcePlacement) {
+        setStatusMessage('No se pudo mover el bloque. Vuelve a intentarlo.')
+        clearDragState()
+        return
       }
 
-      return currentBoard
-    })
+      const movedPlacement = {
+        ...sourcePlacement,
+        row: rowIndex,
+        column: columnIndex,
+      }
+
+      const evaluation = evaluatePlacement(placements, movedPlacement, sourcePlacement.id)
+
+      if (!evaluation.ok) {
+        setStatusMessage(evaluation.reason)
+        clearDragState()
+        return
+      }
+
+      setPlacements((currentPlacements) => {
+        const withoutSource = currentPlacements.filter((placement) => placement.id !== sourcePlacement.id)
+        return [...withoutSource, movedPlacement]
+      })
+      setSelectedPieceId(sourcePlacement.pieceId)
+      setStatusMessage(`Bloque recolocado ocupando ${movedPlacement.width}x${movedPlacement.height} celdas.`)
+      clearDragState()
+      return
+    }
 
     clearDragState()
   }
 
   const handleRemoveCell = (rowIndex, columnIndex) => {
-    setBoard((currentBoard) => {
-      const nextBoard = cloneBoard(currentBoard)
-      nextBoard[rowIndex][columnIndex] = null
-      return nextBoard
-    })
+    const placement = findPlacementAtCell(placements, rowIndex, columnIndex, activeFloor)
 
-    setStatusMessage(`Celda ${rowIndex + 1}-${columnIndex + 1} vaciada.`)
+    if (!placement) {
+      return
+    }
+
+    setPlacements((currentPlacements) => currentPlacements.filter((item) => item.id !== placement.id))
+    setStatusMessage(`Pieza ${rowIndex + 1}-${columnIndex + 1} eliminada del plano.`)
   }
 
   const handleNewProject = () => {
-    setBoard(createEmptyBoard())
+    setPlacements(createEmptyPlacements())
     setHoverCell(null)
     clearDragState()
     setStatusMessage('Plano reiniciado. Puedes empezar un diseño nuevo.')
@@ -408,7 +589,8 @@ function Design({ onNavigate }) {
     const draft = {
       activeCategory,
       selectedPieceId,
-      board,
+      activeFloor,
+      placements,
     }
 
     window.localStorage.setItem(DESIGN_STORAGE_KEY, JSON.stringify(draft))
@@ -425,7 +607,8 @@ function Design({ onNavigate }) {
 
     setActiveCategory(draft.activeCategory)
     setSelectedPieceId(draft.selectedPieceId || designPieces.find((piece) => piece.category === draft.activeCategory)?.id || designPieces[0].id)
-    setBoard(draft.board)
+    setActiveFloor(Number.isFinite(draft.activeFloor) ? draft.activeFloor : 0)
+    setPlacements(draft.placements || convertBoardToPlacements(draft.board))
     setStatusMessage('Borrador recuperado correctamente.')
   }
 
@@ -532,68 +715,101 @@ function Design({ onNavigate }) {
             <div className="design-board-shell">
               <div className="design-board-metrics">
                 <span>Celda: 1 unidad</span>
-                <span>Vista: 2D</span>
+                <span>Vista: {viewMode === '2d' ? '2D' : '3D'}</span>
                 <span>Pieza actual: {selectedPiece?.name || 'Ninguna'}</span>
               </div>
 
-              <div className="design-board" role="grid" aria-label="Cuadricula de trabajo del plano">
-                {board.map((row, rowIndex) => (
-                  row.map((cell, columnIndex) => {
-                    const isHovered = hoverCell?.row === rowIndex && hoverCell?.column === columnIndex
-                    const isDragOver = dragOverCell?.row === rowIndex && dragOverCell?.column === columnIndex
-                    const piece = cell ? designPieces.find((item) => item.id === cell.pieceId) : null
-                    const draggedPiece = dragPayload ? designPieces.find((item) => item.id === dragPayload.pieceId) : null
-                    const showDragPreview = isDragOver && !cell && draggedPiece
-
-                    return (
-                      <button
-                        key={`${rowIndex}-${columnIndex}`}
-                        type="button"
-                        className={`design-board-cell${cell ? ' is-filled' : ''}${isHovered ? ' is-preview' : ''}${isDragOver ? ' is-drag-target' : ''}`}
-                        onMouseEnter={() => setHoverCell({ row: rowIndex, column: columnIndex })}
-                        onMouseLeave={() => setHoverCell(null)}
-                        onClick={() => (cell ? handleRemoveCell(rowIndex, columnIndex) : handleCellPlace(rowIndex, columnIndex))}
-                        draggable={Boolean(cell)}
-                        onDragStart={(event) => {
-                          if (!cell) {
-                            return
-                          }
-                          handlePlacedPieceDragStart(event, rowIndex, columnIndex, cell.pieceId)
-                        }}
-                        onDragEnd={handleDragEnd}
-                        onDragOver={(event) => handleCellDragOver(event, rowIndex, columnIndex)}
-                        onDrop={(event) => handleCellDrop(event, rowIndex, columnIndex)}
-                        aria-label={cell ? `Quitar ${piece?.name || 'pieza'} de la celda ${rowIndex + 1}-${columnIndex + 1}` : `Colocar ${selectedPiece?.name || 'pieza'} en la celda ${rowIndex + 1}-${columnIndex + 1}`}
-                      >
-                        {cell && piece ? (
-                          <span
-                            className={`design-piece-token${draggingPieceId === piece.id ? ' is-being-dragged' : ''}`}
-                            style={{ '--piece-color': piece.color }}
-                          >
-                            {piece.name}
-                          </span>
-                        ) : showDragPreview ? (
-                          <span className="design-piece-token design-piece-token--preview" style={{ '--piece-color': draggedPiece.color }}>
-                            {draggedPiece.name}
-                          </span>
-                        ) : isHovered && selectedPiece ? (
-                          <span className="design-piece-token design-piece-token--preview" style={{ '--piece-color': selectedPiece.color }}>
-                            {selectedPiece.name}
-                          </span>
-                        ) : null}
-                      </button>
-                    )
-                  })
-                ))}
+              <div className="design-floor-controls" aria-label="Cambiar de piso">
+                <button type="button" className="btn design-floor-btn" onClick={() => setActiveFloor((currentFloor) => Math.max(0, currentFloor - 1))} aria-label="Bajar un piso">
+                  ↓
+                </button>
+                <div className="design-floor-indicator">
+                  <span>Piso activo</span>
+                  <strong>{activeFloor}</strong>
+                </div>
+                <button type="button" className="btn design-floor-btn" onClick={() => setActiveFloor((currentFloor) => currentFloor + 1)} aria-label="Subir un piso">
+                  ↑
+                </button>
               </div>
+
+              <div className="design-view-switch-inline">
+                <button type="button" className="btn" onClick={() => setViewMode('2d')}>2D</button>
+                <button type="button" className="btn" onClick={() => setViewMode('3d')}>3D</button>
+              </div>
+
+              {viewMode === '2d' ? (
+                <div className="design-board" role="grid" aria-label="Cuadricula de trabajo del plano">
+                  {(() => {
+                    const previewSourceCell = dragOverCell || hoverCell
+                    const previewPiece = dragPayload ? designPieces.find((item) => item.id === dragPayload.pieceId) : selectedPiece
+                    const previewPlacement = previewPiece && previewSourceCell
+                      ? {
+                        row: previewSourceCell.row,
+                        column: previewSourceCell.column,
+                        width: getPieceFootprint(previewPiece).width,
+                        height: getPieceFootprint(previewPiece).height,
+                        floor: activeFloor,
+                      }
+                      : null
+                    const previewFits = previewPlacement ? evaluatePlacement(placements, previewPlacement, dragPayload?.placementId || null).ok : false
+
+                    return board.map((row, rowIndex) => (
+                      row.map((cell, columnIndex) => {
+                        const cellPlacement = cell ? placementMap.get(cell.placementId) : null
+                        const isDragOver = dragOverCell?.row === rowIndex && dragOverCell?.column === columnIndex
+                        const piece = cellPlacement ? designPieces.find((item) => item.id === cellPlacement.pieceId) : null
+                        const isPreviewCell = Boolean(previewPlacement && placementCoversCell(previewPlacement, rowIndex, columnIndex))
+                        const isPreviewAnchor = isPreviewCell && rowIndex === previewPlacement.row && columnIndex === previewPlacement.column
+
+                        return (
+                          <button
+                            key={`${rowIndex}-${columnIndex}`}
+                            type="button"
+                            className={`design-board-cell${cell ? ' is-filled' : ''}${cellPlacement ? ' is-occupied' : ''}${cell?.isAnchor ? ' is-anchor' : ''}${isPreviewCell && previewFits ? ' is-preview' : ''}${isPreviewCell && !previewFits ? ' is-invalid-preview' : ''}${isDragOver ? ' is-drag-target' : ''}`}
+                            onMouseEnter={() => setHoverCell({ row: rowIndex, column: columnIndex })}
+                            onMouseLeave={() => setHoverCell(null)}
+                            onClick={() => (cellPlacement ? handleRemoveCell(rowIndex, columnIndex) : handleCellPlace(rowIndex, columnIndex))}
+                            draggable={Boolean(cell)}
+                            onDragStart={(event) => {
+                              if (!cell) return
+                              handlePlacedPieceDragStart(event, rowIndex, columnIndex, cell.pieceId, cell.placementId)
+                            }}
+                            onDragEnd={handleDragEnd}
+                            onDragOver={(event) => handleCellDragOver(event, rowIndex, columnIndex)}
+                            onDrop={(event) => handleCellDrop(event, rowIndex, columnIndex)}
+                            aria-label={cellPlacement ? `Quitar ${piece?.name || 'pieza'} del bloque en la celda ${rowIndex + 1}-${columnIndex + 1}` : `Colocar ${selectedPiece?.name || 'pieza'} en la celda ${rowIndex + 1}-${columnIndex + 1}`}
+                            style={{ '--piece-color': piece?.color || previewPiece?.color || '#6b7280' }}
+                          >
+                            {cellPlacement && piece && cell?.isAnchor ? (
+                              <span className={`design-piece-token${draggingPieceId === piece.id ? ' is-being-dragged' : ''}`} style={{ '--piece-color': piece.color }}>
+                                {piece.name}
+                                <small>Piso {cellPlacement.floor}</small>
+                              </span>
+                            ) : isPreviewAnchor && previewPiece ? (
+                              <span className="design-piece-token design-piece-token--preview" style={{ '--piece-color': previewPiece.color }}>
+                                {previewPiece.name}
+                                <small>Piso {activeFloor}</small>
+                              </span>
+                            ) : null}
+                          </button>
+                        )
+                      })
+                    ))
+                  })()}
+                </div>
+              ) : (
+                <div style={{ height: 560 }}>
+                  <Design3D placements={placements} designPieces={designPieces} />
+                </div>
+              )}
             </div>
 
             <div className="design-board-footer">
               <div>
                 <Icon name="grid" size={18} />
-                <span>Haz clic en una celda vacía para colocar la pieza activa.</span>
+                <span>Haz clic en una zona libre del piso {activeFloor} para colocar la pieza activa.</span>
               </div>
-              <button type="button" className="btn design-outline-btn" onClick={() => setBoard((currentBoard) => cloneBoard(currentBoard).map((row) => row.map(() => null)))}>
+              <button type="button" className="btn design-outline-btn" onClick={() => setPlacements(createEmptyPlacements())}>
                 Limpiar todo
               </button>
             </div>
