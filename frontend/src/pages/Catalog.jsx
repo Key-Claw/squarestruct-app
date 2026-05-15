@@ -2,17 +2,19 @@ import { useEffect, useMemo, useState } from 'react'
 import Icon from '../components/ui/Icon'
 import CatalogFilters from '../components/catalogo/CatalogFilters'
 import CatalogProductCard from '../components/catalogo/CatalogProductCard'
+import inicioCatalogoImage from '../assets/inicio/inicio-catalogo.jpeg'
 import { productosDemo } from '../data/productosDemo'
 import { getProductos, filtrarProductos } from '../services/productService'
 import { normalizarProducto } from '../utils/text'
 
-function Catalogo({ onNavigate, onAddToCart, searchTerm = '', initialSection = '' }) {
+function Catalog({ onNavigate, onAddToCart, searchTerm = '', initialSection = '' }) {
   const [productos, setProductos] = useState([])
   const [cargando, setCargando] = useState(true)
   const [error, setError] = useState('')
   const [busqueda, setBusqueda] = useState(searchTerm)
   const [categoriaActiva, setCategoriaActiva] = useState('todos')
   const [orden, setOrden] = useState('reciente')
+  const [precioMax, setPrecioMax] = useState(1000)
 
   useEffect(() => {
     const cargarProductos = async () => {
@@ -41,7 +43,7 @@ function Catalogo({ onNavigate, onAddToCart, searchTerm = '', initialSection = '
 
   const handleResetSearch = () => {
     setBusqueda('')
-    onNavigate('catalogo', '')
+    onNavigate('catalog', '')
   }
 
   const handleAddProduct = (product) => {
@@ -67,18 +69,27 @@ function Catalogo({ onNavigate, onAddToCart, searchTerm = '', initialSection = '
       ...Object.entries(resumen).map(([label, count]) => ({
         id: label.toLowerCase(),
         label,
-        count
-      }))
+        count,
+      })),
     ]
   }, [productosCatalogo])
+
+  const precioMaxCatalogo = useMemo(() => (
+    Math.max(1, ...productosCatalogo.map((product) => Number(product.precio) || 0))
+  ), [productosCatalogo])
+
+  useEffect(() => {
+    setPrecioMax(Math.ceil(precioMaxCatalogo))
+  }, [precioMaxCatalogo])
 
   const productosFiltrados = useMemo(() => {
     const resultadoBusqueda = filtrarProductos(busqueda, productosCatalogo)
     const resultadoCategoria = categoriaActiva === 'todos'
       ? resultadoBusqueda
       : resultadoBusqueda.filter((product) => product.tipo?.toLowerCase() === categoriaActiva)
+    const resultadoPrecio = resultadoCategoria.filter((product) => Number(product.precio || 0) <= precioMax)
 
-    return [...resultadoCategoria].sort((a, b) => {
+    return [...resultadoPrecio].sort((a, b) => {
       if (orden === 'precio-menor') {
         return Number(a.precio) - Number(b.precio)
       }
@@ -89,7 +100,7 @@ function Catalogo({ onNavigate, onAddToCart, searchTerm = '', initialSection = '
 
       return Number(b.idProducto) - Number(a.idProducto)
     })
-  }, [busqueda, categoriaActiva, orden, productosCatalogo])
+  }, [busqueda, categoriaActiva, orden, productosCatalogo, precioMax])
 
   useEffect(() => {
     if (!busqueda.trim() || productosFiltrados.length === 0) {
@@ -102,9 +113,14 @@ function Catalogo({ onNavigate, onAddToCart, searchTerm = '', initialSection = '
 
   return (
     <section className="page-shell catalog-page container-fluid">
-      <header className="catalog-heading">
-        <h1>Catálogo de productos</h1>
-        <p>Encuentra bloques modulares, pilares y accesorios para tu proyecto.</p>
+      <header className="card catalog-heading">
+        <div className="catalog-heading-copy">
+          <h1>Catalogo de productos</h1>
+          <p>Encuentra bloques modulares, pilares y accesorios para tu proyecto.</p>
+        </div>
+        <div className="catalog-heading-media" aria-hidden="true">
+          <img src={inicioCatalogoImage} alt="" />
+        </div>
       </header>
 
       <div className="row g-4 align-items-start">
@@ -112,6 +128,9 @@ function Catalogo({ onNavigate, onAddToCart, searchTerm = '', initialSection = '
           categorias={categorias}
           categoriaActiva={categoriaActiva}
           onSelectCategoria={setCategoriaActiva}
+          maxCatalogPrice={precioMaxCatalogo}
+          priceMax={precioMax}
+          onPriceMaxChange={setPrecioMax}
         />
 
         <div className="col-12 col-lg-10 catalog-content">
@@ -142,16 +161,16 @@ function Catalogo({ onNavigate, onAddToCart, searchTerm = '', initialSection = '
               <span>Ordenar por:</span>
               <select
                 className="form-select catalog-sort-select"
-                aria-label="Ordenar catálogo"
+                aria-label="Ordenar catalogo"
                 value={orden}
                 onChange={(event) => setOrden(event.target.value)}
               >
-                <option value="reciente">Más reciente</option>
+                <option value="reciente">Mas reciente</option>
                 <option value="precio-menor">Precio menor</option>
                 <option value="precio-mayor">Precio mayor</option>
               </select>
 
-              <button type="button" className="btn catalog-view-btn active" aria-label="Vista cuadrícula">
+              <button type="button" className="btn catalog-view-btn active" aria-label="Vista cuadricula">
                 <Icon name="grid" size={17} />
               </button>
               <button type="button" className="btn catalog-view-btn" aria-label="Vista lista">
@@ -182,11 +201,11 @@ function Catalogo({ onNavigate, onAddToCart, searchTerm = '', initialSection = '
 
           {!cargando && productosFiltrados.length === 0 && (
             <div className="text-center catalog-state mt-4">
-              No se encontraron productos con esa búsqueda.
+              No se encontraron productos con esa busqueda.
             </div>
           )}
 
-          <nav className="catalog-pagination" aria-label="Paginación catálogo">
+          <nav className="catalog-pagination" aria-label="Paginacion catalogo">
             <ul className="pagination pagination-sm justify-content-end">
               <li className="page-item active"><button className="page-link" type="button">1</button></li>
               <li className="page-item"><button className="page-link" type="button">2</button></li>
@@ -199,4 +218,4 @@ function Catalogo({ onNavigate, onAddToCart, searchTerm = '', initialSection = '
   )
 }
 
-export default Catalogo
+export default Catalog

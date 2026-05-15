@@ -138,14 +138,17 @@
 }
 
 .catalog-results-count {
+  flex: 0 0 auto;
   color: #0f172a;
   font-weight: 700;
   white-space: nowrap;
 }
 
 .catalog-results-actions {
-  flex-wrap: wrap;
+  flex: 1 1 auto;
+  flex-wrap: nowrap;
   justify-content: flex-end;
+  min-width: 0;
 }
 
 .catalog-results-actions span {
@@ -154,12 +157,14 @@
 }
 
 .catalog-search-input {
+  width: min(100%, 300px);
   max-width: 300px;
   min-height: 42px;
   border-color: rgba(23, 63, 95, 0.18);
 }
 
 .catalog-sort-select {
+  flex: 0 0 190px;
   max-width: 190px;
   min-height: 42px;
   border-color: rgba(23, 63, 95, 0.18);
@@ -334,22 +339,80 @@
 
 /* FASE 4: acabado v2 para catálogo */
 .catalog-heading {
+  min-height: 300px;
+  margin-bottom: 22px;
   padding: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 0.95fr) minmax(320px, 1.05fr);
+  overflow: hidden;
+  border-color: var(--ss-border);
+  border-radius: var(--ss-radius);
+  background: var(--ss-panel);
   text-align: left;
 }
 
+.catalog-heading-copy {
+  position: relative;
+  z-index: 2;
+  min-height: 300px;
+  padding: 22px clamp(28px, 5vw, 70px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.98) 0%,
+    rgba(255, 255, 255, 0.92) 58%,
+    rgba(255, 255, 255, 0.34) 86%,
+    rgba(255, 255, 255, 0) 100%
+  );
+}
+
 .catalog-heading h1 {
+  max-width: 14ch;
+  margin: 0;
   color: var(--ss-ink);
   font-family: var(--heading);
   font-size: clamp(3rem, 5vw, 5.4rem);
   font-weight: 400;
-  line-height: 0.96;
+  line-height: 0.98;
   letter-spacing: 0.01em;
 }
 
 .catalog-heading p {
+  max-width: 42ch;
+  margin: 12px 0 0;
   color: var(--ss-muted);
   font-weight: 600;
+  line-height: 1.58;
+}
+
+.catalog-heading-media {
+  position: relative;
+  min-height: 300px;
+  margin-left: -90px;
+}
+
+.catalog-heading-media::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.98) 0%,
+    rgba(255, 255, 255, 0.72) 22%,
+    rgba(255, 255, 255, 0.28) 48%,
+    rgba(255, 255, 255, 0) 72%
+  );
+}
+
+.catalog-heading-media img {
+  width: 100%;
+  height: 100%;
+  min-height: 300px;
+  display: block;
+  object-fit: cover;
 }
 
 .catalog-filter-title,
@@ -382,6 +445,58 @@
   border-color: rgba(76, 154, 58, 0.22);
   background: var(--ss-green-50);
   color: var(--ss-green-700);
+}
+
+.catalog-material-tabs {
+  gap: 8px;
+}
+
+.catalog-material-tab {
+  flex: 1;
+  min-height: 42px;
+  border: 1px solid var(--ss-border);
+  background: #ffffff;
+  color: var(--ss-ink);
+  white-space: nowrap;
+  font-size: 0.78rem;
+}
+
+.catalog-material-tab.active {
+  border-color: var(--ss-blue-700);
+  background: var(--ss-blue-700);
+  color: #ffffff;
+}
+
+.catalog-price-filter {
+  display: grid !important;
+  gap: 12px;
+  align-items: stretch !important;
+}
+
+.catalog-price-values {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  color: var(--ss-muted);
+  font-size: 0.82rem;
+}
+
+.catalog-price-values strong {
+  color: var(--ss-ink);
+}
+
+.catalog-price-range {
+  accent-color: var(--ss-green-600);
+}
+
+.catalog-price-range::-webkit-slider-thumb {
+  background: var(--ss-green-600);
+}
+
+.catalog-price-range::-moz-range-thumb {
+  background: var(--ss-green-600);
+  border: 0;
 }
 
 .catalog-results-bar {
@@ -468,6 +583,23 @@
 
 /* FASE 5: respiracion responsive del catalogo */
 @media (max-width: 991.98px) {
+  .catalog-heading {
+    grid-template-columns: 1fr;
+  }
+
+  .catalog-heading-copy {
+    min-height: 260px;
+  }
+
+  .catalog-heading-media {
+    min-height: 220px;
+    margin-left: 0;
+  }
+
+  .catalog-heading-media img {
+    min-height: 220px;
+  }
+
   .catalog-sidebar {
     position: static;
     top: auto;
@@ -481,6 +613,7 @@
   .catalog-results-actions {
     justify-content: flex-start;
     align-items: stretch !important;
+    flex-wrap: wrap;
   }
 
   .catalog-search-input,
@@ -515,6 +648,34 @@
 
   .catalog-results-actions span {
     display: none;
+  }
+}
+
+/* Ajuste final: misma altura superior que Galeria en escritorio. */
+.catalog-heading {
+  height: 300px !important;
+  min-height: 300px !important;
+}
+
+.catalog-heading-copy,
+.catalog-heading-media,
+.catalog-heading-media img {
+  height: 300px !important;
+  min-height: 300px !important;
+}
+
+.catalog-heading h1 {
+  font-size: clamp(2.6rem, 3.6vw, 4.1rem) !important;
+  line-height: 0.98 !important;
+}
+
+@media (max-width: 991.98px) {
+  .catalog-heading,
+  .catalog-heading-copy,
+  .catalog-heading-media,
+  .catalog-heading-media img {
+    height: auto !important;
+    min-height: 220px !important;
   }
 }
 

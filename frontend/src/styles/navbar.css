@@ -85,6 +85,7 @@
   background: transparent;
   padding: 0 0 8px;
   cursor: pointer;
+  text-decoration: none;
   transition: border-color 160ms ease, transform 160ms ease;
 }
 
@@ -142,6 +143,7 @@
   line-height: 1;
   text-transform: uppercase;
   white-space: nowrap;
+  text-decoration: none;
 }
 
 .navbar-menu .navbar-menu-btn span,

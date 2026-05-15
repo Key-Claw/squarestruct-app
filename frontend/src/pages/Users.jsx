@@ -8,7 +8,7 @@ import '../styles/usuarios.css'
  * @param {function} onNavigate - Callback para cambiar de página.
  * @param {object} user - Datos del usuario autenticado (admin).
  */
-function Usuarios({ onNavigate, user, onAuthExpired }) {
+function Users({ onNavigate, user, onAuthExpired }) {
   // Lista de usuarios del sistema.
   const [usuarios, setUsuarios] = useState([])
   // Flag para mostrar spinner mientras se cargan datos.
@@ -361,4 +361,4 @@ function Usuarios({ onNavigate, user, onAuthExpired }) {
   )
 }
 
-export default Usuarios
+export default Users

@@ -9,6 +9,7 @@ Esta guia resume lo necesario para instalar, arrancar y validar el frontend. La 
 ## Tecnologias
 
 - React
+- React Router DOM con `HashRouter`
 - Vite
 - JavaScript
 - Bootstrap 5
@@ -33,6 +34,7 @@ frontend/
     utils/            Helpers y validadores
     App.jsx           Componente principal y navegacion interna
     main.jsx          Punto de entrada de React
+    routes.js         Rutas principales y enlaces reutilizables
   package.json
   vite.config.js
 ```
@@ -44,17 +46,38 @@ frontend/
 | Pagina | Funcion |
 | --- | --- |
 | `Home.jsx` | Portada con carrusel, accesos a catalogo, galeria y Design. |
-| `Catalogo.jsx` | Carga productos desde backend y usa productos demo si la API falla. Permite buscar, filtrar por categoria, ordenar y anadir al carrito visual. |
-| `Galeria.jsx` | Muestra proyectos e imagenes de inspiracion. |
+| `Catalog.jsx` | Carga productos desde backend y usa productos demo si la API falla. Permite buscar, filtrar por categoria, ordenar y anadir al carrito visual. |
+| `Gallery.jsx` | Muestra proyectos e imagenes de inspiracion. |
 | `Design.jsx` | Maqueta visual del futuro disenador de estructuras. Todavia no es una herramienta 3D real. |
 | `AboutUs.jsx` | Presentacion del proyecto y del equipo. |
 | `Login.jsx` | Vista de login tradicional. |
 | `Register.jsx` | Vista de registro tradicional. |
-| `Usuarios.jsx` | Vista protegida para administradores. Lista usuarios y permite cambiar rol entre `usuario` y `admin`. |
-| `Facturacion.jsx` | Panel administrativo visual de facturacion. Sus datos actuales son de maqueta. |
+| `Users.jsx` | Vista protegida para administradores. Lista usuarios y permite cambiar rol entre `usuario` y `admin`. |
+| `Invoices.jsx` | Historial de ordenes/facturas del usuario. |
 | `Settings.jsx` | Pantalla de ajustes visuales de usuario/interfaz. |
 
 Ademas, la autenticacion principal del navbar se gestiona con `AuthModal`, que muestra login y registro en un modal reutilizable.
+
+## Rutas del frontend
+
+El frontend usa `react-router-dom` con `HashRouter`.
+
+Se usa `HashRouter` para facilitar despliegues estaticos en AWS, Apache u otros hostings donde no este configurado el fallback de rutas hacia `index.html`. Con este sistema, el servidor recibe la ruta base y React interpreta la parte posterior al `#`.
+
+Rutas principales:
+
+```text
+http://localhost:5173/#/
+http://localhost:5173/#/home
+http://localhost:5173/#/gallery
+http://localhost:5173/#/catalog
+http://localhost:5173/#/design
+http://localhost:5173/#/about-us
+```
+
+Las rutas y enlaces reutilizables viven en `src/routes.js`.
+
+Login, registro, carrito, checkout y Mi Cuenta no tienen rutas propias por ahora. Funcionan como modal, panel o estado interno para mantener la aplicacion sencilla.
 
 ## Componentes principales
 

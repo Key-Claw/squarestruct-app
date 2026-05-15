@@ -1,28 +1,30 @@
+const formatCatalogText = (value) => (
+  String(value || '')
+    .replace(/hormigon/gi, 'hormigón')
+    .replace(/Hormigon/g, 'Hormigón')
+)
+
 function CatalogProductCard({ product, onAddProduct }) {
+  const tipo = formatCatalogText(product.tipo || 'Producto')
+  const material = formatCatalogText(product.material || 'Sin material')
+  const descripcion = formatCatalogText(product.descripcion || 'Sin descripcion disponible.')
+
   return (
     <article className="card h-100 catalog-product-card" id={`producto-${product.idProducto}`}>
       <div className="catalog-product-media">
-        <span>{product.tipo || 'Producto'}</span>
+        <span>{tipo}</span>
       </div>
       <div className="card-body">
-        <span className="catalog-product-tag">{product.tipo || 'Producto'}</span>
+        <span className="catalog-product-tag">{tipo}</span>
         <h2>{product.nombre}</h2>
-        <p>{product.descripcion || 'Sin descripcion disponible.'}</p>
+        <p>{descripcion}</p>
         <strong className="catalog-product-price">
           {Number(product.precio).toFixed(2)} EUR
         </strong>
         <dl className="catalog-product-meta">
           <div>
             <dt>Material</dt>
-            <dd>{product.material || 'Sin material'}</dd>
-          </div>
-          <div>
-            <dt>Medidas</dt>
-            <dd>
-              {product.alto || product.ancho || product.largo
-                ? `${product.alto} x ${product.ancho} x ${product.largo} cm`
-                : 'Sin medidas'}
-            </dd>
+            <dd>{material}</dd>
           </div>
         </dl>
         <div className="catalog-card-actions">

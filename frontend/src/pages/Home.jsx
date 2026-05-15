@@ -31,14 +31,14 @@ const homeFeatureCards = [
     text: 'Encuentra bloques, pilares y accesorios con una vista clara y ordenada.',
     image: inicioCatalogoImage,
     action: 'Ir al catalogo',
-    handler: (onNavigate) => onNavigate('catalogo', '', 'productos'),
+    handler: (onNavigate) => onNavigate('catalog', '', 'productos'),
   },
   {
     title: 'Inspirarte',
     text: 'Descubre ideas de composicion y referencias visuales para tus proyectos.',
     image: inicioGaleriaImage,
     action: 'Ver galeria',
-    handler: (onNavigate) => onNavigate('galeria'),
+    handler: (onNavigate) => onNavigate('gallery'),
   },
   {
     title: 'Generar tu estructura',
@@ -85,7 +85,7 @@ function Home({ onNavigate }) {
                 planificar tu construccion modular con total claridad y confianza.
               </p>
               <div className="hero-actions home-hero-actions">
-                <button type="button" className="btn btn-light" onClick={() => onNavigate('catalogo', '', 'productos')}>
+                <button type="button" className="btn btn-light" onClick={() => onNavigate('catalog', '', 'productos')}>
                   Ver catalogo
                 </button>
                 <button type="button" className="btn btn-outline-light home-design-btn" onClick={() => onNavigate('design')}>

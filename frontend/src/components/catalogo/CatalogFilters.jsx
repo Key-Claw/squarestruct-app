@@ -2,8 +2,17 @@ import { useState } from 'react'
 
 const materialTabs = ['Hormigón', 'ECO']
 
-function CatalogFilters({ categorias, categoriaActiva, onSelectCategoria }) {
+function CatalogFilters({
+  categorias,
+  categoriaActiva,
+  onSelectCategoria,
+  maxCatalogPrice,
+  priceMax,
+  onPriceMaxChange,
+}) {
   const [activeMaterial, setActiveMaterial] = useState('Hormigón')
+  const safeMaxPrice = Math.max(1, Math.ceil(Number(maxCatalogPrice) || 1000))
+  const safePriceMax = Math.min(Number(priceMax) || safeMaxPrice, safeMaxPrice)
 
   return (
     <aside className="col-12 col-lg-2 catalog-sidebar">
@@ -44,18 +53,22 @@ function CatalogFilters({ categorias, categoriaActiva, onSelectCategoria }) {
       </section>
 
       <section className="card catalog-filter-card">
-        <div className="card-header">Medidas (cm)</div>
-        <div className="list-group list-group-flush">
-          <button type="button" className="list-group-item list-group-item-action">Ancho</button>
-          <button type="button" className="list-group-item list-group-item-action">Alto</button>
-          <button type="button" className="list-group-item list-group-item-action">Largo</button>
-        </div>
-      </section>
-
-      <section className="card catalog-filter-card">
         <div className="card-header">Rango de precio</div>
-        <div className="card-body">
-          <p>0-1000</p>
+        <div className="card-body catalog-price-filter">
+          <div className="catalog-price-values">
+            <span>0 EUR</span>
+            <strong>{safePriceMax} EUR</strong>
+          </div>
+          <input
+            type="range"
+            className="form-range catalog-price-range"
+            min="0"
+            max={safeMaxPrice}
+            step="10"
+            value={safePriceMax}
+            onChange={(event) => onPriceMaxChange(Number(event.target.value))}
+            aria-label="Rango maximo de precio"
+          />
         </div>
       </section>
 

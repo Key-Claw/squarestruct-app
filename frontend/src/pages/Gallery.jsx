@@ -69,7 +69,7 @@ const bottomProjects = [
   },
 ]
 
-function Galeria({ onNavigate }) {
+function Gallery({ onNavigate }) {
   const [activeFilter, setActiveFilter] = useState('Hormigón')
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedIdea, setSelectedIdea] = useState(null)
@@ -276,4 +276,4 @@ function Galeria({ onNavigate }) {
   )
 }
 
-export default Galeria
+export default Gallery

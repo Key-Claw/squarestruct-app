@@ -2,18 +2,18 @@ import designBocetoImage from '../assets/design/design-boceto.jpeg'
 import Icon from '../components/ui/Icon'
 
 const designPieces = [
-  { name: 'Bloque 200', material: 'Plastico reciclado', size: '20 x 15 x 20 cm' },
-  { name: 'Bloque 200', material: 'Hormigon', size: '20 x 15 x 20 cm' },
-  { name: 'Bloque 300', material: 'Hormigon', size: '20 x 15 x 20 cm' },
-  { name: 'Bloque 600', material: 'Hormigon', size: '20 x 15 x 20 cm' },
-  { name: 'Bloque 800', material: 'Plastico reciclado', size: '20 x 15 x 20 cm' },
+  { name: 'Bloque 200', material: 'Plastico reciclado' },
+  { name: 'Bloque 200', material: 'Hormigón' },
+  { name: 'Bloque 300', material: 'Hormigón' },
+  { name: 'Bloque 600', material: 'Hormigón' },
+  { name: 'Bloque 800', material: 'Plastico reciclado' },
 ]
 
 const projectItems = [
   ['Bloque 200', 'Plastico reciclado', 24],
-  ['Bloque 200', 'Hormigon', 18],
-  ['Bloque 300', 'Hormigon', 6],
-  ['Bloque 600', 'Hormigon', 8],
+  ['Bloque 200', 'Hormigón', 18],
+  ['Bloque 300', 'Hormigón', 6],
+  ['Bloque 600', 'Hormigón', 8],
   ['Bloque 800', 'Plastico reciclado', 4],
 ]
 
@@ -39,7 +39,8 @@ function Design({ onNavigate }) {
           BARRA SUPERIOR - Título, descripción y botones de acción principal
           ==================================================================== */}
       <header className="card design-topbar">
-        <div>
+        <div className="design-topbar-copy">
+          <p className="design-eyebrow">Disenador modular</p>
           <h1>Disena tu estructura modular</h1>
           <p>Crea tu plano en 3D utilizando bloques modulares y calcula automaticamente los materiales necesarios.</p>
         </div>
@@ -49,6 +50,10 @@ function Design({ onNavigate }) {
           <button type="button" className="btn design-outline-btn">Cargar</button>
           <button type="button" className="btn design-outline-btn">Nuevo</button>
           <button type="button" className="btn design-budget-btn">Gestionar presupuesto</button>
+        </div>
+
+        <div className="design-topbar-media" aria-hidden="true">
+          <img src={designBocetoImage} alt="" />
         </div>
       </header>
 
@@ -72,7 +77,7 @@ function Design({ onNavigate }) {
                   <div>
                     <h3>{piece.name}</h3>
                     <p>{piece.material}</p>
-                    <span>{piece.size}</span>
+                    <span>Pieza modular</span>
                   </div>
                 </article>
               ))}
@@ -190,7 +195,7 @@ function Design({ onNavigate }) {
             <h2>Necesitas ayuda?</h2>
             <p>Consulta nuestra guia rapida para aprender a usar el disenador.</p>
           </div>
-          <button type="button" className="btn design-guide-btn" onClick={() => onNavigate('catalogo', '', 'productos')}>
+          <button type="button" className="btn design-guide-btn" onClick={() => onNavigate('catalog', '', 'productos')}>
             Ver guia
           </button>
         </aside>

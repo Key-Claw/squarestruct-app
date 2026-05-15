@@ -13,7 +13,7 @@ import '../styles/facturas.css'
  * - Información de método de pago, total y dirección de envío
  * - Manejo de errores y estados de carga
  */
-function Facturas() {
+function Invoices() {
   // ============================================================================
   // ESTADO DEL COMPONENTE
   // ============================================================================
@@ -236,4 +236,4 @@ function Facturas() {
   )
 }
 
-export default Facturas
+export default Invoices
