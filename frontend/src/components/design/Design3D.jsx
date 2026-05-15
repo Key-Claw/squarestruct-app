@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 
@@ -9,10 +9,13 @@ export default function Design3D({ placements, board, designPieces, gridColumns 
   const containerRef = useRef(null)
   const sceneRef = useRef(null)
 
-  const resolvedPlacements = Array.isArray(placements)
-    ? placements
-    : Array.isArray(board)
-      ? board.flatMap((row, rowIndex) => row.flatMap((cell, columnIndex) => {
+  const resolvedPlacements = useMemo(() => {
+    if (Array.isArray(placements)) {
+      return placements
+    }
+
+    if (Array.isArray(board)) {
+      return board.flatMap((row, rowIndex) => row.flatMap((cell, columnIndex) => {
         if (!cell) {
           return []
         }
@@ -26,7 +29,10 @@ export default function Design3D({ placements, board, designPieces, gridColumns 
           height: 1,
         }]
       }))
-      : []
+    }
+
+    return []
+  }, [placements, board])
 
   useEffect(() => {
     const container = containerRef.current
@@ -91,7 +97,7 @@ export default function Design3D({ placements, board, designPieces, gridColumns 
       renderer.dispose()
       container.removeChild(renderer.domElement)
     }
-  }, [])
+  }, [gridColumns, gridRows])
 
   useEffect(() => {
     const s = sceneRef.current
@@ -125,7 +131,7 @@ export default function Design3D({ placements, board, designPieces, gridColumns 
       line.userData.isBlock = true
       s.scene.add(line)
     })
-  }, [resolvedPlacements, designPieces])
+  }, [resolvedPlacements, designPieces, gridColumns, gridRows])
 
   return (
     <div ref={containerRef} style={{ width: '100%', height: '100%', minHeight: 540 }} />

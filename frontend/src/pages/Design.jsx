@@ -1,4 +1,4 @@
-import { useMemo, useState, useEffect } from 'react'
+import { useMemo, useState, useEffect, useRef } from 'react'
 
 import Icon from '../components/ui/Icon'
 import Design3D from '../components/design/Design3D'
@@ -324,6 +324,7 @@ function loadDraft() {
 
 function Design({ onNavigate }) {
   const initialDraft = loadDraft()
+  const dragPayloadRef = useRef(null)
   const [activeCategory, setActiveCategory] = useState(initialDraft?.activeCategory || 'bloques')
   const [selectedPieceId, setSelectedPieceId] = useState(
     initialDraft?.selectedPieceId || designPieces.find((piece) => piece.category === 'bloques')?.id || designPieces[0].id,
@@ -525,19 +526,27 @@ function Design({ onNavigate }) {
   const buildDragPayload = (payload) => JSON.stringify(payload)
 
   const parseDragPayload = (event) => {
-    let serializedPayload = ''
-    try {
-      serializedPayload = event.dataTransfer.getData(DESIGN_DRAG_MIME) || event.dataTransfer.getData('text/plain')
-    } catch {
-      serializedPayload = ''
-    }
+    const serializedPayload = (() => {
+      try {
+        return event?.dataTransfer?.getData(DESIGN_DRAG_MIME) || event?.dataTransfer?.getData('text/plain') || ''
+      } catch {
+        return ''
+      }
+    })()
 
     if (!serializedPayload) {
+      if (dragPayloadRef.current) {
+        console.debug('parseDragPayload using dragPayloadRef', dragPayloadRef.current)
+        return dragPayloadRef.current
+      }
+
       return dragPayload
     }
 
     try {
-      return JSON.parse(serializedPayload)
+      const parsed = JSON.parse(serializedPayload)
+      dragPayloadRef.current = parsed
+      return parsed
     } catch {
       return dragPayload
     }
@@ -547,6 +556,7 @@ function Design({ onNavigate }) {
     setDragPayload(null)
     setDragOverCell(null)
     setDraggingPieceId(null)
+    dragPayloadRef.current = null
   }
 
   const handlePieceDragStart = (event, piece) => {
@@ -556,16 +566,20 @@ function Design({ onNavigate }) {
       rotated: rotatePreview,
     }
 
-    event.dataTransfer.effectAllowed = 'copy'
-    // set both custom mime and text/plain for broader browser support
     const serialized = buildDragPayload(payload)
+    event.dataTransfer.effectAllowed = 'copy'
     try {
       event.dataTransfer.setData(DESIGN_DRAG_MIME, serialized)
-    } catch {}
+    } catch {
+      // ignore
+    }
     try {
       event.dataTransfer.setData('text/plain', serialized)
-    } catch {}
+    } catch {
+      // ignore
+    }
     setDragPayload(payload)
+    dragPayloadRef.current = payload
     setDraggingPieceId(piece.id)
     setStatusMessage(`Arrastrando ${piece.name}. Suelta en una celda vacía para colocarla.`)
   }
@@ -584,15 +598,20 @@ function Design({ onNavigate }) {
       },
     }
 
-    event.dataTransfer.effectAllowed = 'move'
     const serialized = buildDragPayload(payload)
+    event.dataTransfer.effectAllowed = 'move'
     try {
       event.dataTransfer.setData(DESIGN_DRAG_MIME, serialized)
-    } catch {}
+    } catch {
+      // ignore
+    }
     try {
       event.dataTransfer.setData('text/plain', serialized)
-    } catch {}
+    } catch {
+      // ignore
+    }
     setDragPayload(payload)
+    dragPayloadRef.current = payload
     setDraggingPieceId(pieceId)
     setStatusMessage('Arrastrando bloque colocado. Suéltalo en una nueva celda para recolocarlo.')
   }
@@ -609,8 +628,10 @@ function Design({ onNavigate }) {
 
   const handleCellDrop = (event, rowIndex, columnIndex) => {
     event.preventDefault()
+    console.debug('handleCellDrop dataTransfer types', event?.dataTransfer?.types, 'dragPayload state', dragPayload)
 
     const payload = parseDragPayload(event)
+    console.debug('handleCellDrop parsed payload', payload)
     if (!payload) {
       clearDragState()
       return
@@ -621,8 +642,6 @@ function Design({ onNavigate }) {
       clearDragState()
       return
     }
-
-    const targetPlacement = createPlacement(pieceFromPayload, rowIndex, columnIndex)
 
     if (payload.source === 'palette') {
       // Prefer explicit rotation from the drag payload, otherwise use current preview rotation
@@ -870,7 +889,7 @@ function Design({ onNavigate }) {
                         <button
                           key={`${rowIndex}-${columnIndex}`}
                           type="button"
-                          className={`design-board-cell${cell ? ' is-filled' : ''}${cellPlacement ? ' is-occupied' : ''}${cell?.isAnchor ? ' is-anchor' : ''}${isPreviewCell && previewFits ? ' is-preview' : ''}${isPreviewCell && !previewFits ? ' is-invalid-preview' : ''}${isDragOver ? ' is-drag-target' : ''}${hasBelow ? ' has-support-below' : ''}${hasLateral ? ' has-lateral-support' : ''}`}
+                          className={`design-board-cell${cell ? ' is-filled' : ''}${cellPlacement ? ' is-occupied' : ''}${cell?.isAnchor ? ' is-anchor' : ''}${isPreviewCell && previewFits ? ' is-preview' : ''}${isPreviewCell && !previewFits ? ' is-invalid-preview' : ''}${isPreviewAnchor ? ' is-preview-anchor' : ''}${isDragOver ? ' is-drag-target' : ''}${hasBelow ? ' has-support-below' : ''}${hasLateral ? ' has-lateral-support' : ''}`}
                           onMouseEnter={() => {
                             setHoverCell({ row: rowIndex, column: columnIndex })
                             // If pointer is down and we're not dragging an existing piece, place repeatedly
