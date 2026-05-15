@@ -893,6 +893,7 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser }) {
         <main className="settings-content">
           <header className="settings-header-bar">
             <div>
+              <p className="settings-eyebrow">Area privada</p>
               <h2>{tabs.find((tab) => tab.id === activeTab)?.label || 'Perfil'}</h2>
               <p>Gestiona tu perfil, facturas y herramientas desde una sola pantalla.</p>
             </div>

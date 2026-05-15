@@ -6,13 +6,13 @@
 .settings-layout {
   width: 100%;
   max-width: var(--ss-content-max);
-  min-height: calc(100vh - 220px);
+  min-height: 0;
   margin: 0 auto;
   display: grid;
   grid-template-columns: minmax(220px, 300px) minmax(0, 1fr);
   border: 1px solid var(--ss-border);
   border-radius: var(--ss-radius);
-  background: rgba(255, 255, 255, 0.74);
+  background: rgba(255, 255, 255, 0.7);
   box-shadow: var(--ss-shadow);
   overflow: hidden;
 }
@@ -20,7 +20,8 @@
 .settings-sidebar {
   padding: clamp(22px, 2vw, 30px);
   border-right: 1px solid var(--ss-border);
-  background: rgba(255, 255, 255, 0.72);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(238, 248, 255, 0.72));
 }
 
 .settings-sidebar-head {
@@ -65,8 +66,8 @@
 
 .settings-nav-item:hover {
   border-color: rgba(95, 159, 56, 0.42);
-  background: #f3f8ef;
-  color: #4f8f2f;
+  background: var(--ss-green-50);
+  color: var(--ss-green-700);
 }
 
 .settings-nav-item.active {
@@ -77,29 +78,59 @@
 }
 
 .settings-content {
-  padding: clamp(24px, 2.6vw, 42px);
+  padding: clamp(18px, 1.8vw, 28px);
   min-width: 0;
 }
 
 .settings-header-bar {
-  margin-bottom: clamp(18px, 2vw, 28px);
+  position: relative;
+  min-height: clamp(120px, 9vw, 150px);
+  margin-bottom: 22px;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 16px;
-  padding-bottom: 12px;
-  border-bottom: 1px solid var(--ss-border);
+  padding: clamp(18px, 2.2vw, 32px) clamp(26px, 4vw, 64px);
+  overflow: hidden;
+  border: 1px solid var(--ss-border);
+  border-radius: var(--ss-radius);
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.98), rgba(255, 255, 255, 0.9) 56%, rgba(238, 248, 255, 0.7) 100%),
+    linear-gradient(135deg, rgba(76, 154, 58, 0.12), rgba(23, 63, 95, 0.08));
+  box-shadow: var(--ss-shadow);
 }
 
 .settings-header-bar > div {
-  flex: 0 1 100%;
-  text-align: center;
+  position: relative;
+  z-index: 1;
+  flex: 0 1 720px;
+  text-align: left;
+}
+
+.settings-header-bar::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, transparent 0 52%, rgba(217, 236, 255, 0.62) 52% 100%);
+  pointer-events: none;
+}
+
+.settings-eyebrow,
+.settings-billing-eyebrow {
+  margin: 0 0 0.4rem;
+  color: var(--ss-green-600);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .settings-header-bar h2 {
   margin: 0;
-  font-size: clamp(1.35rem, 2vw, 2.1rem);
-  color: var(--ss-blue-700);
+  max-width: 12ch;
+  font-size: clamp(2.2rem, 3.4vw, 3.25rem);
+  line-height: 0.98;
+  color: var(--ss-ink);
   font-family: var(--heading);
   font-weight: 400;
   letter-spacing: 0.01em;
@@ -107,8 +138,17 @@
 }
 
 .settings-header-bar p {
-  margin: 6px 0 0;
+  max-width: 46ch;
+  margin: 8px 0 0;
   color: var(--ss-muted);
+  line-height: 1.58;
+}
+
+.settings-header-bar .settings-eyebrow,
+.settings-billing-hero .settings-billing-eyebrow {
+  margin: 0 0 0.4rem;
+  color: var(--ss-green-600);
+  line-height: 1.2;
 }
 
 .settings-planos-btn {
@@ -126,37 +166,33 @@
 .settings-billing-hero {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 16px;
-  padding-bottom: 12px;
-  border-bottom: 1px solid rgba(23, 63, 95, 0.12);
-  text-align: center;
+  padding: 18px 20px;
+  border: 1px solid var(--ss-border);
+  border-radius: var(--ss-radius);
+  background: linear-gradient(180deg, #ffffff, var(--ss-blue-50));
+  text-align: left;
 }
 
 .settings-billing-hero > div:first-child {
   flex: 1;
-  text-align: center;
-}
-
-.settings-billing-eyebrow {
-  margin: 0;
-  color: #64748b;
-  font-size: 0.72rem;
-  font-weight: 800;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
+  text-align: left;
 }
 
 .settings-billing-hero h2 {
   margin: 0;
-  color: #173f5f;
+  color: var(--ss-ink);
+  font-family: var(--heading);
   font-size: clamp(1.25rem, 1.8vw, 2rem);
-  font-weight: 850;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
 }
 
 .settings-billing-hero p {
   margin: 4px 0 0;
-  color: #475569;
+  color: var(--ss-muted);
 }
 
 .settings-billing-actions {
@@ -209,14 +245,14 @@
 }
 
 .settings-billing-metric p {
-  color: #475569;
+  color: var(--ss-muted);
   font-size: 0.88rem;
   line-height: 1.1;
 }
 
 .settings-billing-metric strong {
   margin-top: 4px;
-  color: #0f172a;
+  color: var(--ss-ink);
   font-size: clamp(1rem, 1.5vw, 1.38rem);
   font-weight: 900;
   line-height: 1.05;
@@ -231,8 +267,9 @@
 }
 
 .settings-billing-table-block {
-  border-radius: 12px;
-  border: 1px solid rgba(23, 63, 95, 0.12);
+  border-radius: var(--ss-radius);
+  border: 1px solid var(--ss-border);
+  background: var(--ss-panel);
 }
 
 .settings-billing-table-card,
@@ -267,7 +304,7 @@
 }
 
 .settings-billing-chart-card .card {
-  border-radius: 12px;
+  border-radius: var(--ss-radius);
   height: 100%;
 }
 
@@ -389,7 +426,8 @@
 }
 
 .settings-section-title {
-  text-align: center;
+  text-align: left;
+  font-size: clamp(1.7rem, 2.4vw, 2.5rem) !important;
 }
 
 .settings-card-head {
@@ -401,7 +439,7 @@
 }
 
 .settings-card-head small {
-  color: #64748b;
+  color: var(--ss-muted);
 }
 
 .settings-profile-grid {
@@ -438,14 +476,14 @@
 }
 
 .settings-profile-fields label {
-  color: #64748b;
+  color: var(--ss-muted);
   font-size: 0.85rem;
   text-transform: uppercase;
   letter-spacing: 0.06em;
 }
 
 .settings-profile-fields span {
-  color: #0f172a;
+  color: var(--ss-ink);
   font-weight: 600;
 }
 
@@ -481,6 +519,7 @@
 
 .settings-profile-card {
   text-align: left;
+  min-height: clamp(260px, 20vw, 330px);
 }
 
 .settings-profile-card .alert {
@@ -514,8 +553,8 @@
 }
 
 .settings-table {
-  --bs-table-bg: #fff;
-  --bs-table-color: #0f172a;
+  --bs-table-bg: rgba(255, 255, 255, 0.92);
+  --bs-table-color: var(--ss-ink);
   --bs-table-hover-bg: rgba(95, 159, 56, 0.04);
   --bs-table-hover-color: #0f172a;
   min-width: 760px;
@@ -523,7 +562,7 @@
 
 .settings-table thead th {
   border-bottom-color: rgba(23, 63, 95, 0.12);
-  color: #475569;
+  color: var(--ss-blue-700);
   font-size: 0.78rem;
   text-transform: uppercase;
   letter-spacing: 0.06em;
@@ -540,8 +579,8 @@
 }
 
 .settings-inline-actions .btn {
-  color: #173f5f;
-  border-color: rgba(23, 63, 95, 0.24);
+  color: var(--ss-blue-700);
+  border-color: var(--ss-border);
 }
 
 .settings-invoice-status {
@@ -579,7 +618,7 @@
   text-align: center;
   gap: 8px;
   padding: 20px;
-  color: #475569;
+  color: var(--ss-muted);
 }
 
 .settings-placeholder-card {
@@ -592,7 +631,7 @@
 
 .settings-placeholder-card p {
   margin: 0;
-  color: #475569;
+  color: var(--ss-muted);
 }
 
 .usuarios-modal-backdrop {
@@ -667,8 +706,14 @@
   }
 
   .settings-header-bar {
+    min-height: 140px;
     flex-direction: column;
     align-items: stretch;
+    padding: 24px;
+  }
+
+  .settings-header-bar h2 {
+    font-size: clamp(2.4rem, 12vw, 3.2rem);
   }
 
   .settings-planos-btn {
