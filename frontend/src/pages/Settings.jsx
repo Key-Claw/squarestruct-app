@@ -5,14 +5,6 @@ import '../styles/settings.css'
 
 const FACTURACION_PAGE_SIZE = 5
 
-const facturacionTrends = [
-  { nombre: 'Bloque 600', porcentaje: 45, unidades: 563, color: 'success' },
-  { nombre: 'Bloque 300', porcentaje: 25, unidades: 312, color: 'primary' },
-  { nombre: 'Bloque 900', porcentaje: 15, unidades: 187, color: 'info' },
-  { nombre: 'Esquina 300', porcentaje: 8, unidades: 100, color: 'warning' },
-  { nombre: 'Pilar 30x30', porcentaje: 7, unidades: 83, color: 'danger' },
-]
-
 const getRoleBadgeClass = (role) => {
   if (role === 'admin') return 'settings-role-badge admin'
   return 'settings-role-badge usuario'
@@ -235,6 +227,53 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser }) {
 
   const facturasAdminFiltradas = useMemo(() => facturasAdmin, [facturasAdmin])
 
+  const facturacionStats = useMemo(() => {
+    const totalFacturado = facturasAdminFiltradas.reduce((sum, factura) => sum + Number(factura.total || 0), 0)
+    const totalFacturas = facturasAdminFiltradas.length
+    const totalProductos = facturasAdminFiltradas.reduce((sum, factura) => sum + Number(factura.totalProductos || 0), 0)
+    const pendientes = facturasAdminFiltradas.filter((factura) => factura.estado === 'pendiente').length
+    const aceptadas = facturasAdminFiltradas.filter((factura) => factura.estado === 'aceptado').length
+    const denegadas = facturasAdminFiltradas.filter((factura) => factura.estado === 'denegado').length
+    const ticketMedio = totalFacturas > 0 ? totalFacturado / totalFacturas : 0
+    const pedidoPrincipal = facturasAdminFiltradas.reduce((top, factura) => {
+      if (!top) return factura
+      return Number(factura.totalProductos || 0) > Number(top.totalProductos || 0) ? factura : top
+    }, null)
+
+    const estados = [
+      { nombre: 'Aceptadas', total: aceptadas, color: 'success' },
+      { nombre: 'Pendientes', total: pendientes, color: 'warning' },
+      { nombre: 'Denegadas', total: denegadas, color: 'danger' },
+    ].map((estado) => ({
+      ...estado,
+      porcentaje: totalFacturas > 0 ? Math.round((estado.total / totalFacturas) * 100) : 0,
+    }))
+
+    return {
+      totalFacturado,
+      totalFacturas,
+      totalProductos,
+      pendientes,
+      aceptadas,
+      denegadas,
+      ticketMedio,
+      pedidoPrincipal,
+      estados,
+      acceptedPercent: totalFacturas > 0 ? Math.round((aceptadas / totalFacturas) * 100) : 0,
+    }
+  }, [facturasAdminFiltradas])
+
+  const facturacionDateRange = useMemo(() => {
+    const fechas = facturasAdminFiltradas
+      .map((factura) => new Date(factura.fecha))
+      .filter((fecha) => !Number.isNaN(fecha.getTime()))
+      .sort((a, b) => a - b)
+
+    if (fechas.length === 0) return 'Sin pedidos'
+
+    return `${fechas[0].toLocaleDateString('es-ES')} - ${fechas[fechas.length - 1].toLocaleDateString('es-ES')}`
+  }, [facturasAdminFiltradas])
+
   const facturacionTotalPages = Math.max(1, Math.ceil(facturasAdminFiltradas.length / FACTURACION_PAGE_SIZE))
   const facturacionPageSafe = Math.min(facturacionPage, facturacionTotalPages)
 
@@ -388,15 +427,6 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser }) {
             )}
           </div>
         </div>
-
-        <aside className="settings-card settings-avatar-card" aria-label="Avatar de usuario">
-          <div className="settings-avatar-circle">
-            <span>{(profileData.nombre || 'U').charAt(0).toUpperCase()}</span>
-          </div>
-          <button type="button" className="btn btn-outline-light btn-sm" disabled>
-            Editar foto
-          </button>
-        </aside>
       </div>
     )
   }
@@ -501,7 +531,7 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser }) {
               <input className="form-control" type="text" placeholder="Buscar cliente..." readOnly />
             </div>
             <div className="col-12 col-md-3">
-              <input className="form-control" type="text" value="01/05/2026 - 13/05/2026" readOnly />
+              <input className="form-control" type="text" value={facturacionDateRange} readOnly />
             </div>
             <div className="col-12 col-md-2">
               <select className="form-select" defaultValue="todos" disabled>
@@ -521,7 +551,7 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser }) {
                 <option value="efectivo">Efectivo</option>
               </select>
             </div>
-            <div className="col-12 col-md-1 d-grid">
+            <div className="col-12 col-lg-1 d-grid">
               <button type="button" className="btn btn-success" disabled>Filtrar</button>
             </div>
           </div>
@@ -540,17 +570,17 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser }) {
               <span className="settings-billing-metric-icon">EUR</span>
               <div>
                 <p>Facturación total</p>
-                <strong>{formatMoney(facturasAdmin.reduce((sum, factura) => sum + Number(factura.total || 0), 0))}</strong>
-                <small>{facturasAdmin.filter((factura) => factura.estado === 'pendiente').length} pendientes</small>
+                <strong>{formatMoney(facturacionStats.totalFacturado)}</strong>
+                <small>{facturacionStats.pendientes} pendientes</small>
               </div>
             </article>
 
             <article className="settings-billing-metric">
-              <span className="settings-billing-metric-icon">{facturasAdmin.length}</span>
+              <span className="settings-billing-metric-icon">{facturacionStats.totalFacturas}</span>
               <div>
                 <p>Número de facturas</p>
-                <strong>{facturasAdmin.length}</strong>
-                <small>{facturasAdmin.filter((factura) => factura.estado === 'aceptado').length} aceptadas</small>
+                <strong>{facturacionStats.totalFacturas}</strong>
+                <small>{facturacionStats.aceptadas} aceptadas</small>
               </div>
             </article>
 
@@ -558,17 +588,21 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser }) {
               <span className="settings-billing-metric-icon">TM</span>
               <div>
                 <p>Ticket medio</p>
-                <strong>{formatMoney(facturasAdmin.length > 0 ? facturasAdmin.reduce((sum, factura) => sum + Number(factura.total || 0), 0) / facturasAdmin.length : 0)}</strong>
-                <small>{facturasAdmin.filter((factura) => factura.estado === 'denegado').length} denegadas</small>
+                <strong>{formatMoney(facturacionStats.ticketMedio)}</strong>
+                <small>{facturacionStats.denegadas} denegadas</small>
               </div>
             </article>
 
             <article className="settings-billing-metric">
-              <span className="settings-billing-metric-icon">TOP</span>
+              <span className="settings-billing-metric-icon">PZ</span>
               <div>
-                <p>Producto más vendido</p>
-                <strong>Bloque 600</strong>
-                <small>Demo visual</small>
+                <p>Productos pedidos</p>
+                <strong>{facturacionStats.totalProductos}</strong>
+                <small>
+                  {facturacionStats.pedidoPrincipal
+                    ? `Pedido #${facturacionStats.pedidoPrincipal.idPedido} con mas piezas`
+                    : 'Sin pedidos registrados'}
+                </small>
               </div>
             </article>
           </div>
@@ -576,7 +610,7 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser }) {
 
         <aside className="settings-card settings-billing-chart-card">
           <div className="settings-card-head">
-            <h2>Tendencias de compra</h2>
+            <h2>Estado de pedidos</h2>
             <button type="button" className="btn btn-outline-secondary btn-sm">Este mes</button>
           </div>
 
@@ -591,8 +625,7 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser }) {
                 */}
                 <div className="settings-billing-donut-svg">
                   {(() => {
-                    const mainPercent = facturacionTrends[0]?.porcentaje || 0
-                    const normalized = Math.max(0, Math.min(100, mainPercent))
+                    const normalized = Math.max(0, Math.min(100, facturacionStats.acceptedPercent))
                     const radius = 60
                     const stroke = 16
                     const circumference = 2 * Math.PI * radius
@@ -639,11 +672,11 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser }) {
               </div>
 
               <div className="d-grid gap-3 w-100">
-                {facturacionTrends.map((trend) => (
+                {facturacionStats.estados.map((trend) => (
                   <div key={trend.nombre}>
                     <div className="d-flex align-items-center justify-content-between mb-1">
                       <strong className="small text-dark">{trend.nombre}</strong>
-                      <span className="small text-muted">{trend.porcentaje}% - {trend.unidades} uds.</span>
+                      <span className="small text-muted">{trend.porcentaje}% - {trend.total} pedidos</span>
                     </div>
                     <div className="progress" style={{ height: '10px' }}>
                       <div className={`progress-bar bg-${trend.color}`} role="progressbar" style={{ width: `${trend.porcentaje}%` }} aria-valuenow={trend.porcentaje} aria-valuemin="0" aria-valuemax="100" />
@@ -835,7 +868,7 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser }) {
   }
 
   return (
-    <section className="settings-page-shell">
+    <section className="page-shell settings-page-shell container-fluid">
       <div className="settings-layout">
         <aside className="settings-sidebar" aria-label="Menú de cuenta">
           <div className="settings-sidebar-head">
