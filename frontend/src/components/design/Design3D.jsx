@@ -5,7 +5,7 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 // Componente mínimo que monta una escena Three.js y dibuja bloques sencillos
 // El componente espera recibir un array de `placements` y `designPieces` para
 // dibujar cada bloque con su footprint real en la misma posición que el plano 2D.
-export default function Design3D({ placements, board, designPieces }) {
+export default function Design3D({ placements, board, designPieces, gridColumns = 20, gridRows = 20 }) {
   const containerRef = useRef(null)
   const sceneRef = useRef(null)
 
@@ -58,8 +58,10 @@ export default function Design3D({ placements, board, designPieces }) {
     dir.position.set(5, 10, 7)
     scene.add(dir)
 
-    // Grid base
-    const grid = new THREE.GridHelper(20, 20, 0x888888, 0xdddddd)
+    // Grid base — use same size/divisions as the 2D editor
+    const gridSize = Math.max(gridColumns, gridRows)
+    const gridDivisions = Math.max(gridColumns, gridRows)
+    const grid = new THREE.GridHelper(gridSize, gridDivisions, 0x888888, 0xdddddd)
     scene.add(grid)
 
     sceneRef.current = { scene, camera, renderer }
@@ -105,10 +107,14 @@ export default function Design3D({ placements, board, designPieces }) {
       const geometry = new THREE.BoxGeometry(placement.width * 0.9, 0.6, placement.height * 0.9)
       const material = new THREE.MeshStandardMaterial({ color })
       const cube = new THREE.Mesh(geometry, material)
+      // Center placements so that 2D grid indices map to 3D grid coordinates
+      const xOffset = gridColumns / 2
+      const zOffset = gridRows / 2
+
       cube.position.set(
-        placement.column - 5 + (placement.width / 2),
+        placement.column - xOffset + (placement.width / 2),
         0.3 + ((placement.floor || 0) * 0.7),
-        placement.row - 3.5 + (placement.height / 2),
+        placement.row - zOffset + (placement.height / 2),
       )
       cube.userData.isBlock = true
       s.scene.add(cube)

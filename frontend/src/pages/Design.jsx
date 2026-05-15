@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useMemo, useState, useEffect } from 'react'
 
 import Icon from '../components/ui/Icon'
 import Design3D from '../components/design/Design3D'
@@ -95,8 +95,8 @@ const designPieces = [
   },
 ]
 
-const gridColumns = 10
-const gridRows = 7
+const gridColumns = 20
+const gridRows = 20
 const createEmptyPlacements = () => []
 
 function createPlacementId() {
@@ -111,17 +111,20 @@ function getPieceFootprint(piece) {
   return piece?.footprint || { width: 1, height: 1 }
 }
 
-function createPlacement(piece, row, column, floor = 0, placementId = createPlacementId()) {
+function createPlacement(piece, row, column, floor = 0, placementId = createPlacementId(), rotated = false) {
   const footprint = getPieceFootprint(piece)
+  const width = rotated ? footprint.height : footprint.width
+  const height = rotated ? footprint.width : footprint.height
 
   return {
     id: placementId,
     pieceId: piece.id,
     row,
     column,
-    width: footprint.width,
-    height: footprint.height,
+    width,
+    height,
     floor,
+    rotated,
   }
 }
 
@@ -333,6 +336,8 @@ function Design({ onNavigate }) {
   const [activeFloor, setActiveFloor] = useState(initialDraft?.activeFloor || 0)
   const [viewMode, setViewMode] = useState('2d')
   const [statusMessage, setStatusMessage] = useState('Selecciona una pieza y colócala en la cuadricula.')
+  const [rotatePreview, setRotatePreview] = useState(false)
+  const [isPointerDown, setIsPointerDown] = useState(false)
 
   const visiblePieces = designPieces.filter((piece) => piece.category === activeCategory)
   const selectedPiece = designPieces.find((piece) => piece.id === selectedPieceId) || visiblePieces[0] || designPieces[0]
@@ -395,6 +400,95 @@ function Design({ onNavigate }) {
     }
   }, [placements])
 
+  // Preview calculation moved out of JSX so overlays can access it
+  const previewSourceCell = dragOverCell || hoverCell
+  const previewPiece = dragPayload ? designPieces.find((item) => item.id === dragPayload.pieceId) : selectedPiece
+  const previewFootprint = previewPiece ? getPieceFootprint(previewPiece) : { width: 1, height: 1 }
+  const previewPlacement = previewPiece && previewSourceCell
+    ? {
+      row: previewSourceCell.row,
+      column: previewSourceCell.column,
+      width: rotatePreview ? previewFootprint.height : previewFootprint.width,
+      height: rotatePreview ? previewFootprint.width : previewFootprint.height,
+      floor: activeFloor,
+    }
+    : null
+  const previewFits = previewPlacement ? evaluatePlacement(placements, previewPlacement, dragPayload?.placementId || null).ok : false
+
+  // Keyboard handler for rotation (R key)
+  useEffect(() => {
+    const onKey = (e) => {
+      if (e.key.toLowerCase() !== 'r') return
+
+      // If we're hovering an existing placement, try to rotate it in place
+      if (hoverCell) {
+        const placement = findPlacementAtCell(placements, hoverCell.row, hoverCell.column, activeFloor)
+        if (placement) {
+          const rotated = { ...placement, width: placement.height, height: placement.width, rotated: !placement.rotated }
+          const evaluation = evaluatePlacement(placements, rotated, placement.id)
+          if (!evaluation.ok) {
+            setStatusMessage(`No se puede girar: ${evaluation.reason}`)
+            return
+          }
+
+          setPlacements((cur) => cur.map((p) => (p.id === placement.id ? rotated : p)))
+          setStatusMessage(`Pieza girada en sitio.`)
+          return
+        }
+      }
+
+      // Otherwise toggle preview rotation for new placements
+      setRotatePreview((r) => {
+        const next = !r
+        setStatusMessage(`Rotación de previsualización ${next ? 'activada' : 'desactivada'}`)
+        return next
+      })
+    }
+
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [hoverCell, placements, activeFloor])
+
+  // Track pointer state for click-and-drag placement
+  useEffect(() => {
+    const onUp = () => setIsPointerDown(false)
+    window.addEventListener('mouseup', onUp)
+    window.addEventListener('mouseleave', onUp)
+    return () => {
+      window.removeEventListener('mouseup', onUp)
+      window.removeEventListener('mouseleave', onUp)
+    }
+  }, [])
+
+  // Compute support maps for the active floor: below supports (floor-1) and lateral supports (same floor)
+  const supportBelowSet = new Set()
+  const lateralSupportSet = new Set()
+
+  if (activeFloor > 0) {
+    const belowFloor = activeFloor - 1
+    placements.forEach((p) => {
+      if (p.floor === belowFloor) {
+        for (let r = p.row; r < p.row + p.height; r += 1) {
+          for (let c = p.column; c < p.column + p.width; c += 1) {
+            supportBelowSet.add(`${r}-${c}`)
+          }
+        }
+      }
+    })
+
+    // lateral support on the same floor: pieces that touch from left or right and overlap vertically
+    placements.forEach((p) => {
+      if (p.floor !== activeFloor) return
+
+      for (let r = p.row; r < p.row + p.height; r += 1) {
+        // right-adjacent cells
+        lateralSupportSet.add(`${r}-${p.column + p.width}`)
+        // left-adjacent cells
+        lateralSupportSet.add(`${r}-${p.column - 1}`)
+      }
+    })
+  }
+
   const handlePieceSelect = (pieceId) => {
     setSelectedPieceId(pieceId)
     setStatusMessage('Pieza seleccionada. Ahora haz clic en una celda para colocarla.')
@@ -416,7 +510,7 @@ function Design({ onNavigate }) {
       return
     }
 
-    const candidatePlacement = createPlacement(selectedPiece, rowIndex, columnIndex, activeFloor)
+    const candidatePlacement = createPlacement(selectedPiece, rowIndex, columnIndex, activeFloor, createPlacementId(), rotatePreview)
     const evaluation = evaluatePlacement(placements, candidatePlacement)
 
     if (!evaluation.ok) {
@@ -431,7 +525,12 @@ function Design({ onNavigate }) {
   const buildDragPayload = (payload) => JSON.stringify(payload)
 
   const parseDragPayload = (event) => {
-    const serializedPayload = event.dataTransfer.getData(DESIGN_DRAG_MIME)
+    let serializedPayload = ''
+    try {
+      serializedPayload = event.dataTransfer.getData(DESIGN_DRAG_MIME) || event.dataTransfer.getData('text/plain')
+    } catch {
+      serializedPayload = ''
+    }
 
     if (!serializedPayload) {
       return dragPayload
@@ -454,10 +553,18 @@ function Design({ onNavigate }) {
     const payload = {
       source: 'palette',
       pieceId: piece.id,
+      rotated: rotatePreview,
     }
 
     event.dataTransfer.effectAllowed = 'copy'
-    event.dataTransfer.setData(DESIGN_DRAG_MIME, buildDragPayload(payload))
+    // set both custom mime and text/plain for broader browser support
+    const serialized = buildDragPayload(payload)
+    try {
+      event.dataTransfer.setData(DESIGN_DRAG_MIME, serialized)
+    } catch {}
+    try {
+      event.dataTransfer.setData('text/plain', serialized)
+    } catch {}
     setDragPayload(payload)
     setDraggingPieceId(piece.id)
     setStatusMessage(`Arrastrando ${piece.name}. Suelta en una celda vacía para colocarla.`)
@@ -470,6 +577,7 @@ function Design({ onNavigate }) {
       source: 'board',
       pieceId,
       placementId: placement?.id || null,
+      rotated: placement?.rotated || false,
       from: {
         row: rowIndex,
         column: columnIndex,
@@ -477,7 +585,13 @@ function Design({ onNavigate }) {
     }
 
     event.dataTransfer.effectAllowed = 'move'
-    event.dataTransfer.setData(DESIGN_DRAG_MIME, buildDragPayload(payload))
+    const serialized = buildDragPayload(payload)
+    try {
+      event.dataTransfer.setData(DESIGN_DRAG_MIME, serialized)
+    } catch {}
+    try {
+      event.dataTransfer.setData('text/plain', serialized)
+    } catch {}
     setDragPayload(payload)
     setDraggingPieceId(pieceId)
     setStatusMessage('Arrastrando bloque colocado. Suéltalo en una nueva celda para recolocarlo.')
@@ -511,17 +625,19 @@ function Design({ onNavigate }) {
     const targetPlacement = createPlacement(pieceFromPayload, rowIndex, columnIndex)
 
     if (payload.source === 'palette') {
-      const evaluation = evaluatePlacement(placements, targetPlacement)
-
+      // Prefer explicit rotation from the drag payload, otherwise use current preview rotation
+      const rotatedFlag = payload.rotated === true || payload.rotated === false ? payload.rotated : rotatePreview
+      const placementWithRotation = createPlacement(pieceFromPayload, rowIndex, columnIndex, activeFloor, createPlacementId(), rotatedFlag)
+      const evaluation = evaluatePlacement(placements, placementWithRotation)
       if (!evaluation.ok) {
         setStatusMessage(evaluation.reason)
         clearDragState()
         return
       }
 
-      setPlacements((currentPlacements) => [...currentPlacements, targetPlacement])
+      setPlacements((currentPlacements) => [...currentPlacements, placementWithRotation])
       setSelectedPieceId(payload.pieceId)
-      setStatusMessage(`${pieceFromPayload.name} añadido ocupando ${targetPlacement.width}x${targetPlacement.height} celdas.`)
+      setStatusMessage(`${pieceFromPayload.name} añadido ocupando ${placementWithRotation.width}x${placementWithRotation.height} celdas.`)
       clearDragState()
       return
     }
@@ -738,68 +854,110 @@ function Design({ onNavigate }) {
               </div>
 
               {viewMode === '2d' ? (
-                <div className="design-board" role="grid" aria-label="Cuadricula de trabajo del plano">
-                  {(() => {
-                    const previewSourceCell = dragOverCell || hoverCell
-                    const previewPiece = dragPayload ? designPieces.find((item) => item.id === dragPayload.pieceId) : selectedPiece
-                    const previewPlacement = previewPiece && previewSourceCell
-                      ? {
-                        row: previewSourceCell.row,
-                        column: previewSourceCell.column,
-                        width: getPieceFootprint(previewPiece).width,
-                        height: getPieceFootprint(previewPiece).height,
-                        floor: activeFloor,
-                      }
-                      : null
-                    const previewFits = previewPlacement ? evaluatePlacement(placements, previewPlacement, dragPayload?.placementId || null).ok : false
+                <div className="design-board-grid" role="grid" aria-label="Cuadricula de trabajo del plano" style={{ '--cols': String(gridColumns), '--rows': String(gridRows), '--sub': '8' }}>
+                  {board.map((row, rowIndex) => (
+                    row.map((cell, columnIndex) => {
+                      const cellPlacement = cell ? placementMap.get(cell.placementId) : null
+                      const isDragOver = dragOverCell?.row === rowIndex && dragOverCell?.column === columnIndex
+                      const piece = cellPlacement ? designPieces.find((item) => item.id === cellPlacement.pieceId) : null
+                      const isPreviewCell = Boolean(previewPlacement && placementCoversCell(previewPlacement, rowIndex, columnIndex))
+                      const isPreviewAnchor = isPreviewCell && previewPlacement && rowIndex === previewPlacement.row && columnIndex === previewPlacement.column
+                      const coordKey = `${rowIndex}-${columnIndex}`
+                      const hasBelow = supportBelowSet.has(coordKey)
+                      const hasLateral = lateralSupportSet.has(coordKey)
 
-                    return board.map((row, rowIndex) => (
-                      row.map((cell, columnIndex) => {
-                        const cellPlacement = cell ? placementMap.get(cell.placementId) : null
-                        const isDragOver = dragOverCell?.row === rowIndex && dragOverCell?.column === columnIndex
-                        const piece = cellPlacement ? designPieces.find((item) => item.id === cellPlacement.pieceId) : null
-                        const isPreviewCell = Boolean(previewPlacement && placementCoversCell(previewPlacement, rowIndex, columnIndex))
-                        const isPreviewAnchor = isPreviewCell && rowIndex === previewPlacement.row && columnIndex === previewPlacement.column
+                      return (
+                        <button
+                          key={`${rowIndex}-${columnIndex}`}
+                          type="button"
+                          className={`design-board-cell${cell ? ' is-filled' : ''}${cellPlacement ? ' is-occupied' : ''}${cell?.isAnchor ? ' is-anchor' : ''}${isPreviewCell && previewFits ? ' is-preview' : ''}${isPreviewCell && !previewFits ? ' is-invalid-preview' : ''}${isDragOver ? ' is-drag-target' : ''}${hasBelow ? ' has-support-below' : ''}${hasLateral ? ' has-lateral-support' : ''}`}
+                          onMouseEnter={() => {
+                            setHoverCell({ row: rowIndex, column: columnIndex })
+                            // If pointer is down and we're not dragging an existing piece, place repeatedly
+                            if (isPointerDown && !draggingPieceId && !dragPayload) {
+                              if (!cellPlacement) {
+                                handleCellPlace(rowIndex, columnIndex)
+                              }
+                            }
+                          }}
+                          onMouseLeave={() => setHoverCell(null)}
+                          onMouseDown={(e) => {
+                            // left button only
+                            if (e.button !== 0) return
+                            setIsPointerDown(true)
+                            // Prevent native drag start when trying to place
+                            e.preventDefault()
+                            if (!cellPlacement && !draggingPieceId && !dragPayload) {
+                              handleCellPlace(rowIndex, columnIndex)
+                            }
+                          }}
+                          onClick={() => (cellPlacement ? handleRemoveCell(rowIndex, columnIndex) : null)}
+                          draggable={Boolean(cell)}
+                          onDragStart={(event) => {
+                            if (!cell) return
+                            handlePlacedPieceDragStart(event, rowIndex, columnIndex, cell.pieceId, cell.placementId)
+                          }}
+                          onDragEnd={handleDragEnd}
+                          onDragOver={(event) => handleCellDragOver(event, rowIndex, columnIndex)}
+                          onDrop={(event) => handleCellDrop(event, rowIndex, columnIndex)}
+                          aria-label={cellPlacement ? `Quitar ${piece?.name || 'pieza'} del bloque en la celda ${rowIndex + 1}-${columnIndex + 1}` : `Colocar ${selectedPiece?.name || 'pieza'} en la celda ${rowIndex + 1}-${columnIndex + 1}`}
+                          style={{ '--piece-color': piece?.color || previewPiece?.color || '#6b7280' }}
+                        >
+                          {null}
+                        </button>
+                      )
+                    })
+                  ))}
+                    {/* Overlay layer: render actual placed pieces as absolutely positioned blocks
+                        so they don't affect the grid layout and can span multiple cells. */}
+                    <div className="design-placements-overlay" aria-hidden="true">
+                      {placements.filter((p) => p.floor === activeFloor).map((placement) => {
+                        const piece = designPieces.find((item) => item.id === placement.pieceId)
+                        const left = `${(placement.column / gridColumns) * 100}%`
+                        const top = `${(placement.row / gridRows) * 100}%`
+                        const width = `${(placement.width / gridColumns) * 100}%`
+                        const height = `${(placement.height / gridRows) * 100}%`
 
                         return (
-                          <button
-                            key={`${rowIndex}-${columnIndex}`}
-                            type="button"
-                            className={`design-board-cell${cell ? ' is-filled' : ''}${cellPlacement ? ' is-occupied' : ''}${cell?.isAnchor ? ' is-anchor' : ''}${isPreviewCell && previewFits ? ' is-preview' : ''}${isPreviewCell && !previewFits ? ' is-invalid-preview' : ''}${isDragOver ? ' is-drag-target' : ''}`}
-                            onMouseEnter={() => setHoverCell({ row: rowIndex, column: columnIndex })}
-                            onMouseLeave={() => setHoverCell(null)}
-                            onClick={() => (cellPlacement ? handleRemoveCell(rowIndex, columnIndex) : handleCellPlace(rowIndex, columnIndex))}
-                            draggable={Boolean(cell)}
-                            onDragStart={(event) => {
-                              if (!cell) return
-                              handlePlacedPieceDragStart(event, rowIndex, columnIndex, cell.pieceId, cell.placementId)
-                            }}
+                          <div
+                            key={placement.id}
+                            className="design-placement"
+                            style={{ left, top, width, height, '--piece-color': piece?.color || '#6b7280' }}
+                            draggable
+                            onDragStart={(e) => handlePlacedPieceDragStart(e, placement.row, placement.column, placement.pieceId)}
                             onDragEnd={handleDragEnd}
-                            onDragOver={(event) => handleCellDragOver(event, rowIndex, columnIndex)}
-                            onDrop={(event) => handleCellDrop(event, rowIndex, columnIndex)}
-                            aria-label={cellPlacement ? `Quitar ${piece?.name || 'pieza'} del bloque en la celda ${rowIndex + 1}-${columnIndex + 1}` : `Colocar ${selectedPiece?.name || 'pieza'} en la celda ${rowIndex + 1}-${columnIndex + 1}`}
-                            style={{ '--piece-color': piece?.color || previewPiece?.color || '#6b7280' }}
+                            onClick={() => {
+                              // clicking a placement removes it
+                              setPlacements((cur) => cur.filter((p) => p.id !== placement.id))
+                              setStatusMessage(`Pieza ${placement.id} eliminada.`)
+                            }}
                           >
-                            {cellPlacement && piece && cell?.isAnchor ? (
-                              <span className={`design-piece-token${draggingPieceId === piece.id ? ' is-being-dragged' : ''}`} style={{ '--piece-color': piece.color }}>
-                                {piece.name}
-                                <small>Piso {cellPlacement.floor}</small>
-                              </span>
-                            ) : isPreviewAnchor && previewPiece ? (
-                              <span className="design-piece-token design-piece-token--preview" style={{ '--piece-color': previewPiece.color }}>
-                                {previewPiece.name}
-                                <small>Piso {activeFloor}</small>
-                              </span>
-                            ) : null}
-                          </button>
+                            <div className="design-placement-label">
+                              <strong>{piece?.name}</strong>
+                              <small>Piso {placement.floor}</small>
+                            </div>
+                          </div>
                         )
-                      })
-                    ))
-                  })()}
+                      })}
+
+                      {/* Preview overlay for drag/hover */}
+                      {previewPlacement && previewFits && (
+                        <div
+                          className="design-placement design-placement--preview"
+                          style={{
+                            left: `${(previewPlacement.column / gridColumns) * 100}%`,
+                            top: `${(previewPlacement.row / gridRows) * 100}%`,
+                            width: `${(previewPlacement.width / gridColumns) * 100}%`,
+                            height: `${(previewPlacement.height / gridRows) * 100}%`,
+                            '--piece-color': previewPiece?.color || '#9dd671',
+                          }}
+                        />
+                      )}
+                    </div>
                 </div>
               ) : (
                 <div style={{ height: 560 }}>
-                  <Design3D placements={placements} designPieces={designPieces} />
+                  <Design3D placements={placements} designPieces={designPieces} gridColumns={gridColumns} gridRows={gridRows} />
                 </div>
               )}
             </div>
