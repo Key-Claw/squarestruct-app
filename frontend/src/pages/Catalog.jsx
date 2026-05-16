@@ -2,12 +2,22 @@ import { useEffect, useMemo, useState } from 'react'
 import Icon from '../components/ui/Icon'
 import CatalogFilters from '../components/catalogo/CatalogFilters'
 import CatalogProductCard from '../components/catalogo/CatalogProductCard'
-import inicioCatalogoImage from '../assets/inicio/inicio-catalogo.jpeg'
+import catalogHeroImage from '../assets/catalog/catalog-hero.jpeg'
 import { productosDemo } from '../data/productosDemo'
 import { getProductos, filtrarProductos } from '../services/productService'
 import { normalizarProducto } from '../utils/text'
 
-const CATALOG_VISIBLE_PRODUCTS = 4
+const CATALOG_VISIBLE_PRODUCTS = 8
+const MATERIAL_ALL = 'todos'
+const MATERIAL_HORMIGON = 'Hormigon'
+const MATERIAL_ECO = 'ECO'
+
+const normalizeCatalogText = (value) => (
+  String(value || '')
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+)
 
 function Catalog({ onNavigate, onAddToCart, searchTerm = '', initialSection = '' }) {
   const [productos, setProductos] = useState([])
@@ -15,6 +25,7 @@ function Catalog({ onNavigate, onAddToCart, searchTerm = '', initialSection = ''
   const [error, setError] = useState('')
   const [busqueda, setBusqueda] = useState(searchTerm)
   const [categoriaActiva, setCategoriaActiva] = useState('todos')
+  const [materialActivo, setMaterialActivo] = useState(MATERIAL_ALL)
   const [orden, setOrden] = useState('reciente')
   const [precioMax, setPrecioMax] = useState(1000)
   const [paginaActiva, setPaginaActiva] = useState(1)
@@ -47,6 +58,15 @@ function Catalog({ onNavigate, onAddToCart, searchTerm = '', initialSection = ''
   const handleResetSearch = () => {
     setBusqueda('')
     onNavigate('catalog', '')
+  }
+
+  const handleResetFilters = () => {
+    setBusqueda('')
+    setCategoriaActiva('todos')
+    setMaterialActivo(MATERIAL_ALL)
+    setOrden('reciente')
+    setPrecioMax(Math.ceil(precioMaxCatalogo))
+    setPaginaActiva(1)
   }
 
   const handleAddProduct = (product) => {
@@ -90,7 +110,22 @@ function Catalog({ onNavigate, onAddToCart, searchTerm = '', initialSection = ''
     const resultadoCategoria = categoriaActiva === 'todos'
       ? resultadoBusqueda
       : resultadoBusqueda.filter((product) => product.tipo?.toLowerCase() === categoriaActiva)
-    const resultadoPrecio = resultadoCategoria.filter((product) => Number(product.precio || 0) <= precioMax)
+    const resultadoMaterial = resultadoCategoria.filter((product) => {
+      if (materialActivo === MATERIAL_ALL) {
+        return true
+      }
+
+      const material = normalizeCatalogText(product.material)
+
+      if (materialActivo === MATERIAL_HORMIGON) {
+        return material.includes('hormigon')
+      }
+
+      return material.includes('plastico')
+        || material.includes('reciclable')
+        || material.includes('eco')
+    })
+    const resultadoPrecio = resultadoMaterial.filter((product) => Number(product.precio || 0) <= precioMax)
 
     return [...resultadoPrecio].sort((a, b) => {
       if (orden === 'precio-menor') {
@@ -103,7 +138,7 @@ function Catalog({ onNavigate, onAddToCart, searchTerm = '', initialSection = ''
 
       return Number(b.idProducto) - Number(a.idProducto)
     })
-  }, [busqueda, categoriaActiva, orden, productosCatalogo, precioMax])
+  }, [busqueda, categoriaActiva, materialActivo, orden, productosCatalogo, precioMax])
 
   const totalPaginas = Math.max(1, Math.ceil(productosFiltrados.length / CATALOG_VISIBLE_PRODUCTS))
   const paginaSegura = Math.min(paginaActiva, totalPaginas)
@@ -115,7 +150,7 @@ function Catalog({ onNavigate, onAddToCart, searchTerm = '', initialSection = ''
 
   useEffect(() => {
     setPaginaActiva(1)
-  }, [busqueda, categoriaActiva, orden, precioMax])
+  }, [busqueda, categoriaActiva, materialActivo, orden, precioMax])
 
   useEffect(() => {
     if (!busqueda.trim() || productosFiltrados.length === 0) {
@@ -130,11 +165,16 @@ function Catalog({ onNavigate, onAddToCart, searchTerm = '', initialSection = ''
     <section className="page-shell catalog-page container-fluid">
       <header className="card catalog-heading">
         <div className="catalog-heading-copy">
-          <h1>Catalogo de productos</h1>
-          <p>Encuentra bloques modulares, pilares y accesorios para tu proyecto.</p>
+          <div className="catalog-heading-title">
+            <p className="catalog-eyebrow">Materiales modulares</p>
+            <h1>Catalogo de productos</h1>
+          </div>
+          <div className="catalog-heading-text">
+            <p>Explora bloques y pilares. Soluciones modulares para la construcción de hogares.</p>
+          </div>
         </div>
         <div className="catalog-heading-media" aria-hidden="true">
-          <img src={inicioCatalogoImage} alt="" />
+          <img src={catalogHeroImage} alt="" />
         </div>
       </header>
 
@@ -143,9 +183,12 @@ function Catalog({ onNavigate, onAddToCart, searchTerm = '', initialSection = ''
             categorias={categorias}
             categoriaActiva={categoriaActiva}
             onSelectCategoria={setCategoriaActiva}
+            materialActivo={materialActivo}
+            onSelectMaterial={setMaterialActivo}
             maxCatalogPrice={precioMaxCatalogo}
             priceMax={precioMax}
             onPriceMaxChange={setPrecioMax}
+            onResetFilters={handleResetFilters}
           />
 
           <div className="col-12 col-lg-10 catalog-content">

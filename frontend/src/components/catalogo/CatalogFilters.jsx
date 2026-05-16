@@ -1,16 +1,19 @@
-import { useState } from 'react'
-
-const materialTabs = ['Hormigón', 'ECO']
+const materialTabs = [
+  { id: 'Hormigon', label: 'Hormigón' },
+  { id: 'ECO', label: 'ECO' },
+]
 
 function CatalogFilters({
   categorias,
   categoriaActiva,
   onSelectCategoria,
+  materialActivo,
+  onSelectMaterial,
   maxCatalogPrice,
   priceMax,
   onPriceMaxChange,
+  onResetFilters,
 }) {
-  const [activeMaterial, setActiveMaterial] = useState('Hormigón')
   const safeMaxPrice = Math.max(1, Math.ceil(Number(maxCatalogPrice) || 1000))
   const safePriceMax = Math.min(Number(priceMax) || safeMaxPrice, safeMaxPrice)
 
@@ -41,12 +44,12 @@ function CatalogFilters({
         <div className="card-body catalog-material-tabs" role="tablist" aria-label="Material del producto">
           {materialTabs.map((material) => (
             <button
-              key={material}
+              key={material.id}
               type="button"
-              className={`btn catalog-material-tab${activeMaterial === material ? ' active' : ''}`}
-              onClick={() => setActiveMaterial(material)}
+              className={`btn catalog-material-tab${materialActivo === material.id ? ' active' : ''}`}
+              onClick={() => onSelectMaterial(material.id)}
             >
-              {material}
+              {material.label}
             </button>
           ))}
         </div>
@@ -72,8 +75,8 @@ function CatalogFilters({
         </div>
       </section>
 
-      <button type="button" className="btn catalog-apply-btn">
-        Aplicar filtro
+      <button type="button" className="btn catalog-reset-btn" onClick={onResetFilters}>
+        Desactivar filtros
       </button>
     </aside>
   )
