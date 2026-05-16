@@ -85,10 +85,11 @@
 
 .design-eyebrow {
   margin: 0 0 0.4rem;
-  color: var(--ss-green-600);
+  color: #5f9f38;
   font-size: 0.78rem;
   font-weight: 800;
   letter-spacing: 0.08em;
+  line-height: 1.1;
   text-transform: uppercase;
   text-align: left;
 }
@@ -629,8 +630,29 @@
 
 /* Ajuste final: misma altura superior que Galeria en escritorio. */
 .design-topbar {
+  position: relative !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, 50%) minmax(0, 50%) !important;
   height: 300px !important;
   min-height: 300px !important;
+  background: #fff !important;
+}
+
+.design-topbar::after {
+  content: "" !important;
+  position: absolute !important;
+  inset: 0 !important;
+  z-index: 1 !important;
+  pointer-events: none !important;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(255, 255, 255, 1) 54%,
+    rgba(255, 255, 255, 0.92) 61%,
+    rgba(255, 255, 255, 0.72) 70%,
+    rgba(255, 255, 255, 0.36) 82%,
+    rgba(255, 255, 255, 0) 96%
+  ) !important;
 }
 
 .design-topbar-copy,
@@ -640,9 +662,54 @@
   min-height: 300px !important;
 }
 
+.design-topbar-copy {
+  box-sizing: border-box !important;
+  position: relative !important;
+  z-index: 2 !important;
+  display: grid !important;
+  align-content: center !important;
+  justify-items: start !important;
+  gap: 14px !important;
+  width: 100% !important;
+  background: transparent !important;
+}
+
+.design-topbar-title,
+.design-topbar-text,
+.design-topbar h1,
+.design-topbar p {
+  width: 100% !important;
+  max-width: 100% !important;
+  text-align: left !important;
+}
+
+.design-topbar-media {
+  position: relative !important;
+  inset: auto !important;
+  z-index: 0 !important;
+  margin-left: 0 !important;
+}
+
+.design-topbar-media::before {
+  background: none !important;
+}
+
+.design-topbar-media img {
+  object-fit: cover !important;
+  object-position: center bottom !important;
+}
+
 .design-topbar h1 {
   font-size: clamp(2.6rem, 3.6vw, 4.1rem) !important;
   line-height: 0.98 !important;
+}
+
+.design-topbar p {
+  margin-top: 0 !important;
+}
+
+.design-topbar .design-eyebrow {
+  color: #5f9f38 !important;
 }
 
 @media (max-width: 991.98px) {
@@ -650,8 +717,24 @@
   .design-topbar-copy,
   .design-topbar-media,
   .design-topbar-media img {
-    height: auto !important;
-    min-height: 220px !important;
+    height: 300px !important;
+    min-height: 300px !important;
+  }
+
+  .design-topbar {
+    grid-template-columns: minmax(0, 50%) minmax(0, 50%) !important;
+  }
+
+  .design-topbar-copy {
+    padding-inline: clamp(22px, 4vw, 46px) !important;
+  }
+
+  .design-topbar h1 {
+    font-size: clamp(2.25rem, 6vw, 3.2rem) !important;
+  }
+
+  .design-topbar p {
+    font-size: clamp(0.9rem, 2vw, 1rem) !important;
   }
 }
 

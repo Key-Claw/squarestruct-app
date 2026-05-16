@@ -336,7 +336,7 @@
     inset: 0;
     background:
       linear-gradient(180deg, rgba(255, 255, 255, 0.82), rgba(255, 255, 255, 0.7)),
-      url("../assets/galeria/hero-galeria-casa-modular.jpeg") center / cover no-repeat;
+      url("../assets/gallery/gallery-hero.jpeg") center / cover no-repeat;
     z-index: 0;
   }
 
@@ -377,7 +377,7 @@
   }
 
   .catalog-filter-title,
-  .catalog-apply-btn,
+  .catalog-reset-btn,
   .catalog-filter-card {
     margin-bottom: 0;
   }
@@ -482,7 +482,7 @@
     inset: 0;
     background:
       linear-gradient(180deg, rgba(255, 255, 255, 0.86), rgba(255, 255, 255, 0.68)),
-      url("../assets/galeria/hero-galeria-casa-modular.jpeg") center / cover no-repeat;
+      url("../assets/gallery/gallery-hero.jpeg") center / cover no-repeat;
     z-index: 0;
   }
 
@@ -534,7 +534,7 @@
   }
 
   .catalog-filter-title,
-  .catalog-apply-btn {
+  .catalog-reset-btn {
     min-height: 46px;
   }
 
@@ -818,7 +818,6 @@ body,
 .home-hero .btn-light,
 .home-cta-block .btn-light,
 .gallery-cta-btn,
-.catalog-apply-btn,
 .catalog-add-btn,
 .design-budget-btn,
 .cart-checkout-btn,
@@ -1423,7 +1422,6 @@ body,
 .btn-success,
 .btn-primary,
 .catalog-add-btn,
-.catalog-apply-btn,
 .gallery-cta-btn,
 .design-budget-btn,
 .cart-checkout-btn,
@@ -1436,7 +1434,6 @@ body,
 .btn-success:hover,
 .btn-primary:hover,
 .catalog-add-btn:hover,
-.catalog-apply-btn:hover,
 .gallery-cta-btn:hover,
 .design-budget-btn:hover,
 .cart-checkout-btn:hover,
@@ -1642,5 +1639,59 @@ textarea {
   .navbar-menu .navbar-menu-btn,
   .navbar-menu-account-btn {
     font-size: 0.74rem !important;
+  }
+}
+
+/* Heroes principales: mismo formato tipografico en Design, Catalogo y Galeria. */
+.design-topbar .design-eyebrow,
+.catalog-heading .catalog-eyebrow,
+.gallery-intro-card .gallery-eyebrow {
+  margin: 0 0 0.4rem !important;
+  color: #5f9f38 !important;
+  font-size: 0.78rem !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.08em !important;
+  line-height: 1.1 !important;
+  text-transform: uppercase !important;
+  text-align: left !important;
+}
+
+.design-topbar h1,
+.catalog-heading h1,
+.gallery-intro-card h1 {
+  margin: 0 !important;
+  max-width: 100% !important;
+  color: var(--ss-ink) !important;
+  font-family: var(--heading) !important;
+  font-size: clamp(2.6rem, 3.6vw, 4.1rem) !important;
+  font-weight: 400 !important;
+  line-height: 0.98 !important;
+  letter-spacing: 0.01em !important;
+  text-align: left !important;
+}
+
+.design-topbar-text p,
+.catalog-heading-text p,
+.gallery-intro-text p {
+  margin: 0 !important;
+  max-width: 100% !important;
+  color: var(--ss-muted) !important;
+  font-size: 1rem !important;
+  font-weight: 400 !important;
+  line-height: 1.58 !important;
+  text-align: left !important;
+}
+
+@media (max-width: 991.98px) {
+  .design-topbar h1,
+  .catalog-heading h1,
+  .gallery-intro-card h1 {
+    font-size: clamp(2.25rem, 6vw, 3.2rem) !important;
+  }
+
+  .design-topbar-text p,
+  .catalog-heading-text p,
+  .gallery-intro-text p {
+    font-size: clamp(0.9rem, 2vw, 1rem) !important;
   }
 }

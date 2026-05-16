@@ -1,4 +1,5 @@
 import designBocetoImage from '../assets/design/design-boceto.jpeg'
+import designHeroImage from '../assets/design/design-hero.jpeg'
 import Icon from '../components/ui/Icon'
 
 const designPieces = [
@@ -40,9 +41,13 @@ function Design({ onNavigate }) {
           ==================================================================== */}
       <header className="card design-topbar">
         <div className="design-topbar-copy">
-          <p className="design-eyebrow">Disenador modular</p>
-          <h1>Disena tu estructura modular</h1>
-          <p>Crea tu plano en 3D utilizando bloques modulares y calcula automaticamente los materiales necesarios.</p>
+          <div className="design-topbar-title">
+            <p className="design-eyebrow">Diseñador modular</p>
+            <h1>Diseña tu estructura</h1>
+          </div>
+          <div className="design-topbar-text">
+            <p>Crea tu plano en 3D utilizando bloques modulares y calcula materiales precios.</p>
+          </div>
         </div>
 
         <div className="design-topbar-actions">
@@ -53,7 +58,7 @@ function Design({ onNavigate }) {
         </div>
 
         <div className="design-topbar-media" aria-hidden="true">
-          <img src={designBocetoImage} alt="" />
+          <img src={designHeroImage} alt="" />
         </div>
       </header>
 

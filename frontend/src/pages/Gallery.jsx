@@ -1,13 +1,13 @@
 import { useMemo, useState } from 'react'
 
-import heroGalleryImage from '../assets/galeria/hero-galeria-casa-modular.jpeg'
-import compactHouseImage from '../assets/galeria/galeria-casa-compacta.jpeg'
-import minimalHouseImage from '../assets/galeria/galeria-casa-minimalista.jpeg'
-import forestHouseImage from '../assets/galeria/galeria-casa-moderna-bosque.jpeg'
-import featuredHouseImage from '../assets/galeria/galeria-casa-moderna-desierto-destacada.jpeg'
-import beachHouseImage from '../assets/galeria/galeria-casa-playa.jpeg'
-import desertRusticHouseImage from '../assets/galeria/galeria-casa-rustica-desierto.jpeg'
-import sustainableHouseImage from '../assets/galeria/galeria-casa-sostenible-desierto.jpeg'
+import heroGalleryImage from '../assets/gallery/gallery-hero.jpeg'
+import compactHouseImage from '../assets/gallery/galeria-casa-compacta.jpeg'
+import minimalHouseImage from '../assets/gallery/galeria-casa-minimalista.jpeg'
+import forestHouseImage from '../assets/gallery/galeria-casa-moderna-bosque.jpeg'
+import featuredHouseImage from '../assets/gallery/galeria-casa-moderna-desierto-destacada.jpeg'
+import beachHouseImage from '../assets/gallery/galeria-casa-playa.jpeg'
+import desertRusticHouseImage from '../assets/gallery/galeria-casa-rustica-desierto.jpeg'
+import sustainableHouseImage from '../assets/gallery/galeria-casa-sostenible-desierto.jpeg'
 
 const filters = ['Hormigón', 'ECO']
 
@@ -119,25 +119,24 @@ function Gallery({ onNavigate }) {
   return (
     <section className="page-shell gallery-page container-fluid">
       <section className="card gallery-intro-card">
-        <div className="row g-0 align-items-center">
-          <div className="col-12 col-lg-5">
-            <div className="card-body gallery-intro-copy">
-              <h1>Galería de soluciones modulares</h1>
+        <div className="gallery-intro-copy">
+          <div className="gallery-intro-title">
+            <p className="gallery-eyebrow">Inspiracion modular</p>
+              <h1>Galería de soluciones</h1>
+          </div>
+          <div className="gallery-intro-text">
               <p>
-                Referencias visuales para elegir material, distribución y estilo antes de pasar al diseñador.
+                Ideas visuales para descubrir estilos, materiales y distribuciones antes de pasar al disenador.
               </p>
             </div>
           </div>
 
-          <div className="col-12 col-lg-7">
-            <div className="gallery-intro-media">
-              <img
-                src={heroGalleryImage}
-                className="gallery-cover-image"
-                alt="Casa modular en entorno natural"
-              />
-            </div>
-          </div>
+        <div className="gallery-intro-media" aria-hidden="true">
+          <img
+            src={heroGalleryImage}
+            className="gallery-cover-image"
+            alt=""
+          />
         </div>
       </section>
 
