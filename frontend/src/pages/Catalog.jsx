@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import Icon from '../components/ui/Icon'
 import CatalogFilters from '../components/catalogo/CatalogFilters'
 import CatalogProductCard from '../components/catalogo/CatalogProductCard'
@@ -20,6 +20,7 @@ const normalizeCatalogText = (value) => (
 )
 
 function Catalog({ onNavigate, onAddToCart, searchTerm = '', initialSection = '' }) {
+  const resultsBarRef = useRef(null)
   const [productos, setProductos] = useState([])
   const [cargando, setCargando] = useState(true)
   const [error, setError] = useState('')
@@ -29,6 +30,7 @@ function Catalog({ onNavigate, onAddToCart, searchTerm = '', initialSection = ''
   const [orden, setOrden] = useState('reciente')
   const [precioMax, setPrecioMax] = useState(1000)
   const [paginaActiva, setPaginaActiva] = useState(1)
+  const [viewMode, setViewMode] = useState('grid')
 
   useEffect(() => {
     const cargarProductos = async () => {
@@ -73,6 +75,13 @@ function Catalog({ onNavigate, onAddToCart, searchTerm = '', initialSection = ''
     if (typeof onAddToCart === 'function') {
       onAddToCart(product)
     }
+  }
+
+  const handleSearchChange = (event) => {
+    setBusqueda(event.target.value)
+    window.requestAnimationFrame(() => {
+      resultsBarRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    })
   }
 
   const productosCatalogo = useMemo(() => (
@@ -152,15 +161,6 @@ function Catalog({ onNavigate, onAddToCart, searchTerm = '', initialSection = ''
     setPaginaActiva(1)
   }, [busqueda, categoriaActiva, materialActivo, orden, precioMax])
 
-  useEffect(() => {
-    if (!busqueda.trim() || productosFiltrados.length === 0) {
-      return
-    }
-
-    const primerProducto = document.getElementById(`producto-${productosFiltrados[0].idProducto}`)
-    primerProducto?.scrollIntoView({ behavior: 'smooth', block: 'center' })
-  }, [busqueda, productosFiltrados])
-
   return (
     <section className="page-shell catalog-page container-fluid">
       <header className="card catalog-heading">
@@ -192,7 +192,7 @@ function Catalog({ onNavigate, onAddToCart, searchTerm = '', initialSection = ''
           />
 
           <div className="col-12 col-lg-10 catalog-content">
-            <div className="card catalog-results-bar">
+            <div className="card catalog-results-bar" ref={resultsBarRef}>
               <div className="catalog-results-count">
                 {productosFiltrados.length} productos encontrados
               </div>
@@ -203,7 +203,12 @@ function Catalog({ onNavigate, onAddToCart, searchTerm = '', initialSection = ''
                   className="form-control catalog-search-input"
                   placeholder="Buscar productos..."
                   value={busqueda}
-                  onChange={(e) => setBusqueda(e.target.value)}
+                  onChange={handleSearchChange}
+                  onKeyDown={(event) => {
+                    if (event.key === 'Enter') {
+                      event.preventDefault()
+                    }
+                  }}
                 />
 
                 {busqueda.trim() && (
@@ -212,7 +217,7 @@ function Catalog({ onNavigate, onAddToCart, searchTerm = '', initialSection = ''
                     className="btn btn-outline-dark catalog-back-button"
                     onClick={handleResetSearch}
                   >
-                    Volver
+                    Revertir
                   </button>
                 )}
 
@@ -228,10 +233,22 @@ function Catalog({ onNavigate, onAddToCart, searchTerm = '', initialSection = ''
                   <option value="precio-mayor">Precio mayor</option>
                 </select>
 
-                <button type="button" className="btn catalog-view-btn active" aria-label="Vista cuadricula">
+                <button
+                  type="button"
+                  className={`btn catalog-view-btn${viewMode === 'grid' ? ' active' : ''}`}
+                  aria-label="Vista cuadricula"
+                  aria-pressed={viewMode === 'grid'}
+                  onClick={() => setViewMode('grid')}
+                >
                   <Icon name="grid" size={17} />
                 </button>
-                <button type="button" className="btn catalog-view-btn" aria-label="Vista lista">
+                <button
+                  type="button"
+                  className={`btn catalog-view-btn${viewMode === 'list' ? ' active' : ''}`}
+                  aria-label="Vista lista"
+                  aria-pressed={viewMode === 'list'}
+                  onClick={() => setViewMode('list')}
+                >
                   <Icon name="list" size={17} />
                 </button>
               </div>
@@ -249,9 +266,9 @@ function Catalog({ onNavigate, onAddToCart, searchTerm = '', initialSection = ''
               </div>
             )}
 
-            <div className="row g-4 catalog-products-grid" id="productos">
+            <div className={`row g-4 catalog-products-grid${viewMode === 'list' ? ' catalog-products-list' : ''}`} id="productos">
               {!cargando && productosVisibles.map((product) => (
-                <div className="col-12 col-sm-6 col-xl-3" key={product.idProducto}>
+                <div className={viewMode === 'list' ? 'col-12' : 'col-12 col-sm-6 col-xl-3'} key={product.idProducto}>
                   <CatalogProductCard product={product} onAddProduct={handleAddProduct} />
                 </div>
               ))}

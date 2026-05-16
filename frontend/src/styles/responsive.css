@@ -102,15 +102,6 @@
     grid-template-columns: 1fr;
   }
 
-  .home-cta-block {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .home-cta-button {
-    width: 100%;
-  }
-
   .home-carousel-image {
     min-height: 560px;
   }
@@ -501,8 +492,7 @@
   }
 
   .gallery-intro-copy,
-  .gallery-feature-copy,
-  .gallery-cta-card .card-body {
+  .gallery-feature-copy {
     padding: 28px 20px;
   }
 
@@ -523,10 +513,6 @@
 
   .gallery-project-media {
     aspect-ratio: 16 / 8;
-  }
-
-  .gallery-sort-select {
-    max-width: none;
   }
 
   .catalog-sidebar {
@@ -789,11 +775,9 @@ body,
 .card,
 .home-about,
 .home-hero,
-.home-cta-block,
 .gallery-intro-card,
 .gallery-project-card,
 .gallery-feature-card,
-.gallery-cta-card,
 .catalog-filter-card,
 .catalog-results-bar,
 .catalog-product-card,
@@ -816,7 +800,6 @@ body,
 .btn-success,
 .btn-primary,
 .home-hero .btn-light,
-.home-cta-block .btn-light,
 .gallery-cta-btn,
 .catalog-add-btn,
 .design-budget-btn,
@@ -1061,12 +1044,9 @@ body,
 .home-about,
 .home-product-showcase,
 .home-feature-grid,
-.home-cta-block,
 .gallery-intro-card,
-.gallery-toolbar,
 .gallery-grid,
 .gallery-feature-card,
-.gallery-cta-card,
 .catalog-heading,
 .catalog-page > .row,
 .design-topbar,
@@ -1369,12 +1349,9 @@ body,
 .home-about,
 .home-product-showcase,
 .home-feature-grid,
-.home-cta-block,
 .gallery-intro-card,
-.gallery-toolbar,
 .gallery-grid,
 .gallery-feature-card,
-.gallery-cta-card,
 .catalog-heading,
 .catalog-page > .row,
 .design-topbar,
@@ -1395,7 +1372,6 @@ body,
 .catalog-product-card,
 .gallery-project-card,
 .gallery-feature-card,
-.gallery-cta-card,
 .design-topbar,
 .design-pieces-panel,
 .design-canvas-card,
@@ -1614,25 +1590,6 @@ textarea {
     font-size: 0.84rem !important;
   }
 
-  .gallery-toolbar {
-    align-items: stretch;
-  }
-
-  .gallery-toolbar > [class*="col-"] {
-    width: 100%;
-  }
-
-  .gallery-search-input,
-  .gallery-sort-select {
-    width: 100%;
-    max-width: none;
-  }
-
-  .home-cta-block {
-    flex-direction: column;
-    align-items: stretch;
-    text-align: left;
-  }
 }
 
 @media (max-width: 575.98px) {

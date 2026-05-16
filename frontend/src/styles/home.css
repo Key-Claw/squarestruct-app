@@ -4,7 +4,6 @@
    - home-about: SecciÃ³n "Â¿QuÃ© es SquareStruct?" con imagen y texto
    - home-feature-grid: Grid de 3 features (bloques modulares, diseÃ±o, catÃ¡logo)
    - home-highlight-grid: Highlights dentro del about
-   - home-cta-block: Llamada a acciÃ³n principal (CTA)
    - home-section-heading: TÃ­tulos reutilizables de secciones
    ============================================================================ */
 
@@ -343,66 +342,6 @@
   color: #a7e080;
 }
 
-.home-cta-block {
-  width: 100%;
-  margin: 52px auto 0;
-  padding: 22px 28px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 24px;
-  border: 1px solid rgba(23, 63, 95, 0.14);
-  background: #fff;
-  color: #173f5f;
-  box-shadow: 0 14px 32px rgba(15, 23, 42, 0.06);
-}
-
-.home-cta-copy {
-  max-width: 70ch;
-}
-
-.home-cta-eyebrow {
-  margin-bottom: 0.55rem;
-}
-
-.home-cta-block h2 {
-  margin: 0;
-  color: #0f172a;
-  font-size: clamp(1.5rem, 2vw, 2.1rem);
-  font-weight: 850;
-}
-
-.home-cta-block p {
-  margin: 10px 0 0;
-  color: #475569;
-  font-size: 1rem;
-  line-height: 1.6;
-}
-
-.home-cta-block .btn-light {
-  min-width: 176px;
-  border-color: #5f9f38;
-  background: #5f9f38;
-  color: #fff;
-}
-
-.home-cta-button {
-  min-height: 48px;
-  padding-inline: 1.35rem;
-  border-radius: 10px;
-  font-weight: 800;
-  box-shadow: 0 10px 18px rgba(95, 159, 56, 0.18);
-}
-
-.home-cta-copy p {
-  max-width: 52ch;
-}
-
-.home-cta-block .btn-light:hover {
-  background: #4f8f2f;
-  border-color: #4f8f2f;
-}
-
 .hero-actions {
   display: flex;
   justify-content: center;
@@ -433,8 +372,7 @@
 /* FASE 4: acabado v2 para portada */
 .home-hero,
 .home-about,
-.home-feature-card,
-.home-cta-block {
+.home-feature-card {
   border-color: var(--ss-border);
   border-radius: var(--ss-radius);
   box-shadow: var(--ss-shadow);
@@ -446,8 +384,7 @@
 
 .home-hero-copy h1,
 .home-section-heading h2,
-.home-about-copy h2,
-.home-cta-block h2 {
+.home-about-copy h2 {
   color: var(--ss-ink);
   font-family: var(--heading);
   font-weight: 400;
@@ -469,14 +406,12 @@
 
 .home-hero-copy p,
 .home-about-copy p,
-.home-cta-block p,
 .home-highlight p,
 .home-feature-body p {
   color: var(--ss-muted);
 }
 
-.home-hero .btn-light,
-.home-cta-block .btn-light {
+.home-hero .btn-light {
   border-color: var(--ss-green-600);
   background: linear-gradient(135deg, #63bb55, var(--ss-green-700));
   color: #ffffff;
@@ -509,9 +444,5 @@
 
 .home-feature-link {
   color: #98d878;
-}
-
-.home-cta-block {
-  background: var(--ss-panel);
 }
 

@@ -71,24 +71,13 @@ const bottomProjects = [
 
 function Gallery({ onNavigate }) {
   const [activeFilter, setActiveFilter] = useState('Hormigón')
-  const [searchTerm, setSearchTerm] = useState('')
   const [selectedIdea, setSelectedIdea] = useState(null)
 
   const allProjects = useMemo(() => [...topProjects, ...bottomProjects], [])
 
   const filteredProjects = useMemo(() => {
-    const normalizedSearch = searchTerm.trim().toLowerCase()
-
-    return allProjects.filter((project) => {
-      const matchesMaterial = project.material === activeFilter
-      const matchesSearch = !normalizedSearch
-        || project.title.toLowerCase().includes(normalizedSearch)
-        || project.description.toLowerCase().includes(normalizedSearch)
-        || project.material.toLowerCase().includes(normalizedSearch)
-
-      return matchesMaterial && matchesSearch
-    })
-  }, [activeFilter, allProjects, searchTerm])
+    return allProjects.filter((project) => project.material === activeFilter)
+  }, [activeFilter, allProjects])
 
   const firstRow = filteredProjects.slice(0, 3)
   const secondRow = filteredProjects.slice(3, 6)
@@ -107,9 +96,13 @@ function Gallery({ onNavigate }) {
             +
           </button>
           <div className="card-body gallery-card-overlay">
-            <h2>{project.title}</h2>
-            <p className="gallery-project-description">{project.description}</p>
+            <div className="gallery-card-title-grid">
+              <h2>{project.title}</h2>
+            </div>
+            <div className="gallery-card-info-grid">
+              <p className="gallery-project-description">{project.description}</p>
             <p className="gallery-area">{project.area} · {project.material}</p>
+            </div>
           </div>
         </div>
       </article>
@@ -138,43 +131,19 @@ function Gallery({ onNavigate }) {
             alt=""
           />
         </div>
+        <div className="gallery-intro-actions" aria-label="Filtrar galeria por material">
+          {filters.map((filter) => (
+            <button
+              type="button"
+              className={`btn gallery-filter-btn${activeFilter === filter ? ' active' : ''}`}
+              key={filter}
+              onClick={() => setActiveFilter(filter)}
+            >
+              {filter}
+            </button>
+          ))}
+        </div>
       </section>
-
-      <div className="row g-3 align-items-center gallery-toolbar">
-        <div className="col-12 col-lg-4">
-          <div className="d-flex flex-wrap gap-2">
-            {filters.map((filter) => (
-              <button
-                type="button"
-                className={`btn gallery-filter-btn${activeFilter === filter ? ' active' : ''}`}
-                key={filter}
-                onClick={() => setActiveFilter(filter)}
-              >
-                {filter}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        <div className="col-12 col-lg-4">
-          <input
-            type="search"
-            className="form-control gallery-search-input"
-            placeholder="Buscar ideas"
-            aria-label="Buscar ideas en la galería"
-            value={searchTerm}
-            onChange={(event) => setSearchTerm(event.target.value)}
-          />
-        </div>
-
-        <div className="col-12 col-lg-4 d-flex justify-content-lg-end">
-          <select className="form-select gallery-sort-select" aria-label="Ordenar galería">
-            <option>Más recientes</option>
-            <option>Mayor superficie</option>
-            <option>Menor superficie</option>
-          </select>
-        </div>
-      </div>
 
       {filteredProjects.length === 0 ? (
         <div className="gallery-empty-state">
@@ -192,23 +161,22 @@ function Gallery({ onNavigate }) {
               className="gallery-cover-image gallery-feature-image"
               alt={featuredProject.title}
             />
-            <button
-              type="button"
-              className="btn gallery-favorite-btn gallery-feature-favorite"
-              aria-label={`Ampliar ${featuredProject.title}`}
-              onClick={() => setSelectedIdea(featuredProject)}
-            >
-              +
-            </button>
+            <span className="gallery-feature-star" role="img" aria-label="Destacado">
+              ★
+            </span>
             <div className="card-body gallery-feature-copy">
-              <button type="button" className="btn gallery-badge">
-                Destacado
-              </button>
-              <h2>{featuredProject.title}</h2>
-              <p className="gallery-feature-architect">{featuredProject.architect}</p>
-              <p>{featuredProject.description}</p>
-              <p className="gallery-area">{featuredProject.area} · {featuredProject.material}</p>
-              <div className="d-flex flex-wrap gap-3 gallery-feature-actions">
+              <div className="gallery-feature-title-grid">
+                <h2>{featuredProject.title}</h2>
+                <h3 className="gallery-badge">
+                  Destacado
+                </h3>
+              </div>
+              <div className="gallery-feature-info-grid">
+                <p className="gallery-feature-architect">{featuredProject.architect}</p>
+                <p>{featuredProject.description}</p>
+                <p className="gallery-area">{featuredProject.area} · {featuredProject.material}</p>
+              </div>
+              <div className="gallery-feature-actions">
                 <button
                   type="button"
                   className="btn gallery-outline-btn gallery-feature-action-btn"
@@ -227,30 +195,6 @@ function Gallery({ onNavigate }) {
           )}
         </>
       )}
-
-      <nav className="gallery-pagination" aria-label="Paginación de galería">
-        <ul className="pagination pagination-sm justify-content-center">
-          <li className="page-item active"><button className="page-link" type="button">1</button></li>
-          <li className="page-item"><button className="page-link" type="button">2</button></li>
-          <li className="page-item"><button className="page-link" type="button">3</button></li>
-        </ul>
-      </nav>
-
-      <section className="card gallery-cta-card">
-        <div className="row g-4 align-items-center">
-          <div className="col-12 col-lg-7">
-            <div className="card-body">
-              <h2>Prepara tu estructura</h2>
-              <p>Usa el diseñador para calcular módulos y revisar materiales.</p>
-            </div>
-          </div>
-          <div className="col-12 col-lg-5 d-flex justify-content-lg-center">
-            <button type="button" className="btn gallery-cta-btn" onClick={() => onNavigate('design')}>
-              Ir al diseñador
-            </button>
-          </div>
-        </div>
-      </section>
 
       {selectedIdea && (
         <div className="gallery-idea-backdrop" role="presentation" onClick={() => setSelectedIdea(null)}>

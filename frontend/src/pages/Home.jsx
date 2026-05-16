@@ -188,18 +188,6 @@ function Home({ onNavigate }) {
         ))}
       </div>
 
-      <section className="page-block home-cta-block">
-        <div className="home-cta-copy">
-          <p className="eyebrow home-cta-eyebrow">SquareStruct</p>
-          <h2>Empieza a construir tu idea</h2>
-          <p>
-            Planifica, elige y consigue con la confianza de usar soluciones modulares de calidad.
-          </p>
-        </div>
-        <button type="button" className="btn btn-light home-cta-button" onClick={() => onNavigate('design')}>
-          Comienza ahora
-        </button>
-      </section>
     </section>
   )
 }
