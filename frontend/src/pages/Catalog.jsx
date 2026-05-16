@@ -7,6 +7,8 @@ import { productosDemo } from '../data/productosDemo'
 import { getProductos, filtrarProductos } from '../services/productService'
 import { normalizarProducto } from '../utils/text'
 
+const CATALOG_VISIBLE_PRODUCTS = 4
+
 function Catalog({ onNavigate, onAddToCart, searchTerm = '', initialSection = '' }) {
   const [productos, setProductos] = useState([])
   const [cargando, setCargando] = useState(true)
@@ -15,6 +17,7 @@ function Catalog({ onNavigate, onAddToCart, searchTerm = '', initialSection = ''
   const [categoriaActiva, setCategoriaActiva] = useState('todos')
   const [orden, setOrden] = useState('reciente')
   const [precioMax, setPrecioMax] = useState(1000)
+  const [paginaActiva, setPaginaActiva] = useState(1)
 
   useEffect(() => {
     const cargarProductos = async () => {
@@ -102,6 +105,18 @@ function Catalog({ onNavigate, onAddToCart, searchTerm = '', initialSection = ''
     })
   }, [busqueda, categoriaActiva, orden, productosCatalogo, precioMax])
 
+  const totalPaginas = Math.max(1, Math.ceil(productosFiltrados.length / CATALOG_VISIBLE_PRODUCTS))
+  const paginaSegura = Math.min(paginaActiva, totalPaginas)
+
+  const productosVisibles = useMemo(() => {
+    const startIndex = (paginaSegura - 1) * CATALOG_VISIBLE_PRODUCTS
+    return productosFiltrados.slice(startIndex, startIndex + CATALOG_VISIBLE_PRODUCTS)
+  }, [paginaSegura, productosFiltrados])
+
+  useEffect(() => {
+    setPaginaActiva(1)
+  }, [busqueda, categoriaActiva, orden, precioMax])
+
   useEffect(() => {
     if (!busqueda.trim() || productosFiltrados.length === 0) {
       return
@@ -124,95 +139,105 @@ function Catalog({ onNavigate, onAddToCart, searchTerm = '', initialSection = ''
       </header>
 
       <div className="row g-4 align-items-start">
-        <CatalogFilters
-          categorias={categorias}
-          categoriaActiva={categoriaActiva}
-          onSelectCategoria={setCategoriaActiva}
-          maxCatalogPrice={precioMaxCatalogo}
-          priceMax={precioMax}
-          onPriceMaxChange={setPrecioMax}
-        />
+          <CatalogFilters
+            categorias={categorias}
+            categoriaActiva={categoriaActiva}
+            onSelectCategoria={setCategoriaActiva}
+            maxCatalogPrice={precioMaxCatalogo}
+            priceMax={precioMax}
+            onPriceMaxChange={setPrecioMax}
+          />
 
-        <div className="col-12 col-lg-10 catalog-content">
-          <div className="card catalog-results-bar">
-            <div className="catalog-results-count">
-              {productosFiltrados.length} productos encontrados
-            </div>
-
-            <div className="d-flex gap-2 align-items-center catalog-results-actions">
-              <input
-                type="text"
-                className="form-control catalog-search-input"
-                placeholder="Buscar productos..."
-                value={busqueda}
-                onChange={(e) => setBusqueda(e.target.value)}
-              />
-
-              {busqueda.trim() && (
-                <button
-                  type="button"
-                  className="btn btn-outline-dark catalog-back-button"
-                  onClick={handleResetSearch}
-                >
-                  Volver
-                </button>
-              )}
-
-              <span>Ordenar por:</span>
-              <select
-                className="form-select catalog-sort-select"
-                aria-label="Ordenar catalogo"
-                value={orden}
-                onChange={(event) => setOrden(event.target.value)}
-              >
-                <option value="reciente">Mas reciente</option>
-                <option value="precio-menor">Precio menor</option>
-                <option value="precio-mayor">Precio mayor</option>
-              </select>
-
-              <button type="button" className="btn catalog-view-btn active" aria-label="Vista cuadricula">
-                <Icon name="grid" size={17} />
-              </button>
-              <button type="button" className="btn catalog-view-btn" aria-label="Vista lista">
-                <Icon name="list" size={17} />
-              </button>
-            </div>
-          </div>
-
-          {cargando && (
-            <div className="text-center py-5 catalog-state">
-              Cargando productos...
-            </div>
-          )}
-
-          {error && (
-            <div className="alert alert-warning catalog-demo-alert text-center">
-              No se pudo conectar con la base de datos. Mostrando productos provisionales.
-            </div>
-          )}
-
-          <div className="row g-4 catalog-products-grid" id="productos">
-            {!cargando && productosFiltrados.map((product) => (
-              <div className="col-12 col-sm-6 col-xl-3" key={product.idProducto}>
-                <CatalogProductCard product={product} onAddProduct={handleAddProduct} />
+          <div className="col-12 col-lg-10 catalog-content">
+            <div className="card catalog-results-bar">
+              <div className="catalog-results-count">
+                {productosFiltrados.length} productos encontrados
               </div>
-            ))}
-          </div>
 
-          {!cargando && productosFiltrados.length === 0 && (
-            <div className="text-center catalog-state mt-4">
-              No se encontraron productos con esa busqueda.
+              <div className="d-flex gap-2 align-items-center catalog-results-actions">
+                <input
+                  type="text"
+                  className="form-control catalog-search-input"
+                  placeholder="Buscar productos..."
+                  value={busqueda}
+                  onChange={(e) => setBusqueda(e.target.value)}
+                />
+
+                {busqueda.trim() && (
+                  <button
+                    type="button"
+                    className="btn btn-outline-dark catalog-back-button"
+                    onClick={handleResetSearch}
+                  >
+                    Volver
+                  </button>
+                )}
+
+                <span>Ordenar por:</span>
+                <select
+                  className="form-select catalog-sort-select"
+                  aria-label="Ordenar catalogo"
+                  value={orden}
+                  onChange={(event) => setOrden(event.target.value)}
+                >
+                  <option value="reciente">Mas reciente</option>
+                  <option value="precio-menor">Precio menor</option>
+                  <option value="precio-mayor">Precio mayor</option>
+                </select>
+
+                <button type="button" className="btn catalog-view-btn active" aria-label="Vista cuadricula">
+                  <Icon name="grid" size={17} />
+                </button>
+                <button type="button" className="btn catalog-view-btn" aria-label="Vista lista">
+                  <Icon name="list" size={17} />
+                </button>
+              </div>
             </div>
-          )}
 
-          <nav className="catalog-pagination" aria-label="Paginacion catalogo">
-            <ul className="pagination pagination-sm justify-content-end">
-              <li className="page-item active"><button className="page-link" type="button">1</button></li>
-              <li className="page-item"><button className="page-link" type="button">2</button></li>
-              <li className="page-item"><button className="page-link" type="button">3</button></li>
-            </ul>
-          </nav>
-        </div>
+            {cargando && (
+              <div className="text-center py-5 catalog-state">
+                Cargando productos...
+              </div>
+            )}
+
+            {error && (
+              <div className="alert alert-warning catalog-demo-alert text-center">
+                No se pudo conectar con la base de datos. Mostrando productos provisionales.
+              </div>
+            )}
+
+            <div className="row g-4 catalog-products-grid" id="productos">
+              {!cargando && productosVisibles.map((product) => (
+                <div className="col-12 col-sm-6 col-xl-3" key={product.idProducto}>
+                  <CatalogProductCard product={product} onAddProduct={handleAddProduct} />
+                </div>
+              ))}
+            </div>
+
+            {!cargando && productosFiltrados.length === 0 && (
+              <div className="text-center catalog-state mt-4">
+                No se encontraron productos con esa busqueda.
+              </div>
+            )}
+
+            {!cargando && productosFiltrados.length > CATALOG_VISIBLE_PRODUCTS && (
+              <nav className="catalog-pagination" aria-label="Paginacion catalogo">
+                <ul className="pagination pagination-sm justify-content-end">
+                  {Array.from({ length: totalPaginas }, (_, index) => index + 1).map((pageNumber) => (
+                    <li className={`page-item${pageNumber === paginaSegura ? ' active' : ''}`} key={pageNumber}>
+                      <button
+                        className="page-link"
+                        type="button"
+                        onClick={() => setPaginaActiva(pageNumber)}
+                      >
+                        {pageNumber}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </nav>
+            )}
+          </div>
       </div>
     </section>
   )
