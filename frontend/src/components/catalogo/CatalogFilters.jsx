@@ -64,7 +64,7 @@ function CatalogFilters({
             className="form-range catalog-price-range"
             min="0"
             max={safeMaxPrice}
-            step="10"
+            step="1"
             value={safePriceMax}
             onChange={(event) => onPriceMaxChange(Number(event.target.value))}
             aria-label="Rango maximo de precio"
