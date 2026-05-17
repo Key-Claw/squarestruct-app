@@ -153,13 +153,16 @@ function Home({ onNavigate }) {
               </p>
 
               <div className="home-highlight-grid">
-                {homeHighlights.map((item, index) => (
-                  <article className="home-highlight" key={item.title}>
-                    <span className="home-highlight-icon">{index + 1}</span>
-                    <h3>{item.title}</h3>
-                    <p>{item.text}</p>
-                  </article>
-                ))}
+                {homeHighlights.map((item, index) => {
+                  const emojis = ['🧩', '💪', '📐', '🌱'];
+                  return (
+                    <article className="home-highlight" key={item.title}>
+                      <span className="home-highlight-icon">{emojis[index]}</span>
+                      <h3>{item.title}</h3>
+                      <p>{item.text}</p>
+                    </article>
+                  );
+                })}
               </div>
             </div>
           </div>
@@ -173,21 +176,25 @@ function Home({ onNavigate }) {
         </div>
 
       <div className="row g-4 home-feature-grid">
-        {homeFeatureCards.map((item) => (
-          <div className="col-12 col-lg-4" key={item.title}>
-            <article className="page-card home-feature-card h-100">
-              <img src={item.image} className="home-feature-image" alt={item.title} />
-              <div className="page-card-body home-feature-body">
-                <span className="home-feature-badge">0{homeFeatureCards.indexOf(item) + 1}</span>
-                <h3>{item.title}</h3>
-                <p>{item.text}</p>
-                <button type="button" className="home-feature-link" onClick={() => item.handler(onNavigate)}>
-                  {item.action} →
-                </button>
-              </div>
-            </article>
-          </div>
-        ))}
+        {homeFeatureCards.map((item) => {
+          const emojis = ['🔍', '💡', '🏗️'];
+          const index = homeFeatureCards.indexOf(item);
+          return (
+            <div className="col-12 col-lg-4" key={item.title}>
+              <article className="page-card home-feature-card h-100">
+                <img src={item.image} className="home-feature-image" alt={item.title} />
+                <div className="page-card-body home-feature-body">
+                  <span className="home-feature-badge">{emojis[index]}</span>
+                  <h3>{item.title}</h3>
+                  <p>{item.text}</p>
+                  <button type="button" className="home-feature-link" onClick={() => item.handler(onNavigate)}>
+                    {item.action} →
+                  </button>
+                </div>
+              </article>
+            </div>
+          );
+        })}
       </div>
       </section>
 

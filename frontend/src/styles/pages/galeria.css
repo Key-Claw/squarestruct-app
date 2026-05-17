@@ -288,7 +288,7 @@
   min-height: inherit;
   padding: 42px clamp(28px, 5vw, 64px);
   color: #fff;
-  background: linear-gradient(90deg, rgba(5, 18, 26, 0.88), rgba(5, 18, 26, 0.62) 68%, transparent);
+  background: linear-gradient(90deg, rgba(5, 18, 26, 0.94) 0%, rgba(5, 18, 26, 0.84) 34%, rgba(5, 18, 26, 0.62) 62%, rgba(5, 18, 26, 0.28) 84%, rgba(5, 18, 26, 0) 100%);
 }
 
 .gallery-feature-title-grid {
@@ -324,7 +324,7 @@
   background: #fff;
   color: #0b0b0b;
   font-size: 0.78rem;
-  font-weight: 700;
+  font-weight: 600;
   text-transform: uppercase;
 }
 
@@ -357,8 +357,8 @@
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(180deg, rgba(5, 18, 26, 0.12), rgba(5, 18, 26, 0.42)),
-    linear-gradient(90deg, rgba(5, 18, 26, 0.64), transparent 58%);
+    linear-gradient(180deg, rgba(5, 18, 26, 0.08), rgba(5, 18, 26, 0.26) 44%, rgba(5, 18, 26, 0.5) 100%),
+    linear-gradient(90deg, rgba(5, 18, 26, 0.54) 0%, rgba(5, 18, 26, 0.34) 36%, rgba(5, 18, 26, 0.14) 62%, rgba(5, 18, 26, 0) 100%);
   pointer-events: none;
   z-index: 1;
 }
@@ -503,9 +503,65 @@
   .gallery-idea-modal img {
     min-height: 260px;
   }
+
+  /* Mobile: center modal content like Home */
+  .gallery-idea-content {
+    padding: 20px 18px 28px;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .gallery-idea-content span {
+    margin: 0 auto 12px auto;
+    display: inline-block;
+  }
+
+  .gallery-idea-content h2 {
+    margin: 0 auto 8px auto;
+    text-align: center;
+    max-width: 12ch;
+    width: 100%;
+  }
+
+  .gallery-idea-content p {
+    margin: 12px auto;
+    max-width: 36ch;
+    text-align: center;
+  }
+
+  .gallery-idea-content strong {
+    display: block;
+    margin: 18px auto 20px auto;
+    text-align: center;
+  }
+
+  .gallery-idea-content .gallery-cta-btn,
+  .gallery-idea-content .btn.gallery-cta-btn {
+    width: min(100%, 320px);
+    align-self: center;
+    margin: 0 auto;
+  }
+
+  /* Mobile: make featured project action button match Home CTA */
+  .gallery-feature-action-btn {
+    width: min(100%, 320px);
+    align-self: center;
+    margin: 12px auto 0;
+    min-height: 48px;
+    border-color: var(--ss-green-600);
+    background: linear-gradient(135deg, #63bb55, var(--ss-green-700));
+    color: #ffffff;
+  }
+
+  .gallery-feature-action-btn:hover {
+    border-color: var(--ss-green-700);
+    background: linear-gradient(135deg, #54a947, #2f7d2e);
+    color: #ffffff;
+  }
 }
 
-/* FASE 4: acabado v2 para galería */
+/* FASE 4: acabado v2 para galerï¿½a */
 .gallery-intro-card,
 .gallery-project-card,
 .gallery-feature-card,
@@ -632,8 +688,8 @@
 .gallery-badge {
   border-color: rgba(255, 255, 255, 0.72);
   border-radius: 8px;
-  color: var(--ss-ink);
-  background: rgba(255, 255, 255, 0.96);
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.08);
 }
 
 .gallery-feature-action-btn {
@@ -768,6 +824,10 @@
   border-radius: 6px;
   font-size: clamp(0.76rem, 1vw, 0.9rem);
   line-height: 1;
+  font-weight: 600;
+  color: #ffffff;
+  background: rgba(16, 39, 54, 0.82);
+  border: 1px solid rgba(16, 39, 54, 0.22);
 }
 
 /* Hero de galeria alineado con el hero de catalogo. */
