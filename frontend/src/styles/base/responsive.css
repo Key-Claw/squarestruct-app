@@ -1,4 +1,4 @@
-﻿/* Bootstrap navbar mobile/tablet: d-lg-none is active below 992px. */
+/* Bootstrap navbar mobile/tablet: d-lg-none is active below 992px. */
 @media (max-width: 991.98px) {
   .app-navbar {
     gap: 8px;
@@ -162,8 +162,6 @@
   .mvp-hero h1 {
     max-width: 12ch;
   }
-
-  .hero-actions .btn,
   .page-actions .page-link-button,
   .product-link-block .btn,
   .products-intro .btn {
@@ -244,7 +242,7 @@
 /* PC responsive: >= 1200px. Full-width layout with more columns and wider hero. */
 @media (min-width: 1200px) {
   .app-navbar {
-    padding-inline: clamp(1.5rem, 3vw, 3.5rem) !important;
+    padding-inline: clamp(1.5rem, 3vw, 3.5rem);
   }
 
   .page-shell,
@@ -327,7 +325,7 @@
     inset: 0;
     background:
       linear-gradient(180deg, rgba(255, 255, 255, 0.82), rgba(255, 255, 255, 0.7)),
-      url("../assets/gallery/gallery-hero.jpeg") center / cover no-repeat;
+      url("../../assets/gallery/gallery-hero.webp") center / cover no-repeat;
     z-index: 0;
   }
 
@@ -473,7 +471,7 @@
     inset: 0;
     background:
       linear-gradient(180deg, rgba(255, 255, 255, 0.86), rgba(255, 255, 255, 0.68)),
-      url("../assets/gallery/gallery-hero.jpeg") center / cover no-repeat;
+      url("../../assets/gallery/gallery-hero.webp") center / cover no-repeat;
     z-index: 0;
   }
 
@@ -538,7 +536,7 @@
   }
 
   .catalog-results-actions {
-    align-items: stretch !important;
+    align-items: stretch;
     flex-direction: column;
   }
 
@@ -560,7 +558,7 @@
   }
 
   .catalog-pagination .pagination {
-    justify-content: center !important;
+    justify-content: center;
   }
 
   .site-benefits-footer {
@@ -706,7 +704,7 @@
 
 html,
 body {
-  background: var(--ss-page-bg);
+  background: var(--navbar-blue, var(--ss-page-bg));
 }
 
 body,
@@ -715,48 +713,6 @@ body,
     radial-gradient(circle at 8% 0%, rgba(95, 159, 56, 0.14), transparent 24%),
     radial-gradient(circle at 92% 4%, rgba(23, 63, 95, 0.12), transparent 28%),
     linear-gradient(180deg, var(--ss-page-bg) 0%, #edf7ff 48%, #eef7ec 100%);
-}
-
-.square-navbar-stage {
-  position: sticky;
-  top: 0;
-  z-index: 1030;
-  padding: clamp(10px, 1.5vw, 20px) clamp(10px, 2vw, 28px) clamp(10px, 1.3vw, 16px);
-  background:
-    linear-gradient(
-      to bottom,
-      var(--ss-nav-top) 0,
-      var(--ss-nav-top) 50%,
-      var(--ss-nav-bottom) 50%,
-      var(--ss-nav-bottom) 100%
-    );
-  box-shadow: 0 10px 30px rgba(15, 35, 52, 0.12);
-}
-
-.square-navbar.app-navbar {
-  min-height: 78px !important;
-  border: 1px solid rgba(23, 63, 95, 0.22) !important;
-  border-radius: 14px !important;
-  background: rgba(255, 255, 255, 0.92) !important;
-  box-shadow: 0 12px 30px rgba(15, 35, 52, 0.14) !important;
-  backdrop-filter: blur(10px);
-}
-
-.navbar-menu .navbar-menu-btn,
-.navbar-user-btn,
-.navbar-actions .navbar-action-btn {
-  min-height: 44px !important;
-  color: var(--ss-ink) !important;
-  font-size: clamp(0.9rem, 0.95vw, 1.08rem) !important;
-  font-weight: 850;
-  text-transform: uppercase;
-}
-
-.navbar-menu .navbar-menu-btn.active,
-.navbar-actions .navbar-action-btn.active {
-  background: var(--ss-ink) !important;
-  border-color: var(--ss-ink) !important;
-  color: #ffffff !important;
 }
 
 .page-shell,
@@ -816,7 +772,7 @@ body,
 .usuarios-card .table-responsive {
   border: 1px solid var(--ss-border);
   border-radius: 10px;
-  background: #ffffff;
+  background: transparent;
 }
 
 .about-page {
@@ -1062,52 +1018,8 @@ body,
   margin-right: auto;
 }
 
-.square-navbar-stage {
-  background:
-    linear-gradient(
-      to bottom,
-      var(--ss-nav-top) 0,
-      var(--ss-nav-top) 49%,
-      var(--ss-nav-bottom) 49%,
-      var(--ss-nav-bottom) 100%
-    );
-  box-shadow: none !important;
-  margin-bottom: 0 !important;
-}
-
-.square-navbar.app-navbar {
-  box-shadow: 0 8px 18px rgba(16, 39, 54, 0.08) !important;
-}
-
 .app-main {
-  padding-top: 0 !important;
-}
-
-.square-navbar-inner {
-  gap: clamp(12px, 1.3vw, 24px) !important;
-}
-
-.navbar-menu {
-  gap: clamp(10px, 1.5vw, 28px) !important;
-}
-
-.navbar-menu .navbar-menu-btn,
-.navbar-user-btn {
-  min-width: clamp(104px, 6.4vw, 122px) !important;
-}
-
-.navbar-search-form {
-  min-width: min(360px, 36vw) !important;
-}
-
-.navbar-search-input {
-  font-size: clamp(0.95rem, 1vw, 1.15rem) !important;
-}
-
-.navbar-search-btn {
-  min-width: 96px !important;
-  font-size: clamp(0.92rem, 1vw, 1.08rem) !important;
-  color: var(--ss-ink) !important;
+  padding-top: 0;
 }
 
 .home-hero-copy h1,
@@ -1167,18 +1079,15 @@ th {
 
 @media (max-width: 991.98px) {
   .navbar-search-form {
-    min-width: 0 !important;
+    min-width: 0;
   }
 
   .navbar-menu {
-    gap: 10px !important;
+    gap: 10px;
   }
 }
 
 /* Toque retro profesional: controles con borde marcado, sombras limpias y módulos legibles. */
-.navbar-menu .navbar-menu-btn,
-.navbar-user-btn,
-.navbar-actions .navbar-action-btn,
 .navbar-search-group,
 .catalog-filter-card,
 .about-name-card,
@@ -1188,15 +1097,15 @@ th {
 .about-profile-text-card {
   box-shadow:
     0 1px 0 rgba(255, 255, 255, 0.88) inset,
-    0 10px 24px rgba(16, 39, 54, 0.09) !important;
+    0 10px 24px rgba(16, 39, 54, 0.09);
 }
 
 .navbar-menu .navbar-menu-btn,
 .navbar-user-btn {
   font-family: var(--heading);
-  font-weight: 850 !important;
-  letter-spacing: 0 !important;
-  text-transform: uppercase !important;
+  font-weight: 850;
+  letter-spacing: 0;
+  text-transform: uppercase;
 }
 
 button,
@@ -1206,7 +1115,7 @@ button,
 .navbar-actions .navbar-action-btn,
 .dropdown-item,
 .page-link {
-  text-transform: uppercase !important;
+  text-transform: uppercase;
 }
 
 .catalog-material-card .card-header {
@@ -1214,10 +1123,10 @@ button,
 }
 
 .catalog-material-tabs {
-  display: grid !important;
+  display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 8px;
-  min-height: auto !important;
+  min-height: auto;
 }
 
 .catalog-material-tab {
@@ -1250,12 +1159,12 @@ button,
 
 .about-layout-row {
   width: min(100%, 1760px);
-  margin-right: auto !important;
-  margin-left: auto !important;
+  margin-right: auto;
+  margin-left: auto;
 }
 
 .about-name-card {
-  background: linear-gradient(180deg, #ffffff, #eef8ff) !important;
+  background: linear-gradient(180deg, #ffffff, #eef8ff);
 }
 
 .about-name-card .card-body {
@@ -1268,13 +1177,13 @@ button,
 .about-team-card,
 .about-profile-photo-card {
   border: 1px solid rgba(16, 39, 54, 0.2);
-  background: #173f5f !important;
+  background: #173f5f;
 }
 
 .about-story-card,
 .about-profile-text-card {
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(247, 252, 255, 0.96)) !important;
+    linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(247, 252, 255, 0.96));
 }
 
 .about-text-content h1 {
@@ -1296,7 +1205,7 @@ button,
   padding: 18px;
   border: 1px solid rgba(16, 39, 54, 0.12);
   border-radius: 8px;
-  background: #ffffff;
+  background: transparent;
 }
 
 @media (max-width: 575.98px) {
@@ -1305,7 +1214,7 @@ button,
   }
 
   .navbar-menu .navbar-menu-btn {
-    font-size: 8px !important;
+    font-size: 8px;
   }
 }
 
@@ -1331,7 +1240,7 @@ body,
 
 .app-main {
   background:
-    linear-gradient(180deg, var(--ss-page-bg) 0%, var(--ss-blue-50) 48%, #eef8ee 100%) !important;
+    linear-gradient(180deg, var(--ss-page-bg) 0%, var(--ss-page-bg) 132px, #eaf5ff 54%, #eef8ee 100%);
 }
 
 .page-shell,
@@ -1342,6 +1251,7 @@ body,
   max-width: none;
   margin: 0;
   padding-inline: clamp(18px, 3vw, 58px);
+  padding-bottom: clamp(24px, 2.6vw, 44px);
 }
 
 .home-hero,
@@ -1443,7 +1353,7 @@ textarea:focus {
 .usuarios-card .table-responsive {
   border: 1px solid var(--ss-border);
   border-radius: 10px;
-  background: #ffffff;
+  background: transparent;
 }
 
 .table thead th,
@@ -1497,158 +1407,94 @@ textarea {
   font-family: var(--sans);
 }
 
-/* Mantiene la navbar de Fase 2 por encima de antiguos ajustes responsive. */
-.square-navbar-stage {
-  padding: 18px 18px 22px !important;
-}
-
-.square-navbar-inner {
-  gap: clamp(18px, 2vw, 34px) !important;
-}
-
-.navbar-search-form {
-  min-width: 280px !important;
-}
-
-.navbar-search-btn {
-  color: #ffffff !important;
-}
-
-.navbar-menu .navbar-menu-btn,
-.navbar-user-btn,
-.navbar-actions .navbar-action-btn {
-  box-shadow: none;
-}
-
-.navbar-user-btn,
-.navbar-actions .navbar-action-btn,
-.navbar-search-group {
-  box-shadow: 0 10px 22px rgba(16, 39, 54, 0.06) !important;
-}
-
-.navbar-user-btn,
-.navbar-actions .navbar-action-btn {
-  background: transparent !important;
-  box-shadow: none !important;
-}
-
-@media (max-width: 767.98px) {
-  .square-navbar-stage {
-    padding: 9px 10px 11px !important;
-  }
-
-  .navbar-search-form {
-    min-width: 0 !important;
-  }
-}
-
-/* FASE 5: ajustes responsive finales */
-.navbar-menu .navbar-menu-btn.active {
-  border-color: transparent !important;
-  border-bottom-color: var(--navbar-accent) !important;
-  background: transparent !important;
-  color: var(--navbar-ink) !important;
-}
-
-.navbar-menu .navbar-menu-btn,
-.navbar-menu-account-btn,
-.navbar-menu-account-btn:hover,
-.navbar-menu-account-btn:focus {
-  background: transparent !important;
-  box-shadow: none !important;
-}
-
-.navbar-actions .navbar-action-btn.active {
-  border-color: transparent !important;
-  border-bottom-color: var(--navbar-accent) !important;
-  background: transparent !important;
-  color: var(--navbar-ink) !important;
-}
-
-@media (min-width: 768px) and (max-width: 1199.98px) {
-  .square-navbar-inner {
-    gap: 12px 16px !important;
-  }
-
-  .navbar-search-desktop {
-    min-width: 0 !important;
-  }
-
-  .navbar-menu .navbar-menu-btn {
-    min-width: 0 !important;
-  }
-
-  .navbar-user-btn {
-    min-width: 96px !important;
-  }
-}
-
-@media (max-width: 767.98px) {
-  .navbar-menu .navbar-menu-btn,
-  .navbar-menu-account-btn {
-    min-width: 0 !important;
-    font-size: 0.84rem !important;
-  }
-
-}
-
-@media (max-width: 575.98px) {
-  .navbar-menu .navbar-menu-btn,
-  .navbar-menu-account-btn {
-    font-size: 0.74rem !important;
-  }
-}
-
 /* Heroes principales: mismo formato tipografico en Design, Catalogo y Galeria. */
 .design-topbar .design-eyebrow,
 .catalog-heading .catalog-eyebrow,
 .gallery-intro-card .gallery-eyebrow {
-  margin: 0 0 0.4rem !important;
-  color: #5f9f38 !important;
-  font-size: 0.78rem !important;
-  font-weight: 800 !important;
-  letter-spacing: 0.08em !important;
-  line-height: 1.1 !important;
-  text-transform: uppercase !important;
-  text-align: left !important;
+  margin: 0 0 0.4rem;
+  color: #5f9f38;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  line-height: 1.1;
+  text-transform: uppercase;
+  text-align: left;
 }
 
 .design-topbar h1,
 .catalog-heading h1,
 .gallery-intro-card h1 {
-  margin: 0 !important;
-  max-width: 100% !important;
-  color: var(--ss-ink) !important;
-  font-family: var(--heading) !important;
-  font-size: clamp(2.6rem, 3.6vw, 4.1rem) !important;
-  font-weight: 400 !important;
-  line-height: 0.98 !important;
-  letter-spacing: 0.01em !important;
-  text-align: left !important;
+  margin: 0;
+  max-width: 100%;
+  color: var(--ss-ink);
+  font-family: var(--heading);
+  font-size: clamp(2.6rem, 3.6vw, 4.1rem);
+  font-weight: 400;
+  line-height: 0.98;
+  letter-spacing: 0.01em;
+  text-align: left;
 }
 
 .design-topbar-text p,
 .catalog-heading-text p,
 .gallery-intro-text p {
-  margin: 0 !important;
-  max-width: 100% !important;
-  color: var(--ss-muted) !important;
-  font-size: 1rem !important;
-  font-weight: 400 !important;
-  line-height: 1.58 !important;
-  text-align: left !important;
+  margin: 0;
+  max-width: 100%;
+  color: var(--ss-muted);
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.58;
+  text-align: left;
 }
 
 @media (max-width: 991.98px) {
   .design-topbar h1,
   .catalog-heading h1,
   .gallery-intro-card h1 {
-    font-size: clamp(2.25rem, 6vw, 3.2rem) !important;
+    font-size: clamp(2.25rem, 6vw, 3.2rem);
   }
 
   .design-topbar-text p,
   .catalog-heading-text p,
   .gallery-intro-text p {
-    font-size: clamp(0.9rem, 2vw, 1rem) !important;
+    font-size: clamp(0.9rem, 2vw, 1rem);
   }
 }
+
+
+.gallery-feature-title-grid h2,
+.gallery-feature-title-grid .gallery-badge {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 5px 10px;
+  border-radius: 6px;
+  font-size: clamp(1.6rem, 2.6vw, 2.25rem);
+  line-height: 1;
+}
+
+.gallery-feature-title-grid h2 {
+  background: rgba(16, 39, 54, 0.82);
+  color: #ffffff;
+  text-shadow: 0 2px 10px rgba(5, 18, 26, 0.9);
+}
+
+.gallery-feature-title-grid .gallery-badge {
+  border: 0;
+  background: transparent;
+  color: #0f172a;
+  text-shadow: none;
+}
+
+
+
+
+
+
+
+
+
+
+

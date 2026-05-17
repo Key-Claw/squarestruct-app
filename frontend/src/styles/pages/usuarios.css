@@ -78,19 +78,19 @@
 
 /* Botón de volver */
 .usuarios-card .btn-outline-light {
-  background: #fff !important;
-  border: 1px solid rgba(23, 63, 95, 0.14) !important;
-  color: #0f172a !important;
-  padding: 8px 16px !important;
-  font-size: 0.85rem !important;
-  font-weight: 600 !important;
-  transition: all 0.2s ease !important;
+  background: #fff;
+  border: 1px solid rgba(23, 63, 95, 0.14);
+  color: #0f172a;
+  padding: 8px 16px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
 }
 
 .usuarios-card .btn-outline-light:hover {
-  background: #f5f7f5 !important;
-  border-color: rgba(95, 159, 56, 0.3) !important;
-  color: #4f8f2f !important;
+  background: #f5f7f5;
+  border-color: rgba(95, 159, 56, 0.3);
+  color: #4f8f2f;
 }
 
 /* ============================================================================
@@ -221,19 +221,19 @@
 }
 
 .usuarios-card .badge.bg-danger {
-  background: rgba(220, 53, 69, 0.15) !important;
+  background: rgba(220, 53, 69, 0.15);
   color: #dc3545;
   border: 1px solid rgba(220, 53, 69, 0.3);
 }
 
 .usuarios-card .badge.bg-warning {
-  background: rgba(255, 193, 7, 0.15) !important;
+  background: rgba(255, 193, 7, 0.15);
   color: #ffc107;
   border: 1px solid rgba(255, 193, 7, 0.3);
 }
 
 .usuarios-card .badge.bg-info {
-  background: rgba(0, 150, 255, 0.15) !important;
+  background: rgba(0, 150, 255, 0.15);
   color: #0096ff;
   border: 1px solid rgba(0, 150, 255, 0.3);
 }
@@ -275,7 +275,7 @@
    =========================================================================== */
 
 .usuarios-card .mt-3 {
-  margin-top: 16px !important;
+  margin-top: 16px;
   padding-top: 12px;
   border-top: 1px solid rgba(23, 63, 95, 0.08);
 }
@@ -404,7 +404,7 @@
 .usuarios-modal-content .btn-warning {
   background: #5f9f38;
   border-color: #5f9f38;
-  color: #fff !important;
+  color: #fff;
   font-weight: 700;
 }
 

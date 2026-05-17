@@ -1,7 +1,7 @@
-import bloqueEcoImage from '../../assets/catalog/bloque-eco.jpeg'
-import bloqueHormigonImage from '../../assets/catalog/bloque-hormigon.jpeg'
-import pilarEcoImage from '../../assets/catalog/pilar-eco.jpeg'
-import pilarHormigonImage from '../../assets/catalog/pilar-hormigon.jpeg'
+import bloqueEcoImage from '../../assets/catalog/bloque-eco.webp'
+import bloqueHormigonImage from '../../assets/catalog/bloque-hormigon.webp'
+import pilarEcoImage from '../../assets/catalog/pilar-eco.webp'
+import pilarHormigonImage from '../../assets/catalog/pilar-hormigon.webp'
 
 const formatCatalogText = (value) => (
   String(value || '')
@@ -79,3 +79,4 @@ function CatalogProductCard({ product, onAddProduct }) {
 }
 
 export default CatalogProductCard
+

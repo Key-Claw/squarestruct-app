@@ -1,13 +1,13 @@
-﻿/* ============================================================================
-   PÃGINA DESIGN - Workspace 3 columnas: piezas | canvas | resumen
+/* ============================================================================
+   PÁGINA DESIGN - Workspace 3 columnas: piezas | canvas | resumen
    - design-page: Contenedor principal
-   - design-topbar: Barra superior con tÃ­tulo y botones de acciÃ³n
+   - design-topbar: Barra superior con título y botones de acción
    - design-workspace: Grid 3 columnas (piezas | canvas | resumen)
    - design-pieces-panel: Panel izq. con piezas disponibles y tabs
-   - design-canvas-card: Ãrea central con boceto del plano 3D
+   - design-canvas-card: Área central con boceto del plano 3D
    - design-summary-panel: Panel derecho con resumen del proyecto
    - design-toolbar, design-zoom, design-view-switch: Controles del canvas
-   - design-help-card: SecciÃ³n inferior con pasos y caja de ayuda
+   - design-help-card: Sección inferior con pasos y caja de ayuda
    ============================================================================ */
 
 .design-page .card {
@@ -630,20 +630,20 @@
 
 /* Ajuste final: misma altura superior que Galeria en escritorio. */
 .design-topbar {
-  position: relative !important;
-  display: grid !important;
-  grid-template-columns: minmax(0, 50%) minmax(0, 50%) !important;
-  height: 300px !important;
-  min-height: 300px !important;
-  background: #fff !important;
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 50%) minmax(0, 50%);
+  height: 300px;
+  min-height: 300px;
+  background: #fff;
 }
 
 .design-topbar::after {
-  content: "" !important;
-  position: absolute !important;
-  inset: 0 !important;
-  z-index: 1 !important;
-  pointer-events: none !important;
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
   background: linear-gradient(
     90deg,
     rgba(255, 255, 255, 1) 0%,
@@ -652,64 +652,64 @@
     rgba(255, 255, 255, 0.72) 70%,
     rgba(255, 255, 255, 0.36) 82%,
     rgba(255, 255, 255, 0) 96%
-  ) !important;
+  );
 }
 
 .design-topbar-copy,
 .design-topbar-media,
 .design-topbar-media img {
-  height: 300px !important;
-  min-height: 300px !important;
+  height: 300px;
+  min-height: 300px;
 }
 
 .design-topbar-copy {
-  box-sizing: border-box !important;
-  position: relative !important;
-  z-index: 2 !important;
-  display: grid !important;
-  align-content: center !important;
-  justify-items: start !important;
-  gap: 14px !important;
-  width: 100% !important;
-  background: transparent !important;
+  box-sizing: border-box;
+  position: relative;
+  z-index: 2;
+  display: grid;
+  align-content: center;
+  justify-items: start;
+  gap: 14px;
+  width: 100%;
+  background: transparent;
 }
 
 .design-topbar-title,
 .design-topbar-text,
 .design-topbar h1,
 .design-topbar p {
-  width: 100% !important;
-  max-width: 100% !important;
-  text-align: left !important;
+  width: 100%;
+  max-width: 100%;
+  text-align: left;
 }
 
 .design-topbar-media {
-  position: relative !important;
-  inset: auto !important;
-  z-index: 0 !important;
-  margin-left: 0 !important;
+  position: relative;
+  inset: auto;
+  z-index: 0;
+  margin-left: 0;
 }
 
 .design-topbar-media::before {
-  background: none !important;
+  background: none;
 }
 
 .design-topbar-media img {
-  object-fit: cover !important;
-  object-position: center bottom !important;
+  object-fit: cover;
+  object-position: center bottom;
 }
 
 .design-topbar h1 {
-  font-size: clamp(2.6rem, 3.6vw, 4.1rem) !important;
-  line-height: 0.98 !important;
+  font-size: clamp(2.6rem, 3.6vw, 4.1rem);
+  line-height: 0.98;
 }
 
 .design-topbar p {
-  margin-top: 0 !important;
+  margin-top: 0;
 }
 
 .design-topbar .design-eyebrow {
-  color: #5f9f38 !important;
+  color: #5f9f38;
 }
 
 @media (max-width: 991.98px) {
@@ -717,24 +717,24 @@
   .design-topbar-copy,
   .design-topbar-media,
   .design-topbar-media img {
-    height: 300px !important;
-    min-height: 300px !important;
+    height: 300px;
+    min-height: 300px;
   }
 
   .design-topbar {
-    grid-template-columns: minmax(0, 50%) minmax(0, 50%) !important;
+    grid-template-columns: minmax(0, 50%) minmax(0, 50%);
   }
 
   .design-topbar-copy {
-    padding-inline: clamp(22px, 4vw, 46px) !important;
+    padding-inline: clamp(22px, 4vw, 46px);
   }
 
   .design-topbar h1 {
-    font-size: clamp(2.25rem, 6vw, 3.2rem) !important;
+    font-size: clamp(2.25rem, 6vw, 3.2rem);
   }
 
   .design-topbar p {
-    font-size: clamp(0.9rem, 2vw, 1rem) !important;
+    font-size: clamp(0.9rem, 2vw, 1rem);
   }
 }
 

@@ -1,13 +1,13 @@
-﻿/* ============================================================================
-   PÃGINA HOME - Estructura principal con hero, secciones y llamadas a acciÃ³n
+/* ============================================================================
+   PÁGINA HOME - Estructura principal con hero, secciones y llamadas a acción
    - home-hero: Hero con carrusel Bootstrap (3 slides)
-   - home-about: SecciÃ³n "Â¿QuÃ© es SquareStruct?" con imagen y texto
-   - home-feature-grid: Grid de 3 features (bloques modulares, diseÃ±o, catÃ¡logo)
+   - home-about: Sección "¿Qué es SquareStruct?" con imagen y texto
+   - home-feature-grid: Grid de 3 features (bloques modulares, diseño, catálogo)
    - home-highlight-grid: Highlights dentro del about
-   - home-section-heading: TÃ­tulos reutilizables de secciones
+   - home-section-heading: Títulos reutilizables de secciones
    ============================================================================ */
 
-/* HOME - SECCIÃ“N HERO CON CARRUSEL */
+/* HOME - SECCIÓN HERO CON CARRUSEL */
 .home-hero {
   position: relative;
   overflow: hidden;
@@ -18,7 +18,7 @@
   box-shadow: 0 16px 36px rgba(15, 23, 42, 0.08);
 }
 
-/* Grid del hero: ajustado para simetrÃ­a perfecta entre contenido y carrusel */
+/* Grid del hero: ajustado para simetría perfecta entre contenido y carrusel */
 .home-hero-grid {
   position: relative;
   min-height: clamp(420px, 40vw, 560px);
@@ -65,7 +65,8 @@
 .home-hero-copy p {
   margin: 0;
   max-width: 42ch;
-  color: #475569;
+  color: #0f172a;
+  font-weight: 500;
   line-height: 1.55;
 }
 
@@ -74,8 +75,15 @@
 }
 
 .home-hero-actions {
+  display: flex;
+  flex-wrap: nowrap;
   justify-content: flex-start;
+  align-items: center;
   margin-top: 10px;
+}
+
+.home-hero-actions .btn {
+  flex: 0 0 auto;
 }
 
 .home-hero .btn-light {
@@ -162,7 +170,7 @@
   box-shadow: 0 14px 32px rgba(15, 23, 42, 0.06);
 }
 
-/* Grid del about: ajustado para simetrÃ­a y altura consistente */
+/* Grid del about: ajustado para simetría y altura consistente */
 .home-about-grid {
   min-height: 420px;
 }
@@ -350,6 +358,21 @@
   margin-top: 18px;
 }
 
+.home-hero .home-hero-actions {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 12px;
+  width: max-content;
+  max-width: 100%;
+}
+
+.home-hero .home-hero-actions .btn {
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+
 .eyebrow {
   margin: 0 0 0.4rem;
   color: #5f9f38;
@@ -404,11 +427,14 @@
   text-transform: uppercase;
 }
 
-.home-hero-copy p,
 .home-about-copy p,
 .home-highlight p,
 .home-feature-body p {
   color: var(--ss-muted);
+}
+
+.home-hero-copy p {
+  color: var(--ss-ink);
 }
 
 .home-hero .btn-light {

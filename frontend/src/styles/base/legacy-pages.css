@@ -1,4 +1,4 @@
-﻿.register-shell {
+.register-shell {
   padding-top: 20px;
   padding-bottom: 40px;
 }
@@ -111,7 +111,7 @@
 .perfil-table th,
 .perfil-table td {
   padding: 1rem 1rem;
-  border-color: rgba(255, 255, 255, 0.12) !important;
+  border-color: rgba(255, 255, 255, 0.12);
   vertical-align: middle;
 }
 

@@ -1,10 +1,10 @@
-import carruselDesignImage from '../assets/inicio/carrusel-design.jpeg'
-import carruselPersonasImage from '../assets/inicio/carrusel-personas.jpeg'
-import carruselSostenibleImage from '../assets/inicio/carrusel-sostenible.jpeg'
-import inicioCatalogoImage from '../assets/inicio/inicio-catalogo.jpeg'
-import inicioDesignImage from '../assets/inicio/inicio-design.jpeg'
-import inicioGaleriaImage from '../assets/inicio/inicio-galeeria.jpeg'
-import inicioSquarestructImage from '../assets/inicio/inicio-squarestruct.jpeg'
+import carruselDesignImage from '../assets/inicio/carrusel-design.webp'
+import carruselPersonasImage from '../assets/inicio/carrusel-personas.webp'
+import carruselSostenibleImage from '../assets/inicio/carrusel-sostenible.webp'
+import inicioCatalogoImage from '../assets/inicio/inicio-catalogo.webp'
+import inicioDesignImage from '../assets/inicio/inicio-design.webp'
+import inicioGaleriaImage from '../assets/inicio/inicio-galeeria.webp'
+import inicioSquarestructImage from '../assets/inicio/inicio-squarestruct.webp'
 
 const homeHighlights = [
   {
@@ -17,32 +17,32 @@ const homeHighlights = [
   },
   {
     title: 'Plano',
-    text: 'Disena y ajusta la estructura antes de construir.',
+    text: 'Diseña y ajusta la estructura antes de construir.',
   },
   {
     title: 'Sostenible',
-    text: 'Construccion mas eficiente con un uso mejor de recursos.',
+    text: 'Construcción más eficiente con un uso mejor de recursos.',
   },
 ]
 
 const homeFeatureCards = [
   {
-    title: 'Explorar catalogo',
+    title: 'Explorar catálogo',
     text: 'Encuentra bloques, pilares y accesorios con una vista clara y ordenada.',
     image: inicioCatalogoImage,
-    action: 'Ir al catalogo',
+    action: 'Ir al catálogo',
     handler: (onNavigate) => onNavigate('catalog', '', 'productos'),
   },
   {
     title: 'Inspirarte',
-    text: 'Descubre ideas de composicion y referencias visuales para tus proyectos.',
+    text: 'Descubre ideas de composición y referencias visuales para tus proyectos.',
     image: inicioGaleriaImage,
-    action: 'Ver galeria',
+    action: 'Ver galería',
     handler: (onNavigate) => onNavigate('gallery'),
   },
   {
     title: 'Generar tu estructura',
-    text: 'Crea tu propio diseno y calcula los materiales necesarios para hacerlo realidad.',
+    text: 'Crea tu propio diseño y calcula los materiales necesarios para hacerlo realidad.',
     image: inicioDesignImage,
     action: 'Ir a Design',
     handler: (onNavigate) => onNavigate('design'),
@@ -58,15 +58,15 @@ const homeSlides = [
   },
   {
     image: carruselPersonasImage,
-    title: 'Catalogo conectado',
+    title: 'Catálogo conectado',
     text: 'Productos, medidas, stock y precios en una misma interfaz',
     alt: 'Personas planificando un proyecto modular',
   },
   {
     image: carruselSostenibleImage,
-    title: 'Disena tu estructura',
+    title: 'Diseña tu estructura',
     text: 'Base inicial para evolucionar hacia planos y presupuestos',
-    alt: 'Construccion modular sostenible',
+    alt: 'Construcción modular sostenible',
   },
 ]
 
@@ -77,16 +77,16 @@ function Home({ onNavigate }) {
         <div className="row g-0 align-items-stretch home-hero-grid">
           <div className="col-12 col-lg-4 home-hero-copy-wrap">
             <div className="home-hero-copy">
-              <p className="eyebrow">Construccion modular sostenible</p>
-              <h1>Construye sin limites.</h1>
-              <h2>Modular, facil, real.</h2>
+              <p className="eyebrow">Construcción modular sostenible</p>
+              <h1>Construye sin límites.</h1>
+              <h2>Modular, fácil, real.</h2>
               <p>
                 SquareStruct es la plataforma que te permite descubrir, comparar y
-                planificar tu construccion modular con total claridad y confianza.
+                planificar tu construcción modular con total claridad y confianza.
               </p>
               <div className="hero-actions home-hero-actions">
                 <button type="button" className="btn btn-light" onClick={() => onNavigate('catalog', '', 'productos')}>
-                  Ver catalogo
+                  Ver catálogo
                 </button>
                 <button type="button" className="btn btn-outline-light home-design-btn" onClick={() => onNavigate('design')}>
                   Diseñar tu estructura
@@ -144,11 +144,11 @@ function Home({ onNavigate }) {
               <h2>¿Qué es SquareStruct?</h2>
               <p>
                 Somos una tienda online especializada en soluciones modulares y
-                pilares para la construccion.
+                pilares para la construcción.
               </p>
               <p>
                 Nuestro objetivo es acercar este tipo de soluciones al usuario,
-                facilitando la eleccion de materiales y la planificacion de
+                facilitando la elección de materiales y la planificación de
                 estructuras mediante piezas ensamblables.
               </p>
 
@@ -193,3 +193,4 @@ function Home({ onNavigate }) {
 }
 
 export default Home
+

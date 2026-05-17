@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { getAllUsers, logoutUser, updateUser } from '../services/authService'
-import '../styles/usuarios.css'
+import '../styles/pages/usuarios.css'
 
 /**
  * Página de administración de usuarios (solo para admin).
@@ -43,7 +43,7 @@ function Users({ onNavigate, user, onAuthExpired }) {
           } else {
             logoutUser()
           }
-          setError(`${message}. Vuelve a iniciar sesion como administrador.`)
+          setError(`${message}. Vuelve a iniciar sesión como administrador.`)
           return
         }
 
@@ -362,3 +362,6 @@ function Users({ onNavigate, user, onAuthExpired }) {
 }
 
 export default Users
+
+
+

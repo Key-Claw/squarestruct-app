@@ -5,7 +5,7 @@ import Icon from './ui/Icon'
 import logo from '../assets/logo/squarestruct-icon.png'
 import logoText from '../assets/logo/squarestruct-texto.png'
 import { MAIN_ROUTES, NAV_LINKS } from '../routes'
-import '../styles/navbar.css'
+import '../styles/layout/navbar.css'
 
 function Navbar({
   activePage,
@@ -244,3 +244,5 @@ function Navbar({
 }
 
 export default Navbar
+
+

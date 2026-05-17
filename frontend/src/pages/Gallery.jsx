@@ -1,13 +1,13 @@
 import { useMemo, useState } from 'react'
 
-import heroGalleryImage from '../assets/gallery/gallery-hero.jpeg'
-import compactHouseImage from '../assets/gallery/galeria-casa-compacta.jpeg'
-import minimalHouseImage from '../assets/gallery/galeria-casa-minimalista.jpeg'
-import forestHouseImage from '../assets/gallery/galeria-casa-moderna-bosque.jpeg'
-import featuredHouseImage from '../assets/gallery/galeria-casa-moderna-desierto-destacada.jpeg'
-import beachHouseImage from '../assets/gallery/galeria-casa-playa.jpeg'
-import desertRusticHouseImage from '../assets/gallery/galeria-casa-rustica-desierto.jpeg'
-import sustainableHouseImage from '../assets/gallery/galeria-casa-sostenible-desierto.jpeg'
+import heroGalleryImage from '../assets/gallery/gallery-hero.webp'
+import compactHouseImage from '../assets/gallery/galeria-casa-compacta.webp'
+import minimalHouseImage from '../assets/gallery/galeria-casa-minimalista.webp'
+import forestHouseImage from '../assets/gallery/galeria-casa-moderna-bosque.webp'
+import featuredHouseImage from '../assets/gallery/galeria-casa-moderna-desierto-destacada.webp'
+import beachHouseImage from '../assets/gallery/galeria-casa-playa.webp'
+import desertRusticHouseImage from '../assets/gallery/galeria-casa-rustica-desierto.webp'
+import sustainableHouseImage from '../assets/gallery/galeria-casa-sostenible-desierto.webp'
 
 const filters = ['Hormigón', 'ECO']
 
@@ -37,11 +37,13 @@ const topProjects = [
 
 const featuredProject = {
   title: 'Casa Horizonte',
-  architect: 'Referencia conceptual de vivienda modular',
+  architect: 'La joya de Van der Router',
   area: '156 m2',
   material: 'Hormigón',
-  description:
-    'Vivienda de líneas limpias, pensada para combinar módulos resistentes, terraza protegida y espacios de uso diario.',
+  description: [
+    'Diseño modular contemporáneo inspirado en la arquitectura de líneas limpias y estructuras funcionales, pensado para combinar resistencia, amplitud visual y eficiencia en el uso diario.',
+    'La distribución abierta favorece la entrada de luz natural, la conexión entre interior y exterior y una circulación fluida entre espacios, creando una vivienda moderna, cómoda y preparada para futuras ampliaciones modulares.',
+  ],
   image: featuredHouseImage,
 }
 
@@ -114,12 +116,12 @@ function Gallery({ onNavigate }) {
       <section className="card gallery-intro-card">
         <div className="gallery-intro-copy">
           <div className="gallery-intro-title">
-            <p className="gallery-eyebrow">Inspiracion modular</p>
+            <p className="gallery-eyebrow">Inspiración modular</p>
               <h1>Galería de soluciones</h1>
           </div>
           <div className="gallery-intro-text">
               <p>
-                Ideas visuales para descubrir estilos, materiales y distribuciones antes de pasar al disenador.
+                Ideas visuales para descubrir estilos, materiales y distribuciones antes de pasar al diseñador.
               </p>
             </div>
           </div>
@@ -131,7 +133,7 @@ function Gallery({ onNavigate }) {
             alt=""
           />
         </div>
-        <div className="gallery-intro-actions" aria-label="Filtrar galeria por material">
+        <div className="gallery-intro-actions" aria-label="Filtrar galería por material">
           {filters.map((filter) => (
             <button
               type="button"
@@ -161,19 +163,21 @@ function Gallery({ onNavigate }) {
               className="gallery-cover-image gallery-feature-image"
               alt={featuredProject.title}
             />
-            <span className="gallery-feature-star" role="img" aria-label="Destacado">
+            <span className="gallery-feature-star" role="img" aria-label="Destacada">
               ★
             </span>
             <div className="card-body gallery-feature-copy">
               <div className="gallery-feature-title-grid">
                 <h2>{featuredProject.title}</h2>
                 <h3 className="gallery-badge">
-                  Destacado
+                  Destacada
                 </h3>
               </div>
               <div className="gallery-feature-info-grid">
                 <p className="gallery-feature-architect">{featuredProject.architect}</p>
-                <p>{featuredProject.description}</p>
+                {featuredProject.description.map((paragraph) => (
+                  <p key={paragraph}>{paragraph}</p>
+                ))}
                 <p className="gallery-area">{featuredProject.area} · {featuredProject.material}</p>
               </div>
               <div className="gallery-feature-actions">
@@ -220,3 +224,7 @@ function Gallery({ onNavigate }) {
 }
 
 export default Gallery
+
+
+
+

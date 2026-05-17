@@ -31,7 +31,7 @@ function SiteFooter({ showBenefits = true }) {
           {footerBenefits.map((benefit) => (
             <article key={benefit.title}>
               <span><Icon name={benefit.icon} size={24} /></span>
-              <div>
+              <div className="site-benefit-copy">
                 <h2>{benefit.title}</h2>
                 <p>{benefit.text}</p>
               </div>

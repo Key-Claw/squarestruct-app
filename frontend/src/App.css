@@ -1,9 +1,10 @@
-﻿@import './styles/app-base.css';
-@import './styles/home.css';
-@import './styles/about.css';
-@import './styles/galeria.css';
-@import './styles/catalogo.css';
-@import './styles/site-footer.css';
-@import './styles/design.css';
-@import './styles/legacy-pages.css';
-@import './styles/responsive.css';
+@import './styles/base/app-base.css';
+@import './styles/pages/home.css';
+@import './styles/pages/about.css';
+@import './styles/pages/galeria.css';
+@import './styles/pages/catalogo.css';
+@import './styles/layout/footer.css';
+@import './styles/pages/design.css';
+@import './styles/base/legacy-pages.css';
+@import './styles/base/responsive.css';
+

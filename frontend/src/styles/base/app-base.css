@@ -1,4 +1,4 @@
-﻿/* Bootstrap responsive reference:
+/* Bootstrap responsive reference:
    https://getbootstrap.com/docs/5.3/layout/breakpoints/
    Mobile: default styles, < 768px.
    Tablet: md/lg range, 768px - 1199.98px.
@@ -6,10 +6,10 @@
 */
 
 /* ============================================================================
-   ESTRUCTURA BASE DE LA APLICACIÃ“N
+   ESTRUCTURA BASE DE LA APLICACIÓN
    - app-shell: Contenedor principal (flex, 100vh)
-   - app-main: Ãrea de contenido (flex: 1, background)
-   - app-navbar: Barra de navegaciÃ³n con sombra
+   - app-main: Área de contenido (flex: 1, background)
+   - app-navbar: Barra de navegación con sombra
    ============================================================================ */
 
 .app-shell {
@@ -37,13 +37,13 @@
 }
 
 /* ============================================================================
-   NAVBAR - NavegaciÃ³n responsiva (desktop/mobile, logo, menÃº, bÃºsqueda, usuario)
+   NAVBAR - Navegación responsiva (desktop/mobile, logo, menú, búsqueda, usuario)
    - navbar-desktop: Layout para pantallas >= 992px
    - navbar-mobile: Layout para pantallas < 992px
    - brand-mark, navbar-logo: Logo y marca
-   - nav-strip, nav-button: Botones de navegaciÃ³n
-   - search-group, search-bar: BÃºsqueda de productos
-   - user-dropdown-menu: MenÃº desplegable usuario
+   - nav-strip, nav-button: Botones de navegación
+   - search-group, search-bar: Búsqueda de productos
+   - user-dropdown-menu: Menú desplegable usuario
    ============================================================================ */
 
 
@@ -239,7 +239,7 @@
   width: 100%;
   max-width: none;
   margin: 0;
-  padding: clamp(26px, 3vw, 52px) clamp(18px, 3vw, 58px) clamp(42px, 4vw, 78px);
+  padding: clamp(26px, 3vw, 52px) clamp(18px, 3vw, 58px) clamp(24px, 2.6vw, 44px);
   color: var(--ss-ink);
 }
 

@@ -1,6 +1,6 @@
-import cristianGilPhoto from '../assets/about/cristiangil.jpeg'
-import raulmartinezPhoto from '../assets/about/raulmartinez.jpeg'
-import teamPhoto from '../assets/about/retoseas.jpeg'
+import cristianGilPhoto from '../assets/about/cristiangil.webp'
+import raulmartinezPhoto from '../assets/about/raulmartinez.webp'
+import teamPhoto from '../assets/about/retoseas.webp'
 
 function AboutUs() {
   return (
@@ -134,3 +134,5 @@ function AboutUs() {
 }
 
 export default AboutUs
+
+

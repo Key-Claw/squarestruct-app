@@ -1,11 +1,11 @@
-﻿/* ============================================================================
-   PÃGINA CATÃLOGO - Filtros + Grid de productos con bÃºsqueda y ordenamiento
+/* ============================================================================
+   PÁGINA CATÁLOGO - Filtros + Grid de productos con búsqueda y ordenamiento
    - catalog-page: Contenedor principal
    - catalog-sidebar: Sidebar con secciones de filtros
-   - catalog-results-bar: Barra con bÃºsqueda, ordenamiento y botones de vista
-   - catalog-products-grid: Grid responsivo (1-5 columnas segÃºn pantalla)
+   - catalog-results-bar: Barra con búsqueda, ordenamiento y botones de vista
+   - catalog-products-grid: Grid responsivo (1-5 columnas según pantalla)
    - catalog-product-card: Card individual con: imagen, nombre, precio, specs, botones
-   - catalog-filter-card: Cards de filtros (categorÃ­a, tipo, medidas, material, precio)
+   - catalog-filter-card: Cards de filtros (categoría, tipo, medidas, material, precio)
    ============================================================================ */
 
 .catalog-heading {
@@ -269,7 +269,7 @@
 }
 
 .catalog-product-media::after {
-  content: "â™¡";
+  content: "♡";
   position: absolute;
   top: 14px;
   right: 14px;
@@ -292,6 +292,9 @@
 
 .catalog-product-tag {
   display: inline-flex;
+  align-self: flex-start;
+  width: fit-content;
+  max-width: 100%;
   align-items: center;
   min-height: 22px;
   margin-bottom: 8px;
@@ -385,7 +388,11 @@
   margin-top: 34px;
 }
 
-/* FASE 4: acabado v2 para catálogo */
+.catalog-pagination .pagination {
+  justify-content: flex-end;
+}
+
+/* FASE 4: acabado v2 para cat�logo */
 .catalog-heading {
   min-height: 300px;
   margin-bottom: 22px;
@@ -529,9 +536,9 @@
 }
 
 .catalog-price-filter {
-  display: grid !important;
+  display: grid;
   gap: 12px;
-  align-items: stretch !important;
+  align-items: stretch;
 }
 
 .catalog-price-values {
@@ -662,7 +669,7 @@
 
   .catalog-results-actions {
     justify-content: flex-start;
-    align-items: stretch !important;
+    align-items: stretch;
     flex-wrap: wrap;
   }
 
@@ -693,7 +700,7 @@
   }
 
   .catalog-results-actions {
-    display: grid !important;
+    display: grid;
     grid-template-columns: 1fr 1fr;
   }
 
@@ -712,21 +719,21 @@
 
 /* Ajuste final: misma altura superior que Galeria en escritorio. */
 .catalog-heading {
-  background: #fff !important;
-  height: 300px !important;
-  min-height: 300px !important;
-  position: relative !important;
-  display: grid !important;
-  grid-template-columns: minmax(0, 50%) minmax(0, 50%) !important;
+  background: #fff;
+  height: 300px;
+  min-height: 300px;
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 50%) minmax(0, 50%);
 }
 
 /* Ajuste para evitar que el gradiente de la imagen del header tape el texto en resoluciones medias */
 .catalog-heading::after {
-  content: "" !important;
-  position: absolute !important;
-  inset: 0 !important;
-  z-index: 1 !important;
-  pointer-events: none !important;
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
   background: linear-gradient(
     90deg,
     rgba(255, 255, 255, 1) 0%,
@@ -735,27 +742,27 @@
     rgba(255, 255, 255, 0.72) 70%,
     rgba(255, 255, 255, 0.36) 82%,
     rgba(255, 255, 255, 0) 96%
-  ) !important;
+  );
 }
 
 .catalog-heading-media,
 .catalog-heading-media img {
-  height: 300px !important;
-  min-height: 300px !important;
+  height: 300px;
+  min-height: 300px;
 }
 
 .catalog-heading-copy {
-  box-sizing: border-box !important;
-  position: relative !important;
-  z-index: 2 !important;
-  width: 100% !important;
-  height: 300px !important;
-  min-height: 300px !important;
-  display: grid !important;
-  align-content: center !important;
-  justify-items: start !important;
-  gap: 14px !important;
-  background: transparent !important;
+  box-sizing: border-box;
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: 300px;
+  min-height: 300px;
+  display: grid;
+  align-content: center;
+  justify-items: start;
+  gap: 14px;
+  background: transparent;
 }
 
 .catalog-heading-title,
@@ -764,13 +771,13 @@
 }
 
 .catalog-eyebrow {
-  margin: 0 0 0.4rem !important;
-  color: #5f9f38 !important;
-  font-size: 0.78rem !important;
-  font-weight: 800 !important;
-  letter-spacing: 0.08em !important;
-  line-height: 1.1 !important;
-  text-transform: uppercase !important;
+  margin: 0 0 0.4rem;
+  color: #5f9f38;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  line-height: 1.1;
+  text-transform: uppercase;
 }
 
 .catalog-heading-title {
@@ -782,40 +789,40 @@
 }
 
 .catalog-heading-text p {
-  max-width: 100% !important;
+  max-width: 100%;
 }
 
 .catalog-heading-media {
-  position: relative !important;
-  inset: auto !important;
-  z-index: 0 !important;
-  margin-left: 0 !important;
+  position: relative;
+  inset: auto;
+  z-index: 0;
+  margin-left: 0;
 }
 
 .catalog-heading-media::before {
-  background: none !important;
+  background: none;
 }
 
 .catalog-heading-media img {
-  object-fit: cover !important;
-  object-position: center bottom !important;
+  object-fit: cover;
+  object-position: center bottom;
 }
 
 .catalog-heading h1 {
-  max-width: 100% !important;
-  font-size: clamp(2.6rem, 3.6vw, 4.1rem) !important;
-  line-height: 0.98 !important;
+  max-width: 100%;
+  font-size: clamp(2.6rem, 3.6vw, 4.1rem);
+  line-height: 0.98;
 }
 
 .catalog-heading p:not(.catalog-eyebrow) {
-  color: var(--ss-muted) !important;
-  font-weight: 400 !important;
-  font-size: 1rem !important;
-  line-height: 1.58 !important;
+  color: var(--ss-muted);
+  font-weight: 400;
+  font-size: 1rem;
+  line-height: 1.58;
 }
 
 .catalog-heading-copy {
-  padding: 22px clamp(28px, 5vw, 70px) !important;
+  padding: 22px clamp(28px, 5vw, 70px);
 }
 
 @media (max-width: 991.98px) {
@@ -823,25 +830,27 @@
   .catalog-heading-copy,
   .catalog-heading-media,
   .catalog-heading-media img {
-    height: 300px !important;
-    min-height: 300px !important;
+    height: 300px;
+    min-height: 300px;
   }
 
   .catalog-heading-copy {
-    width: 100% !important;
-    padding-inline: clamp(22px, 4vw, 46px) !important;
+    width: 100%;
+    padding-inline: clamp(22px, 4vw, 46px);
   }
 
   .catalog-heading {
-    grid-template-columns: minmax(0, 50%) minmax(0, 50%) !important;
+    grid-template-columns: minmax(0, 50%) minmax(0, 50%);
   }
 
   .catalog-heading h1 {
-    font-size: clamp(2.25rem, 6vw, 3.2rem) !important;
+    font-size: clamp(2.25rem, 6vw, 3.2rem);
   }
 
   .catalog-heading p {
-    font-size: clamp(0.9rem, 2vw, 1rem) !important;
+    font-size: clamp(0.9rem, 2vw, 1rem);
   }
 }
+
+
 

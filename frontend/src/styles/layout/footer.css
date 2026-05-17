@@ -1,0 +1,85 @@
+.site-footer {
+  width: 100%;
+  background:
+    linear-gradient(
+      to bottom,
+      var(--navbar-blue, #d9ecff) 0,
+      var(--navbar-blue, #d9ecff) 78px,
+      var(--navbar-green, #d9efd8) 78px,
+      var(--navbar-green, #d9efd8) 100%
+    );
+  padding-top: 1px;
+}
+
+.site-benefits-footer {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px;
+  width: min(calc(100% - 72px), 1720px);
+  margin: 34px auto 10px;
+  border: 1px solid rgba(16, 39, 54, 0.12);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.86) inset,
+    0 18px 38px rgba(16, 39, 54, 0.12);
+  backdrop-filter: blur(12px);
+  padding: 18px 24px;
+}
+
+.site-benefits-footer article {
+  display: grid;
+  grid-template-columns: 30px minmax(0, max-content);
+  gap: 12px;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+}
+
+.site-benefits-footer span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #0f3d63;
+  font-size: 1.6rem;
+  font-weight: 800;
+}
+
+.site-benefit-copy {
+  display: grid;
+  gap: 5px;
+  min-width: 0;
+  max-width: 210px;
+}
+
+.site-benefits-footer h2,
+.site-benefits-footer p {
+  margin: 0;
+}
+
+.site-benefits-footer h2 {
+  color: #0f172a;
+  font-size: 0.9rem;
+  font-weight: 850;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.site-benefits-footer p {
+  color: #475569;
+  font-size: 0.9rem;
+  line-height: 1.35;
+  text-align: left;
+}
+
+.site-footer-copy {
+  width: 100%;
+  margin: 0;
+  border-radius: 0;
+  background: transparent;
+  color: #173f5f;
+  font-size: 1.02rem;
+  font-weight: 200;
+  padding: 10px clamp(18px, 4vw, 72px) 12px;
+  text-align: center;
+}

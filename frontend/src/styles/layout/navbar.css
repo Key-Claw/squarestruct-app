@@ -24,29 +24,29 @@
       var(--navbar-green) 50%,
       var(--navbar-blue) 50%,
       var(--navbar-blue) 100%
-    ) !important;
-  box-shadow: none !important;
+    );
+  box-shadow: none;
 }
 
 .square-navbar.app-navbar {
-  width: min(100%, 1860px) !important;
-  min-height: 112px !important;
-  margin: 0 auto !important;
-  padding: 16px 20px !important;
-  border: 1px solid rgba(16, 39, 54, 0.12) !important;
-  border-radius: 14px !important;
-  background: var(--navbar-card) !important;
-  box-shadow: var(--navbar-shadow) !important;
+  width: min(100%, 1860px);
+  min-height: 112px;
+  margin: 0 auto;
+  padding: 16px 20px;
+  border: 1px solid rgba(16, 39, 54, 0.12);
+  border-radius: 14px;
+  background: var(--navbar-card);
+  box-shadow: var(--navbar-shadow);
   backdrop-filter: blur(12px);
   overflow: visible;
 }
 
 .square-navbar-inner {
-  min-height: 78px !important;
+  min-height: 78px;
   display: flex;
   align-items: center;
-  gap: clamp(18px, 2vw, 34px) !important;
-  padding: 0 !important;
+  gap: clamp(18px, 2vw, 34px);
+  padding: 0;
   flex-wrap: nowrap;
 }
 
@@ -60,15 +60,15 @@
 }
 
 .square-navbar-brand {
-  width: 94px !important;
-  margin: -12px -2px -12px 0 !important;
-  padding: 0 !important;
-  flex: 0 0 94px !important;
+  width: 94px;
+  margin: -12px -2px -12px 0;
+  padding: 0;
+  flex: 0 0 94px;
 }
 
 .navbar-logo {
-  width: 92px !important;
-  height: 92px !important;
+  width: 92px;
+  height: 92px;
   object-fit: contain;
   display: block;
   filter: drop-shadow(0 6px 10px rgba(16, 39, 54, 0.18));
@@ -109,7 +109,7 @@
 
 .square-navbar-collapse {
   align-items: center;
-  gap: clamp(18px, 2vw, 34px) !important;
+  gap: clamp(18px, 2vw, 34px);
   min-width: 0;
   overflow: visible;
 }
@@ -118,8 +118,8 @@
 .navbar-actions {
   align-items: center;
   flex-direction: row;
-  gap: clamp(18px, 2vw, 36px) !important;
-  margin: 0 !important;
+  gap: clamp(18px, 2vw, 36px);
+  margin: 0;
 }
 
 .navbar-menu-account {
@@ -144,6 +144,7 @@
   text-transform: uppercase;
   white-space: nowrap;
   text-decoration: none;
+  box-shadow: none;
 }
 
 .navbar-menu .navbar-menu-btn span,
@@ -163,6 +164,7 @@
 .navbar-menu .navbar-menu-btn:hover,
 .navbar-menu .navbar-menu-btn.active {
   border-bottom-color: var(--navbar-accent);
+  background: transparent;
   color: var(--navbar-ink);
 }
 
@@ -175,7 +177,7 @@
   justify-content: center;
   flex: 1 1 min(560px, 34vw);
   min-width: 280px;
-  margin: 0 !important;
+  margin: 0;
 }
 
 .navbar-search-mobile {
@@ -183,11 +185,11 @@
 }
 
 .navbar-search-group {
-  width: min(100%, 640px) !important;
+  width: min(100%, 640px);
   min-height: 50px;
   align-items: center;
   border: 1px solid rgba(16, 39, 54, 0.16);
-  border-radius: 14px !important;
+  border-radius: 14px;
   background: #ffffff;
   overflow: hidden;
   box-shadow:
@@ -204,11 +206,11 @@
 }
 
 .navbar-search-input {
-  height: 48px !important;
-  border: 0 !important;
-  background: transparent !important;
+  height: 48px;
+  border: 0;
+  background: transparent;
   color: var(--navbar-ink);
-  font-size: 1rem !important;
+  font-size: 1rem;
   font-weight: 600;
 }
 
@@ -226,9 +228,9 @@
   justify-content: center;
   gap: 8px;
   border: 0;
-  border-radius: 10px !important;
-  background: linear-gradient(135deg, #63bb55, #368f34) !important;
-  color: #ffffff !important;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #63bb55, #368f34);
+  color: #ffffff;
   font-size: 0.98rem;
   font-weight: 900;
   text-transform: uppercase;
@@ -240,7 +242,7 @@
 }
 
 .navbar-actions {
-  gap: 14px !important;
+  gap: 14px;
   flex: 0 0 auto;
 }
 
@@ -267,6 +269,19 @@
   box-shadow: none;
 }
 
+.navbar-user-btn,
+.navbar-user-btn:hover,
+.navbar-user-btn:focus,
+.navbar-menu .navbar-menu-btn,
+.navbar-menu .navbar-menu-btn:hover,
+.navbar-menu .navbar-menu-btn:focus,
+.navbar-actions .navbar-action-btn,
+.navbar-actions .navbar-action-btn:hover,
+.navbar-actions .navbar-action-btn:focus {
+  background: transparent;
+  box-shadow: none;
+}
+
 .navbar-user-btn {
   min-width: 144px;
 }
@@ -277,10 +292,17 @@
 }
 
 .navbar-actions .navbar-action-btn:hover,
-.navbar-user-btn:hover {
+.navbar-user-btn:hover,
+.navbar-user-btn.show,
+.navbar-user-btn[aria-expanded="true"] {
   border-bottom-color: var(--navbar-accent);
   background: transparent;
   color: var(--navbar-ink);
+}
+
+.navbar-user-btn.show .ss-icon,
+.navbar-user-btn[aria-expanded="true"] .ss-icon {
+  color: var(--navbar-accent);
 }
 
 .navbar-action-btn.active {
@@ -288,7 +310,7 @@
 }
 
 .navbar-language-btn {
-  min-width: 92px !important;
+  min-width: 92px;
 }
 
 .navbar-mobile-actions {
@@ -319,13 +341,13 @@
 
 @media (max-width: 1399.98px) {
   .square-navbar.app-navbar {
-    min-height: 88px !important;
-    padding: 12px 16px !important;
+    min-height: 88px;
+    padding: 12px 16px;
   }
 
   .square-navbar-inner {
-    min-height: 62px !important;
-    gap: 18px !important;
+    min-height: 62px;
+    gap: 18px;
   }
 
   .navbar-brand-group {
@@ -333,13 +355,13 @@
   }
 
   .square-navbar-brand {
-    width: 70px !important;
-    flex-basis: 70px !important;
+    width: 70px;
+    flex-basis: 70px;
   }
 
   .navbar-logo {
-    width: 68px !important;
-    height: 68px !important;
+    width: 68px;
+    height: 68px;
   }
 
   .navbar-wordmark-btn {
@@ -349,7 +371,7 @@
 
   .navbar-menu,
   .navbar-actions {
-    gap: 16px !important;
+    gap: 16px;
   }
 
   .navbar-search-group {
@@ -357,8 +379,8 @@
   }
 
   .navbar-search-input {
-    height: 42px !important;
-    font-size: 0.84rem !important;
+    height: 42px;
+    font-size: 0.84rem;
   }
 
   .navbar-search-btn {
@@ -412,7 +434,7 @@
   }
 
   .navbar-actions {
-    gap: 8px !important;
+    gap: 8px;
   }
 
   .navbar-user-btn {
@@ -420,21 +442,21 @@
   }
 
   .navbar-language-btn {
-    min-width: 72px !important;
+    min-width: 72px;
   }
 }
 
 @media (min-width: 768px) and (max-width: 1199.98px) {
   .square-navbar.app-navbar {
-    min-height: auto !important;
-    padding: 14px 18px !important;
+    min-height: auto;
+    padding: 14px 18px;
   }
 
   .square-navbar-inner {
-    display: grid !important;
+    display: grid;
     grid-template-columns: auto minmax(0, 1fr) auto;
     align-items: center;
-    gap: 16px !important;
+    gap: 16px;
   }
 
   .navbar-brand-group {
@@ -446,7 +468,7 @@
   }
 
   .square-navbar-collapse {
-    display: contents !important;
+    display: contents;
   }
 
   .navbar-brand-group,
@@ -462,8 +484,8 @@
     grid-auto-columns: max-content;
     align-items: center;
     justify-content: flex-start;
-    margin-left: 0 !important;
-    gap: clamp(12px, 1.6vw, 20px) !important;
+    margin-left: 0;
+    gap: clamp(12px, 1.6vw, 20px);
   }
 
   .navbar-actions {
@@ -473,11 +495,11 @@
     grid-auto-flow: column;
     grid-auto-columns: max-content;
     justify-content: flex-end;
-    margin-left: auto !important;
+    margin-left: auto;
   }
 
   .navbar-search-desktop {
-    display: none !important;
+    display: none;
   }
 
   .navbar-user-btn span {
@@ -506,7 +528,7 @@
 
 @media (min-width: 768px) and (max-width: 991.98px) {
   .square-navbar-inner {
-    gap: 12px !important;
+    gap: 12px;
   }
 
   .navbar-brand-group {
@@ -514,13 +536,13 @@
   }
 
   .square-navbar-brand {
-    width: 64px !important;
-    flex-basis: 64px !important;
+    width: 64px;
+    flex-basis: 64px;
   }
 
   .navbar-logo {
-    width: 62px !important;
-    height: 62px !important;
+    width: 62px;
+    height: 62px;
   }
 
   .navbar-wordmark-btn {
@@ -530,7 +552,7 @@
 
   .navbar-menu,
   .navbar-actions {
-    gap: 8px !important;
+    gap: 8px;
   }
 
   .navbar-menu .navbar-menu-btn {
@@ -554,8 +576,8 @@
   }
 
   .navbar-search-input {
-    height: 44px !important;
-    font-size: 0.78rem !important;
+    height: 44px;
+    font-size: 0.78rem;
   }
 
   .navbar-search-btn {
@@ -581,7 +603,7 @@
   }
 
   .navbar-language-btn {
-    min-width: 60px !important;
+    min-width: 60px;
   }
 }
 
@@ -591,16 +613,16 @@
   }
 
   .square-navbar.app-navbar {
-    min-height: 68px !important;
-    padding: 8px 12px !important;
+    min-height: 68px;
+    padding: 8px 12px;
   }
 
   .square-navbar-inner {
-    min-height: 50px !important;
-    display: grid !important;
+    min-height: 50px;
+    display: grid;
     grid-template-columns: 44px minmax(0, 1fr) auto auto;
     align-items: center;
-    gap: 8px !important;
+    gap: 8px;
   }
 
   .square-navbar .navbar-toggler {
@@ -620,14 +642,14 @@
   }
 
   .square-navbar-brand {
-    width: 46px !important;
-    flex-basis: 46px !important;
-    margin: -8px -2px -8px 0 !important;
+    width: 46px;
+    flex-basis: 46px;
+    margin: -8px -2px -8px 0;
   }
 
   .navbar-logo {
-    width: 44px !important;
-    height: 44px !important;
+    width: 44px;
+    height: 44px;
   }
 
   .navbar-wordmark-btn {
@@ -659,7 +681,7 @@
 
   .navbar-mobile-actions .navbar-language-btn {
     width: auto;
-    min-width: 76px !important;
+    min-width: 76px;
     padding: 0 10px;
     display: inline-flex;
     align-items: center;
@@ -684,8 +706,8 @@
   }
 
   .square-navbar-collapse.collapsing {
-    height: auto !important;
-    transition: none !important;
+    height: auto;
+    transition: none;
   }
 
   .navbar-search-desktop,
@@ -697,7 +719,7 @@
     width: 100%;
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 0 !important;
+    gap: 0;
     align-items: stretch;
     justify-items: stretch;
     place-content: center;
@@ -761,10 +783,10 @@
   }
 
   .navbar-menu-account .dropdown-menu {
-    position: absolute !important;
-    inset: calc(100% + 8px) 0 auto auto !important;
+    position: absolute;
+    inset: calc(100% + 8px) 0 auto auto;
     min-width: 148px;
-    margin: 0 !important;
+    margin: 0;
     z-index: 1060;
   }
 }
@@ -775,12 +797,12 @@
   }
 
   .square-navbar.app-navbar {
-    padding-inline: 8px !important;
+    padding-inline: 8px;
   }
 
   .square-navbar-inner {
     grid-template-columns: 36px minmax(82px, 1fr) 36px 58px;
-    gap: 5px !important;
+    gap: 5px;
   }
 
   .square-navbar .navbar-toggler,
@@ -796,19 +818,19 @@
   }
 
   .navbar-mobile-actions .navbar-language-btn {
-    min-width: 64px !important;
+    min-width: 64px;
     padding: 0 7px;
     gap: 4px;
   }
 
   .square-navbar-brand {
-    width: 38px !important;
-    flex-basis: 38px !important;
+    width: 38px;
+    flex-basis: 38px;
   }
 
   .navbar-logo {
-    width: 36px !important;
-    height: 36px !important;
+    width: 36px;
+    height: 36px;
   }
 
   .navbar-wordmark-btn {

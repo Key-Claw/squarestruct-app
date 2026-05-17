@@ -1,21 +1,21 @@
-import designBocetoImage from '../assets/design/design-boceto.jpeg'
-import designHeroImage from '../assets/design/design-hero.jpeg'
+import designBocetoImage from '../assets/design/design-boceto.webp'
+import designHeroImage from '../assets/design/design-hero.webp'
 import Icon from '../components/ui/Icon'
 
 const designPieces = [
-  { name: 'Bloque 200', material: 'Plastico reciclado' },
+  { name: 'Bloque 200', material: 'Plástico reciclado' },
   { name: 'Bloque 200', material: 'Hormigón' },
   { name: 'Bloque 300', material: 'Hormigón' },
   { name: 'Bloque 600', material: 'Hormigón' },
-  { name: 'Bloque 800', material: 'Plastico reciclado' },
+  { name: 'Bloque 800', material: 'Plástico reciclado' },
 ]
 
 const projectItems = [
-  ['Bloque 200', 'Plastico reciclado', 24],
+  ['Bloque 200', 'Plástico reciclado', 24],
   ['Bloque 200', 'Hormigón', 18],
   ['Bloque 300', 'Hormigón', 6],
   ['Bloque 600', 'Hormigón', 8],
-  ['Bloque 800', 'Plastico reciclado', 4],
+  ['Bloque 800', 'Plástico reciclado', 4],
 ]
 
 const howItWorks = [
@@ -25,11 +25,11 @@ const howItWorks = [
   },
   {
     title: 'Coloca en el plano',
-    text: 'Haz clic en la cuadricula para colocar la pieza.'
+    text: 'Haz clic en la cuadrícula para colocar la pieza.'
   },
   {
-    title: 'Construye tu diseno',
-    text: 'Anade piezas, mueve, elimina y ajusta tu estructura.'
+    title: 'Construye tu diseño',
+    text: 'Añade piezas, mueve, elimina y ajusta tu estructura.'
   },
 ]
 
@@ -111,7 +111,7 @@ function Design({ onNavigate }) {
 
             <div className="design-toolbar" aria-label="Herramientas de plano">
               <button type="button" className="active" aria-label="Seleccionar bloque">■</button>
-              <button type="button" aria-label="Mover">↕</button>
+              <button type="button" aria-label="Mover">↔</button>
               <button type="button" aria-label="Desplazar">✥</button>
               <button type="button" aria-label="Rotar">↺</button>
               <button type="button" aria-label="Pantalla completa"><Icon name="fullscreen" size={16} /></button>
@@ -167,7 +167,7 @@ function Design({ onNavigate }) {
               <strong>1.250,75 EUR</strong>
             </div>
 
-            <h3>Acciones rapidas</h3>
+            <h3>Acciones rápidas</h3>
             <div className="design-quick-actions">
               <button type="button" className="btn design-outline-btn">Limpiar todo</button>
               <button type="button" className="btn design-outline-btn">Exportar plano</button>
@@ -181,7 +181,7 @@ function Design({ onNavigate }) {
           ==================================================================== */}
       <section className="card design-help-card">
         <div className="design-help-steps">
-          <h2>Como funciona</h2>
+          <h2>Cómo funciona</h2>
           <div className="design-help-step-row">
             {howItWorks.map((step, index) => (
               <article key={step.title}>
@@ -197,11 +197,11 @@ function Design({ onNavigate }) {
 
         <aside className="design-guide-box">
           <div>
-            <h2>Necesitas ayuda?</h2>
-            <p>Consulta nuestra guia rapida para aprender a usar el disenador.</p>
+            <h2>¿Necesitas ayuda?</h2>
+            <p>Consulta nuestra guía rápida para aprender a usar el diseñador.</p>
           </div>
           <button type="button" className="btn design-guide-btn" onClick={() => onNavigate('catalog', '', 'productos')}>
-            Ver guia
+            Ver guía
           </button>
         </aside>
       </section>
@@ -210,3 +210,5 @@ function Design({ onNavigate }) {
 }
 
 export default Design
+
+

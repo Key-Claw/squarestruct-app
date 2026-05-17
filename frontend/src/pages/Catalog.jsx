@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import Icon from '../components/ui/Icon'
 import CatalogFilters from '../components/catalogo/CatalogFilters'
 import CatalogProductCard from '../components/catalogo/CatalogProductCard'
-import catalogHeroImage from '../assets/catalog/catalog-hero.jpeg'
+import catalogHeroImage from '../assets/catalog/catalog-hero.webp'
 import { productosDemo } from '../data/productosDemo'
 import { getProductos, filtrarProductos } from '../services/productService'
 import { normalizarProducto } from '../utils/text'
@@ -97,7 +97,7 @@ function Catalog({ onNavigate, onAddToCart, searchTerm = '', initialSection = ''
     }, {})
 
     return [
-      { id: 'todos', label: 'Todos los productos', count: productosCatalogo.length },
+      { id: 'todos', label: 'Productos', count: productosCatalogo.length },
       ...Object.entries(resumen).map(([label, count]) => ({
         id: label.toLowerCase(),
         label,
@@ -167,7 +167,7 @@ function Catalog({ onNavigate, onAddToCart, searchTerm = '', initialSection = ''
         <div className="catalog-heading-copy">
           <div className="catalog-heading-title">
             <p className="catalog-eyebrow">Materiales modulares</p>
-            <h1>Catalogo de productos</h1>
+            <h1>Catálogo de productos</h1>
           </div>
           <div className="catalog-heading-text">
             <p>Explora bloques y pilares. Soluciones modulares para la construcción de hogares.</p>
@@ -197,7 +197,7 @@ function Catalog({ onNavigate, onAddToCart, searchTerm = '', initialSection = ''
                 {productosFiltrados.length} productos encontrados
               </div>
 
-              <div className="d-flex gap-2 align-items-center catalog-results-actions">
+              <div className="d-flex gap-2 catalog-results-actions">
                 <input
                   type="text"
                   className="form-control catalog-search-input"
@@ -224,11 +224,11 @@ function Catalog({ onNavigate, onAddToCart, searchTerm = '', initialSection = ''
                 <span>Ordenar por:</span>
                 <select
                   className="form-select catalog-sort-select"
-                  aria-label="Ordenar catalogo"
+                  aria-label="Ordenar catálogo"
                   value={orden}
                   onChange={(event) => setOrden(event.target.value)}
                 >
-                  <option value="reciente">Mas reciente</option>
+                  <option value="reciente">Más reciente</option>
                   <option value="precio-menor">Precio menor</option>
                   <option value="precio-mayor">Precio mayor</option>
                 </select>
@@ -236,7 +236,7 @@ function Catalog({ onNavigate, onAddToCart, searchTerm = '', initialSection = ''
                 <button
                   type="button"
                   className={`btn catalog-view-btn${viewMode === 'grid' ? ' active' : ''}`}
-                  aria-label="Vista cuadricula"
+                  aria-label="Vista cuadrícula"
                   aria-pressed={viewMode === 'grid'}
                   onClick={() => setViewMode('grid')}
                 >
@@ -276,13 +276,13 @@ function Catalog({ onNavigate, onAddToCart, searchTerm = '', initialSection = ''
 
             {!cargando && productosFiltrados.length === 0 && (
               <div className="text-center catalog-state mt-4">
-                No se encontraron productos con esa busqueda.
+                No se encontraron productos con esa búsqueda.
               </div>
             )}
 
             {!cargando && productosFiltrados.length > CATALOG_VISIBLE_PRODUCTS && (
-              <nav className="catalog-pagination" aria-label="Paginacion catalogo">
-                <ul className="pagination pagination-sm justify-content-end">
+              <nav className="catalog-pagination" aria-label="Paginación catálogo">
+                <ul className="pagination pagination-sm">
                   {Array.from({ length: totalPaginas }, (_, index) => index + 1).map((pageNumber) => (
                     <li className={`page-item${pageNumber === paginaSegura ? ' active' : ''}`} key={pageNumber}>
                       <button
@@ -304,3 +304,5 @@ function Catalog({ onNavigate, onAddToCart, searchTerm = '', initialSection = ''
 }
 
 export default Catalog
+
+
