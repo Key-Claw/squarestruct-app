@@ -44,7 +44,7 @@ const homeFeatureCards = [
     title: 'Generar tu estructura',
     text: 'Crea tu propio diseño y calcula los materiales necesarios para hacerlo realidad.',
     image: inicioDesignImage,
-    action: 'Ir a Design',
+    action: 'Ir a Deseño',
     handler: (onNavigate) => onNavigate('design'),
   },
 ]
@@ -166,9 +166,11 @@ function Home({ onNavigate }) {
         </div>
       </section>
 
-      <section className="home-section-heading">
-        <h2>Todo lo que puedes hacer en SquareStruct</h2>
-      </section>
+      <section className="home-capabilities">
+        <div className="home-section-heading">
+          <p className="eyebrow">Herramientas SquareStruct</p>
+          <h2>Todo lo que puedes hacer en SquareStruct</h2>
+        </div>
 
       <div className="row g-4 home-feature-grid">
         {homeFeatureCards.map((item) => (
@@ -187,6 +189,7 @@ function Home({ onNavigate }) {
           </div>
         ))}
       </div>
+      </section>
 
     </section>
   )
