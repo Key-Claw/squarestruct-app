@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import Icon from './ui/Icon'
 import { crearPedido } from '../services/orderService'
-import '../styles/checkout.css'
+import '../styles/components/checkout.css'
 
 /**
  * Componente Checkout - Permite completar la compra seleccionando método de pago y dirección.
@@ -148,7 +148,7 @@ function Checkout({ isOpen, cartItems = [], onClose, onOrderCreated }) {
               onClick={onClose}
               aria-label="Cerrar checkout"
             >
-              ✕
+              ×
             </button>
           </div>
 
@@ -172,7 +172,7 @@ function Checkout({ isOpen, cartItems = [], onClose, onOrderCreated }) {
                           </p>
                         </div>
                         <div className="checkout-item-subtotal">
-                          €{(parseFloat(item.precio) * (item.cantidad || 1)).toFixed(2)}
+                          {'\u20ac'}{(parseFloat(item.precio) * (item.cantidad || 1)).toFixed(2)}
                         </div>
                       </div>
                     ))}
@@ -184,7 +184,7 @@ function Checkout({ isOpen, cartItems = [], onClose, onOrderCreated }) {
                   {/* Total */}
                   <div className="checkout-total-row">
                     <span className="checkout-total-label">Total:</span>
-                    <span className="checkout-total-amount">€{total.toFixed(2)}</span>
+                    <span className="checkout-total-amount">{'\u20ac'}{total.toFixed(2)}</span>
                   </div>
                 </>
               ) : (
@@ -280,3 +280,4 @@ function Checkout({ isOpen, cartItems = [], onClose, onOrderCreated }) {
 }
 
 export default Checkout
+

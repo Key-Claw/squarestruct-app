@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import Icon from '../components/ui/Icon'
 import { obtenerMisPedidos } from '../services/orderService'
-import '../styles/facturas.css'
+import '../styles/pages/facturas.css'
 
 /**
  * Componente Facturas - Página donde los usuarios ven sus órdenes/facturas
@@ -185,7 +185,7 @@ function Invoices() {
                     {/* Total */}
                     <td className="facturas-total">
                       <strong className="facturas-amount">
-                        €{parseFloat(orden.total).toFixed(2)}
+                        {'\u20ac'}{parseFloat(orden.total).toFixed(2)}
                       </strong>
                     </td>
 
@@ -237,3 +237,4 @@ function Invoices() {
 }
 
 export default Invoices
+

@@ -1,4 +1,4 @@
-import '../styles/cart-panel.css'
+import '../styles/components/cart-panel.css'
 
 /**
  * Panel deslizante del carrito
@@ -72,7 +72,7 @@ function CartPanel({ isOpen, items = [], onClose, onRemoveItem, onUpdateQuantity
               onClick={onClose}
               aria-label="Cerrar carrito"
             >
-              ✕
+              ×
             </button>
           </div>
 
@@ -96,7 +96,7 @@ function CartPanel({ isOpen, items = [], onClose, onRemoveItem, onUpdateQuantity
                     {/* PRECIO UNITARIO */}
                     <div className="cart-item-price">
                       <span className="cart-item-unit-price">
-                        €{parseFloat(item.precio).toFixed(2)}
+                        {'\u20ac'}{parseFloat(item.precio).toFixed(2)}
                       </span>
                     </div>
 
@@ -108,7 +108,7 @@ function CartPanel({ isOpen, items = [], onClose, onRemoveItem, onUpdateQuantity
                         onClick={() => onUpdateQuantity(index, Math.max(1, (item.cantidad || 1) - 1))}
                         aria-label="Reducir cantidad"
                       >
-                        −
+                        -
                       </button>
                       <input
                         type="number"
@@ -130,7 +130,7 @@ function CartPanel({ isOpen, items = [], onClose, onRemoveItem, onUpdateQuantity
                     {/* SUBTOTAL */}
                     <div className="cart-item-subtotal">
                       <span className="cart-item-subtotal-value">
-                        €{(parseFloat(item.precio) * (item.cantidad || 1)).toFixed(2)}
+                        {'\u20ac'}{(parseFloat(item.precio) * (item.cantidad || 1)).toFixed(2)}
                       </span>
                     </div>
 
@@ -141,7 +141,7 @@ function CartPanel({ isOpen, items = [], onClose, onRemoveItem, onUpdateQuantity
                       onClick={() => onRemoveItem(index)}
                       aria-label="Eliminar del carrito"
                     >
-                      🗑️
+                      ×
                     </button>
                   </div>
                 ))}
@@ -176,7 +176,7 @@ function CartPanel({ isOpen, items = [], onClose, onRemoveItem, onUpdateQuantity
               {/* TOTAL */}
               <div className="cart-total-row">
                 <span className="cart-total-label">Total</span>
-                <span className="cart-total-value">€{total.toFixed(2)}</span>
+                <span className="cart-total-value">{'\u20ac'}{total.toFixed(2)}</span>
               </div>
 
               {/* BOTONES DE ACCIÓN */}
@@ -209,3 +209,4 @@ function CartPanel({ isOpen, items = [], onClose, onRemoveItem, onUpdateQuantity
 }
 
 export default CartPanel
+

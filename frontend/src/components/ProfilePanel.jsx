@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { getProfile } from '../services/authService'
-import '../styles/profile-panel.css'
+import '../styles/layout/profile-panel.css'
 
 /**
  * Panel deslizante del perfil del usuario
@@ -132,7 +132,7 @@ function ProfilePanel({ isOpen, user, onClose, onLogout, isAdmin, onNavigateToUs
               onClick={onClose}
               aria-label="Cerrar perfil"
             >
-              ✕
+              ×
             </button>
           </div>
 
@@ -214,7 +214,7 @@ function ProfilePanel({ isOpen, user, onClose, onLogout, isAdmin, onNavigateToUs
                             onNavigateToUsers()
                           }}
                         >
-                          👥 Gestionar usuarios
+                           Gestionar usuarios
                         </button>
                       )}
 
@@ -223,7 +223,7 @@ function ProfilePanel({ isOpen, user, onClose, onLogout, isAdmin, onNavigateToUs
                         type="button"
                         className="profile-action-btn change-password-btn"
                       >
-                        🔐 Cambiar contraseña
+                         Cambiar contraseña
                       </button>
 
                       {/* Botón de logout */}
@@ -232,7 +232,7 @@ function ProfilePanel({ isOpen, user, onClose, onLogout, isAdmin, onNavigateToUs
                         className="profile-action-btn logout-btn"
                         onClick={handleLogout}
                       >
-                        🚪 Cerrar sesión
+                         Cerrar sesión
                       </button>
 
                     </div>
@@ -257,3 +257,4 @@ function ProfilePanel({ isOpen, user, onClose, onLogout, isAdmin, onNavigateToUs
 }
 
 export default ProfilePanel
+
