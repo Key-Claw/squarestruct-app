@@ -12,7 +12,7 @@ test('Home renderiza héroe y botón Ver catálogo', () => {
   render(<Home onNavigate={mockNavigate} />)
 
   // Confirma que el heading principal está presente
-  expect(screen.getByText(/Construye sin limites/i)).toBeInTheDocument()
+  expect(screen.getByText(/Construye sin límites/i)).toBeInTheDocument()
   // Confirma que el botón de catálogo está presente
-  expect(screen.getByRole('button', { name: /Ver catalogo/i })).toBeInTheDocument()
+  expect(screen.getByRole('button', { name: /Ver catálogo/i })).toBeInTheDocument()
 })
