@@ -3,7 +3,7 @@ import LoginForm from './auth/LoginForm'
 import RegisterForm from './auth/RegisterForm'
 import { loginUser, registerUser } from '../services/authService'
 import { isValidEmail } from '../utils/validators'
-import '../styles/auth-modal.css'
+import '../styles/components/auth-modal.css'
 
 function AuthModal({ isOpen, isLoginMode, onClose, onToggleMode, onUserLogin, onNavigate }) {
   const [isLoading, setIsLoading] = useState(false)
@@ -19,8 +19,10 @@ function AuthModal({ isOpen, isLoginMode, onClose, onToggleMode, onUserLogin, on
   const handleLogin = async (e) => {
     e.preventDefault()
     setError('')
+    const email = loginEmail.trim()
+    const password = loginPassword.trim()
 
-    if (!loginEmail || !loginPassword) {
+    if (!email || !password) {
       setError('Completa el correo y la contraseña para iniciar sesión.')
       return
     }
@@ -28,7 +30,7 @@ function AuthModal({ isOpen, isLoginMode, onClose, onToggleMode, onUserLogin, on
     setIsLoading(true)
 
     try {
-      const userData = await loginUser({ email: loginEmail, contrasena: loginPassword })
+      const userData = await loginUser({ email, contrasena: password })
 
       onUserLogin(userData)
       setLoginEmail('')
@@ -45,28 +47,33 @@ function AuthModal({ isOpen, isLoginMode, onClose, onToggleMode, onUserLogin, on
   const handleRegister = async (e) => {
     e.preventDefault()
     setError('')
+    const nombre = registerNombre.trim()
+    const primerApellido = registerPrimerApellido.trim()
+    const email = registerEmail.trim()
+    const password = registerPassword.trim()
+    const confirmPassword = registerConfirmPassword.trim()
 
-    if (!registerNombre || !registerPrimerApellido || !registerEmail || !registerPassword || !registerConfirmPassword) {
+    if (!nombre || !primerApellido || !email || !password || !confirmPassword) {
       setError('Completa todos los campos para crear tu cuenta.')
       return
     }
 
-    if (registerNombre.trim().length < 3) {
+    if (nombre.length < 3) {
       setError('El nombre debe tener al menos 3 caracteres.')
       return
     }
 
-    if (!isValidEmail(registerEmail)) {
+    if (!isValidEmail(email)) {
       setError('Introduce un correo electrónico válido.')
       return
     }
 
-    if (registerPassword.length < 6) {
+    if (password.length < 6) {
       setError('La contraseña debe tener al menos 6 caracteres.')
       return
     }
 
-    if (registerPassword !== registerConfirmPassword) {
+    if (password !== confirmPassword) {
       setError('Las contraseñas no coinciden.')
       return
     }
@@ -74,8 +81,8 @@ function AuthModal({ isOpen, isLoginMode, onClose, onToggleMode, onUserLogin, on
     setIsLoading(true)
 
     try {
-      await registerUser(registerNombre, registerPrimerApellido, registerEmail, registerPassword)
-      const userData = await loginUser({ email: registerEmail, contrasena: registerPassword })
+      await registerUser(nombre, primerApellido, email, password)
+      const userData = await loginUser({ email, contrasena: password })
 
       onUserLogin(userData)
       setRegisterNombre('')
@@ -142,3 +149,4 @@ function AuthModal({ isOpen, isLoginMode, onClose, onToggleMode, onUserLogin, on
 }
 
 export default AuthModal
+

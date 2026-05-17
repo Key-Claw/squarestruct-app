@@ -35,7 +35,7 @@ const isTokenExpired = (token) => {
  * @returns {string} Texto normalizado o el original.
  */
 const normalizarTexto = (value) => {
-  if (typeof value !== 'string' || !/[ÃÂ�]/.test(value)) {
+  if (typeof value !== 'string' || !/[\u00c3\u00c2\ufffd]/.test(value)) {
     return value
   }
 
@@ -67,16 +67,17 @@ const normalizarUsuario = (userData) => {
  * Registra un nuevo usuario en el sistema.
  * @param {string} nombre - Nombre completo del usuario.
  * @param {string} email - Correo electrónico único.
- * @param {string} contrasena - Contraseña del usuario.
+ * @param {string} contraseña - Contraseña del usuario.
  * @returns {Promise<object>} Respuesta del servidor con mensaje de éxito.
  * @throws {Error} Si fallan validaciones o si el email ya existe.
  */
-export const registerUser = async (nombre, primerApellido, email, contrasena) => {
+export const registerUser = async (nombre, primerApellido, email, contraseña) => {
+  const password = String(contraseña ?? '').trim()
   const response = await postRequest('/usuarios/register', {
-    nombre,
-    primerApellido,
-    email,
-    contrasena,
+    nombre: nombre.trim(),
+    primerApellido: primerApellido.trim(),
+    email: email.trim(),
+    contrasena: password,
   })
   return response
 }
@@ -85,20 +86,21 @@ export const registerUser = async (nombre, primerApellido, email, contrasena) =>
  * Inicia sesión con credenciales de usuario.
  * Valida credenciales en backend, almacena JWT token y datos de usuario en localStorage.
  * @param {string} email - Correo electrónico del usuario.
- * @param {string} contrasena - Contraseña del usuario.
+ * @param {string} contraseña - Contraseña del usuario.
  * @returns {Promise<object>} Objeto con datos del usuario autenticado.
  * @throws {Error} Si las credenciales son inválidas.
  */
-export const loginUser = async ({ email, nombre, primerApellido, contrasena }) => {
+export const loginUser = async ({ email, nombre, primerApellido, contraseña, contrasena }) => {
   try {
+    const password = String(contraseña ?? contrasena ?? '').trim()
     const payload = {}
     if (nombre && primerApellido) {
-      payload.nombre = nombre
-      payload.primerApellido = primerApellido
+      payload.nombre = nombre.trim()
+      payload.primerApellido = primerApellido.trim()
     } else if (email) {
-      payload.email = email
+      payload.email = email.trim()
     }
-    payload.contrasena = contrasena
+    payload.contrasena = password
 
     // Llamar al endpoint de login (acepta email o nombre+primerApellido)
     const response = await postRequest('/usuarios/login', payload)
@@ -248,3 +250,4 @@ export const updateUser = async (idUsuario, userData) => {
     throw new Error(String(error), { cause: error })
   }
 }
+
