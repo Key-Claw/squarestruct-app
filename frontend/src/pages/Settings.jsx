@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { getAllUsers, getProfile, getUserById, logoutUser, updateUser } from '../services/authService'
 import { actualizarEstadoPedido, obtenerMisPedidos, obtenerPedidosAdmin } from '../services/orderService'
-import '../styles/settings.css'
+import '../styles/pages/settings.css'
 
 const FACTURACION_PAGE_SIZE = 5
 
@@ -91,6 +91,8 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser }) {
   const [selectedUsuario, setSelectedUsuario] = useState(null)
   const [isDetailLoading, setIsDetailLoading] = useState(false)
   const [detailError, setDetailError] = useState('')
+  const [usersSearchTerm, setUsersSearchTerm] = useState('')
+  const [usersRoleFilter, setUsersRoleFilter] = useState('todos')
 
   // Facturas del usuario autenticado.
   const [facturasUsuario, setFacturasUsuario] = useState([])
@@ -226,6 +228,21 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser }) {
   }, [activeTab, isAdminUser, onAuthExpired])
 
   const facturasAdminFiltradas = useMemo(() => facturasAdmin, [facturasAdmin])
+
+  const usuariosFiltrados = useMemo(() => {
+    const search = usersSearchTerm.trim().toLowerCase()
+
+    return usuarios.filter((currentUser) => {
+      const role = (currentUser.rol || 'usuario').toLowerCase()
+      const matchesRole = usersRoleFilter === 'todos' || role === usersRoleFilter
+      const matchesSearch = !search
+        || String(currentUser.idUsuario || '').includes(search)
+        || (currentUser.nombre || '').toLowerCase().includes(search)
+        || (currentUser.email || '').toLowerCase().includes(search)
+
+      return matchesRole && matchesSearch
+    })
+  }, [usuarios, usersRoleFilter, usersSearchTerm])
 
   const facturacionStats = useMemo(() => {
     const totalFacturado = facturasAdminFiltradas.reduce((sum, factura) => sum + Number(factura.total || 0), 0)
@@ -448,10 +465,36 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser }) {
     }
 
     return (
-      <div className="settings-card">
+      <div className="settings-card settings-users-card">
         <div className="settings-card-head">
           <h2>Gestión de usuarios</h2>
-          <small>Total: {usuarios.length}</small>
+          <small>Total: {usuariosFiltrados.length} de {usuarios.length}</small>
+        </div>
+
+        <div className="settings-users-toolbar" aria-label="Filtros de usuarios">
+          <input
+            className="form-control settings-users-search"
+            type="search"
+            placeholder="Buscar usuarios..."
+            value={usersSearchTerm}
+            onChange={(event) => setUsersSearchTerm(event.target.value)}
+          />
+          <div className="settings-users-role-filter" role="group" aria-label="Filtrar por rol">
+            {[
+              { value: 'todos', label: 'Todos' },
+              { value: 'admin', label: 'Administradores' },
+              { value: 'usuario', label: 'Usuarios' },
+            ].map((option) => (
+              <button
+                key={option.value}
+                type="button"
+                className={`settings-role-filter-btn${usersRoleFilter === option.value ? ' active' : ''}`}
+                onClick={() => setUsersRoleFilter(option.value)}
+              >
+                {option.label}
+              </button>
+            ))}
+          </div>
         </div>
 
         {usersError && <div className="alert alert-danger">{usersError}</div>}
@@ -469,8 +512,8 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser }) {
               </tr>
             </thead>
             <tbody>
-              {usuarios.length > 0 ? (
-                usuarios.map((currentUser) => (
+              {usuariosFiltrados.length > 0 ? (
+                usuariosFiltrados.map((currentUser) => (
                   <tr key={currentUser.idUsuario}>
                     <td>{currentUser.idUsuario}</td>
                     <td>{currentUser.nombre}</td>
@@ -501,7 +544,7 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser }) {
                 ))
               ) : (
                 <tr>
-                  <td colSpan="5" className="text-center py-4">No hay usuarios registrados</td>
+                  <td colSpan="5" className="text-center py-4">No hay usuarios que coincidan con los filtros</td>
                 </tr>
               )}
             </tbody>
@@ -768,7 +811,7 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser }) {
             </div>
 
             <nav className="billing-pagination" aria-label="Paginación de facturas">
-              <button type="button" className="btn" onClick={() => setFacturacionPage((value) => Math.max(1, value - 1))} disabled={facturacionPageSafe === 1}>
+              <button type="button" className="billing-page-btn" onClick={() => setFacturacionPage((value) => Math.max(1, value - 1))} disabled={facturacionPageSafe === 1}>
                 &lt;
               </button>
 
@@ -776,14 +819,14 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser }) {
                 <button
                   key={pageNumber}
                   type="button"
-                  className={`btn${pageNumber === facturacionPageSafe ? ' active' : ''}`}
+                  className={`billing-page-btn${pageNumber === facturacionPageSafe ? ' active' : ''}`}
                   onClick={() => setFacturacionPage(pageNumber)}
                 >
                   {pageNumber}
                 </button>
               ))}
 
-              <button type="button" className="btn" onClick={() => setFacturacionPage((value) => Math.min(facturacionTotalPages, value + 1))} disabled={facturacionPageSafe === facturacionTotalPages}>
+              <button type="button" className="billing-page-btn" onClick={() => setFacturacionPage((value) => Math.min(facturacionTotalPages, value + 1))} disabled={facturacionPageSafe === facturacionTotalPages}>
                 &gt;
               </button>
             </nav>
@@ -1052,3 +1095,4 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser }) {
 }
 
 export default Settings
+
