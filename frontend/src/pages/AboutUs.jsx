@@ -18,22 +18,15 @@ function AboutUs() {
           <section className="card about-profile-text-card">
             <div className="card-body">
               <p>
-                Raúl Martín ha sentido desde pequeño una gran pasión por los
-                videojuegos y el mundo de la tecnología, lo que le llevó a orientar su
-                formación hacia este sector.
+                Apasionado por los videojuegos y la tecnología, orientó su formación
+                a sistemas y desarrollo web desde sus primeros pasos, buscando aplicar
+                lo aprendido en proyectos reales.
               </p>
 
               <p>
-                Inició sus estudios en Sistemas Microinformáticos y Redes en el Centro
-                San Valero, donde adquirió una base sólida en sistemas y tecnología y
-                despertó su interés por el desarrollo web.
-              </p>
-
-              <p>
-                Actualmente cursa Desarrollo de Aplicaciones Web (DAW), aplicando sus
-                conocimientos en proyectos como SquareStruct mientras continúa
-                formándose de manera autodidacta con el objetivo de crecer en el
-                ámbito tecnológico.
+                Estudia DAW en Centro San Valero y participa activamente en
+                SquareStruct, combinando trabajo en equipo y práctica constante para
+                consolidar sus habilidades.
               </p>
             </div>
           </section>
@@ -55,42 +48,30 @@ function AboutUs() {
                   quiere comparar, elegir y planificar con más claridad.
                 </p>
 
-                <div className="row g-4 about-newspaper-text align-items-stretch">
-                  <div className="col-12 col-md-4 d-flex">
-                    <div className="about-history-column flex-fill h-100">
-                      <p>
-                        SquareStruct nace como proyecto final del primer curso de
-                        Desarrollo de Aplicaciones Web (DAW) en el Centro San Valero,
-                        con la idea de crear una tienda online especializada en productos
-                        modulares para la construcción. El proyecto se centra
-                        principalmente en la comercialización de bloques de distintas
-                        medidas y pilares, suministrados por una empresa proveedora.
-                      </p>
-                    </div>
-                  </div>
+                <div className="about-newspaper-text about-story-grid">
+                  <article className="about-history-column">
+                    <p>
+                      SquareStruct nace como proyecto final de primero de DAW en
+                      Centro San Valero: una tienda online enfocada en productos
+                      modulares para construcción.
+                    </p>
+                  </article>
 
-                  <div className="col-12 col-md-4 d-flex">
-                    <div className="about-history-column flex-fill h-100">
-                      <p>
-                        La finalidad de SquareStruct es facilitar al usuario la consulta,
-                        selección y compra de materiales modulares, ofreciendo una
-                        plataforma clara, moderna y orientada a la construcción de
-                        viviendas o estructuras mediante piezas ensamblables.
-                      </p>
-                    </div>
-                  </div>
+                  <article className="about-history-column">
+                    <p>
+                      Nuestro objetivo es simplificar la consulta, comparación y
+                      compra de materiales ensamblables con una experiencia clara,
+                      actual y práctica.
+                    </p>
+                  </article>
 
-                  <div className="col-12 col-md-4 d-flex">
-                    <div className="about-history-column flex-fill h-100">
-                      <p>
-                        La idea surge también de nuestra experiencia previa en otros
-                        ciclos formativos y de la buena dinámica de trabajo construida
-                        como equipo. La confianza, la coordinación y la forma de
-                        complementarnos nos han permitido plantear un proyecto completo,
-                        con una visión práctica y cercana a un caso real.
-                      </p>
-                    </div>
-                  </div>
+                  <article className="about-history-column">
+                    <p>
+                      El proyecto también nace de nuestra experiencia previa y del
+                      trabajo en equipo, con una visión realista y orientada a
+                      resolver necesidades concretas.
+                    </p>
+                  </article>
                 </div>
               </div>
             </div>
@@ -109,21 +90,15 @@ function AboutUs() {
           <section className="card about-profile-text-card">
             <div className="card-body">
               <p>
-                Cristian Gil decidió reinventarse profesionalmente apostando por el
-                sector tecnológico, dejando atrás un entorno laboral distinto para
-                enfocarse en su desarrollo como programador.
+                Se reinventó profesionalmente hacia el sector tecnológico con base
+                en sistemas y redes, aportando una perspectiva práctica y creativa
+                al equipo.
               </p>
 
               <p>
-                Inició su formación en Sistemas Microinformáticos y Redes en el Centro
-                San Valero, donde adquirió una base sólida en sistemas y redes que le
-                permite comprender mejor el funcionamiento de las aplicaciones.
-              </p>
-
-              <p>
-                Actualmente cursa Desarrollo de Aplicaciones Web (DAW), aplicando sus
-                conocimientos en proyectos como SquareStruct mientras continúa
-                ampliando sus habilidades dentro del desarrollo web.
+                Actualmente está cursando DAW y colabora en SquareStruct activamente,
+                aplicando sus conocimientos en desarrollo web mientras amplía
+                constantemente sus competencias.
               </p>
             </div>
           </section>
