@@ -31,6 +31,7 @@ function Catalog({ onNavigate, onAddToCart, searchTerm = '', initialSection = ''
   const [precioMax, setPrecioMax] = useState(1000)
   const [paginaActiva, setPaginaActiva] = useState(1)
   const [viewMode, setViewMode] = useState('grid')
+  const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false)
 
   useEffect(() => {
     const cargarProductos = async () => {
@@ -161,6 +162,36 @@ function Catalog({ onNavigate, onAddToCart, searchTerm = '', initialSection = ''
     setPaginaActiva(1)
   }, [busqueda, categoriaActiva, materialActivo, orden, precioMax])
 
+  useEffect(() => {
+    if (!mobileFiltersOpen) {
+      document.body.style.overflow = ''
+      return
+    }
+
+    document.body.style.overflow = 'hidden'
+
+    const handleEscape = (event) => {
+      if (event.key === 'Escape') {
+        setMobileFiltersOpen(false)
+      }
+    }
+
+    const handleResize = () => {
+      if (window.innerWidth >= 992) {
+        setMobileFiltersOpen(false)
+      }
+    }
+
+    window.addEventListener('keydown', handleEscape)
+    window.addEventListener('resize', handleResize)
+
+    return () => {
+      document.body.style.overflow = ''
+      window.removeEventListener('keydown', handleEscape)
+      window.removeEventListener('resize', handleResize)
+    }
+  }, [mobileFiltersOpen])
+
   return (
     <section className="page-shell catalog-page container-fluid">
       <header className="card catalog-heading">
@@ -178,8 +209,25 @@ function Catalog({ onNavigate, onAddToCart, searchTerm = '', initialSection = ''
         </div>
       </header>
 
+      <button
+        type="button"
+        className="btn catalog-mobile-filters-toggle d-lg-none"
+        onClick={() => setMobileFiltersOpen(true)}
+        aria-expanded={mobileFiltersOpen}
+        aria-controls="catalogFilters"
+      >
+        Abrir filtros
+      </button>
+
+      <div
+        className={`catalog-mobile-filters-backdrop d-lg-none${mobileFiltersOpen ? ' is-open' : ''}`}
+        onClick={() => setMobileFiltersOpen(false)}
+        aria-hidden={!mobileFiltersOpen}
+      ></div>
+
       <div className="row g-4 align-items-start">
           <CatalogFilters
+            id="catalogFilters"
             categorias={categorias}
             categoriaActiva={categoriaActiva}
             onSelectCategoria={setCategoriaActiva}
@@ -189,6 +237,8 @@ function Catalog({ onNavigate, onAddToCart, searchTerm = '', initialSection = ''
             priceMax={precioMax}
             onPriceMaxChange={setPrecioMax}
             onResetFilters={handleResetFilters}
+            isMobileOpen={mobileFiltersOpen}
+            onCloseMobile={() => setMobileFiltersOpen(false)}
           />
 
           <div className="col-12 col-lg-10 catalog-content">

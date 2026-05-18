@@ -13,12 +13,27 @@ function CatalogFilters({
   priceMax,
   onPriceMaxChange,
   onResetFilters,
+  isMobileOpen = false,
+  onCloseMobile,
+  ...asideProps
 }) {
   const safeMaxPrice = Math.max(1, Math.ceil(Number(maxCatalogPrice) || 1000))
   const safePriceMax = Math.min(Number(priceMax) || safeMaxPrice, safeMaxPrice)
 
   return (
-    <aside className="col-12 col-lg-2 catalog-sidebar">
+    <aside
+      className={`col-12 col-lg-2 catalog-sidebar${isMobileOpen ? ' is-mobile-open' : ''}`}
+      {...asideProps}
+    >
+      <button
+        type="button"
+        className="btn catalog-mobile-filters-close d-lg-none"
+        onClick={onCloseMobile}
+        aria-label="Cerrar filtros"
+      >
+        Cerrar
+      </button>
+
       <button type="button" className="btn catalog-filter-title">
         Filtros
       </button>

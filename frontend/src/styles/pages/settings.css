@@ -473,6 +473,28 @@
   gap: 12px;
 }
 
+.settings-invoices-head {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 10px 12px 6px;
+  margin-bottom: 12px;
+}
+
+.settings-invoices-head h2 {
+  position: absolute;
+  left: 49%;
+  transform: translateX(-50%);
+  margin: 0;
+  text-align: center;
+}
+
+.settings-invoices-head small {
+  margin-right: 6px;
+  text-align: right;
+}
+
 .settings-card-head small {
   color: var(--ss-muted);
 }
@@ -586,6 +608,73 @@
   border-radius: var(--ss-radius);
   background: rgba(255, 255, 255, 0.86);
   overflow: hidden;
+}
+
+.settings-invoices-desktop.settings-table-wrap {
+  overflow: hidden;
+}
+
+.settings-invoices-desktop .settings-table {
+  width: 100%;
+  min-width: 0;
+  table-layout: fixed;
+}
+
+.settings-invoices-desktop .settings-table th:nth-child(1),
+.settings-invoices-desktop .settings-table td:nth-child(1) {
+  width: 12%;
+}
+
+.settings-invoices-desktop .settings-table th:nth-child(2),
+.settings-invoices-desktop .settings-table td:nth-child(2) {
+  width: 24%;
+}
+
+.settings-invoices-desktop .settings-table th:nth-child(3),
+.settings-invoices-desktop .settings-table td:nth-child(3) {
+  width: 22%;
+}
+
+.settings-invoices-desktop .settings-table th:nth-child(4),
+.settings-invoices-desktop .settings-table td:nth-child(4) {
+  width: 14%;
+}
+
+.settings-invoices-desktop .settings-table th:nth-child(5),
+.settings-invoices-desktop .settings-table td:nth-child(5) {
+  width: 12%;
+}
+
+.settings-invoices-desktop .settings-table th:nth-child(6),
+.settings-invoices-desktop .settings-table td:nth-child(6) {
+  width: 16%;
+}
+
+.settings-invoices-desktop .settings-table td:nth-child(2) {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+@media (min-width: 992px) and (max-width: 1280px) {
+  .settings-invoices-desktop .settings-table th,
+  .settings-invoices-desktop .settings-table td {
+    padding: 0.5rem 0.45rem;
+  }
+
+  .settings-invoices-desktop .settings-table td {
+    font-size: 0.9rem;
+  }
+
+  .settings-invoices-desktop .settings-table thead th {
+    font-size: 0.72rem;
+    letter-spacing: 0.04em;
+  }
+
+  .settings-invoices-desktop .settings-invoice-status {
+    min-width: 0;
+    padding: 0.28rem 0.55rem;
+    font-size: 0.72rem;
+  }
 }
 
 .settings-users-card {

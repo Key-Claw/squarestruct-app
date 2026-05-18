@@ -98,6 +98,7 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser }) {
   const [facturasUsuario, setFacturasUsuario] = useState([])
   const [isFacturasLoading, setIsFacturasLoading] = useState(false)
   const [facturasError, setFacturasError] = useState('')
+  const [facturaDetalleAbiertoId, setFacturaDetalleAbiertoId] = useState(null)
 
   // Facturación pendiente para administradores.
   const [facturasAdmin, setFacturasAdmin] = useState([])
@@ -500,56 +501,93 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser }) {
         {usersError && <div className="alert alert-danger">{usersError}</div>}
         {usersSuccessMessage && <div className="alert alert-success">{usersSuccessMessage}</div>}
 
-        <div className="table-responsive settings-table-wrap">
-          <table className="table table-hover align-middle mb-0 settings-table">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Nombre</th>
-                <th>Email</th>
-                <th>Rol</th>
-                <th>Acciones</th>
-              </tr>
-            </thead>
-            <tbody>
-              {usuariosFiltrados.length > 0 ? (
-                usuariosFiltrados.map((currentUser) => (
-                  <tr key={currentUser.idUsuario}>
-                    <td>{currentUser.idUsuario}</td>
-                    <td>{currentUser.nombre}</td>
-                    <td>{currentUser.email}</td>
-                    <td>
-                      <span className={getRoleBadgeClass(currentUser.rol)}>{getRoleText(currentUser.rol)}</span>
-                    </td>
-                    <td>
-                      <div className="settings-inline-actions">
+        <>
+          <div className="settings-users-mobile" aria-label="Usuarios móviles">
+            {usuariosFiltrados.length > 0 ? (
+              usuariosFiltrados.map((currentUser) => (
+                <article key={currentUser.idUsuario} className="settings-user-mobile-card">
+                  <div className="settings-user-mobile-line">
+                    <strong className="settings-user-mobile-name">{currentUser.nombre}</strong>
+                    <span className={getRoleBadgeClass(currentUser.rol)}>{getRoleText(currentUser.rol)}</span>
+                  </div>
+
+                  <div className="settings-user-mobile-actions">
+                    <button
+                      type="button"
+                      className="btn btn-sm btn-outline-info"
+                      onClick={() => handleViewClick(currentUser)}
+                    >
+                      Ver detalle
+                    </button>
+                    <button
+                      type="button"
+                      className="btn btn-sm btn-outline-warning"
+                      onClick={() => handleEditClick(currentUser)}
+                      disabled={currentUser.idUsuario === user.idUsuario}
+                    >
+                      Editar
+                    </button>
+                  </div>
+                </article>
+              ))
+            ) : (
+              <div className="settings-empty-state">
+                <p>No hay usuarios que coincidan con los filtros</p>
+              </div>
+            )}
+          </div>
+
+          <div className="table-responsive settings-table-wrap settings-users-desktop">
+            <table className="table table-hover align-middle mb-0 settings-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Nombre</th>
+                  <th>Email</th>
+                  <th>Rol</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                {usuariosFiltrados.length > 0 ? (
+                  usuariosFiltrados.map((currentUser) => (
+                    <tr key={currentUser.idUsuario}>
+                      <td>{currentUser.idUsuario}</td>
+                      <td>{currentUser.nombre}</td>
+                      <td>{currentUser.email}</td>
+                      <td>
+                        <span className={getRoleBadgeClass(currentUser.rol)}>{getRoleText(currentUser.rol)}</span>
+                      </td>
+                      <td>
+                        <div className="settings-inline-actions">
+                          <button
+                            type="button"
+                            className="btn btn-sm btn-outline-info"
+                            onClick={() => handleViewClick(currentUser)}
+                          >
+                            Ver detalle
+                          </button>
                         <button
                           type="button"
-                          className="btn btn-sm btn-outline-info"
-                          onClick={() => handleViewClick(currentUser)}
+                          className="btn btn-sm btn-outline-warning"
+                          onClick={() => handleEditClick(currentUser)}
+                          disabled={currentUser.idUsuario === user.idUsuario}
                         >
-                          Ver detalle
+                          Editar
                         </button>
-                      <button
-                        type="button"
-                        className="btn btn-sm btn-outline-warning"
-                        onClick={() => handleEditClick(currentUser)}
-                        disabled={currentUser.idUsuario === user.idUsuario}
-                      >
-                        Editar
-                      </button>
-                      </div>
-                    </td>
+                        </div>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="5" className="text-center py-4">No hay usuarios que coincidan con los filtros</td>
                   </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan="5" className="text-center py-4">No hay usuarios que coincidan con los filtros</td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
+                )}
+              </tbody>
+            </table>
+          </div>
+        </>
       </div>
     )
   }
@@ -838,7 +876,7 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser }) {
 
   const renderInvoicesUser = () => (
     <div className="settings-card">
-      <div className="settings-card-head">
+      <div className="settings-card-head settings-invoices-head">
         <h2>Facturas</h2>
         <small>{facturasUsuario.length} pedidos</small>
       </div>
@@ -853,42 +891,84 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser }) {
           <p>Cargando tus facturas...</p>
         </div>
       ) : (
-        <div className="table-responsive settings-table-wrap">
-          <table className="table align-middle mb-0 settings-table">
-            <thead>
-              <tr>
-                <th>Factura</th>
-                <th>Dirección</th>
-                <th>Fecha</th>
-                <th>Total</th>
-                <th>Pago</th>
-                <th>Estado</th>
-              </tr>
-            </thead>
-            <tbody>
-              {facturasUsuario.length > 0 ? (
-                facturasUsuario.map((factura) => (
-                  <tr key={factura.idPedido}>
-                    <td>#{factura.idPedido}</td>
-                    <td>{factura.direccionEnvio}</td>
-                    <td>{formatDate(factura.fecha)}</td>
-                    <td>{formatMoney(factura.total)}</td>
-                    <td>{getPaymentLabel(factura.metodoPago)}</td>
-                    <td>
+        <>
+          <div className="settings-invoices-mobile" aria-label="Facturas en móvil">
+            {facturasUsuario.length > 0 ? (
+              facturasUsuario.map((factura) => {
+                const isDetalleAbierto = facturaDetalleAbiertoId === factura.idPedido
+
+                return (
+                  <article key={factura.idPedido} className="settings-invoice-mobile-card">
+                    <div className="settings-invoice-mobile-top">
+                      <strong className="settings-invoice-mobile-number">#{factura.idPedido}</strong>
                       <span className={getStatusClass(factura.estado)}>{getStatusLabel(factura.estado)}</span>
+                    </div>
+
+                    <button
+                      type="button"
+                      className="btn btn-sm btn-outline-success settings-invoice-mobile-toggle"
+                      onClick={() => setFacturaDetalleAbiertoId((currentId) => (
+                        currentId === factura.idPedido ? null : factura.idPedido
+                      ))}
+                    >
+                      {isDetalleAbierto ? 'Ocultar detalle' : 'Ver detalle'}
+                    </button>
+
+                    {isDetalleAbierto && (
+                      <div className="settings-invoice-mobile-detail">
+                        <p><strong>Dirección:</strong> {factura.direccionEnvio || 'Sin dirección'}</p>
+                        <p><strong>Fecha:</strong> {formatDate(factura.fecha)}</p>
+                        <p><strong>Total:</strong> {formatMoney(factura.total)}</p>
+                        <p><strong>Pago:</strong> {getPaymentLabel(factura.metodoPago)}</p>
+                      </div>
+                    )}
+                  </article>
+                )
+              })
+            ) : (
+              <div className="settings-empty-state">
+                <p>No tienes facturas disponibles.</p>
+              </div>
+            )}
+          </div>
+
+          <div className="table-responsive settings-table-wrap settings-invoices-desktop">
+            <table className="table align-middle mb-0 settings-table">
+              <thead>
+                <tr>
+                  <th>Factura</th>
+                  <th>Dirección</th>
+                  <th>Fecha</th>
+                  <th>Total</th>
+                  <th>Pago</th>
+                  <th>Estado</th>
+                </tr>
+              </thead>
+              <tbody>
+                {facturasUsuario.length > 0 ? (
+                  facturasUsuario.map((factura) => (
+                    <tr key={factura.idPedido}>
+                      <td>#{factura.idPedido}</td>
+                      <td>{factura.direccionEnvio}</td>
+                      <td>{formatDate(factura.fecha)}</td>
+                      <td>{formatMoney(factura.total)}</td>
+                      <td>{getPaymentLabel(factura.metodoPago)}</td>
+                      <td>
+                        <span className={getStatusClass(factura.estado)}>{getStatusLabel(factura.estado)}</span>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="6" className="text-center py-4">
+                      No tienes facturas disponibles.
                     </td>
                   </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan="6" className="text-center py-4">
-                    No tienes facturas disponibles.
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
+                )}
+              </tbody>
+            </table>
+          </div>
+        </>
       )}
     </div>
   )
@@ -925,7 +1005,10 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser }) {
                 key={tab.id}
                 type="button"
                 className={`settings-nav-item${activeTab === tab.id ? ' active' : ''}`}
-                onClick={() => setActiveTab(tab.id)}
+                onClick={() => {
+                  setFacturaDetalleAbiertoId(null)
+                  setActiveTab(tab.id)
+                }}
               >
                 {tab.label}
               </button>
