@@ -72,8 +72,38 @@ const getInitialTab = (tab, isAdminUser) => {
   return userTabs.includes(tab) ? tab : 'perfil'
 }
 
-function Settings({ user, initialTab, onAuthExpired, isAdminUser }) {
+const getSettingsHeader = (activeTab, tabs, isAdminUser) => {
+  if (isAdminUser && activeTab === 'facturacion') {
+    return {
+      eyebrow: 'Administración',
+      title: 'Facturación',
+      text: 'Controla facturas, estados y el histórico completo de pedidos.',
+    }
+  }
+
+  if (isAdminUser && activeTab === 'usuarios') {
+    return {
+      eyebrow: 'Administración',
+      title: 'Usuarios',
+      text: 'Gestiona cuentas, roles y accesos desde el área de administración.',
+    }
+  }
+
+  return {
+    eyebrow: isAdminUser ? 'Administración' : 'Area privada',
+    title: tabs.find((tab) => tab.id === activeTab)?.label || 'Perfil',
+    text: isAdminUser
+      ? 'Accede a tu perfil y a las herramientas de administración.'
+      : 'Gestiona tu perfil, facturas y herramientas desde una sola pantalla.',
+  }
+}
+
+function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange }) {
   const [activeTab, setActiveTab] = useState(getInitialTab(initialTab, isAdminUser))
+
+  useEffect(() => {
+    setActiveTab(getInitialTab(initialTab, isAdminUser))
+  }, [initialTab, isAdminUser])
 
   // Profile tab state
   const [profileData, setProfileData] = useState(user)
@@ -107,6 +137,9 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser }) {
   const [facturacionSuccessMessage, setFacturacionSuccessMessage] = useState('')
   const [processingPedidoId, setProcessingPedidoId] = useState(null)
   const [facturacionPage, setFacturacionPage] = useState(1)
+  const [facturacionSearchTerm, setFacturacionSearchTerm] = useState('')
+  const [facturacionStatusFilter, setFacturacionStatusFilter] = useState('todos')
+  const [facturacionPaymentFilter, setFacturacionPaymentFilter] = useState('todos')
 
   const tabs = useMemo(() => {
     if (isAdminUser) {
@@ -228,7 +261,25 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser }) {
     loadFacturacion()
   }, [activeTab, isAdminUser, onAuthExpired])
 
-  const facturasAdminFiltradas = useMemo(() => facturasAdmin, [facturasAdmin])
+  const facturasAdminFiltradas = useMemo(() => {
+    const search = facturacionSearchTerm.trim().toLowerCase()
+
+    return facturasAdmin.filter((factura) => {
+      const estado = (factura.estado || '').toLowerCase()
+      const metodoPago = (factura.metodoPago || '').toLowerCase()
+      const nombreCompleto = `${factura.nombre || ''} ${factura.primerApellido || ''}`.toLowerCase()
+      const email = (factura.email || '').toLowerCase()
+      const idPedido = String(factura.idPedido || '')
+      const matchesSearch = !search
+        || nombreCompleto.includes(search)
+        || email.includes(search)
+        || idPedido.includes(search)
+      const matchesStatus = facturacionStatusFilter === 'todos' || estado === facturacionStatusFilter
+      const matchesPayment = facturacionPaymentFilter === 'todos' || metodoPago === facturacionPaymentFilter
+
+      return matchesSearch && matchesStatus && matchesPayment
+    })
+  }, [facturasAdmin, facturacionPaymentFilter, facturacionSearchTerm, facturacionStatusFilter])
 
   const usuariosFiltrados = useMemo(() => {
     const search = usersSearchTerm.trim().toLowerCase()
@@ -281,16 +332,12 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser }) {
     }
   }, [facturasAdminFiltradas])
 
-  const facturacionDateRange = useMemo(() => {
-    const fechas = facturasAdminFiltradas
-      .map((factura) => new Date(factura.fecha))
-      .filter((fecha) => !Number.isNaN(fecha.getTime()))
-      .sort((a, b) => a - b)
-
-    if (fechas.length === 0) return 'Sin pedidos'
-
-    return `${fechas[0].toLocaleDateString('es-ES')} - ${fechas[fechas.length - 1].toLocaleDateString('es-ES')}`
-  }, [facturasAdminFiltradas])
+  const handleResetBillingFilters = () => {
+    setFacturacionSearchTerm('')
+    setFacturacionStatusFilter('todos')
+    setFacturacionPaymentFilter('todos')
+    setFacturacionPage(1)
+  }
 
   const facturacionTotalPages = Math.max(1, Math.ceil(facturasAdminFiltradas.length / FACTURACION_PAGE_SIZE))
   const facturacionPageSafe = Math.min(facturacionPage, facturacionTotalPages)
@@ -594,14 +641,6 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser }) {
 
   const renderBillingAdmin = () => (
     <div className="settings-billing-dashboard">
-      <div className="settings-billing-hero">
-        <div>
-          <p className="settings-billing-eyebrow">Administración</p>
-          <h2>Panel de facturación</h2>
-          <p>Controla facturas, estados y el histórico completo de pedidos.</p>
-        </div>
-      </div>
-
       {facturacionError && <div className="alert alert-danger">{facturacionError}</div>}
       {facturacionSuccessMessage && <div className="alert alert-success">{facturacionSuccessMessage}</div>}
 
@@ -609,22 +648,41 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser }) {
         <div className="card-body">
           <div className="row g-3 align-items-center">
             <div className="col-12 col-md-4">
-              <input className="form-control" type="text" placeholder="Buscar cliente..." readOnly />
+              <input
+                className="form-control"
+                type="search"
+                placeholder="Buscar cliente..."
+                value={facturacionSearchTerm}
+                onChange={(event) => {
+                  setFacturacionSearchTerm(event.target.value)
+                  setFacturacionPage(1)
+                }}
+              />
             </div>
             <div className="col-12 col-md-3">
-              <input className="form-control" type="text" value={facturacionDateRange} readOnly />
-            </div>
-            <div className="col-12 col-md-2">
-              <select className="form-select" defaultValue="todos" disabled>
+              <select
+                className="form-select"
+                value={facturacionStatusFilter}
+                onChange={(event) => {
+                  setFacturacionStatusFilter(event.target.value)
+                  setFacturacionPage(1)
+                }}
+              >
                 <option value="todos">Todos</option>
                 <option value="pendiente">Pendiente</option>
                 <option value="aceptado">Aceptada</option>
                 <option value="denegado">Rechazada</option>
-                <option value="pagado">Pagada</option>
               </select>
             </div>
-            <div className="col-12 col-md-2">
-              <select className="form-select" defaultValue="todos" disabled>
+            <div className="col-12 col-md-3">
+              <select
+                className="form-select"
+                value={facturacionPaymentFilter}
+                onChange={(event) => {
+                  setFacturacionPaymentFilter(event.target.value)
+                  setFacturacionPage(1)
+                }}
+              >
                 <option value="todos">Método de pago</option>
                 <option value="tarjeta">Tarjeta</option>
                 <option value="transferencia">Transferencia</option>
@@ -632,8 +690,8 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser }) {
                 <option value="efectivo">Efectivo</option>
               </select>
             </div>
-            <div className="col-12 col-lg-1 d-grid">
-              <button type="button" className="btn btn-success" disabled>Filtrar</button>
+            <div className="col-12 col-lg-2 d-grid">
+              <button type="button" className="btn btn-success settings-billing-reset-btn" onClick={handleResetBillingFilters}>Desactivar filtros</button>
             </div>
           </div>
         </div>
@@ -692,7 +750,6 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser }) {
         <aside className="settings-card settings-billing-chart-card">
           <div className="settings-card-head">
             <h2>Estado de pedidos</h2>
-            <button type="button" className="btn btn-outline-secondary btn-sm">Este mes</button>
           </div>
 
           <div className="card border-0 shadow-sm h-100">
@@ -990,6 +1047,8 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser }) {
     return renderProfile()
   }
 
+  const headerContent = getSettingsHeader(activeTab, tabs, isAdminUser)
+
   return (
     <section className="page-shell settings-page-shell container-fluid">
       <div className="settings-layout">
@@ -1008,6 +1067,9 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser }) {
                 onClick={() => {
                   setFacturaDetalleAbiertoId(null)
                   setActiveTab(tab.id)
+                  if (typeof onTabChange === 'function') {
+                    onTabChange(tab.id)
+                  }
                 }}
               >
                 {tab.label}
@@ -1019,9 +1081,9 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser }) {
         <main className="settings-content">
           <header className="settings-header-bar">
             <div>
-              <p className="settings-eyebrow">Area privada</p>
-              <h2>{tabs.find((tab) => tab.id === activeTab)?.label || 'Perfil'}</h2>
-              <p>Gestiona tu perfil, facturas y herramientas desde una sola pantalla.</p>
+              <p className="settings-eyebrow">{headerContent.eyebrow}</p>
+              <h2>{headerContent.title}</h2>
+              <p>{headerContent.text}</p>
             </div>
           </header>
 

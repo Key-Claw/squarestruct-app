@@ -90,7 +90,7 @@
   align-items: center;
   justify-content: flex-start;
   gap: 16px;
-  padding: clamp(18px, 2.2vw, 32px) clamp(26px, 4vw, 64px);
+  padding: clamp(34px, 5vw, 72px) clamp(42px, 6vw, 96px);
   overflow: hidden;
   border: 1px solid var(--ss-border);
   border-radius: var(--ss-radius);
@@ -103,7 +103,7 @@
 .settings-header-bar > div {
   position: relative;
   z-index: 1;
-  flex: 0 1 720px;
+  flex: 0 1 780px;
   text-align: left;
 }
 
@@ -127,7 +127,7 @@
 
 .settings-header-bar h2 {
   margin: 0;
-  max-width: 12ch;
+  max-width: 18ch;
   font-size: clamp(2.2rem, 3.4vw, 3.25rem);
   line-height: 0.98;
   color: var(--ss-ink);
@@ -275,6 +275,11 @@
   width: 100%;
   max-width: 100%;
   overflow-x: hidden;
+}
+
+.settings-billing-reset-btn {
+  min-width: max-content;
+  white-space: nowrap;
 }
 
 .settings-billing-table-card,
@@ -982,7 +987,8 @@
   .settings-billing-table-block .col-md-4,
   .settings-billing-table-block .col-md-3,
   .settings-billing-table-block .col-md-2,
-  .settings-billing-table-block .col-lg-1 {
+  .settings-billing-table-block .col-lg-1,
+  .settings-billing-table-block .col-lg-2 {
     width: 100% !important;
     max-width: 100% !important;
     padding: 6px !important;
@@ -1053,7 +1059,8 @@
   .settings-billing-table-block .col-md-4,
   .settings-billing-table-block .col-md-3,
   .settings-billing-table-block .col-md-2,
-  .settings-billing-table-block .col-lg-1 {
+  .settings-billing-table-block .col-lg-1,
+  .settings-billing-table-block .col-lg-2 {
     width: 100% !important;
     max-width: 100% !important;
     padding: 0 !important;

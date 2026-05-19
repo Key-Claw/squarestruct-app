@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { HashRouter, Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { HashRouter, Navigate, Route, Routes, useLocation, useNavigate, useParams } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import SiteFooter from './components/SiteFooter'
 import Home from './pages/Home'
@@ -12,8 +12,16 @@ import AuthModal from './components/AuthModal'
 import CartPanel from './components/CartPanel'
 import Checkout from './components/Checkout'
 import { getCurrentUser, logoutUser, isAdmin } from './services/authService'
-import { MAIN_ROUTES, PAGE_BY_PATH } from './routes'
+import { MAIN_ROUTES, PAGE_BY_PATH, SETTINGS_SECTION_TO_TAB, getSettingsRoute } from './routes'
 import './App.css'
+
+function SettingsAliasRedirect() {
+  const { settingsSection = 'profile' } = useParams()
+
+  return <Navigate to={`${MAIN_ROUTES.settings}/${settingsSection}`} replace />
+}
+
+const ADMIN_ONLY_SETTINGS_TABS = new Set(['usuarios', 'facturacion'])
 
 function AppShell() {
   const navigate = useNavigate()
@@ -35,9 +43,34 @@ function AppShell() {
   const [checkoutOpen, setCheckoutOpen] = useState(false)
   const [pendingCheckoutAfterLogin, setPendingCheckoutAfterLogin] = useState(false)
 
-  const adminOnlySettingsTabs = new Set(['usuarios', 'facturacion'])
-  const routePage = PAGE_BY_PATH[location.pathname] || 'home'
+  const isSettingsRoute = location.pathname === MAIN_ROUTES.settings
+    || location.pathname.startsWith(`${MAIN_ROUTES.settings}/`)
+    || location.pathname === MAIN_ROUTES.settingsAlias
+    || location.pathname.startsWith(`${MAIN_ROUTES.settingsAlias}/`)
+  const routePage = PAGE_BY_PATH[location.pathname] || (isSettingsRoute ? 'settings' : 'home')
   const activePage = internalPage || routePage
+
+  const getSettingsTabFromPath = (pathname) => {
+    const settingsPrefix = pathname.startsWith(MAIN_ROUTES.settingsAlias)
+      ? MAIN_ROUTES.settingsAlias
+      : MAIN_ROUTES.settings
+    const section = pathname.slice(settingsPrefix.length).split('/').filter(Boolean)[0]
+
+    return SETTINGS_SECTION_TO_TAB[section] || 'perfil'
+  }
+
+  useEffect(() => {
+    if (!isSettingsRoute) return
+
+    const nextTab = getSettingsTabFromPath(location.pathname)
+    const protectedTab = ADMIN_ONLY_SETTINGS_TABS.has(nextTab) && !isAdmin() ? 'perfil' : nextTab
+
+    setSettingsTab(protectedTab)
+
+    if (protectedTab !== nextTab) {
+      navigate(getSettingsRoute(protectedTab), { replace: true })
+    }
+  }, [location.pathname, isSettingsRoute, navigate])
 
   const handleUserLogin = (userData) => {
     setUser(userData)
@@ -59,23 +92,29 @@ function AppShell() {
   const handleNavigate = (nextPage, term = '', section = '') => {
     const settingsTabByPage = {
       settings: 'perfil',
+      profile: 'perfil',
       perfil: 'perfil',
+      invoices: 'facturas',
       facturas: 'facturas',
+      billing: 'facturacion',
       facturacion: 'facturacion',
+      users: 'usuarios',
       usuarios: 'usuarios',
+      plans: 'planos',
       planos: 'planos',
     }
 
     if (settingsTabByPage[nextPage]) {
       const requestedTab = settingsTabByPage[nextPage]
-      const nextTab = adminOnlySettingsTabs.has(requestedTab) && !isAdmin()
+      const nextTab = ADMIN_ONLY_SETTINGS_TABS.has(requestedTab) && !isAdmin()
         ? 'perfil'
         : requestedTab
 
       setSettingsTab(nextTab)
-      setInternalPage('settings')
+      setInternalPage('')
       setSearchTerm('')
       setCatalogSection('')
+      navigate(getSettingsRoute(nextTab))
       return
     }
 
@@ -155,7 +194,14 @@ function AppShell() {
   const handleOrderCreated = () => {
     setCartItems([])
     setSettingsTab('facturas')
-    setInternalPage('settings')
+    setInternalPage('')
+    navigate(getSettingsRoute('facturas'))
+  }
+
+  const handleSettingsTabChange = (tab) => {
+    const nextTab = ADMIN_ONLY_SETTINGS_TABS.has(tab) && !isAdmin() ? 'perfil' : tab
+    setSettingsTab(nextTab)
+    navigate(getSettingsRoute(nextTab))
   }
 
   const renderSettings = () => {
@@ -163,9 +209,10 @@ function AppShell() {
       return <Home onNavigate={handleNavigate} />
     }
 
-    const protectedTab = adminOnlySettingsTabs.has(settingsTab) && !isAdmin()
+    const requestedTab = isSettingsRoute ? getSettingsTabFromPath(location.pathname) : settingsTab
+    const protectedTab = ADMIN_ONLY_SETTINGS_TABS.has(requestedTab) && !isAdmin()
       ? 'perfil'
-      : settingsTab
+      : requestedTab
 
     return (
       <Settings
@@ -174,6 +221,7 @@ function AppShell() {
         initialTab={protectedTab}
         onAuthExpired={handleUserLogout}
         isAdminUser={isAdmin()}
+        onTabChange={handleSettingsTabChange}
       />
     )
   }
@@ -206,6 +254,10 @@ function AppShell() {
         />
         <Route path={MAIN_ROUTES.design} element={<Design onNavigate={handleNavigate} />} />
         <Route path={MAIN_ROUTES.aboutus} element={<AboutUs onNavigate={handleNavigate} />} />
+        <Route path={MAIN_ROUTES.settings} element={<Navigate to={getSettingsRoute('perfil')} replace />} />
+        <Route path={`${MAIN_ROUTES.settings}/:settingsSection`} element={renderSettings()} />
+        <Route path={MAIN_ROUTES.settingsAlias} element={<Navigate to={getSettingsRoute('perfil')} replace />} />
+        <Route path={`${MAIN_ROUTES.settingsAlias}/:settingsSection`} element={<SettingsAliasRedirect />} />
         <Route path="*" element={<Navigate to={MAIN_ROUTES.root} replace />} />
       </Routes>
     )
