@@ -1708,15 +1708,21 @@ button,
 .about-text-content h1 {
   color: var(--ss-ink);
   font-family: var(--heading);
-  font-weight: 950;
+  font-size: clamp(2.6rem, 3.6vw, 4.1rem);
+  font-weight: 400;
+  line-height: 0.98;
   letter-spacing: 0;
+  text-align: left;
+  text-transform: uppercase;
 }
 
 .about-text-content .eyebrow {
-  margin-bottom: 10px;
+  margin: 0 0 0.4rem;
   color: var(--ss-green);
   font-size: 0.78rem;
-  font-weight: 900;
+  font-weight: 850;
+  letter-spacing: 0.08em;
+  line-height: 1.1;
   text-transform: uppercase;
 }
 

@@ -193,20 +193,33 @@
 
 .home-about-copy {
   width: 100%;
-  padding: clamp(24px, 3vw, 36px);
+  padding: 22px var(--ss-hero-copy-x, clamp(28px, 4vw, 64px));
+  text-align: left;
 }
 
 .home-about-copy h2 {
-  margin: 0 0 12px;
-  color: #0f172a;
-  font-size: clamp(1.4rem, 2vw, 2rem);
-  font-weight: 850;
+  width: 100%;
+  max-width: 100%;
+  margin: 0 0 18px;
+  color: var(--ss-ink);
+  font-family: var(--heading);
+  font-size: clamp(2.6rem, 3.6vw, 4.1rem);
+  font-weight: 400;
+  line-height: 0.98;
+  letter-spacing: 0;
+  text-align: left;
+  text-transform: uppercase;
 }
 
 .home-about-copy p {
+  width: 100%;
+  max-width: 100%;
   margin: 0;
-  color: #475569;
-  line-height: 1.62;
+  color: var(--ss-muted);
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.58;
+  text-align: left;
 }
 
 .home-about-copy p + p {
@@ -470,7 +483,7 @@
   color: var(--ss-ink);
   font-family: var(--heading);
   font-weight: 400;
-  letter-spacing: 0.01em;
+  letter-spacing: 0;
 }
 
 .home-hero-copy h1 {

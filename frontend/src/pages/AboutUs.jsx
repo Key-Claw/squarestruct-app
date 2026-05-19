@@ -41,11 +41,11 @@ function AboutUs() {
                 lo aprendido en proyectos reales.
               </p>
 
-              <p>
+              {/* <p>
                 Estudia DAW en Centro San Valero y participa activamente en
                 SquareStruct, combinando trabajo en equipo y práctica constante para
                 consolidar sus habilidades.
-              </p>
+              </p> */}
             </div>
           </section>
 
@@ -54,37 +54,21 @@ function AboutUs() {
               <div className="about-text-content">
                 <p className="eyebrow">Sobre SquareStruct</p>
                 <h1>Nuestra historia</h1>
-                <p className="about-lead">
-                  SquareStruct es un proyecto académico con mentalidad práctica: una
-                  tienda online para acercar la construcción modular a un usuario que
-                  quiere comparar, elegir y planificar con más claridad.
-                </p>
-
-                <div className="about-newspaper-text about-story-grid">
-                  <article className="about-history-column">
-                    <p>
+                <p>
                       SquareStruct nace como proyecto final de primero de DAW en
                       Centro San Valero: una tienda online enfocada en productos
                       modulares para construcción.
-                    </p>
-                  </article>
-
-                  <article className="about-history-column">
-                    <p>
+                </p>
+                <p>
                       Nuestro objetivo es simplificar la consulta, comparación y
                       compra de materiales ensamblables con una experiencia clara,
                       actual y práctica.
-                    </p>
-                  </article>
-
-                  <article className="about-history-column">
-                    <p>
+                </p>
+                <p>
                       El proyecto también nace de nuestra experiencia previa y del
                       trabajo en equipo, con una visión realista y orientada a
                       resolver necesidades concretas.
-                    </p>
-                  </article>
-                </div>
+                </p>
               </div>
             </div>
           </section>
@@ -95,12 +79,6 @@ function AboutUs() {
                 Se reinventó profesionalmente hacia el sector tecnológico con base
                 en sistemas y redes, aportando una perspectiva práctica y creativa
                 al equipo.
-              </p>
-
-              <p>
-                Actualmente está cursando DAW y colabora en SquareStruct activamente,
-                aplicando sus conocimientos en desarrollo web mientras amplía
-                constantemente sus competencias.
               </p>
             </div>
           </section>

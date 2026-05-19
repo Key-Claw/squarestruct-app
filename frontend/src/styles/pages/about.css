@@ -80,7 +80,7 @@
 .about-name-card,
 .about-profile-photo-card,
 .about-profile-text-card {
-  border-color: rgba(23, 63, 95, 0.18);
+  border: none !important; /* Eliminar cualquier borde */
   border-radius: 6px;
   box-shadow: 0 14px 32px rgba(15, 23, 42, 0.06);
 }
@@ -102,6 +102,7 @@
 
 .about-profile-text-card {
   min-height: var(--about-central-box-height);
+  border: none; /* Eliminar borde de cuadros */
 }
 
 .about-profile-text-card .card-body {
@@ -120,7 +121,7 @@
   color: #173f5f;
   font-size: 0.94rem;
   line-height: 1.62;
-  text-align: left;
+  text-align: left; /* Mejor legibilidad en textos cortos */
 }
 
 .about-profile-text-card p + p {
@@ -260,19 +261,19 @@
 
 .about-story-card .card-body {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 36px clamp(38px, 4.5vw, 72px);
-  text-align: center;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 22px var(--ss-hero-copy-x, clamp(28px, 4vw, 64px));
+  text-align: left;
 }
 
 .about-story-card .about-text-content {
-  max-width: 1180px;
+  max-width: 100%;
 }
 
 .about-story-card .about-text-content p {
-  margin-right: auto;
-  margin-left: auto;
+  margin-right: 0;
+  margin-left: 0;
 }
 
 .about-newspaper-text {
@@ -314,30 +315,39 @@
 
 .about-text-content {
   width: 100%;
-  max-width: 1120px;
+  max-width: 100%;
+  text-align: left;
 }
 
 .about-text-content h1,
 .about-text-content h2 {
-  margin: 0 0 16px;
-  color: #173f5f;
-  font-weight: 700;
-  line-height: 1.15;
+  width: 100%;
+  max-width: 100%;
+  margin: 0 0 18px;
+  color: var(--ss-ink);
+  font-family: var(--heading);
+  font-weight: 400;
+  line-height: 0.98;
+  letter-spacing: 0;
+  text-align: left;
+  text-transform: uppercase;
 }
 
 .about-text-content h1 {
-  font-size: clamp(1.9rem, 2.3vw, 2.55rem);
+  font-size: clamp(2.6rem, 3.6vw, 4.1rem);
 }
 
 .about-text-content h2 {
-  font-size: clamp(1.35rem, 1.7vw, 1.8rem);
+  font-size: clamp(2.6rem, 3.6vw, 4.1rem);
 }
 
 .about-lead {
-  max-width: 90ch;
-  font-size: 1.02rem;
-  font-weight: 600;
-  line-height: 1.65;
+  max-width: 100%;
+  color: var(--ss-muted);
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.58;
+  text-align: left;
 }
 
 .about-story-card p,
@@ -347,10 +357,12 @@
 }
 
 .about-text-content p {
-  max-width: 95ch;
-  color: #173f5f;
+  max-width: 100%;
+  color: var(--ss-muted);
   font-size: 1rem;
-  line-height: 1.7;
+  font-weight: 400;
+  line-height: 1.58;
+  text-align: left;
 }
 
 .about-text-content p + p {
