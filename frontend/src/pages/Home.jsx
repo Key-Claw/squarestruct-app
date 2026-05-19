@@ -5,7 +5,7 @@ import inicioCatalogoImage from '../assets/inicio/inicio-catalogo.webp'
 import inicioDesignImage from '../assets/inicio/inicio-design.webp'
 import inicioGaleriaImage from '../assets/inicio/inicio-galeeria.webp'
 import inicioSquarestructImage from '../assets/inicio/inicio-squarestruct.webp'
-import Icon from '../components/ui/Icon'
+import Icon from '../components/common/Icon'
 
 const homeHighlights = [
   {

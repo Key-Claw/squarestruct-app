@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
-import Icon from '../components/ui/Icon'
-import { obtenerMisPedidos } from '../services/orderService'
-import '../styles/pages/facturas.css'
+import Icon from '../../components/common/Icon'
+import { obtenerMisPedidos } from '../../services/orderService'
+import '../../styles/pages/settings/invoices.css'
 
 /**
  * Componente Facturas - Página donde los usuarios ven sus órdenes/facturas

@@ -1,16 +1,16 @@
 import { useEffect, useState } from 'react'
 import { HashRouter, Navigate, Route, Routes, useLocation, useNavigate, useParams } from 'react-router-dom'
-import Navbar from './components/Navbar'
-import SiteFooter from './components/SiteFooter'
+import Navbar from './components/layout/Navbar'
+import SiteFooter from './components/layout/SiteFooter'
 import Home from './pages/Home'
 import Gallery from './pages/Gallery'
 import Catalog from './pages/Catalog'
 import AboutUs from './pages/AboutUs'
 import Design from './pages/Design'
-import Settings from './pages/Settings'
-import AuthModal from './components/AuthModal'
-import CartPanel from './components/CartPanel'
-import Checkout from './components/Checkout'
+import Settings from './pages/settings/Settings'
+import AuthModal from './components/auth/AuthModal'
+import CartPanel from './components/layout/CartPanel'
+import Checkout from './components/settings/Checkout'
 import { getCurrentUser, logoutUser, isAdmin } from './services/authService'
 import { MAIN_ROUTES, PAGE_BY_PATH, SETTINGS_SECTION_TO_TAB, getSettingsRoute } from './routes'
 import './App.css'
@@ -277,6 +277,7 @@ function AppShell() {
       <main className="app-main">{renderMainContent()}</main>
       <SiteFooter />
 
+      {/* Overlays globales: auth, carrito y checkout viven fuera de las rutas para mantener su estado. */}
       <AuthModal
         isOpen={authModalOpen}
         isLoginMode={authIsLoginMode}

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { loginUser } from '../services/authService'
+import { loginUser } from '../../services/authService'
 
 /**
  * Página de login - formulario para iniciar sesión con email y contraseña.

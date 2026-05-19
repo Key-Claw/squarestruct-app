@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
-import { getAllUsers, getProfile, getUserById, logoutUser, updateUser } from '../services/authService'
-import { actualizarEstadoPedido, obtenerMisPedidos, obtenerPedidosAdmin } from '../services/orderService'
-import '../styles/pages/settings.css'
+import { getAllUsers, getProfile, getUserById, logoutUser, updateUser } from '../../services/authService'
+import { actualizarEstadoPedido, obtenerMisPedidos, obtenerPedidosAdmin } from '../../services/orderService'
+import '../../styles/pages/settings/settings.css'
 
 const FACTURACION_PAGE_SIZE = 5
 
@@ -646,8 +646,8 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange })
 
       <div className="settings-billing-table-block card border-0 shadow-sm mb-4">
         <div className="card-body">
-          <div className="row g-3 align-items-center">
-            <div className="col-12 col-md-4">
+          <div className="settings-billing-filters">
+            <div className="settings-billing-filter-field settings-billing-filter-search">
               <input
                 className="form-control"
                 type="search"
@@ -659,7 +659,7 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange })
                 }}
               />
             </div>
-            <div className="col-12 col-md-3">
+            <div className="settings-billing-filter-field">
               <select
                 className="form-select"
                 value={facturacionStatusFilter}
@@ -674,7 +674,7 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange })
                 <option value="denegado">Rechazada</option>
               </select>
             </div>
-            <div className="col-12 col-md-3">
+            <div className="settings-billing-filter-field">
               <select
                 className="form-select"
                 value={facturacionPaymentFilter}
@@ -690,7 +690,7 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange })
                 <option value="efectivo">Efectivo</option>
               </select>
             </div>
-            <div className="col-12 col-md-2 d-grid">
+            <div className="settings-billing-filter-action">
               <button type="button" className="btn btn-success settings-billing-reset-btn" onClick={handleResetBillingFilters}>Desactivar filtros</button>
             </div>
           </div>

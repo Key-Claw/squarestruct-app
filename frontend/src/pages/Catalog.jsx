@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import Icon from '../components/ui/Icon'
-import CatalogFilters from '../components/catalogo/CatalogFilters'
-import CatalogProductCard from '../components/catalogo/CatalogProductCard'
+import Icon from '../components/common/Icon'
+import CatalogFilters from '../components/catalog/CatalogFilters'
+import CatalogProductCard from '../components/catalog/CatalogProductCard'
 import catalogHeroImage from '../assets/catalog/catalog-hero.webp'
 import { productosDemo } from '../data/productosDemo'
 import { getProductos, filtrarProductos } from '../services/productService'
@@ -10,7 +10,6 @@ import { normalizarProducto } from '../utils/text'
 const CATALOG_VISIBLE_PRODUCTS = 8
 const MATERIAL_ALL = 'todos'
 const MATERIAL_HORMIGON = 'Hormigon'
-const MATERIAL_ECO = 'ECO'
 
 const normalizeCatalogText = (value) => (
   String(value || '')

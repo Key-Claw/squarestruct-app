@@ -1,6 +1,6 @@
 import designBocetoImage from '../assets/design/design-boceto.webp'
 import designHeroImage from '../assets/design/design-hero.webp'
-import Icon from '../components/ui/Icon'
+import Icon from '../components/common/Icon'
 
 const designPieces = [
   { name: 'Bloque 200', material: 'Plástico reciclado' },

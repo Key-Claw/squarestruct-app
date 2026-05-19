@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { registerUser, loginUser } from '../services/authService'
+import { registerUser, loginUser } from '../../services/authService'
 
 /**
  * Página de registro - formulario para crear nueva cuenta.
