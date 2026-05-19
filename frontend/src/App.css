@@ -1,10 +1,11 @@
 @import './styles/base/app-base.css';
+@import './styles/components/common/page-primitives.css';
 @import './styles/pages/home.css';
 @import './styles/pages/about.css';
-@import './styles/pages/galeria.css';
-@import './styles/pages/catalogo.css';
+@import './styles/pages/gallery.css';
+@import './styles/pages/catalog.css';
 @import './styles/layout/footer.css';
 @import './styles/pages/design.css';
-@import './styles/base/legacy-pages.css';
+@import './styles/pages/auth/auth.css';
 @import './styles/base/responsive.css';
 

@@ -3,6 +3,16 @@
   color: var(--ss-ink);
 }
 
+.settings-invoices-mobile,
+.settings-users-mobile {
+  display: none;
+}
+
+.settings-invoices-desktop,
+.settings-users-desktop {
+  display: block;
+}
+
 .settings-layout {
   width: 100%;
   max-width: var(--ss-content-max);
@@ -277,9 +287,27 @@
   overflow-x: hidden;
 }
 
+.settings-billing-filters {
+  display: grid;
+  grid-template-columns: minmax(260px, 1.35fr) minmax(170px, 1fr) minmax(220px, 1fr) minmax(210px, auto);
+  gap: 16px;
+  align-items: center;
+  width: 100%;
+}
+
+.settings-billing-filter-field,
+.settings-billing-filter-action {
+  min-width: 0;
+}
+
+.settings-billing-filter-action {
+  display: grid;
+}
+
 .settings-billing-reset-btn {
-  min-width: max-content;
+  width: 100%;
   white-space: nowrap;
+  padding-inline: 18px;
 }
 
 .settings-billing-table-card,
@@ -891,6 +919,103 @@
 }
 
 @media (max-width: 767.98px) {
+  .settings-invoices-mobile,
+  .settings-users-mobile {
+    display: grid;
+    gap: 10px;
+    margin-top: 8px;
+  }
+
+  .settings-invoices-desktop,
+  .settings-users-desktop {
+    display: none;
+  }
+
+  .settings-invoice-mobile-card {
+    border: 1px solid var(--ss-border);
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.86);
+    padding: 12px;
+    display: grid;
+    gap: 10px;
+  }
+
+  .settings-invoice-mobile-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+  }
+
+  .settings-invoice-mobile-number {
+    font-size: 1rem;
+    color: var(--ss-blue-700);
+    letter-spacing: 0.02em;
+  }
+
+  .settings-invoice-mobile-toggle {
+    width: 100%;
+    min-height: 38px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+
+  .settings-invoice-mobile-detail {
+    border-top: 1px dashed rgba(23, 63, 95, 0.28);
+    padding-top: 10px;
+    text-align: left;
+  }
+
+  .settings-invoice-mobile-detail p {
+    margin: 0 0 6px;
+    text-align: left;
+    text-align-last: auto;
+    color: var(--ss-muted);
+  }
+
+  .settings-invoice-mobile-detail p:last-child {
+    margin-bottom: 0;
+  }
+
+  .settings-user-mobile-card {
+    border: 1px solid var(--ss-border);
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.96);
+    padding: 10px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .settings-user-mobile-line {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  .settings-user-mobile-name {
+    font-size: 1rem;
+    font-weight: 700;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .settings-user-mobile-actions {
+    display: flex;
+    gap: 8px;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+  }
+
+  .settings-user-mobile-actions .btn {
+    padding: 6px 8px;
+    font-size: 0.85rem;
+  }
+
   .settings-layout {
     grid-template-columns: 1fr;
   }
@@ -974,26 +1099,14 @@
     box-sizing: border-box;
   }
 
-  .settings-billing-table-block .row {
-    margin-left: 0;
-    margin-right: 0;
-    width: 100%;
-    max-width: 100%;
-    display: flex;
-    flex-wrap: wrap;
+  .settings-billing-filters {
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
   }
 
-  .settings-billing-table-block .col-12,
-  .settings-billing-table-block .col-md-4,
-  .settings-billing-table-block .col-md-3,
-  .settings-billing-table-block .col-md-2,
-  .settings-billing-table-block .col-lg-1,
-  .settings-billing-table-block .col-lg-2 {
-    width: 100% !important;
-    max-width: 100% !important;
-    padding: 6px !important;
-    box-sizing: border-box;
-    flex: 0 0 100% !important;
+  .settings-billing-filter-search,
+  .settings-billing-filter-action {
+    grid-column: 1 / -1;
   }
 
   .settings-billing-table-block .form-control,
@@ -1046,26 +1159,9 @@
     overflow: hidden;
   }
 
-  .settings-billing-table-block .row {
-    gap: 8px !important;
-    margin: 0 !important;
-    width: 100%;
-    max-width: 100%;
-    display: flex;
-    flex-wrap: wrap;
-  }
-
-  .settings-billing-table-block .col-12,
-  .settings-billing-table-block .col-md-4,
-  .settings-billing-table-block .col-md-3,
-  .settings-billing-table-block .col-md-2,
-  .settings-billing-table-block .col-lg-1,
-  .settings-billing-table-block .col-lg-2 {
-    width: 100% !important;
-    max-width: 100% !important;
-    padding: 0 !important;
-    box-sizing: border-box;
-    flex: 0 0 100% !important;
+  .settings-billing-filters {
+    grid-template-columns: 1fr;
+    gap: 10px;
   }
 
   .settings-billing-table-block .form-control,

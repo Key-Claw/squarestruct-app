@@ -638,8 +638,76 @@
   color: #ffffff;
 }
 
+.catalog-back-button {
+  white-space: nowrap;
+}
+
 /* FASE 5: respiracion responsive del catalogo */
 @media (max-width: 767.98px) {
+  .catalog-mobile-filters-toggle {
+    width: 100%;
+    min-height: 48px;
+    margin: 0 0 14px;
+    border: 1px solid rgba(16, 39, 54, 0.2);
+    border-radius: 10px;
+    background: #173f5f;
+    color: #ffffff;
+    font-weight: 850;
+    text-transform: uppercase;
+  }
+
+  .catalog-mobile-filters-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 1040;
+    background: rgba(5, 18, 26, 0.42);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+  }
+
+  .catalog-mobile-filters-backdrop.is-open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .catalog-sidebar {
+    display: none;
+  }
+
+  .catalog-sidebar.is-mobile-open {
+    position: fixed;
+    inset: 14px 14px auto;
+    z-index: 1050;
+    display: block;
+    width: auto;
+    max-height: calc(100dvh - 28px);
+    overflow: auto;
+    padding: 12px;
+    border: 1px solid rgba(16, 39, 54, 0.12);
+    border-radius: 12px;
+    background: #d9ecff;
+    box-shadow: 0 20px 44px rgba(15, 35, 52, 0.22);
+  }
+
+  .catalog-mobile-filters-close {
+    width: 100%;
+    min-height: 42px;
+    margin-bottom: 10px;
+    border: 1px solid rgba(16, 39, 54, 0.2);
+    border-radius: 8px;
+    background: #ffffff;
+    color: #173f5f;
+    font-weight: 800;
+    text-transform: uppercase;
+  }
+
+  .catalog-sidebar.is-mobile-open .catalog-filter-title {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+  }
+
   .catalog-heading {
     grid-template-columns: 1fr;
   }
