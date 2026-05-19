@@ -7,6 +7,33 @@ import logoText from '../assets/logo/squarestruct-texto.png'
 import { MAIN_ROUTES, NAV_LINKS } from '../routes'
 import '../styles/layout/navbar.css'
 
+const SEARCHABLE_PAGES = [
+  {
+    page: 'home',
+    words: ['home', 'inicio', 'principal', 'squarestruct', 'modular', 'construccion', 'sostenible'],
+  },
+  {
+    page: 'gallery',
+    words: ['galeria', 'gallery', 'galery', 'galeery', 'inspiracion', 'inspirarte', 'proyecto', 'casa', 'eco', 'hormigon'],
+  },
+  {
+    page: 'catalog',
+    words: ['catalogo', 'catalog', 'producto', 'productos', 'bloque', 'pilar', 'material', 'precio', 'comprar'],
+  },
+  {
+    page: 'design',
+    words: ['diseno', 'design', 'disenador', 'designer', 'plano', 'estructura', 'presupuesto'],
+  },
+]
+
+const normalizeSearchTerm = (value) => (
+  value
+    .trim()
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+)
+
 function Navbar({
   activePage,
   activeSection,
@@ -21,19 +48,13 @@ function Navbar({
   const accountName = user?.nombre?.trim().split(/\s+/)[0] || 'Cuenta'
 
   const handleSearch = () => {
-    const term = searchValue.trim().toLowerCase()
+    const term = normalizeSearchTerm(searchValue)
 
     if (!term) return
 
-    const globalSearchMap = [
-      { page: 'gallery', words: ['galeria', 'gallery', 'inspiracion', 'proyecto', 'casa', 'eco', 'hormigon'] },
-      { page: 'catalog', words: ['catalogo', 'catalog', 'producto', 'bloque', 'pilar', 'material', 'precio', 'comprar'] },
-      { page: 'design', words: ['diseño', 'diseno', 'design', 'plano', 'estructura', 'presupuesto'] },
-      { page: 'aboutus', words: ['sobre', 'about', 'nosotros', 'equipo', 'squarestruct', 'proyecto'] },
-      { page: 'settings', words: ['perfil', 'cuenta', 'settings', 'factura', 'usuario', 'admin'] },
-    ]
-
-    const result = globalSearchMap.find((item) => item.words.some((word) => term.includes(word)))
+    const result = SEARCHABLE_PAGES.find((item) => (
+      item.words.some((word) => term.includes(normalizeSearchTerm(word)))
+    ))
 
     onNavigate(result?.page || 'home')
     setSearchValue('')
