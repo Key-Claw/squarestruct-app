@@ -586,7 +586,7 @@
   text-transform: none;
 }
 
-@media (max-width: 991.98px) {
+@media (max-width: 767.98px) {
   .design-topbar {
     min-height: auto;
     display: grid;
@@ -625,6 +625,63 @@
 
   .design-topbar-actions .btn {
     width: 100%;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1199.98px) {
+  .design-workspace {
+    --bs-gutter-x: 16px;
+    --bs-gutter-y: 16px;
+  }
+
+  .design-pieces-panel,
+  .design-summary-panel,
+  .design-canvas-card {
+    min-height: 620px;
+  }
+
+  .design-pieces-panel,
+  .design-summary-panel {
+    padding: 18px 14px;
+  }
+
+  .design-pieces-panel h2,
+  .design-summary-panel h2 {
+    font-size: 1.2rem;
+  }
+
+  .design-tabs {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .design-tabs button {
+    width: 100%;
+    text-align: left;
+  }
+
+  .design-piece-card {
+    grid-template-columns: 1fr;
+  }
+
+  .design-piece-media {
+    min-height: 54px;
+  }
+
+  .design-piece-card div:last-child {
+    padding: 10px;
+  }
+
+  .design-toolbar {
+    top: 18px;
+    left: 18px;
+    max-width: calc(100% - 36px);
+    flex-wrap: wrap;
+  }
+
+  .design-zoom {
+    left: 18px;
+    bottom: 112px;
   }
 }
 

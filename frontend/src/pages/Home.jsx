@@ -80,7 +80,7 @@ function Home({ onNavigate }) {
     <section className="page-shell home-page container-fluid">
       <div className="home-hero card">
         <div className="row g-0 align-items-stretch home-hero-grid">
-          <div className="col-12 col-lg-4 home-hero-copy-wrap">
+          <div className="col-12 col-md-4 home-hero-copy-wrap">
             <div className="home-hero-copy">
               <p className="eyebrow">Construcción modular sostenible</p>
               <h1>Construye sin límites.</h1>
@@ -100,7 +100,7 @@ function Home({ onNavigate }) {
             </div>
           </div>
 
-          <div className="col-12 col-lg-8 home-carousel-wrap">
+          <div className="col-12 col-md-8 home-carousel-wrap">
             <div id="homeCarousel" className="carousel slide home-carousel" data-bs-ride="carousel">
               <div className="carousel-indicators">
                 {homeSlides.map((slide, index) => (
@@ -139,11 +139,11 @@ function Home({ onNavigate }) {
 
       <section className="home-about card">
         <div className="row g-0 align-items-stretch home-about-grid">
-          <div className="col-12 col-lg-5 home-about-media-wrap">
+          <div className="col-12 col-md-5 home-about-media-wrap">
             <img src={inicioSquarestructImage} className="home-about-image" alt="Casa modular de SquareStruct" />
           </div>
 
-          <div className="col-12 col-lg-7 home-about-copy-wrap">
+          <div className="col-12 col-md-7 home-about-copy-wrap">
             <div className="home-about-copy">
               <p className="eyebrow">SquareStruct</p>
               <h2>¿Qué es SquareStruct?</h2>
@@ -184,7 +184,7 @@ function Home({ onNavigate }) {
       <div className="row g-4 home-feature-grid">
         {homeFeatureCards.map((item) => {
           return (
-            <div className="col-12 col-lg-4" key={item.title}>
+            <div className="col-12 col-md-4" key={item.title}>
               <article className="page-card home-feature-card h-100">
                 <img src={item.image} className="home-feature-image" alt={item.title} />
                 <div className="page-card-body home-feature-body">

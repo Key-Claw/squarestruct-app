@@ -22,12 +22,12 @@ function CatalogFilters({
 
   return (
     <aside
-      className={`col-12 col-lg-2 catalog-sidebar${isMobileOpen ? ' is-mobile-open' : ''}`}
+      className={`col-12 col-md-3 col-xl-2 catalog-sidebar${isMobileOpen ? ' is-mobile-open' : ''}`}
       {...asideProps}
     >
       <button
         type="button"
-        className="btn catalog-mobile-filters-close d-lg-none"
+        className="btn catalog-mobile-filters-close d-md-none"
         onClick={onCloseMobile}
         aria-label="Cerrar filtros"
       >

@@ -66,7 +66,7 @@ function Design({ onNavigate }) {
         {/* ====================================================================
             PANEL IZQUIERDO - Piezas disponibles (Bloques, Pilares, Accesorios)
             ==================================================================== */}
-        <aside className="col-12 col-xl-2">
+        <aside className="col-12 col-md-3 col-xl-2">
           <section className="card design-pieces-panel">
             <h2>Bloques y piezas</h2>
             <div className="design-tabs" role="tablist" aria-label="Tipos de piezas">
@@ -101,7 +101,7 @@ function Design({ onNavigate }) {
         {/* ====================================================================
             ÁREA CENTRAL - Canvas 2D/3D, herramientas de edición, zoom, vistas
             ==================================================================== */}
-        <main className="col-12 col-xl-8">
+        <main className="col-12 col-md-6 col-xl-8">
           <section className="card design-canvas-card" aria-label="Boceto provisional del futuro panel de Design">
             <img
               src={designBocetoImage}
@@ -134,7 +134,7 @@ function Design({ onNavigate }) {
         {/* ====================================================================
             PANEL DERECHO - Resumen del proyecto, totales, precio, acciones rápidas
             ==================================================================== */}
-        <aside className="col-12 col-xl-2">
+        <aside className="col-12 col-md-3 col-xl-2">
           <section className="card design-summary-panel">
             <h2>Resumen del proyecto</h2>
 

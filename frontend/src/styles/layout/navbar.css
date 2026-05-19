@@ -626,11 +626,43 @@
   }
 
   .square-navbar .navbar-toggler {
-    grid-column: 1;
-    grid-row: 1;
-    width: 40px;
-    height: 40px;
-    padding: 0;
+    display: none;
+  }
+
+  .navbar-mobile-actions .navbar-mobile-toggler {
+    background: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 6px 0 0;
+    margin: 0;
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+    min-height: 36px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    transition: background 0.15s;
+  }
+
+  .navbar-mobile-actions .navbar-mobile-toggler:active,
+  .navbar-mobile-actions .navbar-mobile-toggler:focus {
+    background: none;
+    outline: none;
+    box-shadow: none;
+  }
+
+  .navbar-mobile-actions .navbar-toggler-icon {
+    width: 22px;
+    height: 22px;
+    background-image: var(--bs-navbar-toggler-icon-bg, url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(34, 34, 34, 0.85)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e"));
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100% 100%;
+    display: inline-block;
+    position: relative;
+    box-shadow: none;
   }
 
   .navbar-brand-group {
@@ -744,7 +776,7 @@
     border-radius: 10px;
     background: transparent;
     padding: 0 2px;
-    font-size: 0.84rem;
+    font-size: 1.08rem;
     font-family: var(--heading);
     font-weight: 400;
     line-height: 1;

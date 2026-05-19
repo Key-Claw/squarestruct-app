@@ -177,7 +177,7 @@ function Catalog({ onNavigate, onAddToCart, searchTerm = '', initialSection = ''
     }
 
     const handleResize = () => {
-      if (window.innerWidth >= 992) {
+      if (window.innerWidth >= 768) {
         setMobileFiltersOpen(false)
       }
     }
@@ -211,7 +211,7 @@ function Catalog({ onNavigate, onAddToCart, searchTerm = '', initialSection = ''
 
       <button
         type="button"
-        className="btn catalog-mobile-filters-toggle d-lg-none"
+        className="btn catalog-mobile-filters-toggle d-md-none"
         onClick={() => setMobileFiltersOpen(true)}
         aria-expanded={mobileFiltersOpen}
         aria-controls="catalogFilters"
@@ -220,7 +220,7 @@ function Catalog({ onNavigate, onAddToCart, searchTerm = '', initialSection = ''
       </button>
 
       <div
-        className={`catalog-mobile-filters-backdrop d-lg-none${mobileFiltersOpen ? ' is-open' : ''}`}
+        className={`catalog-mobile-filters-backdrop d-md-none${mobileFiltersOpen ? ' is-open' : ''}`}
         onClick={() => setMobileFiltersOpen(false)}
         aria-hidden={!mobileFiltersOpen}
       ></div>
@@ -241,7 +241,7 @@ function Catalog({ onNavigate, onAddToCart, searchTerm = '', initialSection = ''
             onCloseMobile={() => setMobileFiltersOpen(false)}
           />
 
-          <div className="col-12 col-lg-10 catalog-content">
+          <div className="col-12 col-md-9 col-xl-10 catalog-content">
             <div className="card catalog-results-bar" ref={resultsBarRef}>
               <div className="catalog-results-count">
                 {productosFiltrados.length} productos encontrados

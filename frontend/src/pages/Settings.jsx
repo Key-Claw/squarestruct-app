@@ -690,7 +690,7 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange })
                 <option value="efectivo">Efectivo</option>
               </select>
             </div>
-            <div className="col-12 col-lg-2 d-grid">
+            <div className="col-12 col-md-2 d-grid">
               <button type="button" className="btn btn-success settings-billing-reset-btn" onClick={handleResetBillingFilters}>Desactivar filtros</button>
             </div>
           </div>

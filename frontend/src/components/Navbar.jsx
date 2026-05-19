@@ -1,4 +1,4 @@
-import { useState } from 'react'
+﻿import { useState } from 'react'
 import { Link, NavLink } from 'react-router-dom'
 
 import Icon from './ui/Icon'
@@ -160,11 +160,19 @@ function Navbar({
 
           {renderSearchForm('navbar-search-mobile')}
 
-          <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
-            <span className="navbar-toggler-icon"></span>
-          </button>
-
           <div className="navbar-mobile-actions" aria-label="Acciones rápidas">
+            <button
+              className="navbar-toggler navbar-mobile-toggler"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#mainNavbar"
+              aria-controls="mainNavbar"
+              aria-expanded="false"
+              aria-label="Toggle navigation"
+            >
+              <span className="navbar-toggler-icon"></span>
+            </button>
+
             <button
               className="btn navbar-action-btn"
               type="button"

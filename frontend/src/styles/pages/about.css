@@ -188,7 +188,7 @@
   display: block;
 }
 
-@media (min-width: 992px) {
+@media (min-width: 768px) {
   .about-layout-row {
     gap: 14px;
   }
@@ -253,6 +253,33 @@
     width: 120px;
     max-width: 38%;
     opacity: 0.1;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+  .about-top-grid,
+  .about-content-grid {
+    grid-template-columns: minmax(145px, 190px) minmax(0, 1fr) minmax(145px, 190px);
+    gap: 14px;
+  }
+
+  .about-profile-text-card .card-body {
+    padding: 26px 20px;
+  }
+
+  .about-profile-text-card p {
+    max-width: 100%;
+    font-size: 0.92rem;
+    line-height: 1.58;
+  }
+
+  .about-story-card .card-body {
+    padding: 34px clamp(28px, 4vw, 44px);
+  }
+
+  .about-text-content h1,
+  .about-text-content h2 {
+    font-size: clamp(2.35rem, 5vw, 3.25rem);
   }
 }
 

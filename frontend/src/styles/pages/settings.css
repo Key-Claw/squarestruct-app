@@ -890,7 +890,7 @@
   border-color: rgba(23, 63, 95, 0.1);
 }
 
-@media (max-width: 991px) {
+@media (max-width: 767.98px) {
   .settings-layout {
     grid-template-columns: 1fr;
   }

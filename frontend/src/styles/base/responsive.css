@@ -16,7 +16,7 @@
   display: block;
 }
 
-@media (max-width: 991.98px) {
+@media (max-width: 767.98px) {
   .catalog-mobile-filters-toggle {
     width: 100%;
     min-height: 48px;
@@ -697,22 +697,21 @@
   }
 
   .catalog-sidebar {
-    position: static;
+    position: sticky;
+    top: 132px;
+    display: block;
   }
 
   .catalog-filter-title {
     margin-bottom: 12px;
   }
 
-  .catalog-sidebar {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 14px;
+  .catalog-filter-title,
+  .catalog-filter-card {
+    margin-bottom: 14px;
   }
 
-  .catalog-filter-title,
-  .catalog-reset-btn,
-  .catalog-filter-card {
+  .catalog-reset-btn {
     margin-bottom: 0;
   }
 
@@ -2272,6 +2271,9 @@ textarea {
     margin-bottom: 22px;
   }
 
+}
+
+@media (max-width: 767.98px) {
   .settings-layout,
   .about-top-grid,
   .about-content-grid {
@@ -2366,4 +2368,97 @@ textarea {
   -webkit-text-fill-color: var(--ss-ink);
   -webkit-text-stroke: 0;
   text-shadow: none;
+}
+
+@media (max-width: 767.98px) {
+  .gallery-page > .gallery-intro-card,
+  .catalog-page > .catalog-heading,
+  .design-page > .design-topbar {
+    grid-template-columns: 1fr;
+    height: auto;
+    min-height: auto;
+  }
+
+  .gallery-page > .gallery-intro-card::after,
+  .catalog-page > .catalog-heading::after,
+  .design-page > .design-topbar::after {
+    content: none;
+    background: none;
+  }
+
+  .gallery-page > .gallery-intro-card > .gallery-intro-copy,
+  .catalog-page > .catalog-heading > .catalog-heading-copy,
+  .design-page > .design-topbar > .design-topbar-copy {
+    height: auto;
+    min-height: auto;
+    padding: 28px 18px 24px;
+    align-content: center;
+    justify-items: center;
+    text-align: center;
+  }
+
+  .gallery-intro-title,
+  .gallery-intro-text,
+  .catalog-heading-title,
+  .catalog-heading-text,
+  .design-topbar-title,
+  .design-topbar-text {
+    width: 100%;
+    text-align: center;
+  }
+
+  .gallery-page > .gallery-intro-card h1,
+  .catalog-page > .catalog-heading h1,
+  .design-page > .design-topbar h1 {
+    max-width: 12ch;
+    margin-right: auto;
+    margin-left: auto;
+    text-align: center;
+    text-wrap: balance;
+  }
+
+  .gallery-page > .gallery-intro-card p:not(.gallery-eyebrow),
+  .catalog-page > .catalog-heading p:not(.catalog-eyebrow),
+  .design-page > .design-topbar p:not(.design-eyebrow) {
+    max-width: 34ch;
+    margin-right: auto;
+    margin-left: auto;
+    text-align: center;
+    text-align-last: center;
+  }
+
+  .gallery-eyebrow,
+  .catalog-eyebrow,
+  .design-eyebrow,
+  .gallery-page > .gallery-intro-card > .gallery-intro-media,
+  .catalog-page > .catalog-heading > .catalog-heading-media,
+  .design-page > .design-topbar > .design-topbar-media {
+    display: none;
+  }
+
+  .gallery-intro-actions {
+    position: static;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    padding: 0 18px 18px;
+  }
+
+  .gallery-intro-actions .gallery-filter-btn {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .design-topbar-actions {
+    position: static;
+    width: 100%;
+    padding: 0 18px 18px;
+    justify-content: stretch;
+  }
+
+  .design-topbar-actions .btn {
+    width: 100%;
+    min-width: 0;
+    flex: 1 1 100%;
+  }
 }
