@@ -214,13 +214,14 @@
 
 .profile-info-card {
   background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  /* border: none;  Eliminado el borde de cuadros */
   border-radius: 8px;
   padding: 16px;
   display: flex;
   flex-direction: column;
   gap: 14px;
   align-items: center;
+  text-align: justify; /* Justificar el texto dentro de la tarjeta */
 }
 
 /* ============================================================================
