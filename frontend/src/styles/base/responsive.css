@@ -2007,3 +2007,357 @@ textarea {
   color: #ffffff;
   text-shadow: none;
 }
+
+/* Cierre de sistema: Galeria marca el hero visual para Catalogo y Design. */
+@media (min-width: 992px) {
+  .gallery-page > .gallery-intro-card,
+  .catalog-page > .catalog-heading,
+  .design-page > .design-topbar {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 50%) minmax(0, 50%);
+    height: 300px;
+    min-height: 300px;
+    padding: 0;
+    margin-bottom: 22px;
+    overflow: hidden;
+    background: #ffffff;
+  }
+
+  .gallery-page > .gallery-intro-card::after,
+  .catalog-page > .catalog-heading::after,
+  .design-page > .design-topbar::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 1) 0%,
+      rgba(255, 255, 255, 1) 54%,
+      rgba(255, 255, 255, 0.92) 61%,
+      rgba(255, 255, 255, 0.72) 70%,
+      rgba(255, 255, 255, 0.36) 82%,
+      rgba(255, 255, 255, 0) 96%
+    );
+  }
+
+  .gallery-page > .gallery-intro-card > .gallery-intro-copy,
+  .catalog-page > .catalog-heading > .catalog-heading-copy,
+  .design-page > .design-topbar > .design-topbar-copy {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    align-content: center;
+    justify-items: start;
+    gap: 14px;
+    width: 100%;
+    height: 300px;
+    min-height: 300px;
+    padding: 22px clamp(28px, 4vw, 64px);
+    background: transparent;
+    text-align: left;
+  }
+
+  .gallery-page > .gallery-intro-card > .gallery-intro-copy h1,
+  .catalog-page > .catalog-heading > .catalog-heading-copy h1,
+  .design-page > .design-topbar > .design-topbar-copy h1 {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    color: var(--ss-ink);
+    font-family: var(--heading);
+    font-size: clamp(2.6rem, 3.6vw, 4.1rem);
+    font-weight: 400;
+    line-height: 0.98;
+    letter-spacing: 0;
+    text-align: left;
+  }
+
+  .gallery-page > .gallery-intro-card > .gallery-intro-copy p,
+  .catalog-page > .catalog-heading > .catalog-heading-copy p,
+  .design-page > .design-topbar > .design-topbar-copy p {
+    width: 100%;
+    max-width: 100%;
+    text-align: left;
+  }
+
+  .gallery-page > .gallery-intro-card > .gallery-intro-copy p:not(.gallery-eyebrow),
+  .catalog-page > .catalog-heading > .catalog-heading-copy p:not(.catalog-eyebrow),
+  .design-page > .design-topbar > .design-topbar-copy p:not(.design-eyebrow) {
+    margin: 0;
+    color: var(--ss-muted);
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.58;
+  }
+
+  .gallery-page > .gallery-intro-card > .gallery-intro-media,
+  .catalog-page > .catalog-heading > .catalog-heading-media,
+  .design-page > .design-topbar > .design-topbar-media {
+    position: relative;
+    inset: auto;
+    z-index: 0;
+    width: 100%;
+    height: 300px;
+    min-height: 300px;
+    margin: 0;
+    overflow: hidden;
+  }
+
+  .gallery-page > .gallery-intro-card > .gallery-intro-media::before,
+  .catalog-page > .catalog-heading > .catalog-heading-media::before,
+  .design-page > .design-topbar > .design-topbar-media::before {
+    content: none;
+    background: none;
+  }
+
+  .gallery-page > .gallery-intro-card > .gallery-intro-media .gallery-cover-image,
+  .catalog-page > .catalog-heading > .catalog-heading-media img,
+  .design-page > .design-topbar > .design-topbar-media img {
+    width: 100%;
+    height: 300px;
+    min-height: 300px;
+    object-fit: cover;
+    object-position: center bottom;
+  }
+}
+
+@media (max-width: 991.98px) {
+  .gallery-page > .gallery-intro-card,
+  .catalog-page > .catalog-heading,
+  .design-page > .design-topbar {
+    grid-template-columns: minmax(0, 50%) minmax(0, 50%);
+    height: 300px;
+    min-height: 300px;
+    padding: 0;
+    overflow: hidden;
+    background: #ffffff;
+  }
+
+  .gallery-page > .gallery-intro-card > .gallery-intro-copy,
+  .catalog-page > .catalog-heading > .catalog-heading-copy,
+  .design-page > .design-topbar > .design-topbar-copy {
+    height: 300px;
+    min-height: 300px;
+    padding-inline: clamp(22px, 4vw, 46px);
+  }
+
+  .gallery-page > .gallery-intro-card > .gallery-intro-media,
+  .catalog-page > .catalog-heading > .catalog-heading-media,
+  .design-page > .design-topbar > .design-topbar-media,
+  .gallery-page > .gallery-intro-card > .gallery-intro-media .gallery-cover-image,
+  .catalog-page > .catalog-heading > .catalog-heading-media img,
+  .design-page > .design-topbar > .design-topbar-media img {
+    height: 300px;
+    min-height: 300px;
+  }
+}
+
+/* Sistema visual final: estabiliza anchuras, cards, heroes y textos UI. */
+.page-shell,
+.home-page,
+.gallery-page,
+.catalog-page,
+.design-page,
+.settings-page-shell,
+.about-page,
+.facturas-page,
+.page-shell.usuarios-shell {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding-inline: clamp(18px, 3vw, 58px);
+}
+
+.home-hero,
+.home-about,
+.home-capabilities,
+.home-feature-grid,
+.gallery-intro-card,
+.gallery-grid,
+.gallery-feature-card,
+.catalog-heading,
+.catalog-page > .row,
+.design-topbar,
+.design-workspace,
+.design-help-card,
+.settings-layout,
+.about-layout-row,
+.facturas-container,
+.usuarios-container {
+  width: min(100%, var(--ss-content-max));
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.home-hero,
+.home-about,
+.home-section-heading,
+.home-feature-card,
+.gallery-intro-card,
+.gallery-project-card,
+.gallery-feature-card,
+.catalog-heading,
+.catalog-filter-card,
+.catalog-results-bar,
+.catalog-product-card,
+.design-topbar,
+.design-pieces-panel,
+.design-canvas-card,
+.design-summary-panel,
+.design-help-card,
+.settings-layout,
+.settings-card,
+.usuarios-card,
+.facturas-container,
+.checkout-container {
+  border-color: var(--ss-border);
+  border-radius: var(--ss-radius);
+  box-shadow: var(--ss-shadow);
+}
+
+.app-main :where(
+  .home-hero,
+  .home-about,
+  .home-highlight,
+  .home-section-heading,
+  .home-feature-card,
+  .gallery-intro-card,
+  .gallery-feature-card,
+  .catalog-heading,
+  .catalog-product-card,
+  .design-topbar,
+  .design-help-card,
+  .settings-header-bar,
+  .settings-billing-hero,
+  .settings-billing-metric,
+  .settings-users-toolbar,
+  .about-story-card,
+  .about-profile-text-card,
+  .site-footer
+) :where(p, li, .card-text, .lead) {
+  text-align: left;
+  text-align-last: auto;
+  hyphens: none;
+}
+
+@media (max-width: 991.98px) {
+  .page-shell,
+  .home-page,
+  .gallery-page,
+  .catalog-page,
+  .design-page,
+  .settings-page-shell,
+  .about-page,
+  .facturas-page,
+  .page-shell.usuarios-shell {
+    padding-inline: clamp(14px, 4vw, 28px);
+  }
+
+  .home-hero,
+  .home-about,
+  .gallery-intro-card,
+  .catalog-heading,
+  .design-topbar,
+  .settings-layout,
+  .about-layout-row {
+    margin-bottom: 22px;
+  }
+
+  .settings-layout,
+  .about-top-grid,
+  .about-content-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .page-shell,
+  .home-page,
+  .gallery-page,
+  .catalog-page,
+  .design-page,
+  .settings-page-shell,
+  .about-page,
+  .facturas-page,
+  .page-shell.usuarios-shell {
+    padding-inline: 14px;
+  }
+
+  .site-benefits-footer {
+    width: calc(100% - 28px);
+  }
+}
+
+/* Heroes principales con Galeria como referencia visual exacta. */
+.gallery-page,
+.catalog-page,
+.design-page {
+  --ss-page-gutter: clamp(42px, 3vw, 58px);
+  padding-right: 0;
+  padding-left: 0;
+}
+
+.gallery-page > .gallery-intro-card,
+.catalog-page > .catalog-heading,
+.design-page > .design-topbar,
+.gallery-page > .gallery-grid,
+.gallery-page > .gallery-feature-card,
+.catalog-page > .row,
+.design-page > .design-workspace,
+.design-page > .design-help-card {
+  width: min(calc(100% - (var(--ss-page-gutter) * 2)), var(--ss-content-max));
+  margin-right: auto;
+  margin-left: auto;
+}
+
+@media (min-width: 992px) {
+  .gallery-page > .gallery-intro-card,
+  .catalog-page > .catalog-heading,
+  .design-page > .design-topbar {
+    display: grid;
+    grid-template-columns: minmax(0, 50%) minmax(0, 50%);
+    height: 300px;
+    min-height: 300px;
+    padding: 0;
+    overflow: hidden;
+    background: #ffffff;
+  }
+
+  .gallery-page > .gallery-intro-card > .gallery-intro-copy,
+  .catalog-page > .catalog-heading > .catalog-heading-copy,
+  .design-page > .design-topbar > .design-topbar-copy {
+    height: 300px;
+    min-height: 300px;
+    padding: 22px clamp(28px, 4vw, 64px);
+  }
+}
+
+@media (max-width: 991.98px) {
+  .gallery-page,
+  .catalog-page,
+  .design-page {
+    --ss-page-gutter: clamp(14px, 4vw, 28px);
+  }
+}
+
+/* Misma posicion del texto en las hero de Galeria, Catalogo y Design. */
+@media (min-width: 992px) {
+  .gallery-page > .gallery-intro-card > .gallery-intro-copy,
+  .catalog-page > .catalog-heading > .catalog-heading-copy,
+  .design-page > .design-topbar > .design-topbar-copy {
+    align-content: start;
+    padding: 72px 96px 22px;
+  }
+}
+
+.gallery-feature-title-grid .gallery-badge {
+  border-color: #ffffff;
+  background: #ffffff;
+  color: var(--ss-ink);
+  -webkit-text-fill-color: var(--ss-ink);
+  -webkit-text-stroke: 0;
+  text-shadow: none;
+}

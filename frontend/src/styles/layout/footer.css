@@ -1,22 +1,26 @@
 .site-footer {
+  position: relative;
+  isolation: isolate;
   width: 100%;
   background:
     linear-gradient(
       to bottom,
       var(--navbar-blue, #d9ecff) 0,
-      var(--navbar-blue, #d9ecff) 78px,
-      var(--navbar-green, #d9efd8) 78px,
+      var(--navbar-blue, #d9ecff) 92px,
+      var(--navbar-green, #d9efd8) 92px,
       var(--navbar-green, #d9efd8) 100%
     );
-  padding-top: 1px;
+  padding: 24px 0 0;
 }
 
 .site-benefits-footer {
+  position: relative;
+  z-index: 1;
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 18px;
-  width: min(calc(100% - 72px), 1720px);
-  margin: 34px auto 10px;
+  width: min(calc(100% - 72px), var(--ss-content-max, 1760px));
+  margin: 0 auto 12px;
   border: 1px solid rgba(16, 39, 54, 0.12);
   border-radius: 14px;
   background: rgba(255, 255, 255, 0.96);
@@ -73,6 +77,8 @@
 }
 
 .site-footer-copy {
+  position: relative;
+  z-index: 0;
   width: 100%;
   margin: 0;
   border-radius: 0;

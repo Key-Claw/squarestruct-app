@@ -892,7 +892,7 @@
 }
 
 .gallery-intro-copy {
-  padding: 22px clamp(28px, 5vw, 70px);
+  padding: 22px var(--ss-hero-copy-x, clamp(28px, 4vw, 64px));
 }
 
 .gallery-intro-media {
@@ -977,6 +977,22 @@
   border-color: var(--ss-green-700);
   background: linear-gradient(135deg, #54a947, #2f7d2e);
   color: #ffffff;
+}
+
+@media (min-width: 992px) {
+  .gallery-intro-copy {
+    align-content: start;
+    padding: 72px 96px 22px;
+  }
+}
+
+.gallery-feature-title-grid .gallery-badge {
+  border-color: #ffffff;
+  background: #ffffff;
+  color: var(--ss-ink);
+  -webkit-text-fill-color: var(--ss-ink);
+  -webkit-text-stroke: 0;
+  text-shadow: none;
 }
 
 

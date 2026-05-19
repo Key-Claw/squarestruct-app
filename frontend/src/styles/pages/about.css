@@ -54,6 +54,22 @@
 .about-layout-row {
   --bs-gutter-x: 18px;
   --bs-gutter-y: 20px;
+  display: grid;
+  gap: 18px;
+}
+
+.about-top-grid,
+.about-content-grid {
+  display: grid;
+  gap: 18px;
+}
+
+.about-top-grid {
+  align-items: stretch;
+}
+
+.about-content-grid {
+  align-items: stretch;
 }
 
 .about-team-card,
@@ -117,6 +133,19 @@
   background: #8d969d;
 }
 
+.about-profile-photo-card {
+  overflow: hidden;
+}
+
+.about-profile-image {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  height: auto;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
 .about-team-photo {
   display: grid;
   place-items: center;
@@ -142,6 +171,64 @@
   object-fit: cover;
   object-position: center;
   display: block;
+}
+
+@media (min-width: 992px) {
+  .about-layout-row {
+    gap: 14px;
+  }
+
+  .about-top-grid,
+  .about-content-grid {
+    grid-template-columns: minmax(180px, 260px) minmax(0, 1fr) minmax(180px, 260px);
+    gap: 18px;
+  }
+
+  .about-team-card {
+    height: 100%;
+    margin-bottom: 0;
+  }
+
+  .about-team-image {
+    height: 100%;
+    min-height: 286px;
+    aspect-ratio: auto;
+  }
+
+  .about-profile-col {
+    display: grid;
+    grid-template-rows: var(--about-name-card-height) minmax(0, 1fr);
+    gap: 10px;
+    height: 100%;
+  }
+
+  .about-name-card,
+  .about-profile-photo-card,
+  .about-profile-text-card,
+  .about-story-card {
+    height: 100%;
+  }
+
+  .about-profile-photo-card .about-profile-image {
+    height: 100%;
+    aspect-ratio: auto;
+  }
+
+  .about-content-grid {
+    grid-template-areas: "left story right";
+  }
+
+  .about-content-grid > .about-profile-text-card:first-child {
+    grid-area: left;
+  }
+
+  .about-content-grid > .about-story-card {
+    grid-area: story;
+  }
+
+  .about-content-grid > .about-profile-text-card:last-child {
+    grid-area: right;
+  }
 }
 
 .about-photo-kicker,

@@ -229,9 +229,16 @@
   background: #f9fbf8;
 }
 
+.home-highlight-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
 .home-highlight-icon {
   width: 2rem;
   height: 2rem;
+  flex: 0 0 2rem;
   display: grid;
   place-items: center;
   border-radius: 999px;
@@ -242,10 +249,17 @@
 }
 
 .home-highlight h3 {
+  width: fit-content;
   margin: 0;
-  color: #0f172a;
-  font-size: 0.92rem;
-  font-weight: 800;
+  padding-bottom: 4px;
+  border-bottom: 2px solid rgba(95, 159, 56, 0.45);
+  color: var(--ss-ink);
+  font-family: var(--heading);
+  font-size: clamp(1.16rem, 1.2vw, 1.34rem);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
 }
 
 .home-highlight p {
@@ -515,5 +529,17 @@
 
 .home-feature-link {
   color: #98d878;
+}
+
+.home-hero-copy .eyebrow,
+.home-about-copy .eyebrow,
+.home-section-heading .eyebrow {
+  margin: 0 0 0.4rem;
+  color: #5f9f38;
+  font-size: 0.78rem;
+  font-weight: 850;
+  letter-spacing: 0.08em;
+  line-height: 1.1;
+  text-transform: uppercase;
 }
 

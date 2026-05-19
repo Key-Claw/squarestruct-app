@@ -5,16 +5,34 @@ import teamPhoto from '../assets/about/retoseas.webp'
 function AboutUs() {
   return (
     <section className="page-shell about-page about-story-page container-fluid">
-      <div className="row g-3 about-layout-row align-items-start">
-        <aside className="col-12 col-lg-2 about-profile-col">
-          <div className="card about-name-card">
-            <div className="card-body">Raúl Martín</div>
+      <div className="about-layout-row">
+        <div className="about-top-grid">
+          <aside className="about-profile-col">
+            <div className="card about-name-card">
+              <div className="card-body">Raúl Martín</div>
+            </div>
+
+            <article className="card about-profile-photo-card">
+              <img src={raulmartinezPhoto} className="card-img about-profile-image" alt="Raúl Martín" />
+            </article>
+          </aside>
+
+          <div className="card about-team-card">
+            <img src={teamPhoto} className="card-img about-team-image" alt="Raúl y Cristian" />
           </div>
 
-          <article className="card about-profile-photo-card">
-            <img src={raulmartinezPhoto} className="card-img about-profile-image" alt="Raúl Martín" />
-          </article>
+          <aside className="about-profile-col">
+            <div className="card about-name-card">
+              <div className="card-body">Cristian Gil</div>
+            </div>
 
+            <article className="card about-profile-photo-card">
+              <img src={cristianGilPhoto} className="card-img about-profile-image" alt="Cristian Gil" />
+            </article>
+          </aside>
+        </div>
+
+        <div className="about-content-grid">
           <section className="card about-profile-text-card">
             <div className="card-body">
               <p>
@@ -30,12 +48,6 @@ function AboutUs() {
               </p>
             </div>
           </section>
-        </aside>
-
-        <main className="col-12 col-lg-8">
-          <div className="card about-team-card">
-            <img src={teamPhoto} className="card-img about-team-image" alt="Raúl y Cristian" />
-          </div>
 
           <section className="card about-story-card about-editorial-card">
             <div className="card-body">
@@ -76,16 +88,6 @@ function AboutUs() {
               </div>
             </div>
           </section>
-        </main>
-
-        <aside className="col-12 col-lg-2 about-profile-col">
-          <div className="card about-name-card">
-            <div className="card-body">Cristian Gil</div>
-          </div>
-
-          <article className="card about-profile-photo-card">
-            <img src={cristianGilPhoto} className="card-img about-profile-image" alt="Cristian Gil" />
-          </article>
 
           <section className="card about-profile-text-card">
             <div className="card-body">
@@ -102,12 +104,10 @@ function AboutUs() {
               </p>
             </div>
           </section>
-        </aside>
+        </div>
       </div>
     </section>
   )
 }
 
 export default AboutUs
-
-

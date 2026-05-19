@@ -822,7 +822,7 @@
 }
 
 .catalog-heading-copy {
-  padding: 22px clamp(28px, 5vw, 70px);
+  padding: 22px var(--ss-hero-copy-x, clamp(28px, 4vw, 64px));
 }
 
 @media (max-width: 991.98px) {
@@ -849,6 +849,13 @@
 
   .catalog-heading p {
     font-size: clamp(0.9rem, 2vw, 1rem);
+  }
+}
+
+@media (min-width: 992px) {
+  .catalog-heading-copy {
+    align-content: start;
+    padding: 72px 96px 22px;
   }
 }
 

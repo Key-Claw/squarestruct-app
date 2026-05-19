@@ -1,10 +1,11 @@
-import carruselDesignImage from '../assets/inicio/carrusel-design.webp'
+﻿import carruselDesignImage from '../assets/inicio/carrusel-design.webp'
 import carruselPersonasImage from '../assets/inicio/carrusel-personas.webp'
 import carruselSostenibleImage from '../assets/inicio/carrusel-sostenible.webp'
 import inicioCatalogoImage from '../assets/inicio/inicio-catalogo.webp'
 import inicioDesignImage from '../assets/inicio/inicio-design.webp'
 import inicioGaleriaImage from '../assets/inicio/inicio-galeeria.webp'
 import inicioSquarestructImage from '../assets/inicio/inicio-squarestruct.webp'
+import Icon from '../components/ui/Icon'
 
 const homeHighlights = [
   {
@@ -26,24 +27,28 @@ const homeHighlights = [
 ]
 
 const homeFeatureCards = [
-  {
-    title: 'Explorar catálogo',
-    text: 'Encuentra bloques, pilares y accesorios con una vista clara y ordenada.',
-    image: inicioCatalogoImage,
-    action: 'Ir al catálogo',
-    handler: (onNavigate) => onNavigate('catalog', '', 'productos'),
-  },
+
   {
     title: 'Inspirarte',
     text: 'Descubre ideas de composición y referencias visuales para tus proyectos.',
     image: inicioGaleriaImage,
+    icon: 'image',
     action: 'Ver galería',
     handler: (onNavigate) => onNavigate('gallery'),
+  },
+  {
+    title: 'Explorar catálogo',
+    text: 'Encuentra bloques, pilares y accesorios con una vista clara y ordenada.',
+    image: inicioCatalogoImage,
+    icon: 'cube',
+    action: 'Ir al catálogo',
+    handler: (onNavigate) => onNavigate('catalog', '', 'productos'),
   },
   {
     title: 'Generar tu estructura',
     text: 'Crea tu propio diseño y calcula los materiales necesarios para hacerlo realidad.',
     image: inicioDesignImage,
+    icon: 'penTool',
     action: 'Ir a Deseño',
     handler: (onNavigate) => onNavigate('design'),
   },
@@ -154,11 +159,12 @@ function Home({ onNavigate }) {
 
               <div className="home-highlight-grid">
                 {homeHighlights.map((item, index) => {
-                  const emojis = ['🧩', '💪', '📐', '🌱'];
                   return (
                     <article className="home-highlight" key={item.title}>
-                      <span className="home-highlight-icon">{emojis[index]}</span>
-                      <h3>{item.title}</h3>
+                      <div className="home-highlight-header">
+                        <span className="home-highlight-icon">{index + 1}</span>
+                        <h3>{item.title}</h3>
+                      </div>
                       <p>{item.text}</p>
                     </article>
                   );
@@ -177,14 +183,14 @@ function Home({ onNavigate }) {
 
       <div className="row g-4 home-feature-grid">
         {homeFeatureCards.map((item) => {
-          const emojis = ['🔍', '💡', '🏗️'];
-          const index = homeFeatureCards.indexOf(item);
           return (
             <div className="col-12 col-lg-4" key={item.title}>
               <article className="page-card home-feature-card h-100">
                 <img src={item.image} className="home-feature-image" alt={item.title} />
                 <div className="page-card-body home-feature-body">
-                  <span className="home-feature-badge">{emojis[index]}</span>
+                  <span className="home-feature-badge">
+                    <Icon name={item.icon} size={22} />
+                  </span>
                   <h3>{item.title}</h3>
                   <p>{item.text}</p>
                   <button type="button" className="home-feature-link" onClick={() => item.handler(onNavigate)}>

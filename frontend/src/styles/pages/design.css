@@ -671,6 +671,7 @@
   justify-items: start;
   gap: 14px;
   width: 100%;
+  padding: 22px var(--ss-hero-copy-x, clamp(28px, 4vw, 64px));
   background: transparent;
 }
 
@@ -735,6 +736,13 @@
 
   .design-topbar p {
     font-size: clamp(0.9rem, 2vw, 1rem);
+  }
+}
+
+@media (min-width: 992px) {
+  .design-topbar-copy {
+    align-content: start;
+    padding: 72px 96px 22px;
   }
 }
 
