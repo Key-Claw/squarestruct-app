@@ -65,8 +65,6 @@ function AppShell() {
     const nextTab = getSettingsTabFromPath(location.pathname)
     const protectedTab = ADMIN_ONLY_SETTINGS_TABS.has(nextTab) && !isAdmin() ? 'perfil' : nextTab
 
-    setSettingsTab(protectedTab)
-
     if (protectedTab !== nextTab) {
       navigate(getSettingsRoute(protectedTab), { replace: true })
     }

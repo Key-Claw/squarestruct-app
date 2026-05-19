@@ -101,10 +101,6 @@ const getSettingsHeader = (activeTab, tabs, isAdminUser) => {
 function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange }) {
   const [activeTab, setActiveTab] = useState(getInitialTab(initialTab, isAdminUser))
 
-  useEffect(() => {
-    setActiveTab(getInitialTab(initialTab, isAdminUser))
-  }, [initialTab, isAdminUser])
-
   // Profile tab state
   const [profileData, setProfileData] = useState(user)
   const [isProfileLoading, setIsProfileLoading] = useState(false)

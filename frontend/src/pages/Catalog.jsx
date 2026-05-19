@@ -27,7 +27,7 @@ function Catalog({ onNavigate, onAddToCart, searchTerm = '', initialSection = ''
   const [categoriaActiva, setCategoriaActiva] = useState('todos')
   const [materialActivo, setMaterialActivo] = useState(MATERIAL_ALL)
   const [orden, setOrden] = useState('reciente')
-  const [precioMax, setPrecioMax] = useState(1000)
+  const [precioMax, setPrecioMax] = useState(null)
   const [paginaActiva, setPaginaActiva] = useState(1)
   const [viewMode, setViewMode] = useState('grid')
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false)
@@ -59,6 +59,7 @@ function Catalog({ onNavigate, onAddToCart, searchTerm = '', initialSection = ''
 
   const handleResetSearch = () => {
     setBusqueda('')
+    setPaginaActiva(1)
     onNavigate('catalog', '')
   }
 
@@ -67,7 +68,7 @@ function Catalog({ onNavigate, onAddToCart, searchTerm = '', initialSection = ''
     setCategoriaActiva('todos')
     setMaterialActivo(MATERIAL_ALL)
     setOrden('reciente')
-    setPrecioMax(Math.ceil(precioMaxCatalogo))
+    setPrecioMax(null)
     setPaginaActiva(1)
   }
 
@@ -79,9 +80,30 @@ function Catalog({ onNavigate, onAddToCart, searchTerm = '', initialSection = ''
 
   const handleSearchChange = (event) => {
     setBusqueda(event.target.value)
+    setPaginaActiva(1)
     window.requestAnimationFrame(() => {
       resultsBarRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
     })
+  }
+
+  const handleSelectCategoria = (categoryId) => {
+    setCategoriaActiva(categoryId)
+    setPaginaActiva(1)
+  }
+
+  const handleSelectMaterial = (materialId) => {
+    setMaterialActivo(materialId)
+    setPaginaActiva(1)
+  }
+
+  const handlePriceMaxChange = (nextPrice) => {
+    setPrecioMax(nextPrice)
+    setPaginaActiva(1)
+  }
+
+  const handleOrderChange = (event) => {
+    setOrden(event.target.value)
+    setPaginaActiva(1)
   }
 
   const productosCatalogo = useMemo(() => (
@@ -106,13 +128,8 @@ function Catalog({ onNavigate, onAddToCart, searchTerm = '', initialSection = ''
     ]
   }, [productosCatalogo])
 
-  const precioMaxCatalogo = useMemo(() => (
-    Math.max(1, ...productosCatalogo.map((product) => Number(product.precio) || 0))
-  ), [productosCatalogo])
-
-  useEffect(() => {
-    setPrecioMax(Math.ceil(precioMaxCatalogo))
-  }, [precioMaxCatalogo])
+  const precioMaxCatalogo = Math.max(1, ...productosCatalogo.map((product) => Number(product.precio) || 0))
+  const precioMaxActivo = precioMax ?? Math.ceil(precioMaxCatalogo)
 
   const productosFiltrados = useMemo(() => {
     const resultadoBusqueda = filtrarProductos(busqueda, productosCatalogo)
@@ -134,7 +151,7 @@ function Catalog({ onNavigate, onAddToCart, searchTerm = '', initialSection = ''
         || material.includes('reciclable')
         || material.includes('eco')
     })
-    const resultadoPrecio = resultadoMaterial.filter((product) => Number(product.precio || 0) <= precioMax)
+    const resultadoPrecio = resultadoMaterial.filter((product) => Number(product.precio || 0) <= precioMaxActivo)
 
     return [...resultadoPrecio].sort((a, b) => {
       if (orden === 'precio-menor') {
@@ -147,7 +164,7 @@ function Catalog({ onNavigate, onAddToCart, searchTerm = '', initialSection = ''
 
       return Number(b.idProducto) - Number(a.idProducto)
     })
-  }, [busqueda, categoriaActiva, materialActivo, orden, productosCatalogo, precioMax])
+  }, [busqueda, categoriaActiva, materialActivo, orden, productosCatalogo, precioMaxActivo])
 
   const totalPaginas = Math.max(1, Math.ceil(productosFiltrados.length / CATALOG_VISIBLE_PRODUCTS))
   const paginaSegura = Math.min(paginaActiva, totalPaginas)
@@ -156,10 +173,6 @@ function Catalog({ onNavigate, onAddToCart, searchTerm = '', initialSection = ''
     const startIndex = (paginaSegura - 1) * CATALOG_VISIBLE_PRODUCTS
     return productosFiltrados.slice(startIndex, startIndex + CATALOG_VISIBLE_PRODUCTS)
   }, [paginaSegura, productosFiltrados])
-
-  useEffect(() => {
-    setPaginaActiva(1)
-  }, [busqueda, categoriaActiva, materialActivo, orden, precioMax])
 
   useEffect(() => {
     if (!mobileFiltersOpen) {
@@ -229,12 +242,12 @@ function Catalog({ onNavigate, onAddToCart, searchTerm = '', initialSection = ''
             id="catalogFilters"
             categorias={categorias}
             categoriaActiva={categoriaActiva}
-            onSelectCategoria={setCategoriaActiva}
+            onSelectCategoria={handleSelectCategoria}
             materialActivo={materialActivo}
-            onSelectMaterial={setMaterialActivo}
+            onSelectMaterial={handleSelectMaterial}
             maxCatalogPrice={precioMaxCatalogo}
-            priceMax={precioMax}
-            onPriceMaxChange={setPrecioMax}
+            priceMax={precioMaxActivo}
+            onPriceMaxChange={handlePriceMaxChange}
             onResetFilters={handleResetFilters}
             isMobileOpen={mobileFiltersOpen}
             onCloseMobile={() => setMobileFiltersOpen(false)}
@@ -275,7 +288,7 @@ function Catalog({ onNavigate, onAddToCart, searchTerm = '', initialSection = ''
                   className="form-select catalog-sort-select"
                   aria-label="Ordenar catálogo"
                   value={orden}
-                  onChange={(event) => setOrden(event.target.value)}
+                  onChange={handleOrderChange}
                 >
                   <option value="reciente">Más reciente</option>
                   <option value="precio-menor">Precio menor</option>
