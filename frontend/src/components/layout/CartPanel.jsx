@@ -1,4 +1,4 @@
-import '../styles/components/cart-panel.css'
+import '../../styles/components/layout/cart-panel.css'
 
 /**
  * Panel deslizante del carrito

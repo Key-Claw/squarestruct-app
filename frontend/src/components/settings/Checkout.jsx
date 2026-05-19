@@ -1,7 +1,7 @@
 import { useState } from 'react'
-import Icon from './ui/Icon'
-import { crearPedido } from '../services/orderService'
-import '../styles/components/checkout.css'
+import Icon from '../common/Icon'
+import { crearPedido } from '../../services/orderService'
+import '../../styles/components/settings/checkout.css'
 
 /**
  * Componente Checkout - Permite completar la compra seleccionando método de pago y dirección.

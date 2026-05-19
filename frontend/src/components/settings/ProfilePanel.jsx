@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
-import { getProfile } from '../services/authService'
-import '../styles/layout/profile-panel.css'
+import { getProfile } from '../../services/authService'
+import '../../styles/components/settings/profile-panel.css'
 
 /**
  * Panel deslizante del perfil del usuario

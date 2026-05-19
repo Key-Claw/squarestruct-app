@@ -1,11 +1,11 @@
 ﻿import { useState } from 'react'
 import { Link, NavLink } from 'react-router-dom'
 
-import Icon from './ui/Icon'
-import logo from '../assets/logo/squarestruct-icon.png'
-import logoText from '../assets/logo/squarestruct-texto.png'
-import { MAIN_ROUTES, NAV_LINKS } from '../routes'
-import '../styles/layout/navbar.css'
+import Icon from '../common/Icon'
+import logo from '../../assets/logo/squarestruct-icon.png'
+import logoText from '../../assets/logo/squarestruct-texto.png'
+import { MAIN_ROUTES, NAV_LINKS } from '../../routes'
+import '../../styles/layout/navbar.css'
 
 const SEARCHABLE_PAGES = [
   {
@@ -273,5 +273,4 @@ function Navbar({
 }
 
 export default Navbar
-
 

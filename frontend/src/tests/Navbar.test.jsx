@@ -4,7 +4,7 @@
  */
 import { render, screen } from '@testing-library/react'
 import { HashRouter } from 'react-router-dom'
-import Navbar from '../components/Navbar'
+import Navbar from '../components/layout/Navbar'
 
 test('Navbar renderiza y muestra el botón Inicio', () => {
   // Mock de funciones callback (props vacías)

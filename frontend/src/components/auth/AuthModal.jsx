@@ -1,9 +1,9 @@
 import { useState } from 'react'
-import LoginForm from './auth/LoginForm'
-import RegisterForm from './auth/RegisterForm'
-import { loginUser, registerUser } from '../services/authService'
-import { isValidEmail } from '../utils/validators'
-import '../styles/components/auth-modal.css'
+import LoginForm from './LoginForm'
+import RegisterForm from './RegisterForm'
+import { loginUser, registerUser } from '../../services/authService'
+import { isValidEmail } from '../../utils/validators'
+import '../../styles/components/auth/auth-modal.css'
 
 function AuthModal({ isOpen, isLoginMode, onClose, onToggleMode, onUserLogin, onNavigate }) {
   const [isLoading, setIsLoading] = useState(false)
