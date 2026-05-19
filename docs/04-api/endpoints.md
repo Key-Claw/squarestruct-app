@@ -1,10 +1,9 @@
-# API REST
+
+# API REST: endpoints reales y defensa DAW
 
 ## Objetivo
 
-La API REST permite que el frontend se comunique con el backend.
-
-El frontend envia peticiones HTTP y el backend responde con datos en formato JSON.
+La API REST permite que el frontend se comunique con el backend de forma segura y estructurada. Esta documentación resume los endpoints reales, su protección y cómo justificarlos en una defensa DAW o presentación profesional.
 
 ## URL base
 
@@ -171,8 +170,11 @@ Reglas principales:
 - Pedidos tienen backend para creacion, listado, detalle y cancelacion logica.
 - El checkout completo desde carrito queda para fases siguientes.
 
-## Idea clave para explicar
 
-La API es el puente entre frontend y base de datos. El frontend no consulta MySQL directamente: siempre pasa por el backend.
+## Buenas prácticas y defensa DAW
 
-Si usas la coleccion de Postman del repo, la URL base se configura con la variable `baseUrl` y por defecto apunta a `http://localhost:3000`.
+- Explica la protección real de endpoints con JWT y roles.
+- Muestra ejemplos de rutas públicas, protegidas y de administración.
+- Justifica el uso de middlewares y la separación de responsabilidades.
+- Demuestra con Postman los flujos de login, consulta, escritura y cancelación lógica.
+- Relaciona la API con la trazabilidad y la seguridad de los datos.

@@ -1,10 +1,9 @@
-# Tecnologias y comandos para defensa
+
+# Tecnologías, comandos y checklist de defensa DAW
 
 ## Objetivo
 
-Este documento resume las tecnologias reales usadas en SquareStruct y los comandos principales para instalar, arrancar, validar y explicar el proyecto.
-
-Esta pensado como chuleta de defensa para dos alumnos de DAW1: no sustituye a la documentacion tecnica completa, pero ayuda a tener una vision clara y ordenada.
+Este documento resume las tecnologías reales usadas en SquareStruct y los comandos principales para instalar, arrancar, validar y defender el proyecto. Es la chuleta de defensa DAW: no sustituye la documentación técnica, pero ayuda a repasar y argumentar en la presentación profesional.
 
 ## Vision general
 
@@ -291,11 +290,14 @@ Uso:
 - `git log --oneline`: revisar commits.
 - `git diff --check`: detectar errores de espacios antes de commit.
 
-## Como defenderlo en una frase
 
-SquareStruct es una aplicacion web por capas: React/Vite en frontend, Express en backend y MySQL como base de datos. La V2 refuerza permisos, pedidos, testing, Postman, documentacion y CI sobre la base funcional del MVP v1.
+## Buenas prácticas y defensa DAW
 
-## Checklist antes de entregar
+- Explica la arquitectura real y la separación de capas.
+- Justifica la protección de rutas, roles y datos sensibles.
+- Muestra ejemplos de comandos y flujos reales.
+- Relaciona la checklist con la calidad, la seguridad y la trazabilidad.
+- Usa este documento como guía rápida en la defensa o demo.
 
 ```bash
 cd backend

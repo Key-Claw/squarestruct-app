@@ -1,190 +1,71 @@
+
 # Backend SquareStruct
 
 ## Objetivo
 
-El backend implementa la API REST de SquareStruct.
+El backend implementa la API REST de SquareStruct, actuando como capa intermedia entre el frontend y la base de datos MySQL. Valida datos, aplica reglas de negocio, gestiona autenticación JWT, roles y permisos, y expone endpoints REST seguros y claros.
 
-Su responsabilidad es actuar como capa intermedia entre el frontend y la base de datos MySQL. El frontend no accede directamente a MySQL: hace peticiones HTTP al backend, y el backend valida datos, aplica reglas de negocio, consulta la base de datos y devuelve respuestas JSON.
+## Tecnologías principales
 
-Actualmente gestiona:
+- Node.js (entorno de ejecución)
+- Express (API REST modular)
+- MySQL 8.4 (base de datos relacional)
+- mysql2/promise (conexión a MySQL)
+- dotenv (.env y variables de entorno)
+- cors (CORS frontend-backend)
+- bcrypt (hash de contraseñas)
+- jsonwebtoken (tokens JWT)
 
-Nota de revision V2: ademas de la base tecnica inicial, el backend ya protege la escritura de productos con rol `admin` y permite crear, consultar y cancelar pedidos de forma logica sin borrarlos de la base de datos.
+## Comandos y scripts disponibles
 
-- autenticación de usuarios;
-- perfil de usuario autenticado;
-- administración básica de usuarios;
-- catálogo de productos modulares;
-- base técnica para creación y consulta de pedidos;
-- conexión con MySQL;
-- consultas y scripts SQL para explicar y validar el modelo de datos.
+Desde la carpeta `backend/`:
 
-## Tecnologías usadas
+- `npm install` — Instala dependencias
+- `npm run dev` — Arranca el backend con Nodemon (desarrollo hot reload)
+- `npm start` — Arranca el backend en modo producción
+- `npm test` — Ejecuta todos los tests (Jest)
+- `npm run test:unit` — Ejecuta solo tests unitarios
+- `npm run test:integration` — Ejecuta solo tests de integración (requiere MySQL levantado)
 
-- Node.js como entorno de ejecución.
-- Express para crear la API REST.
-- MySQL como base de datos relacional.
-- mysql2/promise para conectarse a MySQL desde Node.js.
-- dotenv para cargar variables de entorno desde `.env`.
-- cors para permitir peticiones desde el frontend.
-- bcrypt para hashear contraseñas.
-- jsonwebtoken para generar y validar tokens JWT.
-- Jest y Supertest para tests unitarios e integración.
-- Nodemon para arrancar el backend en modo desarrollo.
-
-El proyecto usa módulos ES (`import/export`) porque `package.json` contiene:
-
-```json
-"type": "module"
-```
-
-## Estructura
-
-```text
-backend/
-  db/
-    schema.sql       Creación completa de tablas, claves e índices
-    seeds.sql        Datos iniciales para desarrollo y demo
-    consultas.md     Consultas útiles para comprobar y explicar la BD
-    migrations/      Cambios SQL aplicados durante la evolución del modelo
-    backups/         Documentación de copias de seguridad
-  postman/           Colección para pruebas manuales de la API
-  src/
-    app.js           Configuración de Express, rutas y pool de MySQL
-    config/          Configuración auxiliar
-    controllers/     Lógica de entrada de las peticiones
-    middlewares/     Autenticación, autorización y validaciones
-    routes/          Endpoints de la API
-    services/        Servicios auxiliares del MVP
-    utils/           Funciones auxiliares
-  tests/
-    unit/            Tests unitarios
-    integration/     Tests de integración
-  .env.example       Plantilla de variables de entorno
-  package.json       Scripts y dependencias
-  server.js          Punto de entrada del backend
-```
-
-## Configuración inicial
-
-Desde la carpeta `backend/`, instala dependencias:
-
-```bash
-npm install
-```
-
-Crea el archivo `.env` a partir del ejemplo:
-
-```bash
-cp .env.example .env
-```
-
-Variables importantes:
-
-```env
-PORT=3000
-DB_HOST=localhost
-DB_PORT=3306
-DB_USER=admin
-DB_PASSWORD=20doblajepuro37
-DB_NAME=squarestruct
-JWT_SECRET=CAMBIA_ESTA_CLAVE
-VITE_API_URL=http://localhost:3000/api
-NODE_ENV=development
-```
-
-Si se usa la base de datos levantada con `docker/docker-compose.yml`, los valores de conexión deben coincidir con los definidos en Docker.
-
-`JWT_SECRET` debe cambiarse antes de desplegar el proyecto fuera del entorno local.
-
-`VITE_API_URL` indica la URL base que usa el frontend para llamar a la API. En desarrollo local apunta al backend:
-
-```text
-http://localhost:3000/api
-```
-
-Aunque el prefijo `VITE_` es propio del frontend con Vite, se documenta aquí porque conecta directamente el frontend con este backend.
-
-## Base de datos con Docker
+### Base de datos con Docker
 
 Desde la raíz del repositorio:
 
 ```bash
 docker compose -f docker/docker-compose.yml up -d
 ```
+Esto levanta MySQL y ejecuta automáticamente los scripts de `db/schema.sql` y `db/seeds.sql`.
 
-Este comando levanta MySQL y ejecuta automáticamente:
-
-```text
-backend/db/schema.sql
-backend/db/seeds.sql
-```
-
-Los scripts de inicialización solo se ejecutan la primera vez que MySQL crea el volumen de datos. Si se cambia `schema.sql` o `seeds.sql` y se quiere reconstruir la base de datos desde cero:
+Si cambias el modelo y quieres reiniciar la base de datos:
 
 ```bash
 docker compose -f docker/docker-compose.yml down -v
 docker compose -f docker/docker-compose.yml up -d
 ```
-
-## Arrancar backend
-
-Desde `backend/`:
-
-```bash
-npm run dev
-```
-
-Modo normal:
-
-```bash
-npm start
-```
-
-URL local:
-
-```text
-http://localhost:3000
-```
-
-Comprobaciones rápidas:
-
-```text
 GET /
 GET /api/health
 GET /api/db-status
 ```
 
-## Scripts disponibles
 
-```bash
-npm run dev
-```
+## Autenticación, middlewares y roles
 
-Arranca el backend con Nodemon y reinicia el servidor al detectar cambios.
+La autenticación se basa en JWT y middlewares Express:
 
-```bash
-npm start
-```
+- `auth.js`: Verifica el token JWT y añade el usuario autenticado a `req.user`.
+- `admin.js`: Permite acceso solo a usuarios con rol `admin`.
+- `validacion.js` y `validacionProducto.js`: Validan datos de entrada para registro, login y productos.
 
-Arranca el backend con Node.js.
+**Flujo típico:**
+1. El usuario se registra (`/api/usuarios/register`), la contraseña se hashea con bcrypt.
+2. Al hacer login (`/api/usuarios/login`), se devuelve un JWT.
+3. El frontend envía el JWT en la cabecera `Authorization: Bearer TOKEN`.
+4. El middleware `auth.js` valida el token en rutas protegidas.
+5. El middleware `admin.js` protege rutas de administración.
 
-```bash
-npm test
-```
-
-Ejecuta todos los tests.
-
-```bash
-npm run test:unit
-```
-
-Ejecuta tests unitarios.
-
-```bash
-npm run test:integration
-```
-
-Ejecuta tests de integración. Para estos tests es necesario que MySQL esté levantado y que `.env` apunte a una base de datos válida.
+**Roles:**
+- `usuario`: acceso normal
+- `admin`: acceso a gestión de usuarios y productos
 
 ## Autenticación y autorización
 
@@ -215,23 +96,39 @@ Roles actuales:
 
 ### Salud y estado
 
-| Método | Ruta | Descripción |
-| --- | --- | --- |
-| GET | `/` | Comprueba que el backend responde. |
-| GET | `/api/health` | Devuelve `OK`. |
-| GET | `/api/db-status` | Comprueba tablas y totales básicos en MySQL. |
+## Endpoints y rutas principales
+
+**Salud y estado:**
+- `GET /` — Comprueba que el backend responde
+- `GET /api/health` — Devuelve `OK`
+- `GET /api/db-status` — Comprueba tablas y totales básicos en MySQL
 
 ### Usuarios y auth
 
-| Método | Ruta | Protección | Descripción |
-| --- | --- | --- | --- |
-| POST | `/api/usuarios/register` | Pública | Registra un usuario. |
-| POST | `/api/usuarios/login` | Pública | Inicia sesión y devuelve un JWT. |
-| GET | `/api/usuarios` | Admin | Lista usuarios. |
-| GET | `/api/usuarios/:id` | Admin | Consulta un usuario. |
-| PUT | `/api/usuarios/:id` | Admin | Actualiza un usuario. |
-| DELETE | `/api/usuarios/:id` | Admin | Elimina un usuario. |
-| GET | `/api/perfil` | Usuario autenticado | Devuelve los datos del usuario a partir del JWT. |
+**Usuarios y autenticación:**
+- `POST /api/usuarios/register` — Registro (pública)
+- `POST /api/usuarios/login` — Login y obtención de JWT (pública)
+- `GET /api/usuarios` — Listar usuarios (admin)
+- `GET /api/usuarios/:id` — Consultar usuario (admin)
+- `PUT /api/usuarios/:id` — Actualizar usuario (admin)
+- `DELETE /api/usuarios/:id` — Eliminar usuario (admin)
+- `GET /api/perfil` — Perfil del usuario autenticado
+
+**Productos:**
+- `GET /api/productos` — Listar productos (pública)
+- `GET /api/productos/:id` — Consultar producto (pública)
+- `POST /api/productos` — Crear producto (admin)
+- `PUT /api/productos/:id` — Editar producto (admin)
+- `DELETE /api/productos/:id` — Eliminar producto (admin)
+
+**Pedidos:**
+- `GET /api/pedidos` — Listar pedidos del usuario autenticado
+- `POST /api/pedidos` — Crear pedido
+- `GET /api/pedidos/:id` — Consultar detalle de pedido
+- `PATCH /api/pedidos/:id/cancelar` — Cancelar pedido (lógica, no borrado)
+
+**Alias:**
+- `/api/orders` — Alias para pedidos (internacionalización)
 
 Ejemplo de registro:
 
@@ -253,32 +150,30 @@ Ejemplo de login:
 }
 ```
 
-### Productos
 
-Las rutas `GET` son publicas. Las rutas `POST`, `PUT` y `DELETE` requieren JWT y rol `admin`.
+## Variables de entorno y configuración
 
-| Método | Ruta | Descripción |
-| --- | --- | --- |
-| GET | `/api/productos` | Lista productos con información del proveedor. |
-| GET | `/api/productos/:id` | Consulta un producto por id. |
-| POST | `/api/productos` | Crea un producto. |
-| PUT | `/api/productos/:id` | Actualiza un producto. |
-| DELETE | `/api/productos/:id` | Elimina un producto. |
+Copia `.env.example` a `.env` y revisa los valores:
 
-Campos principales de producto:
+```env
+PORT=3000
+DB_HOST=localhost
+DB_PORT=3306
+DB_USER=admin
+DB_PASSWORD=tu_password
+DB_NAME=squarestruct
+JWT_SECRET=CAMBIA_ESTA_CLAVE
+VITE_API_URL=http://localhost:3000/api
+NODE_ENV=development
+```
 
-- `nombre`
-- `descripcion`
-- `precio`
-- `tipo`: `bloque` o `pilar`
-- `material`: `Plastico reciclable` u `Hormigon`
-- `alto`
-- `ancho`
-- `largo`
-- `idProveedor`
+- `PORT`: Puerto del backend Express
+- `DB_*`: Configuración de conexión a MySQL (debe coincidir con Docker si usas Compose)
+- `JWT_SECRET`: Clave secreta para firmar tokens JWT (¡cámbiala en producción!)
+- `VITE_API_URL`: URL base que usa el frontend para llamar a la API (documentada aquí porque conecta ambos)
+- `NODE_ENV`: Entorno de ejecución
 
-Las dimensiones se guardan porque el catálogo está pensado para piezas modulares y para futuras funcionalidades de cálculo, presupuesto y representación 3D.
-
+> Si usas Docker, asegúrate de que los valores coincidan con los definidos en `docker/docker-compose.yml`.
 ### Pedidos
 
 Revision V2: la API de pedidos permite crear pedidos autenticados, listar pedidos del usuario, consultar un pedido concreto y cancelarlo de forma logica. El checkout completo desde el carrito del frontend queda para fases siguientes.
@@ -414,34 +309,51 @@ Además, la base de datos refuerza reglas importantes con restricciones:
 
 ## Pruebas manuales con Postman
 
-Existe una colección en:
+Las colecciones Postman están en:
 
-```text
-backend/postman/squarestruct-mvp.postman_collection.json
-```
+- `backend/postman/squarestruct-mvp.postman_collection.json`
+- `backend/postman/squarestruct-v2.postman_collection.json`
 
-Sirve para probar manualmente el flujo básico del MVP:
+Permiten probar manualmente:
+- Registro y login (JWT)
+- Acceso a perfil autenticado
+- Endpoints públicos y protegidos
+- Gestión admin de usuarios y productos
+- Pedidos y cancelación lógica
 
-- registro;
-- login;
-- acceso a perfil con token;
-- productos;
-- gestión admin de usuarios;
-- base de pedidos.
+Variables recomendadas: `baseUrl`, `token`, `adminToken`, `idUsuario`, `idProducto`.
+
+Para flujos de defensa DAW, se recomienda mostrar:
+- Registro, login y obtención de token
+- Acceso a rutas protegidas con y sin token
+- Pruebas de roles (usuario/admin)
 
 ## Tests automatizados
 
-Los tests del backend estan documentados en `tests/README.md`.
+
+Los tests del backend están en `backend/tests/` y documentados en `tests/README.md`.
 
 Comandos:
+- `npm test` — Ejecuta todos los tests (Jest)
+- `npm run test:unit` — Solo tests unitarios
+- `npm run test:integration` — Solo tests de integración (requiere MySQL levantado)
 
-```bash
-npm test
-npm run test:unit
-npm run test:integration
-```
+Cobertura:
+- Controladores, servicios y middlewares clave
+- Flujos de registro, login, productos y pedidos
+
+Para defensa DAW, se recomienda mostrar tests de integración y mocks de base de datos.
 
 ## Notas de desarrollo
+
+## Buenas prácticas y defensa DAW
+
+- Documenta variables y comandos en `.env.example`.
+- Usa middlewares para proteger rutas y validar datos.
+- Mantén la separación de controladores, servicios y rutas.
+- Explica los flujos de autenticación y roles en la defensa.
+- Muestra ejemplos reales en Postman y tests.
+- Justifica el uso de JWT, roles y validaciones en la presentación.
 
 El backend se ha trabajado por capas:
 

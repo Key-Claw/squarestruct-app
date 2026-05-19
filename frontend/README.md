@@ -94,24 +94,57 @@ Login, registro, carrito, checkout y Mi Cuenta no tienen rutas propias por ahora
 | `catalogo/CatalogFilters.jsx` | Sidebar de filtros del catalogo. |
 | `catalogo/CatalogProductCard.jsx` | Tarjeta de producto del catalogo. |
 
+
+## Autenticación, roles y protección de rutas
+
+La autenticación se basa en JWT:
+- El usuario se registra o inicia sesión, obteniendo un token JWT.
+- El token se almacena en localStorage y se añade automáticamente en la cabecera `Authorization` por los servicios.
+- El frontend detecta expiración y fuerza logout si el token es inválido.
+- El rol (`usuario` o `admin`) se obtiene del backend y se usa para mostrar u ocultar vistas protegidas.
+- Las rutas de administración solo aparecen si el usuario es `admin`.
+
+**Flujo típico:**
+1. Registro/login → obtención de JWT
+2. Navegación protegida por rol (admin/usuario)
+3. Logout borra el token y limpia el estado
+
+**Defensa DAW:**
+- Demuestra el acceso condicional a vistas y componentes según rol
+- Muestra el flujo de login, expiración y logout
+- Justifica el uso de JWT y protección de rutas en la interfaz
+
 ## Servicios y backend
 
-Los servicios viven en `src/services/` y evitan hacer `fetch` directamente desde todas las paginas.
+Los servicios viven en `src/services/` y evitan hacer `fetch` directamente desde todas las páginas.
 
-| Servicio | Funcion |
+| Servicio | Función |
 | --- | --- |
-| `api.js` | Base comun para `GET`, `POST`, `PUT` y `DELETE`. Lee `VITE_API_URL` o usa `/api` por defecto. Anade `Authorization: Bearer <token>` si hay token. |
-| `authService.js` | Registro, login, logout, usuario actual, validacion de expiracion JWT, perfil, listado y actualizacion de usuarios. |
+| `api.js` | Base común para `GET`, `POST`, `PUT` y `DELETE`. Lee `VITE_API_URL` o usa `/api` por defecto. Añade `Authorization: Bearer <token>` si hay token. |
+| `authService.js` | Registro, login, logout, usuario actual, validación de expiración JWT, perfil, listado y actualización de usuarios. |
 | `productService.js` | Carga productos con `/productos` y filtra productos en cliente. |
-| `orderService.js` | Funciones para crear y consultar pedidos usando `/orders`. Existe la base, pero la integracion completa de checkout queda para fases siguientes. |
+| `orderService.js` | Funciones para crear y consultar pedidos usando `/orders`. Existe la base, pero la integración completa de checkout queda para fases siguientes. |
 
-Durante desarrollo, `vite.config.js` redirige `/api` a `http://localhost:3000`, por lo que normalmente no hace falta configurar nada si el backend esta arrancado en ese puerto.
+Durante desarrollo, `vite.config.js` redirige `/api` a `http://localhost:3000`, por lo que normalmente no hace falta configurar nada si el backend está arrancado en ese puerto.
 
 Si se quiere apuntar a otra API, se puede crear un `.env` del frontend con:
 
 ```text
 VITE_API_URL=http://localhost:3000/api
 ```
+
+
+## Testing y defensa DAW
+
+**Testing:**
+- `npm run test:run` — Ejecuta tests automatizados (Vitest + Testing Library)
+- Cobertura: componentes principales, servicios, helpers y flujos de usuario
+- Los tests viven en `src/tests/` y junto a componentes críticos
+
+**Defensa DAW:**
+- Demuestra tests de componentes clave (AuthModal, Catalog, Navbar)
+- Justifica la cobertura y la integración con el backend simulado
+- Explica la separación de tests unitarios y de integración
 
 ## Comandos
 
@@ -133,13 +166,13 @@ URL local habitual:
 http://localhost:5173
 ```
 
-Revisar calidad del codigo:
+Revisar calidad del código:
 
 ```bash
 npm run lint
 ```
 
-Comprobar compilacion de produccion:
+Comprobar compilación de producción:
 
 ```bash
 npm run build
@@ -151,17 +184,16 @@ Ejecutar tests automatizados:
 npm run test:run
 ```
 
-## Comprobacion antes de entregar
 
-Antes de abrir una pull request o dar por terminada una tarea de frontend:
+## Buenas prácticas y checklist de entrega
 
-1. Arrancar backend si la tarea usa datos reales.
-2. Ejecutar `npm run lint`.
-3. Ejecutar `npm run build`.
-4. Ejecutar `npm run test:run`.
-5. Probar en navegador las rutas afectadas.
-6. Si hay login/admin, cerrar sesion e iniciar sesion de nuevo para renovar el JWT.
-7. Revisar que no quedan errores visibles en consola.
+- Documenta variables y comandos en `.env.example`.
+- Usa servicios para toda comunicación con la API.
+- Protege vistas y componentes según el rol del usuario.
+- Mantén la separación de componentes, páginas y servicios.
+- Ejecuta siempre `lint`, `build` y `test:run` antes de entregar.
+- Justifica la estructura y flujos en la defensa DAW.
+- Muestra ejemplos reales de login, navegación protegida y tests en la presentación.
 
 ## Estado V2 sobre base MVP
 
