@@ -126,6 +126,11 @@ function Users({ onNavigate, user, onAuthExpired }) {
     }
   }
 
+  const getRolText = (rol) => {
+    if (rol === 'admin') return 'ADMIN'
+    return 'USUARIO'
+  }
+
   /**
    * Formatea una fecha ISO a formato legible.
    * @param {string} dateString - Fecha en formato ISO.
@@ -211,7 +216,6 @@ function Users({ onNavigate, user, onAuthExpired }) {
                   <table className="table table-hover mb-0">
                     <thead>
                       <tr>
-                        <th>ID</th>
                         <th>Nombre</th>
                         <th>Correo electrónico</th>
                         <th>Rol</th>
@@ -224,13 +228,12 @@ function Users({ onNavigate, user, onAuthExpired }) {
                       {usuarios && usuarios.length > 0 ? (
                         usuarios.map((u) => (
                           <tr key={u.idUsuario}>
-                            <td className="text-muted">{u.idUsuario}</td>
                             <td className="fw-bold">{u.nombre}</td>
                             <td>{u.email}</td>
                             <td>
                               {/* Badge con el rol actual del usuario. */}
                               <span className={getRolBadgeClass(u.rol)}>
-                                {u.rol.toUpperCase()}
+                                {getRolText(u.rol)}
                               </span>
                             </td>
                             <td className="text-muted text-nowrap">
@@ -256,7 +259,7 @@ function Users({ onNavigate, user, onAuthExpired }) {
                         ))
                       ) : (
                         <tr>
-                          <td colSpan="6" className="text-center text-muted py-4">
+                          <td colSpan="5" className="text-center text-muted py-4">
                             No hay usuarios registrados
                           </td>
                         </tr>
@@ -320,7 +323,7 @@ function Users({ onNavigate, user, onAuthExpired }) {
                     disabled={isEditLoading}
                   >
                     <option value="usuario">Usuario</option>
-                    <option value="admin">Administrador</option>
+                    <option value="admin">ADMIN</option>
                   </select>
                 </div>
 
