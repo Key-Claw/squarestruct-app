@@ -1,4 +1,4 @@
-/* ============================================================================
+﻿/* ============================================================================
    PÁGINA CATÁLOGO - Filtros + Grid de productos con búsqueda y ordenamiento
    - catalog-page: Contenedor principal
    - catalog-sidebar: Sidebar con secciones de filtros
@@ -229,7 +229,7 @@
 }
 
 .catalog-products-list .catalog-card-actions {
-  max-width: 260px;
+  max-width: 220px;
 }
 
 .catalog-product-card {
@@ -716,7 +716,7 @@
   }
 
   .catalog-heading-copy {
-    min-height: 260px;
+    min-height: 220px;
   }
 
   .catalog-heading-media {
@@ -927,6 +927,66 @@
   .catalog-heading-copy {
     align-content: start;
     padding: 72px 96px 22px;
+  }
+}
+
+/* Ajuste compacto compartido para las heroes de Catalogo, Galeria y Disenador. */
+.catalog-heading,
+.catalog-heading-copy,
+.catalog-heading-media,
+.catalog-heading-media img {
+  height: 220px;
+  min-height: 220px;
+}
+
+@media (min-width: 992px) {
+  .catalog-heading-copy {
+    padding-top: 36px;
+    padding-bottom: 18px;
+  }
+}
+
+@media (max-width: 991.98px) {
+  .catalog-heading,
+  .catalog-heading-copy,
+  .catalog-heading-media,
+  .catalog-heading-media img {
+    height: 220px;
+    min-height: 220px;
+  }
+}
+
+/* Recorte final de hero: elimina la franja inferior sobrante. */
+.catalog-heading,
+.catalog-heading-copy,
+.catalog-heading-media,
+.catalog-heading-media img {
+  height: 225px;
+  min-height: 225px;
+}
+
+.catalog-heading {
+  overflow: hidden;
+}
+
+.catalog-heading-media img {
+  object-position: center top;
+}
+
+@media (min-width: 992px) {
+  .catalog-heading-copy {
+    padding-top: 30px;
+    padding-bottom: 16px;
+  }
+}
+
+@media (max-width: 991.98px) {
+  .catalog-heading,
+  .catalog-heading-copy,
+  .catalog-heading-media,
+  .catalog-heading-media img {
+    height: 225px;
+    min-height: 225px;
   }
 }
 
