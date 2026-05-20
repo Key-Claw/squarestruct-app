@@ -15,8 +15,8 @@
   <a href="https://img.shields.io/badge/JWT-black?logo=jsonwebtokens&logoColor=white&style=flat-square"><img src="https://img.shields.io/badge/JWT-black?logo=jsonwebtokens&logoColor=white&style=flat-square" alt="JWT"/></a>
   <a href="https://img.shields.io/badge/Postman-ff6c37?logo=postman&logoColor=white&style=flat-square"><img src="https://img.shields.io/badge/Postman-ff6c37?logo=postman&logoColor=white&style=flat-square" alt="Postman"/></a>
   <a href="https://img.shields.io/badge/Jest-c21325?logo=jest&logoColor=white&style=flat-square"><img src="https://img.shields.io/badge/Jest-c21325?logo=jest&logoColor=white&style=flat-square" alt="Jest"/></a>
-  <a href="https://github.com/Key-Claw/squarestruct-app/actions/workflows/tests.yml"><img src="https://github.com/Key-Claw/squarestruct-app/actions/workflows/tests.yml/badge.svg" alt="CI"/>
-  </a>  <a href="./LICENSE"><img src="https://img.shields.io/badge/license-MIT-green?style=flat-square" alt="MIT License"/></a>
+  <a href="https://github.com/Key-Claw/squarestruct-app/actions/workflows/tests.yml"><img src="https://img.shields.io/badge/CI-GitHub_Actions-2088ff?logo=githubactions&logoColor=white&style=flat-square" alt="CI"/></a>  
+  <a href="./LICENSE"><img src="https://img.shields.io/badge/license-MIT-green?style=flat-square" alt="MIT License"/></a>
 </p>
 
 <h2 align="center">Aplicacion web full stack para catalogo, pedidos y gestion de construccion modular sostenible</h2>
