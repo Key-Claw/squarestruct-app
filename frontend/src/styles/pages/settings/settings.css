@@ -220,6 +220,7 @@
 }
 
 .settings-billing-metric {
+  min-width: 0;
   min-height: 126px;
   padding: 16px;
   display: flex;
@@ -252,6 +253,7 @@
 .settings-billing-metric small {
   display: block;
   margin: 0;
+  overflow-wrap: anywhere;
 }
 
 .settings-billing-metric p {
@@ -479,6 +481,88 @@
   gap: 6px;
 }
 
+.settings-billing-history-mobile {
+  display: none;
+}
+
+.settings-billing-history-item {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid var(--ss-border);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 8px 18px rgba(16, 39, 54, 0.04);
+}
+
+.settings-billing-history-main {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: start;
+}
+
+.settings-billing-history-main p,
+.settings-billing-history-main small {
+  margin: 0;
+}
+
+.settings-billing-history-main p {
+  margin-top: 4px;
+  color: var(--ss-ink);
+  font-weight: 800;
+  line-height: 1.15;
+}
+
+.settings-billing-history-main small {
+  display: block;
+  margin-top: 2px;
+  color: var(--ss-muted);
+  overflow-wrap: anywhere;
+}
+
+.settings-billing-history-number {
+  color: var(--ss-blue-700);
+  font-family: var(--heading);
+  font-size: 1.05rem;
+  font-weight: 400;
+}
+
+.settings-billing-history-total {
+  display: grid;
+  justify-items: end;
+  gap: 8px;
+  text-align: right;
+}
+
+.settings-billing-history-total strong {
+  color: var(--ss-ink);
+  font-size: 1.05rem;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.settings-billing-history-meta {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  color: var(--ss-muted);
+  font-size: 0.9rem;
+}
+
+.settings-billing-history-meta span {
+  min-width: 0;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: rgba(238, 248, 255, 0.75);
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+
+.settings-billing-history-actions {
+  justify-content: flex-end;
+}
+
 .settings-card {
   border: 1px solid var(--ss-border);
   border-radius: var(--ss-radius);
@@ -551,7 +635,7 @@
 .settings-profile-fields {
   margin-top: 14px;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
   gap: 14px;
   width: 100%;
   margin-inline: auto;
@@ -579,6 +663,13 @@
 .settings-profile-fields span {
   color: var(--ss-ink);
   font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+@media (min-width: 1200px) {
+  .settings-profile-fields {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
 }
 
 .settings-role-badge {
@@ -622,6 +713,51 @@
 
 .settings-profile-card .settings-section-title {
   margin-bottom: 10px;
+}
+
+.settings-profile-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 10px;
+}
+
+.settings-profile-actions,
+.settings-profile-form-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.settings-profile-card.is-editing .settings-profile-fields {
+  display: none;
+}
+
+.settings-profile-form {
+  margin-top: 16px;
+}
+
+.settings-profile-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.settings-profile-form-grid label {
+  display: grid;
+  gap: 7px;
+  color: var(--ss-muted);
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.settings-profile-form-actions {
+  margin-top: 16px;
 }
 
 .settings-avatar-circle {
@@ -714,6 +850,155 @@
   }
 }
 
+@media (min-width: 768px) and (max-width: 1199.98px) {
+  .settings-layout {
+    grid-template-columns: 1fr;
+    min-height: 0;
+    align-content: start;
+  }
+
+  .settings-sidebar {
+    display: grid;
+    grid-template-columns: minmax(160px, auto) minmax(0, 1fr);
+    gap: 18px;
+    align-items: center;
+    padding: 18px 22px;
+    border-right: 0;
+    border-bottom: 1px solid var(--ss-border);
+    align-self: start;
+  }
+
+  .settings-sidebar-head {
+    margin: 0;
+    padding: 0;
+    border-bottom: 0;
+    text-align: left;
+  }
+
+  .settings-sidebar-head h1 {
+    font-size: 1.25rem;
+  }
+
+  .settings-sidebar-head small {
+    font-size: 0.95rem;
+  }
+
+  .settings-nav-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 10px;
+    width: 100%;
+  }
+
+  .settings-nav-item {
+    min-height: 46px;
+    padding: 10px 12px;
+    text-align: center;
+  }
+
+  .settings-nav-item.active {
+    box-shadow: inset 0 -3px 0 #5f9f38;
+  }
+
+  .settings-content {
+    width: 100%;
+    max-width: 100%;
+    padding: 22px;
+    min-width: 0;
+  }
+
+  .settings-header-bar,
+  .settings-card,
+  .settings-billing-table-block {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  .settings-billing-dashboard,
+  .settings-users-card,
+  .settings-profile-card {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  .settings-billing-table-block .card-body {
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+    box-sizing: border-box;
+  }
+
+  .settings-billing-filters {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 12px;
+  }
+
+  .settings-billing-filter-search,
+  .settings-billing-filter-action {
+    grid-column: 1 / -1;
+  }
+
+  .settings-billing-table-block .form-control,
+  .settings-billing-table-block .form-select,
+  .settings-billing-table-block .btn {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+  }
+
+  .settings-billing-grid {
+    grid-template-columns: 1fr;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  .settings-billing-summary-card,
+  .settings-billing-chart-card,
+  .settings-billing-history-card {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    min-height: auto;
+  }
+
+  .settings-billing-summary-card .settings-billing-metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    width: 100%;
+  }
+
+  .settings-billing-summary-card .settings-billing-metric {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .settings-billing-history-desktop {
+    display: none;
+  }
+
+  .settings-billing-history-mobile {
+    display: grid;
+    gap: 10px;
+  }
+
+  .settings-users-card .settings-inline-actions {
+    display: grid;
+    grid-template-columns: 1fr;
+    justify-items: stretch;
+    gap: 7px;
+  }
+
+  .settings-users-card .settings-inline-actions .btn {
+    width: 100%;
+    min-height: 36px;
+    padding: 6px 10px;
+    font-size: 0.82rem;
+  }
+}
+
 .settings-users-card {
   padding: 16px;
 }
@@ -796,6 +1081,38 @@
   line-height: 1.15;
 }
 
+.settings-users-desktop .settings-table {
+  width: 100%;
+  min-width: 0;
+  table-layout: fixed;
+}
+
+.settings-users-desktop .settings-table th:nth-child(1),
+.settings-users-desktop .settings-table td:nth-child(1) {
+  width: 24%;
+}
+
+.settings-users-desktop .settings-table th:nth-child(2),
+.settings-users-desktop .settings-table td:nth-child(2) {
+  width: 36%;
+}
+
+.settings-users-desktop .settings-table th:nth-child(3),
+.settings-users-desktop .settings-table td:nth-child(3) {
+  width: 17%;
+  text-align: center;
+}
+
+.settings-users-desktop .settings-table th:nth-child(4),
+.settings-users-desktop .settings-table td:nth-child(4) {
+  width: 23%;
+}
+
+.settings-users-desktop .settings-table td:nth-child(1),
+.settings-users-desktop .settings-table td:nth-child(2) {
+  overflow-wrap: anywhere;
+}
+
 .settings-inline-actions {
   display: flex;
   flex-wrap: wrap;
@@ -805,6 +1122,75 @@
 .settings-inline-actions .btn {
   color: var(--ss-blue-700);
   border-color: var(--ss-border);
+}
+
+.settings-users-card .settings-inline-actions {
+  align-items: center;
+  gap: 8px;
+}
+
+.settings-users-card .settings-inline-actions .btn,
+.settings-user-mobile-actions .btn {
+  min-height: 34px;
+  border-radius: 8px;
+  border-width: 1px;
+  background: #fff;
+  font-family: var(--heading);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  box-shadow: 0 5px 12px rgba(16, 39, 54, 0.04);
+}
+
+.settings-users-card .btn-outline-info,
+.settings-user-mobile-actions .btn-outline-info {
+  border-color: rgba(14, 165, 233, 0.45);
+  background: rgba(240, 249, 255, 0.88);
+  color: #0369a1;
+}
+
+.settings-users-card .btn-outline-info:hover,
+.settings-user-mobile-actions .btn-outline-info:hover {
+  border-color: #0ea5e9;
+  background: #e0f2fe;
+  color: #075985;
+}
+
+.settings-users-card .btn-outline-warning,
+.settings-user-mobile-actions .btn-outline-warning {
+  border-color: rgba(245, 158, 11, 0.5);
+  background: rgba(255, 251, 235, 0.92);
+  color: #b45309;
+}
+
+.settings-users-card .btn-outline-warning:hover,
+.settings-user-mobile-actions .btn-outline-warning:hover {
+  border-color: #f59e0b;
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.settings-users-card .btn-outline-danger,
+.settings-user-mobile-actions .btn-outline-danger {
+  border-color: rgba(239, 68, 68, 0.48);
+  background: rgba(254, 242, 242, 0.94);
+  color: #b91c1c;
+}
+
+.settings-users-card .btn-outline-danger:hover,
+.settings-user-mobile-actions .btn-outline-danger:hover {
+  border-color: #ef4444;
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.settings-users-card .btn:disabled,
+.settings-user-mobile-actions .btn:disabled {
+  border-color: rgba(148, 163, 184, 0.35);
+  background: rgba(248, 250, 252, 0.88);
+  color: #64748b;
+  opacity: 0.85;
+  box-shadow: none;
 }
 
 .billing-pagination {
@@ -876,6 +1262,11 @@
 .settings-invoice-status.rejected {
   background: #fee2e2;
   color: #b91c1c;
+}
+
+.settings-invoice-status.canceled {
+  background: #e5e7eb;
+  color: #475569;
 }
 
 .settings-empty-state {
@@ -982,17 +1373,16 @@
     border: 1px solid var(--ss-border);
     border-radius: 10px;
     background: rgba(255, 255, 255, 0.96);
-    padding: 10px 12px;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
+    padding: 12px;
+    display: grid;
+    gap: 12px;
   }
 
   .settings-user-mobile-line {
-    display: flex;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
     align-items: center;
-    justify-content: space-between;
-    gap: 8px;
+    gap: 12px;
   }
 
   .settings-user-mobile-name {
@@ -1004,9 +1394,9 @@
   }
 
   .settings-user-mobile-actions {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 8px;
-    justify-content: space-between;
     width: 100%;
     align-items: center;
   }
@@ -1014,15 +1404,20 @@
   .settings-user-mobile-actions .btn {
     padding: 6px 8px;
     font-size: 0.85rem;
+    width: 100%;
   }
 
   .settings-layout {
     grid-template-columns: 1fr;
+    max-width: 100%;
+    min-height: 0;
+    align-content: start;
   }
 
   .settings-sidebar {
     border-right: 0;
     border-bottom: 1px solid rgba(23, 63, 95, 0.12);
+    align-self: start;
   }
 
   .settings-nav-list {
@@ -1088,6 +1483,7 @@
   .settings-billing-table-block {
     width: 100%;
     max-width: 100%;
+    min-width: 0;
     overflow-x: hidden;
   }
 
@@ -1110,10 +1506,39 @@
   }
 
   .settings-billing-table-block .form-control,
-  .settings-billing-table-block .form-select {
+  .settings-billing-table-block .form-select,
+  .settings-billing-table-block .btn {
     width: 100%;
     max-width: 100%;
+    min-width: 0;
     box-sizing: border-box;
+  }
+
+  .settings-billing-history-desktop {
+    display: none;
+  }
+
+  .settings-billing-history-mobile {
+    display: grid;
+    gap: 10px;
+  }
+
+  .settings-billing-history-main,
+  .settings-billing-history-meta {
+    grid-template-columns: 1fr;
+  }
+
+  .settings-billing-history-total {
+    justify-items: start;
+    text-align: left;
+  }
+
+  .settings-billing-history-actions {
+    justify-content: stretch;
+  }
+
+  .settings-billing-history-actions .btn {
+    flex: 1 1 120px;
   }
 }
 
@@ -1142,6 +1567,22 @@
   }
 
   .settings-profile-fields {
+    grid-template-columns: 1fr;
+  }
+
+  .settings-profile-head,
+  .settings-profile-actions,
+  .settings-profile-form-actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .settings-profile-actions .btn,
+  .settings-profile-form-actions .btn {
+    width: 100%;
+  }
+
+  .settings-profile-form-grid {
     grid-template-columns: 1fr;
   }
 
