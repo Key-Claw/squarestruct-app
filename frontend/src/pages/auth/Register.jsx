@@ -160,6 +160,7 @@ function Register({ onNavigate, onUserLogin }) {
                         id="registerEmail"
                         className="form-control form-control-lg"
                         value={email}
+                        autoComplete="email"
                         onChange={(e) => setEmail(e.target.value)}
                         placeholder=" "
                         disabled={isLoading}
@@ -179,6 +180,7 @@ function Register({ onNavigate, onUserLogin }) {
                         id="registerPassword"
                         className="form-control form-control-lg"
                         value={contrasena}
+                        autoComplete="new-password"
                         onChange={(e) => setContrasena(e.target.value)}
                         placeholder=" "
                         disabled={isLoading}
@@ -198,6 +200,7 @@ function Register({ onNavigate, onUserLogin }) {
                         id="registerConfirmPassword"
                         className="form-control form-control-lg"
                         value={confirmaContrasena}
+                        autoComplete="new-password"
                         onChange={(e) => setConfirmaContrasena(e.target.value)}
                         placeholder=" "
                         disabled={isLoading}

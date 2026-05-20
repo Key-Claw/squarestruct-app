@@ -97,6 +97,7 @@ function Login({ onNavigate, onUserLogin }) {
                         id="typeEmailX"
                         className="form-control form-control-lg"
                         value={email}
+                        autoComplete="username"
                         onChange={(e) => setEmail(e.target.value)}
                         placeholder=" "
                         disabled={isLoading}
@@ -113,6 +114,7 @@ function Login({ onNavigate, onUserLogin }) {
                         id="typePasswordX"
                         className="form-control form-control-lg"
                         value={contrasena}
+                        autoComplete="current-password"
                         onChange={(e) => setContrasena(e.target.value)}
                         placeholder=" "
                         disabled={isLoading}
