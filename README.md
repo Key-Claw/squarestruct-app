@@ -5,8 +5,6 @@
 <h1 align="center">SquareStruct</h1>
 
 <p align="center">
-  <a href="https://img.shields.io/badge/version-2.0-blue?style=flat-square"><img src="https://img.shields.io/badge/version-2.0-blue?style=flat-square" alt="version"/></a>
-  <a href="https://img.shields.io/badge/status-V2-green?style=flat-square"><img src="https://img.shields.io/badge/status-V2-green?style=flat-square" alt="status"/></a>
   <a href="https://img.shields.io/badge/React-19.2.5-61dafb?logo=react&logoColor=white&style=flat-square"><img src="https://img.shields.io/badge/React-19.2.5-61dafb?logo=react&logoColor=white&style=flat-square" alt="React"/></a>
   <a href="https://img.shields.io/badge/Vite-8.0.10-646cff?logo=vite&logoColor=white&style=flat-square"><img src="https://img.shields.io/badge/Vite-8.0.10-646cff?logo=vite&logoColor=white&style=flat-square" alt="Vite"/></a>
   <a href="https://img.shields.io/badge/Node.js-22.17.0-339933?logo=node.js&logoColor=white&style=flat-square"><img src="https://img.shields.io/badge/Node.js-22.17.0-339933?logo=node.js&logoColor=white&style=flat-square" alt="Node.js"/></a>
@@ -14,7 +12,7 @@
   <a href="https://img.shields.io/badge/MySQL-8.4-4479a1?logo=mysql&logoColor=white&style=flat-square"><img src="https://img.shields.io/badge/MySQL-8.4-4479a1?logo=mysql&logoColor=white&style=flat-square" alt="MySQL"/></a>
   <a href="https://img.shields.io/badge/Docker-2496ed?logo=docker&logoColor=white&style=flat-square"><img src="https://img.shields.io/badge/Docker-2496ed?logo=docker&logoColor=white&style=flat-square" alt="Docker"/></a>
   <a href="https://img.shields.io/badge/JWT-Auth-black?logo=jsonwebtokens&logoColor=white&style=flat-square"><img src="https://img.shields.io/badge/JWT-Auth-black?logo=jsonwebtokens&logoColor=white&style=flat-square" alt="JWT"/></a>
-  <a href="https://img.shields.io/badge/Jest-Testing-c21325?logo=jest&logoColor=white&style=flat-square"><img src="https://img.shields.io/badge/Jest-Testing-c21325?logo=jest&logoColor=white&style=flat-square" alt="Jest"/></a>
+  <a href="https://img.shields.io/badge/Jest-c21325?logo=jest&logoColor=white&style=flat-square"><img src="https://img.shields.io/badge/Jest-c21325?logo=jest&logoColor=white&style=flat-square" alt="Jest"/></a>
   <a href="https://img.shields.io/badge/GitHub_Actions-2088ff?logo=githubactions&logoColor=white&style=flat-square"><img src="https://img.shields.io/badge/GitHub_Actions-2088ff?logo=githubactions&logoColor=white&style=flat-square" alt="GitHub Actions"/></a>
   <a href="./LICENSE"><img src="https://img.shields.io/badge/license-MIT-green?style=flat-square" alt="MIT License"/></a>
 </p>
