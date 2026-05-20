@@ -624,6 +624,12 @@
 @media (max-width: 767.98px) {
   .square-navbar-stage {
     padding: 9px 10px 11px;
+    transition: padding-bottom 0.18s ease;
+  }
+
+  .square-navbar-stage:has(.square-navbar-collapse.show),
+  .square-navbar-stage:has(.square-navbar-collapse.collapsing) {
+    padding-bottom: 72px;
   }
 
   .square-navbar.app-navbar {
@@ -795,12 +801,20 @@
     flex-wrap: nowrap;
     align-items: center;
     justify-content: space-between;
-    gap: 4px;
+    gap: 3px;
     margin: 0 !important;
   }
 
+  .navbar-menu > .nav-item {
+    flex: 1 1 0;
+    min-width: 0;
+    display: flex;
+  }
+
   .navbar-menu-account {
-    display: block;
+    display: flex;
+    flex: 1 1 0;
+    min-width: 0;
     position: relative;
   }
 
@@ -830,14 +844,14 @@
   .square-navbar .square-navbar-collapse .navbar-menu .navbar-menu-btn,
   .square-navbar .square-navbar-collapse .navbar-menu-account-btn {
     min-height: 44px !important;
-    font-size: 1.34rem !important;
+    font-size: clamp(1.04rem, 3.4vw, 1.26rem) !important;
   }
 
   .square-navbar .square-navbar-collapse .navbar-menu .navbar-menu-btn span,
   .square-navbar .square-navbar-collapse .navbar-menu-account-btn span {
     display: inline-flex !important;
     align-items: center !important;
-    font-size: 1.34rem !important;
+    font-size: clamp(1.04rem, 3.4vw, 1.26rem) !important;
     line-height: 1 !important;
   }
 
@@ -853,6 +867,15 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+  }
+
+  .navbar-menu-account-btn {
+    font-size: clamp(0.98rem, 3.15vw, 1.22rem) !important;
+  }
+
+  .square-navbar .square-navbar-collapse .navbar-menu-account-btn span {
+    font-size: clamp(0.98rem, 3.05vw, 1.18rem) !important;
+    max-width: 7ch;
   }
 
   .navbar-menu .navbar-menu-btn .ss-icon {
@@ -932,19 +955,23 @@
     gap: 3px;
     min-height: 42px;
     padding-inline: 2px;
-    font-size: 1.12rem !important;
+    font-size: clamp(0.92rem, 2.9vw, 1.06rem) !important;
   }
 
   .navbar-menu-account-btn {
     gap: 3px;
     min-height: 42px;
     padding-inline: 2px;
-    font-size: 1.12rem !important;
+    font-size: clamp(0.92rem, 2.9vw, 1.06rem) !important;
   }
 
   .square-navbar .square-navbar-collapse .navbar-menu .navbar-menu-btn span,
   .square-navbar .square-navbar-collapse .navbar-menu-account-btn span {
-    font-size: 1.12rem !important;
+    font-size: clamp(0.92rem, 2.9vw, 1.06rem) !important;
+  }
+
+  .square-navbar .square-navbar-collapse .navbar-menu-account-btn span {
+    max-width: 6.6ch;
   }
 
   .navbar-menu .navbar-menu-btn .ss-icon,
