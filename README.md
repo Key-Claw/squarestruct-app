@@ -4,15 +4,30 @@
 
 <p align="center">
   <a href="https://img.shields.io/badge/React-19.2.5-61dafb?logo=react&logoColor=white&style=flat-square"><img src="https://img.shields.io/badge/React-19.2.5-61dafb?logo=react&logoColor=white&style=flat-square" alt="React"/></a>
+
   <a href="https://img.shields.io/badge/Vite-8.0.10-646cff?logo=vite&logoColor=white&style=flat-square"><img src="https://img.shields.io/badge/Vite-8.0.10-646cff?logo=vite&logoColor=white&style=flat-square" alt="Vite"/></a>
+
   <a href="https://img.shields.io/badge/Node.js-22.17.0-339933?logo=node.js&logoColor=white&style=flat-square"><img src="https://img.shields.io/badge/Node.js-22.17.0-339933?logo=node.js&logoColor=white&style=flat-square" alt="Node.js"/></a>
+
   <a href="https://img.shields.io/badge/Express-5.1.0-000000?logo=express&logoColor=white&style=flat-square"><img src="https://img.shields.io/badge/Express-5.1.0-000000?logo=express&logoColor=white&style=flat-square" alt="Express"/></a>
+
   <a href="https://img.shields.io/badge/MySQL-8.4-4479a1?logo=mysql&logoColor=white&style=flat-square"><img src="https://img.shields.io/badge/MySQL-8.4-4479a1?logo=mysql&logoColor=white&style=flat-square" alt="MySQL"/></a>
+</p>
+
+<p align="center">
   <a href="https://img.shields.io/badge/Docker-2496ed?logo=docker&logoColor=white&style=flat-square"><img src="https://img.shields.io/badge/Docker-2496ed?logo=docker&logoColor=white&style=flat-square" alt="Docker"/></a>
+
   <a href="https://img.shields.io/badge/JWT-black?logo=jsonwebtokens&logoColor=white&style=flat-square"><img src="https://img.shields.io/badge/JWT-black?logo=jsonwebtokens&logoColor=white&style=flat-square" alt="JWT"/></a>
+
   <a href="https://img.shields.io/badge/Postman-ff6c37?logo=postman&logoColor=white&style=flat-square"><img src="https://img.shields.io/badge/Postman-ff6c37?logo=postman&logoColor=white&style=flat-square" alt="Postman"/></a>
+
   <a href="https://img.shields.io/badge/Jest-c21325?logo=jest&logoColor=white&style=flat-square"><img src="https://img.shields.io/badge/Jest-c21325?logo=jest&logoColor=white&style=flat-square" alt="Jest"/></a>
-  <a href="https://github.com/Key-Claw/squarestruct-app/actions/workflows/tests.yml"><img src="https://github.com/Key-Claw/squarestruct-app/actions/workflows/tests.yml/badge.svg" alt="CI"/></a>  <a href="./LICENSE"><img src="https://img.shields.io/badge/license-MIT-green?style=flat-square" alt="MIT License"/></a>
+
+  <a href="https://github.com/Key-Claw/squarestruct-app/actions/workflows/tests.yml">
+    <img src="https://img.shields.io/github/actions/workflow/status/Key-Claw/squarestruct-app/tests.yml?label=CI&logo=githubactions&logoColor=white&style=flat-square" alt="CI"/>
+  </a>
+
+  <a href="./LICENSE"><img src="https://img.shields.io/badge/license-MIT-green?style=flat-square" alt="MIT License"/></a>
 </p>
 
 <h2 align="center">Aplicacion web full stack para catalogo, pedidos y gestion de construccion modular sostenible</h2>
