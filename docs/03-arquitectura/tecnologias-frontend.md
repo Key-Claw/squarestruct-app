@@ -1,210 +1,106 @@
-# Tecnologias del frontend
+# Tecnologias Del Frontend
 
-## Objetivo
+Este documento describe las tecnologias reales usadas en `frontend/package.json` y su papel en SquareStruct V2.
 
-Este documento explica las tecnologias usadas en el frontend de SquareStruct y por que encajan con el MVP.
+## Stack Principal
 
-El objetivo no es listar herramientas sin contexto, sino poder defender como se construye la interfaz, como se conecta con backend y como se revisa antes de entregar.
-
-## Stack principal
-
-| Tecnologia | Uso en SquareStruct |
+| Tecnologia | Uso |
 | --- | --- |
-| React | Construccion de la interfaz mediante componentes y estado. |
-| React Router DOM | Rutas SPA con `HashRouter` para paginas principales. |
-| Vite | Servidor de desarrollo, build de produccion y proxy hacia backend. |
-| JavaScript | Lenguaje principal del frontend. |
-| Bootstrap | Base para grid, navbar, dropdowns, botones, formularios, tablas y cards. |
-| CSS propio | Personalizacion visual y responsive en `src/styles/`. |
-| Vitest + Testing Library | Tests basicos de renderizado de componentes React. |
-| ESLint | Revision automatica de calidad de codigo. |
+| React 19 | Componentes, estado y renderizado de la SPA. |
+| Vite 8 | Servidor de desarrollo, build y proxy `/api`. |
+| React Router DOM 7 | Rutas de la SPA mediante `HashRouter`. |
+| Bootstrap 5 | Grid, utilidades, tablas, formularios, botones y dropdowns. |
+| SweetAlert2 | Confirmaciones y alertas de acciones relevantes. |
+| CSS propio | Identidad visual, responsive y componentes. |
+| Vitest | Tests unitarios/de renderizado. |
+| Testing Library | Renderizado de componentes desde perspectiva de usuario. |
+| ESLint | Calidad estatica del codigo. |
 
 ## React
 
-React permite separar la interfaz en piezas reutilizables.
+React se usa para:
 
-En SquareStruct se usa para:
-
-- renderizar paginas principales segun la ruta activa;
-- mantener estado de usuario, carrito, modal y busqueda;
-- crear componentes reutilizables como `Navbar`, `CartPanel`, `AuthModal` o tarjetas de catalogo;
-- actualizar la interfaz cuando cambia el estado, por ejemplo al anadir productos al carrito.
-
-## React Router DOM y HashRouter
-
-SquareStruct usa `react-router-dom` para la navegacion SPA de las paginas principales.
-
-Se ha elegido `HashRouter` en lugar de `BrowserRouter` porque facilita despliegues estaticos en AWS, Apache u otros hostings donde no siempre existe una regla de fallback hacia `index.html`.
-
-Con `HashRouter`, el servidor solo recibe la ruta base y React interpreta lo que aparece despues del `#`. Esto evita errores al refrescar paginas internas si el hosting no esta configurado para redirigir todas las rutas al frontend.
-
-Rutas principales:
-
-```text
-http://localhost:5173/#/
-http://localhost:5173/#/home
-http://localhost:5173/#/gallery
-http://localhost:5173/#/catalog
-http://localhost:5173/#/design
-http://localhost:5173/#/about-us
-```
-
-La configuracion de rutas reutilizables esta en `frontend/src/routes.js`.
-
-Solo las paginas principales usan rutas reales. Login, registro, carrito, checkout y Mi Cuenta siguen funcionando como modales, paneles o estado interno de React para no crear rutas innecesarias.
+- componer paginas y componentes;
+- mantener estado de usuario, carrito, checkout y filtros;
+- mostrar modales y paneles;
+- renderizar vistas distintas segun rol.
 
 ## Vite
 
-Vite se usa como entorno de desarrollo y herramienta de build.
+Vite aporta:
 
-Funciones principales:
+- desarrollo local rapido;
+- build de produccion;
+- proxy de `/api` hacia `http://localhost:3000`;
+- integracion con React mediante `@vitejs/plugin-react`.
 
-- arranca el frontend con `npm run dev`;
-- sirve la aplicacion en `http://localhost:5173`;
-- recompila rapido al guardar cambios;
-- genera una version de produccion con `npm run build`;
-- configura un proxy para que `/api` apunte al backend local.
+## HashRouter
 
-La configuracion del proxy esta en `frontend/vite.config.js`.
-
-## JavaScript
-
-El frontend esta escrito en JavaScript con JSX.
-
-No se usa TypeScript en esta version del MVP. Por eso es importante mantener nombres claros, servicios separados y pasar `npm run lint` antes de entregar.
+Se usa `HashRouter` para que rutas como `/#/catalog` funcionen en hostings estaticos sin reglas de fallback. El servidor entrega `index.html` y React interpreta la parte posterior al `#`.
 
 ## Bootstrap
 
-Bootstrap se usa como apoyo para componentes visuales conocidos y responsivos.
+Bootstrap se usa como base para:
 
-Ejemplos de uso:
-
-- navbar y menu hamburguesa;
-- dropdown de usuario;
-- grid responsive (`container-fluid`, `row`, `col-*`);
+- grid responsive;
+- `container-fluid`, `row`, `col-*`;
 - botones;
-- formularios;
-- cards;
 - tablas;
-- alerts;
-- modal;
-- carousel.
+- formularios;
+- dropdowns;
+- utilidades de espaciado y alineacion.
 
-Bootstrap no define toda la identidad visual. El aspecto final se ajusta con CSS propio.
+La apariencia final se define con CSS propio.
 
-## CSS propio modularizado
+## SweetAlert2
 
-Antes el CSS estaba concentrado en `App.css`. Ahora `App.css` actua como indice de imports, y los estilos se reparten en `src/styles/`.
+`frontend/src/utils/alerts.js` centraliza:
 
-Ejemplos:
+- `confirmDelete`;
+- `showSuccess`;
+- `showError`.
 
-| Archivo | Uso |
-| --- | --- |
-| `app-base.css` | Estructura general de la app. |
-| `home.css` | Portada. |
-| `catalogo.css` | Catalogo, filtros y tarjetas de producto. |
-| `design.css` | Maqueta de Design. |
-| `galeria.css` | Galeria de inspiracion. |
-| `about.css` | Pagina About Us. |
-| `navbar.css` | Navbar y responsive especifico. |
-| `auth-modal.css` | Modal de autenticacion. |
-| `cart-panel.css` | Panel lateral de carrito. |
-| `profile-panel.css` | Panel lateral de perfil. |
-| `usuarios.css` | Gestion de usuarios. |
-| `facturacion.css` | Panel visual de facturacion. |
-| `settings.css` | Vista de ajustes. |
-| `responsive.css` | Ajustes responsive generales. |
-| `variables.css` | Variables CSS globales. |
+Se usa principalmente en eliminacion de cuentas/usuarios y feedback de acciones importantes.
 
-Esta separacion reduce archivos grandes y facilita encontrar donde cambiar un estilo.
+## CSS Propio
 
-## ESLint
-
-ESLint revisa el codigo JavaScript y React.
-
-Sirve para detectar:
-
-- imports o variables no usados;
-- errores comunes con hooks;
-- problemas de mantenimiento;
-- codigo innecesario.
-
-Comando:
-
-```bash
-cd frontend
-npm run lint
-```
-
-## Vitest y Testing Library
-
-Vitest ejecuta tests automaticos del frontend. Testing Library permite renderizar componentes como los veria el usuario.
-
-Comando recomendado para validacion y CI:
-
-```bash
-cd frontend
-npm run test:run
-```
-
-`npm test` tambien existe, pero deja Vitest en modo observacion. Para una pull request se usa `npm run test:run`.
-
-## Comunicacion con backend
-
-El frontend consume la API REST del backend usando `fetch` centralizado en `src/services/api.js`.
-
-La base de la API se calcula asi:
-
-```js
-const API_BASE_URL = import.meta.env.VITE_API_URL || '/api'
-```
-
-En desarrollo, `/api` se redirige por proxy a `http://localhost:3000`.
-
-Flujos principales:
-
-| Flujo | Ruta usada |
-| --- | --- |
-| Registro | `POST /api/usuarios/register` |
-| Login | `POST /api/usuarios/login` |
-| Perfil/usuarios admin | `GET /api/usuarios`, `GET /api/usuarios/:id`, `PUT /api/usuarios/:id` |
-| Catalogo | `GET /api/productos` |
-| Pedidos | `/api/orders` desde `orderService.js` |
-
-## JWT y vistas protegidas
-
-Cuando el backend devuelve un token, el frontend lo guarda en `localStorage`.
-
-Datos guardados:
-
-- `authToken`;
-- `currentUser`.
-
-En peticiones autenticadas, `api.js` anade:
+La estructura CSS real:
 
 ```text
-Authorization: Bearer <token>
+styles/base/
+styles/layout/
+styles/pages/
+styles/components/
 ```
 
-`authService.js` comprueba si el JWT ha caducado. Si ha caducado, limpia la sesion local.
+`responsive.css` existe para ajustes transversales, pero las reglas especificas deben vivir en el CSS de su pagina o componente.
 
-Las paginas `Usuarios` y `Facturacion` solo se muestran si el usuario tiene rol `admin`.
+## Comunicacion Con Backend
 
-## Relacion con MVP v1
+`services/api.js` centraliza `fetch` y token JWT. Servicios principales:
 
-Estas tecnologias permiten cubrir `MVP v1 - Funcional` sin sobrecargar el proyecto:
+- `authService.js`
+- `productService.js`
+- `orderService.js`
 
-- React organiza vistas y componentes;
-- Vite simplifica desarrollo y build;
-- Bootstrap acelera la parte visual;
-- CSS propio da identidad a SquareStruct;
-- los servicios conectan con backend;
-- ESLint ayuda a mantener calidad.
-- Vitest da una primera red de seguridad automatizada.
+Endpoints consumidos:
 
-## Pendiente tecnico
+- `/usuarios/register`
+- `/usuarios/login`
+- `/perfil`
+- `/usuarios`
+- `/productos`
+- `/orders`
+- `/orders/admin/todos`
+- `/orders/:id/estado`
 
-- Ampliar la base inicial de tests automatizados de frontend.
-- Completar integracion real de pedidos desde el carrito.
-- Sustituir datos mock de facturacion por datos reales.
-- Evolucionar Design hacia una herramienta funcional de diseno o calculo.
+## Testing Y Calidad
+
+Vitest y Testing Library validan renderizado basico. ESLint revisa consistencia del codigo y reglas de hooks. El build de Vite confirma que imports, assets y CSS compilan correctamente.
+
+## Decisiones
+
+- No se usa TypeScript en V2; se compensa con nombres claros, servicios separados y validaciones.
+- No se usa libreria UI adicional porque Bootstrap + CSS propio cubren el alcance actual.
+- Los filtros de catalogo son locales porque el volumen de datos es pequeno.
+- `Settings.jsx` sigue centralizando tabs por estado compartido de usuario, facturas y permisos.

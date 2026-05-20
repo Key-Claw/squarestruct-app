@@ -90,5 +90,5 @@ Funcional:
 Provisional:
 
 - Design es maqueta visual.
-- Facturacion usa datos mock.
+- Facturacion usa pedidos reales obtenidos desde `/api/orders/admin/todos`.
 - checkout/pedidos no esta integrado por completo desde carrito.
