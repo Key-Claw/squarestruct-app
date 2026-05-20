@@ -1,278 +1,48 @@
 {
   "info": {
-    "_postman_id": "2d48f84d-22e3-494a-b24f-2baf4917de37",
+    "_postman_id": "779228a1-7d27-4e22-8435-e411e968222b",
     "name": "squarestruct-v2",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-    "_exporter_id": "49087894"
+    "_exporter_id": "54291374",
+    "_collection_link": "https://go.postman.co/collection/54291374-779228a1-7d27-4e22-8435-e411e968222b?source=collection_link"
   },
   "item": [
     {
-      "name": "Sistema",
+      "name": "Logins",
       "item": [
         {
-          "name": "Health",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "http://localhost:3000/api/health",
-              "protocol": "http",
-              "host": [
-                "localhost"
-              ],
-              "port": "3000",
-              "path": [
-                "api",
-                "health"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "DB status",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "http://localhost:3000/api/db-status",
-              "protocol": "http",
-              "host": [
-                "localhost"
-              ],
-              "port": "3000",
-              "path": [
-                "api",
-                "db-status"
-              ]
-            }
-          },
-          "response": []
-        }
-      ]
-    },
-    {
-      "name": "Productos",
-      "item": [
-        {
-          "name": "Obtener productos",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "http://localhost:3000/api/productos",
-              "protocol": "http",
-              "host": [
-                "localhost"
-              ],
-              "port": "3000",
-              "path": [
-                "api",
-                "productos"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Obtener producto por ID",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "http://localhost:3000/api/productos/28",
-              "protocol": "http",
-              "host": [
-                "localhost"
-              ],
-              "port": "3000",
-              "path": [
-                "api",
-                "productos",
-                "28"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Crear producto",
-          "request": {
-            "method": "POST",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n  \"nombre\": \"TEST Bloque EcoBase\",\r\n  \"descripcion\": \"TEST Bloque ligero de plastico reciclable para primeras hiladas y tramos medios de muro modular.\",\r\n  \"precio\": 42.50,\r\n  \"tipo\": \"bloque\",\r\n  \"material\": \"Plastico reciclable\",\r\n  \"alto\": 22.70,\r\n  \"ancho\": 19.70,\r\n  \"largo\": 39.40,\r\n  \"idProveedor\": 1\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
+          "name": "Login usuario - 200",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();\r",
+                  "\r",
+                  "pm.collectionVariables.set(\"userToken\", res.token);\r",
+                  "\r",
+                  "pm.test(\"Status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Token exists\", function () {\r",
+                  "    pm.expect(res).to.have.property(\"token\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Token is a string\", function () {\r",
+                  "    pm.expect(res.token).to.be.a(\"string\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Token is not empty\", function () {\r",
+                  "    pm.expect(res.token.length).to.be.above(20);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
               }
-            },
-            "url": {
-              "raw": "http://localhost:3000/api/productos",
-              "protocol": "http",
-              "host": [
-                "localhost"
-              ],
-              "port": "3000",
-              "path": [
-                "api",
-                "productos"
-              ]
             }
-          },
-          "response": []
-        },
-        {
-          "name": "Actualizar producto",
-          "request": {
-            "method": "PUT",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n  \"nombre\": \"TEST Bloque\",\r\n  \"descripcion\": \"TEST\",\r\n  \"precio\": 42.50,\r\n  \"tipo\": \"bloque\",\r\n  \"material\": \"Plastico reciclable\",\r\n  \"alto\": 22.70,\r\n  \"ancho\": 19.60,\r\n  \"largo\": 39.40,\r\n  \"idProveedor\": 1\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "http://localhost:3000/api/productos/26",
-              "protocol": "http",
-              "host": [
-                "localhost"
-              ],
-              "port": "3000",
-              "path": [
-                "api",
-                "productos",
-                "26"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Eliminar producto",
-          "request": {
-            "method": "DELETE",
-            "header": [],
-            "url": {
-              "raw": "http://localhost:3000/api/productos/27",
-              "protocol": "http",
-              "host": [
-                "localhost"
-              ],
-              "port": "3000",
-              "path": [
-                "api",
-                "productos",
-                "27"
-              ]
-            }
-          },
-          "response": []
-        }
-      ]
-    },
-    {
-      "name": "Usuarios",
-      "item": [
-        {
-          "name": "Obtener usuarios",
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{adminToken}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "http://localhost:3000/api/usuarios",
-              "protocol": "http",
-              "host": [
-                "localhost"
-              ],
-              "port": "3000",
-              "path": [
-                "api",
-                "usuarios"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Obtener usuario por ID",
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{adminToken}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "http://localhost:3000/api/usuarios/1",
-              "protocol": "http",
-              "host": [
-                "localhost"
-              ],
-              "port": "3000",
-              "path": [
-                "api",
-                "usuarios",
-                "1"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Crear Usuario / Register",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"nombre\": \"Test\",\n  \"primerApellido\": \"Admin\",\n  \"segundoApellido\": \"\",\n  \"email\": \"testadmin@squarestruct.com\",\n  \"contrasena\": \"123456\",\n  \"rol\": \"admin\"\n}"
-            },
-            "url": {
-              "raw": "http://localhost:3000/api/usuarios/register",
-              "protocol": "http",
-              "host": [
-                "localhost"
-              ],
-              "port": "3000",
-              "path": [
-                "api",
-                "usuarios",
-                "register"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Login usuario",
+          ],
           "request": {
             "method": "POST",
             "header": [
@@ -302,7 +72,38 @@
           "response": []
         },
         {
-          "name": "Login admin",
+          "name": "Login admin - 200",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();\r",
+                  "\r",
+                  "pm.collectionVariables.set(\"adminToken\", res.token);\r",
+                  "\r",
+                  "pm.test(\"Status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Token exists\", function () {\r",
+                  "    pm.expect(res).to.have.property(\"token\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Token is a string\", function () {\r",
+                  "    pm.expect(res.token).to.be.a(\"string\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Token is not empty\", function () {\r",
+                  "    pm.expect(res.token.length).to.be.above(20);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
           "request": {
             "method": "POST",
             "header": [
@@ -330,9 +131,715 @@
             }
           },
           "response": []
+        }
+      ]
+    },
+    {
+      "name": "Sistema",
+      "item": [
+        {
+          "name": "Health - 200",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response body contains OK\", function () {\r",
+                  "    pm.expect(pm.response.text()).to.include(\"OK\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response time is less than 500ms\", function () {\r",
+                  "    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/health",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "health"
+              ]
+            }
+          },
+          "response": []
         },
         {
-          "name": "Actualizar Usuario",
+          "name": "DB status - 200",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();\r",
+                  "\r",
+                  "pm.test(\"Status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Content-Type is JSON\", function () {\r",
+                  "    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response has ok = true\", function () {\r",
+                  "    pm.expect(res).to.have.property(\"ok\", true);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response has db\", function () {\r",
+                  "    pm.expect(res).to.have.property(\"db\");\r",
+                  "    pm.expect(res.db).to.be.a(\"string\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response has tablas array\", function () {\r",
+                  "    pm.expect(res).to.have.property(\"tablas\");\r",
+                  "    pm.expect(res.tablas).to.be.an(\"array\");\r",
+                  "    pm.expect(res.tablas.length).to.be.greaterThan(0);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response has totals object\", function () {\r",
+                  "    pm.expect(res).to.have.property(\"totales\");\r",
+                  "    pm.expect(res.totales).to.be.an(\"object\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Totals include expected tables\", function () {\r",
+                  "    pm.expect(res.totales).to.have.property(\"usuarios\");\r",
+                  "    pm.expect(res.totales).to.have.property(\"proveedores\");\r",
+                  "    pm.expect(res.totales).to.have.property(\"productos\");\r",
+                  "    pm.expect(res.totales).to.have.property(\"pedidos\");\r",
+                  "    pm.expect(res.totales).to.have.property(\"pedidoDetalles\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response time is acceptable\", function () {\r",
+                  "    pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/db-status",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "db-status"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Productos",
+      "item": [
+        {
+          "name": "Obtener productos - 200",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const products = pm.response.json();\r",
+                  "\r",
+                  "pm.test(\"Status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Content-Type is JSON\", function () {\r",
+                  "    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response is an array\", function () {\r",
+                  "    pm.expect(products).to.be.an(\"array\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Array has at least one product\", function () {\r",
+                  "    pm.expect(products.length).to.be.greaterThan(0);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Each product has required fields\", function () {\r",
+                  "    products.forEach((p) => {\r",
+                  "        pm.expect(p).to.have.property(\"idProducto\");\r",
+                  "        pm.expect(p).to.have.property(\"nombre\");\r",
+                  "        pm.expect(p).to.have.property(\"descripcion\");\r",
+                  "        pm.expect(p).to.have.property(\"precio\");\r",
+                  "        pm.expect(p).to.have.property(\"tipo\");\r",
+                  "        pm.expect(p).to.have.property(\"material\");\r",
+                  "        pm.expect(p).to.have.property(\"alto\");\r",
+                  "        pm.expect(p).to.have.property(\"ancho\");\r",
+                  "        pm.expect(p).to.have.property(\"largo\");\r",
+                  "        pm.expect(p).to.have.property(\"idProveedor\");\r",
+                  "    });\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/productos",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "productos"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Obtener producto por ID - 200",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const product = pm.response.json();\r",
+                  "const productId = pm.request.url.path[pm.request.url.path.length - 1];\r",
+                  "\r",
+                  "pm.test(\"Status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Content-Type is JSON\", function () {\r",
+                  "    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Devuelve el producto solicitado\", function () {\r",
+                  "    pm.expect(String(product.idProducto)).to.eql(String(productId));\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Tiene campos requeridos\", function () {\r",
+                  "    pm.expect(product).to.have.property(\"nombre\");\r",
+                  "    pm.expect(product).to.have.property(\"descripcion\");\r",
+                  "    pm.expect(product).to.have.property(\"precio\");\r",
+                  "    pm.expect(product).to.have.property(\"tipo\");\r",
+                  "    pm.expect(product).to.have.property(\"material\");\r",
+                  "    pm.expect(product).to.have.property(\"alto\");\r",
+                  "    pm.expect(product).to.have.property(\"ancho\");\r",
+                  "    pm.expect(product).to.have.property(\"largo\");\r",
+                  "    pm.expect(product).to.have.property(\"idProveedor\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/productos/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "productos",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Crear producto - 201",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();\r",
+                  "\r",
+                  "pm.test(\"Status code is 201\", function () {\r",
+                  "    pm.response.to.have.status(201);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Content-Type is JSON\", function () {\r",
+                  "    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Mensaje de creación correcto\", function () {\r",
+                  "    pm.expect(res.mensaje).to.eql(\"Producto creado correctamente\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Devuelve idProducto\", function () {\r",
+                  "    pm.expect(res).to.have.property(\"idProducto\");\r",
+                  "    pm.expect(res.idProducto).to.be.a(\"number\");\r",
+                  "    pm.expect(res.idProducto).to.be.greaterThan(0);\r",
+                  "});\r",
+                  "\r",
+                  "pm.collectionVariables.set(\"productId\", res.idProducto);"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{adminToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"nombre\": \"TEST Bloque EcoBase\",\r\n  \"descripcion\": \"TEST Bloque ligero de plastico reciclable para primeras hiladas y tramos medios de muro modular.\",\r\n  \"precio\": 42.50,\r\n  \"tipo\": \"bloque\",\r\n  \"material\": \"Plastico reciclable\",\r\n  \"alto\": 22.70,\r\n  \"ancho\": 19.70,\r\n  \"largo\": 39.40,\r\n  \"idProveedor\": 1\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/productos",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "productos"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Actualizar producto - 200",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();\r",
+                  "\r",
+                  "pm.test(\"Status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Content-Type is JSON\", function () {\r",
+                  "    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Mensaje de actualización correcto\", function () {\r",
+                  "    pm.expect(res.mensaje).to.eql(\"Producto actualizado correctamente\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"nombre\": \"TEST Bloque\",\r\n  \"descripcion\": \"TEST\",\r\n  \"precio\": 42.50,\r\n  \"tipo\": \"bloque\",\r\n  \"material\": \"Plastico reciclable\",\r\n  \"alto\": 22.70,\r\n  \"ancho\": 19.60,\r\n  \"largo\": 39.40,\r\n  \"idProveedor\": 1\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/productos/{{productId}}",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "productos",
+                "{{productId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Eliminar producto - 200",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();\r",
+                  "\r",
+                  "pm.test(\"Status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Content-Type is JSON\", function () {\r",
+                  "    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Mensaje de eliminación correcto\", function () {\r",
+                  "    pm.expect(res.mensaje).to.eql(\"Producto eliminado correctamente\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{adminToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/productos/{{productId}}",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "productos",
+                "{{productId}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "auth": {
+        "type": "bearer",
+        "bearer": [
+          {
+            "key": "token",
+            "value": "{{adminToken}}",
+            "type": "string"
+          }
+        ]
+      },
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {},
+            "exec": [
+              ""
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {},
+            "exec": [
+              ""
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Usuarios",
+      "item": [
+        {
+          "name": "Obtener usuarios - 200",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Content-Type is JSON\", function () {\r",
+                  "    pm.expect(\r",
+                  "        pm.response.headers.get(\"Content-Type\")\r",
+                  "    ).to.include(\"application/json\");\r",
+                  "});\r",
+                  "\r",
+                  "const usuarios = pm.response.json();\r",
+                  "\r",
+                  "pm.test(\"Response is an array\", function () {\r",
+                  "    pm.expect(usuarios).to.be.an(\"array\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Array is not empty\", function () {\r",
+                  "    pm.expect(usuarios.length).to.be.above(0);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Users have required fields\", function () {\r",
+                  "    usuarios.forEach(usuario => {\r",
+                  "        pm.expect(usuario).to.have.property(\"idUsuario\");\r",
+                  "        pm.expect(usuario).to.have.property(\"nombre\");\r",
+                  "        pm.expect(usuario).to.have.property(\"email\");\r",
+                  "        pm.expect(usuario).to.have.property(\"rol\");\r",
+                  "    });\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Password is NOT returned\", function () {\r",
+                  "    usuarios.forEach(usuario => {\r",
+                  "        pm.expect(usuario).to.not.have.property(\"contrasena\");\r",
+                  "    });\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{adminToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/usuarios",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "usuarios"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Obtener usuario por ID - 200",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "const usuario = pm.response.json();\r",
+                  "\r",
+                  "pm.test(\"User has required fields\", function () {\r",
+                  "    pm.expect(usuario).to.have.property(\"idUsuario\");\r",
+                  "    pm.expect(usuario).to.have.property(\"nombre\");\r",
+                  "    pm.expect(usuario).to.have.property(\"email\");\r",
+                  "    pm.expect(usuario).to.have.property(\"rol\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Password is NOT returned\", function () {\r",
+                  "    pm.expect(usuario).to.not.have.property(\"contrasena\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{adminToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/usuarios/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "usuarios",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Crear Usuario / Register - 201",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 201\", function () {\r",
+                  "    pm.response.to.have.status(201);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Content-Type is JSON\", function () {\r",
+                  "    pm.expect(\r",
+                  "        pm.response.headers.get(\"Content-Type\")\r",
+                  "    ).to.include(\"application/json\");\r",
+                  "});\r",
+                  "\r",
+                  "const res = pm.response.json();\r",
+                  "\r",
+                  "pm.test(\"Success message exists\", function () {\r",
+                  "    pm.expect(res).to.have.property(\"mensaje\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Correct message\", function () {\r",
+                  "    pm.expect(res.mensaje)\r",
+                  "        .to.eql(\"Usuario registrado correctamente\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Test\",\n  \"primerApellido\": \"Admin\",\n  \"segundoApellido\": \"\",\n  \"email\": \"test{{$timestamp}}@squarestruct.com\",\n  \"contrasena\": \"123456\",\n  \"rol\": \"admin\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/usuarios/register",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "usuarios",
+                "register"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Actualizar Usuario - 200",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();\r",
+                  "const req = JSON.parse(pm.request.body.raw);\r",
+                  "\r",
+                  "pm.test(\"Status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Correct success message\", function () {\r",
+                  "    pm.expect(res.mensaje)\r",
+                  "        .to.eql(\"Usuario actualizado correctamente\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Updated user exists\", function () {\r",
+                  "    pm.expect(res).to.have.property(\"usuario\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Updated data matches request\", function () {\r",
+                  "    pm.expect(res.usuario.nombre).to.eql(req.nombre);\r",
+                  "    pm.expect(res.usuario.email).to.eql(req.email);\r",
+                  "    pm.expect(res.usuario.rol).to.eql(req.rol);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Password is NOT returned\", function () {\r",
+                  "    pm.expect(res.usuario)\r",
+                  "        .to.not.have.property(\"contrasena\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
           "request": {
             "auth": {
               "type": "bearer",
@@ -356,7 +863,7 @@
               }
             },
             "url": {
-              "raw": "http://localhost:3000/api/usuarios/1",
+              "raw": "http://localhost:3000/api/usuarios/22",
               "protocol": "http",
               "host": [
                 "localhost"
@@ -365,14 +872,40 @@
               "path": [
                 "api",
                 "usuarios",
-                "1"
+                "22"
               ]
             }
           },
           "response": []
         },
         {
-          "name": "Eliminar Usuario",
+          "name": "Eliminar Usuario - 200",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();\r",
+                  "\r",
+                  "pm.test(\"Status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Deletion message exists\", function () {\r",
+                  "    pm.expect(res).to.have.property(\"mensaje\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Correct deletion message\", function () {\r",
+                  "    pm.expect(res.mensaje)\r",
+                  "        .to.include(\"Cuenta eliminada correctamente\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
           "request": {
             "auth": {
               "type": "bearer",
@@ -387,7 +920,7 @@
             "method": "DELETE",
             "header": [],
             "url": {
-              "raw": "http://localhost:3000/api/usuarios/21",
+              "raw": "http://localhost:3000/api/usuarios/22",
               "protocol": "http",
               "host": [
                 "localhost"
@@ -396,11 +929,45 @@
               "path": [
                 "api",
                 "usuarios",
-                "21"
+                "22"
               ]
             }
           },
           "response": []
+        }
+      ],
+      "auth": {
+        "type": "bearer",
+        "bearer": [
+          {
+            "key": "token",
+            "value": "{{adminToken}}",
+            "type": "string"
+          }
+        ]
+      },
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {},
+            "exec": [
+              ""
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {},
+            "exec": [
+              ""
+            ]
+          }
         }
       ]
     },
@@ -408,8 +975,69 @@
       "name": "Perfil",
       "item": [
         {
-          "name": "Obtener perfil",
+          "name": "Obtener perfil - 200",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Content-Type is JSON\", function () {\r",
+                  "    pm.expect(\r",
+                  "        pm.response.headers.get(\"Content-Type\")\r",
+                  "    ).to.include(\"application/json\");\r",
+                  "});\r",
+                  "\r",
+                  "const res = pm.response.json();\r",
+                  "\r",
+                  "pm.test(\"Response is an object\", function () {\r",
+                  "    pm.expect(res).to.be.an(\"object\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Perfil has required fields\", function () {\r",
+                  "    pm.expect(res).to.have.property(\"usuario\");\r",
+                  "\r",
+                  "    pm.expect(res.usuario).to.have.property(\"idUsuario\");\r",
+                  "    pm.expect(res.usuario).to.have.property(\"nombre\");\r",
+                  "    pm.expect(res.usuario).to.have.property(\"email\");\r",
+                  "    pm.expect(res.usuario).to.have.property(\"rol\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Email format is valid\", function () {\r",
+                  "    pm.expect(res.usuario.email)\r",
+                  "        .to.match(/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Rol is valid\", function () {\r",
+                  "    pm.expect([\"admin\", \"usuario\"])\r",
+                  "        .to.include(res.usuario.rol);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response time is acceptable\", function () {\r",
+                  "    pm.expect(pm.response.responseTime)\r",
+                  "        .to.be.below(1000);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{userToken}}",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "GET",
             "header": [
               {
@@ -438,7 +1066,47 @@
       "name": "Pedidos",
       "item": [
         {
-          "name": "Obtener pedidos",
+          "name": "Obtener pedidos - 200",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Content-Type is JSON\", function () {\r",
+                  "    pm.expect(\r",
+                  "        pm.response.headers.get(\"Content-Type\")\r",
+                  "    ).to.include(\"application/json\");\r",
+                  "});\r",
+                  "\r",
+                  "const pedidos = pm.response.json();\r",
+                  "\r",
+                  "pm.test(\"Response is an array\", function () {\r",
+                  "    pm.expect(pedidos).to.be.an(\"array\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Each pedido has required fields\", function () {\r",
+                  "    pedidos.forEach((pedido) => {\r",
+                  "        pm.expect(pedido).to.have.property(\"idPedido\");\r",
+                  "        pm.expect(pedido).to.have.property(\"estado\");\r",
+                  "        pm.expect(pedido).to.have.property(\"metodoPago\");\r",
+                  "        pm.expect(pedido).to.have.property(\"direccionEnvio\");\r",
+                  "    });\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response time is acceptable\", function () {\r",
+                  "    pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
           "request": {
             "auth": {
               "type": "bearer",
@@ -468,7 +1136,56 @@
           "response": []
         },
         {
-          "name": "Obtener pedido por ID",
+          "name": "Obtener pedido por ID - 200",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Content-Type is JSON\", function () {\r",
+                  "    pm.expect(\r",
+                  "        pm.response.headers.get(\"Content-Type\")\r",
+                  "    ).to.include(\"application/json\");\r",
+                  "});\r",
+                  "\r",
+                  "const pedido = pm.response.json();\r",
+                  "const pedidoId = pm.request.url.path[pm.request.url.path.length - 1];\r",
+                  "\r",
+                  "pm.test(\"Returned pedido matches requested ID\", function () {\r",
+                  "    pm.expect(String(pedido.idPedido)).to.eql(String(pedidoId));\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Pedido has required fields\", function () {\r",
+                  "    pm.expect(pedido).to.have.property(\"idPedido\");\r",
+                  "    pm.expect(pedido).to.have.property(\"estado\");\r",
+                  "    pm.expect(pedido).to.have.property(\"metodoPago\");\r",
+                  "    pm.expect(pedido).to.have.property(\"direccionEnvio\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Estado is valid\", function () {\r",
+                  "    pm.expect([\r",
+                  "        \"pendiente\",\r",
+                  "        \"procesando\",\r",
+                  "        \"enviado\",\r",
+                  "        \"entregado\",\r",
+                  "        \"cancelado\"\r",
+                  "    ]).to.include(pedido.estado);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response time is acceptable\", function () {\r",
+                  "    pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
           "request": {
             "auth": {
               "type": "bearer",
@@ -499,13 +1216,60 @@
           "response": []
         },
         {
-          "name": "Crear un pedido",
+          "name": "Crear un pedido - 200 / 201",
           "event": [
             {
               "listen": "test",
               "script": {
                 "exec": [
-                  ""
+                  "const res = pm.response.json();\r",
+                  "const req = JSON.parse(pm.request.body.raw);\r",
+                  "\r",
+                  "if (res.idPedido) {\r",
+                  "    pm.collectionVariables.set(\"idPedido\", res.idPedido);\r",
+                  "}\r",
+                  "\r",
+                  "pm.test(\"ID pedido guardado\", function () {\r",
+                  "    pm.expect(pm.collectionVariables.get(\"idPedido\")).to.not.be.undefined;\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Status code is 200 or 201\", function () {\r",
+                  "    pm.expect([200, 201]).to.include(pm.response.code);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Content-Type is JSON\", function () {\r",
+                  "    pm.expect(\r",
+                  "        pm.response.headers.get(\"Content-Type\")\r",
+                  "    ).to.include(\"application/json\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response message is correct\", function () {\r",
+                  "    pm.expect(res.mensaje)\r",
+                  "        .to.eql(\"Pedido creado correctamente\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Direccion envio matches request\", function () {\r",
+                  "    if (res.pedido) {\r",
+                  "        pm.expect(res.pedido.direccionEnvio)\r",
+                  "            .to.eql(req.direccionEnvio);\r",
+                  "    }\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Metodo pago matches request\", function () {\r",
+                  "    if (res.pedido) {\r",
+                  "        pm.expect(res.pedido.metodoPago)\r",
+                  "            .to.eql(req.metodoPago);\r",
+                  "    }\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Productos array exists in request\", function () {\r",
+                  "    pm.expect(req.productos).to.be.an(\"array\");\r",
+                  "    pm.expect(req.productos.length).to.be.above(0);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response time is acceptable\", function () {\r",
+                  "    pm.expect(pm.response.responseTime).to.be.below(1500);\r",
+                  "});"
                 ],
                 "type": "text/javascript",
                 "packages": {},
@@ -551,7 +1315,53 @@
           "response": []
         },
         {
-          "name": "Actualizar pedido",
+          "name": "Actualizar pedido - 200",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();\r",
+                  "const pedidoId = pm.request.url.path[pm.request.url.path.length - 2];\r",
+                  "\r",
+                  "pm.test(\"Status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Content-Type is JSON\", function () {\r",
+                  "    pm.expect(\r",
+                  "        pm.response.headers.get(\"Content-Type\")\r",
+                  "    ).to.include(\"application/json\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response has message\", function () {\r",
+                  "    pm.expect(res).to.have.property(\"message\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Pedido exists in response\", function () {\r",
+                  "    pm.expect(res).to.have.property(\"pedido\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Pedido ID matches request\", function () {\r",
+                  "    pm.expect(String(res.pedido.idPedido))\r",
+                  "        .to.eql(String(pedidoId));\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Pedido status is cancelado\", function () {\r",
+                  "    pm.expect(res.pedido.estado)\r",
+                  "        .to.eql(\"cancelado\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response time is acceptable\", function () {\r",
+                  "    pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
           "request": {
             "auth": {
               "type": "bearer",
@@ -575,7 +1385,7 @@
               }
             },
             "url": {
-              "raw": "http://localhost:3000/api/pedidos/1/cancelar",
+              "raw": "http://localhost:3000/api/pedidos/{{idPedido}}/cancelar",
               "protocol": "http",
               "host": [
                 "localhost"
@@ -584,7 +1394,7 @@
               "path": [
                 "api",
                 "pedidos",
-                "1",
+                "{{idPedido}}",
                 "cancelar"
               ]
             }
@@ -598,6 +1408,31 @@
       "item": [
         {
           "name": "Obtener pedidos - 401 (sin token)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 401\", function () {\r",
+                  "    pm.response.to.have.status(401);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response contains token error\", function () {\r",
+                  "    const response = pm.response.json();\r",
+                  "\r",
+                  "    pm.expect(response.error).to.match(/token no proporcionado/i);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response time is acceptable\", function () {\r",
+                  "    pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
           "request": {
             "method": "GET",
             "header": [],
@@ -618,6 +1453,31 @@
         },
         {
           "name": "Obtener perfil - 401 (sin token)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 401\", function () {\r",
+                  "    pm.response.to.have.status(401);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response contains token error\", function () {\r",
+                  "    const response = pm.response.json();\r",
+                  "\r",
+                  "    pm.expect(response.error).to.match(/token no proporcionado/i);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response time is acceptable\", function () {\r",
+                  "    pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
           "request": {
             "method": "GET",
             "header": [],
@@ -638,6 +1498,31 @@
         },
         {
           "name": "Obtener usuario - 401 (sin token)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 401\", function () {\r",
+                  "    pm.response.to.have.status(401);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response contains token error\", function () {\r",
+                  "    const response = pm.response.json();\r",
+                  "\r",
+                  "    pm.expect(response.error).to.match(/token no proporcionado/i);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response time is acceptable\", function () {\r",
+                  "    pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
           "request": {
             "method": "GET",
             "header": [],
@@ -658,6 +1543,31 @@
         },
         {
           "name": "Crear producto - 401 (sin token)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 401\", function () {\r",
+                  "    pm.response.to.have.status(401);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response contains token error\", function () {\r",
+                  "    const response = pm.response.json();\r",
+                  "\r",
+                  "    pm.expect(response.error).to.match(/token no proporcionado/i);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response time is acceptable\", function () {\r",
+                  "    pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
           "request": {
             "method": "POST",
             "header": [],
@@ -686,6 +1596,24 @@
           "response": []
         }
       ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "adminToken",
+      "value": ""
+    },
+    {
+      "key": "productId",
+      "value": ""
+    },
+    {
+      "key": "userToken",
+      "value": ""
+    },
+    {
+      "key": "idPedido",
+      "value": ""
     }
   ]
 }
