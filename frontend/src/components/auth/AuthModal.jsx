@@ -99,7 +99,7 @@ function AuthModal({ isOpen, isLoginMode, onClose, onToggleMode, onUserLogin, on
     }
   }
 
-  const handleBackdropDoubleClick = (e) => {
+  const handleBackdropClick = (e) => {
     if (e.target === e.currentTarget) {
       onClose()
     }
@@ -108,7 +108,7 @@ function AuthModal({ isOpen, isLoginMode, onClose, onToggleMode, onUserLogin, on
   if (!isOpen) return null
 
   return (
-    <div className="auth-modal-backdrop" onDoubleClick={handleBackdropDoubleClick}>
+    <div className="auth-modal-backdrop" onClick={handleBackdropClick}>
       <div className="auth-modal-container">
         <div className={`auth-modal-flip-wrapper ${isLoginMode ? 'login' : 'register'}`}>
           <LoginForm
