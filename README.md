@@ -2,8 +2,6 @@
   <img src="./frontend/src/assets/logo/squarestruct-logo.png" alt="SquareStruct Logo" width="240" />
 </p>
 
-<h1 align="center">SquareStruct</h1>
-
 <p align="center">
   <a href="https://img.shields.io/badge/React-19.2.5-61dafb?logo=react&logoColor=white&style=flat-square"><img src="https://img.shields.io/badge/React-19.2.5-61dafb?logo=react&logoColor=white&style=flat-square" alt="React"/></a>
   <a href="https://img.shields.io/badge/Vite-8.0.10-646cff?logo=vite&logoColor=white&style=flat-square"><img src="https://img.shields.io/badge/Vite-8.0.10-646cff?logo=vite&logoColor=white&style=flat-square" alt="Vite"/></a>
@@ -14,7 +12,7 @@
   <a href="https://img.shields.io/badge/JWT-black?logo=jsonwebtokens&logoColor=white&style=flat-square"><img src="https://img.shields.io/badge/JWT-black?logo=jsonwebtokens&logoColor=white&style=flat-square" alt="JWT"/></a>
   <a href="https://img.shields.io/badge/Postman-ff6c37?logo=postman&logoColor=white&style=flat-square"><img src="https://img.shields.io/badge/Postman-ff6c37?logo=postman&logoColor=white&style=flat-square" alt="Postman"/></a>
   <a href="https://img.shields.io/badge/Jest-c21325?logo=jest&logoColor=white&style=flat-square"><img src="https://img.shields.io/badge/Jest-c21325?logo=jest&logoColor=white&style=flat-square" alt="Jest"/></a>
-  <a href="https://img.shields.io/badge/GitHub_Actions-2088ff?logo=githubactions&logoColor=white&style=flat-square"><img src="https://img.shields.io/badge/GitHub_Actions-2088ff?logo=githubactions&logoColor=white&style=flat-square" alt="GitHub Actions"/></a>
+  [![Backend CI](https://github.com/Key-Claw/squarestruct-app/actions/workflows/backend-ci.yml/badge.svg)](https://github.com/Key-Claw/squarestruct-app/actions/workflows/backend-ci.yml)
   <a href="./LICENSE"><img src="https://img.shields.io/badge/license-MIT-green?style=flat-square" alt="MIT License"/></a>
 </p>
 
