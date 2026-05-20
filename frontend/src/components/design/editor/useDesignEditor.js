@@ -1,0 +1,408 @@
+import { useEffect, useMemo, useState } from 'react'
+import { getProductos } from '../../../services/productService'
+import { normalizarProducto } from '../../../utils/text'
+import {
+  accessoryPieces,
+  designCategories,
+  gridCellSizeMeters,
+  gridColumns,
+  gridRows,
+  mapProductToDesignPiece,
+} from './designEditorData'
+
+const STORAGE_KEY = 'squarestruct-design-draft'
+const INITIAL_VIEW_ZOOM = 1.78
+const MIN_VIEW_ZOOM = 0.5
+const MAX_VIEW_ZOOM = 2.2
+const MATERIAL_ALL = 'todos'
+const MATERIAL_HORMIGON = 'hormigon'
+const MATERIAL_ECO = 'eco'
+
+const normalizeMaterial = (value) => (
+  String(value || '')
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+)
+
+function createPlacementId() {
+  if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
+    return crypto.randomUUID()
+  }
+
+  return `placement-${Date.now()}-${Math.random().toString(16).slice(2)}`
+}
+
+function getFootprint(piece, rotated) {
+  const footprint = piece?.footprint || { width: 1, height: 1 }
+
+  return rotated
+    ? { width: footprint.height, height: footprint.width }
+    : footprint
+}
+
+function placementCoversCell(placement, row, column, floor = placement.floor) {
+  return (
+    floor === placement.floor
+    && row >= placement.row
+    && row < placement.row + placement.height
+    && column >= placement.column
+    && column < placement.column + placement.width
+  )
+}
+
+function placementsOverlap(a, b) {
+  return (
+    a.row < b.row + b.height
+    && a.row + a.height > b.row
+    && a.column < b.column + b.width
+    && a.column + a.width > b.column
+  )
+}
+
+function findPlacementAtCell(placements, row, column, floor) {
+  return placements.find((placement) => placementCoversCell(placement, row, column, floor)) || null
+}
+
+function hasLowerFloorSupport(placements, candidate) {
+  if (candidate.floor === 0) {
+    return true
+  }
+
+  return placements.some((placement) => (
+    placement.floor === candidate.floor - 1 && placementsOverlap(placement, candidate)
+  ))
+}
+
+function hasLateralSupport(placements, candidate) {
+  return placements.some((placement) => {
+    if (placement.floor !== candidate.floor) {
+      return false
+    }
+
+    const touchesHorizontalSide = (
+      placement.column + placement.width === candidate.column
+      || candidate.column + candidate.width === placement.column
+    )
+    const hasVerticalOverlap = (
+      placement.row < candidate.row + candidate.height
+      && placement.row + placement.height > candidate.row
+    )
+    const touchesVerticalSide = (
+      placement.row + placement.height === candidate.row
+      || candidate.row + candidate.height === placement.row
+    )
+    const hasHorizontalOverlap = (
+      placement.column < candidate.column + candidate.width
+      && placement.column + placement.width > candidate.column
+    )
+
+    return (
+      (touchesHorizontalSide && hasVerticalOverlap)
+      || (touchesVerticalSide && hasHorizontalOverlap)
+    )
+  })
+}
+
+function validatePlacement(placements, candidate) {
+  if (
+    candidate.row < 0
+    || candidate.column < 0
+    || candidate.row + candidate.height > gridRows
+    || candidate.column + candidate.width > gridColumns
+  ) {
+    return { ok: false, message: 'La pieza no cabe dentro del plano.' }
+  }
+
+  const hasCollision = placements.some((placement) => (
+    placement.floor === candidate.floor && placementsOverlap(placement, candidate)
+  ))
+
+  if (hasCollision) {
+    return { ok: false, message: 'Esa zona ya tiene una pieza colocada.' }
+  }
+
+  if (!hasLowerFloorSupport(placements, candidate) && !hasLateralSupport(placements, candidate)) {
+    return { ok: false, message: 'La pieza necesita apoyo inferior o conexión lateral.' }
+  }
+
+  return { ok: true, message: '' }
+}
+
+function loadDraft() {
+  if (typeof window === 'undefined') return null
+
+  try {
+    const draft = JSON.parse(window.localStorage.getItem(STORAGE_KEY))
+
+    if (!draft || !Array.isArray(draft.placements)) return null
+
+    return draft
+  } catch {
+    return null
+  }
+}
+
+function buildStats(placements, designPieces) {
+  const pieceMap = new Map(designPieces.map((piece) => [piece.id, piece]))
+  const summaryMap = new Map()
+  let occupiedCells = 0
+  let materialsSubtotal = 0
+
+  placements.forEach((placement) => {
+    const piece = pieceMap.get(placement.pieceId)
+    if (!piece) return
+
+    occupiedCells += placement.width * placement.height
+    materialsSubtotal += piece.price
+
+    const key = `${piece.name}-${piece.material}`
+    const current = summaryMap.get(key) || { name: piece.name, material: piece.material, amount: 0 }
+    summaryMap.set(key, { ...current, amount: current.amount + 1 })
+  })
+
+  return {
+    items: Array.from(summaryMap.values()),
+    totalPieces: placements.length,
+    totalArea: (occupiedCells * gridCellSizeMeters * gridCellSizeMeters).toFixed(2),
+    wallHeight: placements.length > 0 ? '2.40 m' : '0.00 m',
+    estimatedTotal: materialsSubtotal * 1.08,
+  }
+}
+
+function useDesignEditor() {
+  const draft = loadDraft()
+  const [activeCategory, setActiveCategory] = useState(draft?.activeCategory || 'bloques')
+  const [dbPieces, setDbPieces] = useState([])
+  const [isLoadingPieces, setIsLoadingPieces] = useState(true)
+  const [piecesError, setPiecesError] = useState('')
+  const [materialFilter, setMaterialFilter] = useState(MATERIAL_ECO)
+  const [selectedPieceId, setSelectedPieceId] = useState(draft?.selectedPieceId || null)
+  const [placements, setPlacements] = useState(draft?.placements || [])
+  const [activeFloor, setActiveFloor] = useState(draft?.activeFloor || 0)
+  const [viewMode, setViewMode] = useState('2d')
+  const [viewZoom, setViewZoom] = useState(INITIAL_VIEW_ZOOM)
+  const [boardOffset, setBoardOffset] = useState({ x: 0, y: 0 })
+  const [isRotated, setIsRotated] = useState(false)
+  const [statusMessage, setStatusMessage] = useState('Selecciona una pieza y colocala en el plano 2D.')
+
+  useEffect(() => {
+    let isMounted = true
+
+    const loadPieces = async () => {
+      try {
+        setIsLoadingPieces(true)
+        setPiecesError('')
+        const products = await getProductos()
+        const mappedPieces = Array.isArray(products)
+          ? products
+            .map(normalizarProducto)
+            .map(mapProductToDesignPiece)
+            .filter(Boolean)
+          : []
+
+        if (!isMounted) return
+
+        setDbPieces(mappedPieces)
+        if (!mappedPieces.length) {
+          setPiecesError('No hay bloques o pilares publicados en la base de datos.')
+        }
+      } catch (error) {
+        if (!isMounted) return
+
+        setDbPieces([])
+        setPiecesError(error.message || 'No se pudieron cargar los bloques y pilares.')
+      } finally {
+        if (isMounted) setIsLoadingPieces(false)
+      }
+    }
+
+    loadPieces()
+
+    return () => {
+      isMounted = false
+    }
+  }, [])
+
+  const designPieces = useMemo(() => [...dbPieces, ...accessoryPieces], [dbPieces])
+
+  const visiblePieces = useMemo(
+    () => designPieces.filter((piece) => {
+      if (piece.category !== activeCategory) return false
+      if (activeCategory === 'accesorios' || materialFilter === MATERIAL_ALL) return true
+
+      const material = normalizeMaterial(piece.material)
+
+      if (materialFilter === MATERIAL_HORMIGON) {
+        return material.includes('hormigon')
+      }
+
+      if (materialFilter === MATERIAL_ECO) {
+        return material.includes('plastico') || material.includes('eco') || material.includes('recicl')
+      }
+
+      return true
+    }),
+    [activeCategory, designPieces, materialFilter],
+  )
+
+  const selectedPiece = visiblePieces.find((piece) => piece.id === selectedPieceId) || visiblePieces[0] || null
+  const stats = useMemo(() => buildStats(placements, designPieces), [designPieces, placements])
+
+  const selectCategory = (category) => {
+    setActiveCategory(category)
+    const firstPiece = designPieces.find((piece) => piece.category === category)
+    setSelectedPieceId(firstPiece?.id || null)
+  }
+
+  const placePiece = (row, column) => {
+    if (!selectedPiece) {
+      setStatusMessage('Selecciona una pieza disponible antes de colocarla.')
+      return
+    }
+
+    const footprint = getFootprint(selectedPiece, isRotated)
+    const candidate = {
+      id: createPlacementId(),
+      pieceId: selectedPiece.id,
+      row,
+      column,
+      width: footprint.width,
+      height: footprint.height,
+      floor: activeFloor,
+      rotated: isRotated,
+    }
+    const validation = validatePlacement(placements, candidate)
+
+    if (!validation.ok) {
+      setStatusMessage(validation.message)
+      return
+    }
+
+    setPlacements((current) => [...current, candidate])
+    setStatusMessage(`${selectedPiece.name} colocado en la planta ${activeFloor}.`)
+  }
+
+  const removePiece = (row, column) => {
+    const placement = findPlacementAtCell(placements, row, column, activeFloor)
+    if (!placement) return
+
+    setPlacements((current) => current.filter((item) => item.id !== placement.id))
+    setStatusMessage('Pieza eliminada del plano.')
+  }
+
+  const clearProject = () => {
+    setPlacements([])
+    setStatusMessage('Plano reiniciado.')
+  }
+
+  const saveProject = () => {
+    if (typeof window === 'undefined') return
+
+    window.localStorage.setItem(STORAGE_KEY, JSON.stringify({
+      activeCategory,
+      selectedPieceId,
+      activeFloor,
+      placements,
+    }))
+    setStatusMessage('Borrador guardado en el navegador.')
+  }
+
+  const loadProject = () => {
+    const savedDraft = loadDraft()
+
+    if (!savedDraft) {
+      setStatusMessage('No hay borrador guardado todavia.')
+      return
+    }
+
+    setActiveCategory(savedDraft.activeCategory || 'bloques')
+    setSelectedPieceId(savedDraft.selectedPieceId || null)
+    setActiveFloor(savedDraft.activeFloor || 0)
+    setPlacements(savedDraft.placements)
+    setStatusMessage('Borrador cargado correctamente.')
+  }
+
+  const exportProject = () => {
+    if (typeof window === 'undefined') return
+
+    const payload = {
+      exportedAt: new Date().toISOString(),
+      activeCategory,
+      activeFloor,
+      selectedPieceId,
+      placements,
+      stats,
+    }
+    const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' })
+    const url = window.URL.createObjectURL(blob)
+    const link = document.createElement('a')
+
+    link.href = url
+    link.download = 'squarestruct-plano.json'
+    link.click()
+    window.URL.revokeObjectURL(url)
+    setStatusMessage('Plano exportado como archivo JSON.')
+  }
+
+  const zoomIn = () => {
+    setViewZoom((current) => Math.min(MAX_VIEW_ZOOM, Number((current + 0.14).toFixed(2))))
+  }
+
+  const zoomOut = () => {
+    setViewZoom((current) => Math.max(MIN_VIEW_ZOOM, Number((current - 0.14).toFixed(2))))
+  }
+
+  const panBoard = (deltaX, deltaY) => {
+    setBoardOffset((current) => ({
+      x: Math.max(-480, Math.min(480, current.x + deltaX)),
+      y: Math.max(-320, Math.min(320, current.y + deltaY)),
+    }))
+  }
+
+  const resetBoardOffset = () => {
+    setBoardOffset({ x: 0, y: 0 })
+  }
+
+  return {
+    activeCategory,
+    activeFloor,
+    boardOffset,
+    clearProject,
+    designCategories,
+    designPieces,
+    exportProject,
+    gridColumns,
+    gridCellSizeMeters,
+    gridRows,
+    isLoadingPieces,
+    isRotated,
+    loadProject,
+    materialFilter,
+    piecesError,
+    placements,
+    panBoard,
+    placePiece,
+    removePiece,
+    resetBoardOffset,
+    saveProject,
+    selectCategory,
+    selectedPiece,
+    selectedPieceId,
+    setActiveFloor,
+    setIsRotated,
+    setMaterialFilter,
+    setSelectedPieceId,
+    setViewMode,
+    stats,
+    statusMessage,
+    viewMode,
+    visiblePieces,
+    viewZoom,
+    zoomIn,
+    zoomOut,
+  }
+}
+
+export { placementCoversCell }
+export default useDesignEditor
