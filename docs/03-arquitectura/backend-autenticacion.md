@@ -1,17 +1,8 @@
-# Autenticación del backend
+# Autenticacion Y Autorizacion
 
-## Objetivo
+SquareStruct usa JWT para autenticar peticiones y roles para limitar funciones administrativas.
 
-Este documento explica cómo funciona la autenticación del MVP.
-
-El sistema actual usa:
-
-- `bcrypt` para proteger contraseñas;
-- `jsonwebtoken` para generar tokens JWT;
-- middleware de autenticación para proteger rutas;
-- middleware de administrador para limitar rutas de gestión.
-
-## Registro de usuario
+## Registro
 
 Endpoint:
 
@@ -19,25 +10,12 @@ Endpoint:
 POST /api/usuarios/register
 ```
 
-El usuario envía:
+Flujo:
 
-```json
-{
-  "nombre": "Test",
-  "primerApellido": "Usuario",
-  "email": "test@mail.com",
-  "contrasena": "12345678"
-}
-```
-
-Antes de guardar el usuario:
-
-1. Se validan los campos principales.
-2. Se comprueba que el email no exista.
-3. La contraseña se hashea con `bcrypt`.
-4. Se inserta el usuario en MySQL.
-
-La contraseña real no se guarda en texto plano.
+1. `validarRegistro` comprueba nombre, email y contrasena.
+2. `registerUsuario` comprueba que el email no exista.
+3. `bcrypt.hash` cifra la contrasena.
+4. Se inserta el usuario con rol por defecto `usuario`.
 
 ## Login
 
@@ -47,90 +25,87 @@ Endpoint:
 POST /api/usuarios/login
 ```
 
-El usuario envía:
+Flujo:
+
+1. `validarLogin` comprueba email y contrasena para el flujo principal.
+2. `loginUsuario` busca usuario por email.
+3. Tambien acepta login por `nombre` + `primerApellido` + `contrasena`.
+4. `bcrypt.compare` valida la contrasena.
+5. `jsonwebtoken.sign` genera un token con expiracion de 2 horas.
+
+Payload del JWT:
 
 ```json
 {
-  "email": "test@mail.com",
-  "contrasena": "12345678"
+  "idUsuario": 1,
+  "nombre": "Admin",
+  "email": "admin@squarestruct.com",
+  "rol": "admin"
 }
 ```
 
-El backend:
+## Uso Del Token
 
-1. Busca el usuario.
-2. Compara la contraseña con `bcrypt.compare`.
-3. Si es correcta, genera un JWT.
-4. Devuelve el token.
-
-Respuesta:
-
-```json
-{
-  "token": "TOKEN_JWT"
-}
-```
-
-## Uso del token
-
-En rutas protegidas, el frontend envía:
-
-```http
-Authorization: Bearer TOKEN_JWT
-```
-
-El middleware `auth.js`:
-
-1. Lee la cabecera `Authorization`.
-2. Extrae el token.
-3. Verifica la firma con `JWT_SECRET`.
-4. Añade los datos del usuario a `req.user`.
-
-Si el token no existe, responde `401`.
-
-Si el token no es válido, responde `403`.
-
-## Roles
-
-El MVP trabaja con dos roles:
-
-| Rol | Uso |
-| --- | --- |
-| `usuario` | Usuario normal de la plataforma. |
-| `admin` | Usuario con permisos para gestionar usuarios. |
-
-El middleware `admin.js` comprueba:
+El frontend guarda:
 
 ```text
+localStorage.authToken
+localStorage.currentUser
+```
+
+En cada peticion autenticada, `api.js` envia:
+
+```http
+Authorization: Bearer TOKEN
+```
+
+`authService.js` decodifica el token para comprobar caducidad y limpiar la sesion si ha expirado.
+
+## Middleware Auth
+
+`backend/src/middlewares/auth.js`:
+
+- lee `Authorization`;
+- extrae el token;
+- comprueba `JWT_SECRET`;
+- valida con `jwt.verify`;
+- guarda el payload en `req.user`.
+
+Errores:
+
+- `401` si falta token;
+- `403` si el token es invalido;
+- `500` si falta `JWT_SECRET`.
+
+## Middleware Admin
+
+`backend/src/middlewares/admin.js` permite continuar solo si:
+
+```js
 req.user?.rol?.toLowerCase() === 'admin'
 ```
 
-Se normaliza a minusculas para evitar problemas si el rol llega como `Admin` o `ADMIN`.
+Se usa en:
 
-## Rutas públicas y protegidas
+- listar usuarios;
+- consultar usuario por id;
+- crear, editar y eliminar productos;
+- listar pedidos admin;
+- cambiar estado de pedidos.
 
-| Ruta | Tipo |
+## Roles
+
+| Rol | Permisos |
 | --- | --- |
-| `POST /api/usuarios/register` | Pública |
-| `POST /api/usuarios/login` | Pública |
-| `GET /api/productos` | Pública |
-| `GET /api/perfil` | Protegida |
-| `GET /api/pedidos` | Protegida |
-| `POST /api/pedidos` | Protegida |
-| `GET /api/usuarios` | Protegida y admin |
-| `GET /api/usuarios/:id` | Protegida y admin |
-| `PUT /api/usuarios/:id` | Protegida y admin |
+| `usuario` | Perfil, checkout, pedidos propios y facturas propias. |
+| `admin` | Permisos de usuario mas administracion de usuarios, productos y facturacion. |
 
-## Seguridad en el MVP
+## Proteccion En Frontend
 
-Decisiones aplicadas:
+`App.jsx` y `Settings.jsx` evitan que usuarios normales accedan a tabs admin. Si se intenta abrir `usuarios` o `facturacion` sin rol admin, se redirige a `perfil`.
 
-- No guardar contraseñas en texto plano.
-- Usar JWT para sesiones sin guardar estado en servidor.
-- Separar rutas públicas y privadas.
-- Usar roles para limitar operaciones administrativas.
-- Guardar `JWT_SECRET` como variable de entorno.
+La proteccion real sigue estando en backend. La proteccion frontend mejora experiencia, pero no sustituye middlewares.
 
-## Idea clave para explicar
+## Cuentas Sensibles
 
-El backend comprueba quién es el usuario con JWT y qué puede hacer con su rol. La contraseña se protege con bcrypt antes de guardarse en la base de datos.
+El backend trata `admin@squarestruct.com` como cuenta super admin para evitar editarla o eliminarla desde flujos normales.

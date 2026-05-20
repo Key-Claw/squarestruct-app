@@ -1,5 +1,5 @@
 export const normalizarTexto = (value) => {
-  if (typeof value !== 'string' || !/[ÃƒÆ’Ãƒâ€šÃ¯Â¿Â½]/.test(value)) {
+  if (typeof value !== 'string' || !/[\u00c3\u00c2\ufffd]/.test(value)) {
     return value
   }
 
@@ -18,3 +18,4 @@ export const normalizarProducto = (product) => ({
   tipo: normalizarTexto(product.tipo),
   material: normalizarTexto(product.material)
 })
+

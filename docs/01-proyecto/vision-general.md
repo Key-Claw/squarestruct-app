@@ -1,98 +1,84 @@
-# Vision general del proyecto
+# Vision General
 
-## Objetivo
+SquareStruct es una aplicacion web full stack para construccion modular sostenible. La V2 permite consultar soluciones visuales, navegar por un catalogo de piezas, crear pedidos desde un carrito, revisar facturas y gestionar usuarios/facturacion desde un rol administrador.
 
-SquareStruct es una aplicacion web para construccion modular.
+## Alcance Actual De V2
 
-Su objetivo es conectar a usuarios interesados en construir con productos modulares y facilitar un primer flujo de consulta, seleccion y gestion basica.
+V2 esta implementada con:
 
-En `MVP v1 - Funcional` no se intenta construir todo el producto final. Se busca demostrar que la aplicacion puede registrar usuarios, iniciar sesion, mostrar productos reales desde backend, trabajar con un carrito visual y ofrecer una primera administracion de usuarios.
+- frontend React/Vite;
+- API REST Express;
+- base de datos MySQL/MariaDB;
+- autenticacion JWT;
+- roles `usuario` y `admin`;
+- catalogo conectado al backend;
+- carrito y checkout;
+- pedidos y facturas;
+- panel privado de cuenta;
+- administracion de usuarios;
+- administracion de facturacion/pedidos;
+- Docker Compose;
+- GitHub Actions;
+- tests automatizados y colecciones Postman.
 
-## Problema que resuelve
+## Flujo Principal
 
-La construccion modular puede ser dificil de entender para una persona que no conoce el sector.
+```text
+usuario visita la app
+  -> consulta galeria o catalogo
+  -> filtra/busca productos
+  -> anade productos al carrito
+  -> inicia sesion o se registra
+  -> completa checkout
+  -> se crea un pedido en backend
+  -> consulta sus facturas en Mi Cuenta
+```
 
-Algunos problemas habituales son:
+El administrador tiene flujos adicionales:
 
-- Es complicado visualizar que piezas hacen falta.
-- El presupuesto puede depender de muchos productos y proveedores.
-- El usuario no siempre sabe comparar opciones.
-- La informacion suele estar separada en distintas empresas o catalogos.
-- La parte administrativa necesita controlar usuarios, productos y pedidos de forma ordenada.
+```text
+admin inicia sesion
+  -> accede a Mi Cuenta
+  -> revisa usuarios
+  -> edita roles o datos
+  -> consulta historial de facturacion
+  -> acepta o deniega pedidos pendientes
+```
 
-Esto hace que el proceso sea menos claro y que el usuario tenga dudas antes de tomar una decision.
+## MVP Y V2
 
-## Solucion propuesta
+La MVP fue la primera version funcional. Su objetivo era validar la base: registro, login, catalogo, carrito visual y estructura inicial de administracion.
 
-SquareStruct propone la base de una futura plataforma SaaS donde el usuario puede:
+V2 es la version documentada actualmente. Sobre esa base incorpora integracion real de pedidos desde checkout, facturas, facturacion admin, validaciones, responsive, tests, Docker y CI.
 
-- Registrarse e iniciar sesion.
-- Consultar productos de construccion modular.
-- Ver informacion basica de cada producto.
-- Anadir productos a un carrito visual.
-- Preparar la base para pedidos.
-- Acceder a vistas protegidas si tiene rol administrador.
-- Gestionar usuarios desde el panel admin.
+## Funcionalidades Implementadas
 
-En una version futura, la aplicacion podria anadir un configurador visual para disenar viviendas con bloques modulares y calcular el presupuesto automaticamente. Esa herramienta 3D seria la parte mas diferencial del SaaS.
-
-SaaS significa *Software as a Service*: una aplicacion accesible desde el navegador, mantenida en un servidor y pensada para que los usuarios usen el servicio sin instalar el sistema completo en su equipo. En `MVP v1` se construye la base tecnica, y el SaaS completo queda como evolucion futura.
-
-## Tipos de usuario
-
-| Usuario | Funcion |
+| Area | Estado V2 |
 | --- | --- |
-| Cliente | Consulta productos y puede preparar un carrito/pedido. |
-| Administrador | Accede a vistas protegidas y gestiona usuarios. |
-| Proveedor | Publicaria o gestionaria productos modulares en una fase futura. |
+| Inicio | Pagina de entrada con navegacion hacia areas principales. |
+| Galeria | Ideas visuales, filtro por material y modal de imagen. |
+| Catalogo | Productos desde API, busqueda, filtros, orden, paginacion y fallback local. |
+| Disenador | Interfaz visual provisional con paneles y resumen simulado; no guarda planos reales. |
+| Auth | Registro, login, JWT, expiracion local y logout. |
+| Cuenta | Perfil editable, facturas y seccion de planos vacia. |
+| Carrito | Panel lateral, cantidades, eliminacion y total. |
+| Checkout | Crea pedidos autenticados en backend. |
+| Usuarios admin | Listado, busqueda, filtro, detalle, edicion y eliminacion/anominizacion. |
+| Facturacion admin | Historial real de pedidos, filtros, estadisticas, paginacion y cambio de estado. |
+| Productos API | Lectura publica y escritura protegida por admin. |
 
-En `MVP v1` se priorizan el flujo de cliente y una primera administracion basica. El rol de proveedor queda como parte de la evolucion futura.
+## Limites Conscientes
 
-## Funcionalidades del MVP
+- El disenador todavia no es un editor 3D real persistente.
+- No existe entidad `plano` en base de datos.
+- No hay pasarela de pago real.
+- El despliegue AWS esta documentado como orientacion, no como infraestructura productiva cerrada.
+- Los servicios backend historicos en `src/services/` no representan el flujo activo.
 
-- Registro de usuarios.
-- Login con JWT.
-- Catalogo de productos conectado al backend.
-- Carrito visual en cliente.
-- Base de servicios para pedidos.
-- Gestion de usuarios para administradores.
-- API REST para comunicar frontend y backend.
-- Vistas visuales de apoyo como galeria, Design y facturacion.
+## Roadmap
 
-## Queda para fases siguientes
-
-Algunas secciones existen como base visual o tecnica, pero no representan todavia una funcionalidad completa. Se desarrollaran o completaran en `v2` o `v3`:
-
-- `Design`: maqueta del futuro disenador de estructuras.
-- `Facturacion`: panel visual con datos de ejemplo.
-- Pedidos: existe base de backend/servicios, pero el checkout completo desde carrito queda para fases siguientes.
-- Proveedor: se contempla en la vision del producto, pero no esta desarrollado como flujo propio del MVP.
-
-## Roadmap del proyecto
-
-El proyecto se organiza en tres fases principales:
-
-| Version | Objetivo |
+| Version | Alcance |
 | --- | --- |
-| `MVP v1 - Funcional` | Validar el flujo minimo: registro, login, catalogo, carrito/base de pedidos y gestion admin inicial. |
-| `v2 - Aplicacion completa y estilizada` | Mejorar la experiencia de usuario, seguridad, validaciones, tests, pedidos y estabilidad. |
-| `v3 - Disenador de planos 3D` | Implementar la parte mas innovadora: diseno de planos modulares y visualizacion 3D. |
-
-## Evolucion futura
-
-Estas funcionalidades no forman parte obligatoria de `MVP v1`, pero muestran hacia donde podria crecer el proyecto:
-
-- Configurador modular visual.
-- Editor de planos por bloques.
-- Calculo automatico de presupuesto.
-- Guardado de disenos de usuario.
-- Visualizacion de estructuras en 3D.
-- Comparacion entre proveedores.
-- Panel completo de administracion.
-- Flujo completo de proveedores.
-- Recomendaciones de materiales.
-- Tests automatizados de frontend.
-
-## Frase util para la presentacion
-
-SquareStruct es una plataforma web que simplifica la construccion modular: en `MVP v1` permite consultar productos, iniciar sesion, preparar un carrito y administrar usuarios; en `v2` y `v3` podria completar pedidos, facturacion y diseno de viviendas por bloques con calculo de presupuestos.
+| MVP v1 | Primera version funcional: auth, catalogo, carrito visual y base admin. |
+| V2 | Estado actual: aplicacion full stack con pedidos, checkout, facturacion, roles, tests y CI. |
+| V3 | Disenador 3D persistente, entidad `plano`, presupuesto avanzado y despliegue productivo. |

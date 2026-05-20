@@ -1,53 +1,42 @@
-# Scripts de automatización
+# Scripts
 
-## Objetivo
+## Estado actual
 
-La carpeta `scripts/` contiene utilidades para facilitar el arranque del entorno de desarrollo.
+La carpeta `scripts/` queda reservada para futuras utilidades, pero actualmente no hay scripts activos necesarios para arrancar, probar o desplegar SquareStruct.
 
-## `init-backend.ps1`
+El flujo oficial del proyecto se basa en comandos documentados de Docker, backend y frontend.
 
-Script de PowerShell pensado para Windows.
+## Comandos oficiales
 
-Automatiza parte del arranque del backend y la base de datos.
+Desarrollo local recomendado:
 
-## Qué hace
-
-1. Puede cerrar procesos `node` activos si se usa `-ForceKillNode`.
-2. Levanta MySQL con Docker Compose.
-3. Espera a que el contenedor esté listo.
-4. Entra en `backend/`.
-5. Ejecuta `npm install`.
-6. Abre una nueva ventana con `npm run dev`.
-
-## Requisitos
-
-- Windows.
-- PowerShell.
-- Docker Desktop o Docker Engine.
-- Node.js.
-- Git, si se clona el repositorio por primera vez.
-
-## Uso
-
-Desde la raíz del repositorio:
-
-```powershell
-powershell -ExecutionPolicy Bypass -File .\scripts\init-backend.ps1
+```bash
+docker compose -f docker/docker-compose-dev.yml up -d
+cd backend
+npm run dev
 ```
 
-Con cierre previo de procesos Node:
+Frontend:
 
-```powershell
-powershell -ExecutionPolicy Bypass -File .\scripts\init-backend.ps1 -ForceKillNode
+```bash
+cd frontend
+npm run dev
 ```
 
-## Errores frecuentes
+Validacion:
 
-- Si PowerShell bloquea el script, usar `-ExecutionPolicy Bypass`.
-- Si Docker no arranca, revisar Docker Desktop.
-- Si MySQL no queda listo, revisar `docker logs squarestruct-mysql`.
-- Si el backend no conecta, revisar `backend/.env`.
+```bash
+cd backend
+npm test
+```
+
+```bash
+cd frontend
+npm run test:run
+npm run lint
+npm run build
+```
 
 ## Idea clave
 
-Este script no cambia la lógica del proyecto. Solo ahorra pasos repetitivos al arrancar el entorno.
+Si en el futuro se anade un script auxiliar, debe estar documentado aqui y no sustituir a los comandos principales de `README.md`, `docker/README.md` y `docs/`.

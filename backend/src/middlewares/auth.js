@@ -1,8 +1,8 @@
 import jwt from 'jsonwebtoken';
 
-// Middleware para verificar JWT y añadir el usuario autenticado a req.user
+// Middleware para verificar JWT y anadir el usuario autenticado a req.user.
 export default function authMiddleware(req, res, next) {
-  const authHeader = req.headers['authorization'];
+  const authHeader = req.headers.authorization;
 
   // Formato esperado: "Bearer TOKEN"
   const token = authHeader && authHeader.split(' ')[1];
@@ -16,11 +16,10 @@ export default function authMiddleware(req, res, next) {
   jwt.verify(token, process.env.JWT_SECRET || 'secret', (err, user) => {
     if (err) {
       return res.status(403).json({
-        error: 'Token inválido'
+        error: 'Token invalido'
       });
     }
 
-    // Guardamos el usuario en la request
     req.user = user;
 
     next();

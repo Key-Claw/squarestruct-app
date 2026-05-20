@@ -1,135 +1,90 @@
-import cristianGilPhoto from '../assets/about/cristiangil.jpeg'
-import raulmartinezPhoto from '../assets/about/raulmartinez.jpeg'
-import teamPhoto from '../assets/about/retoseas.jpeg'
+import cristianGilPhoto from '../assets/about/cristiangil.webp'
+import raulmartinezPhoto from '../assets/about/raulmartinez.webp'
+import teamPhoto from '../assets/about/retoseas.webp'
+import squarestructLogo from '../assets/logo/squarestruct-logo.png'
 
 function AboutUs() {
   return (
     <section className="page-shell about-page about-story-page container-fluid">
-      <div className="row g-3 about-layout-row align-items-start">
-        <aside className="col-12 col-lg-2 about-profile-col">
-          <div className="card about-name-card">
-            <div className="card-body">Raúl Martín</div>
+      <div className="about-layout-row">
+        <div className="about-top-grid">
+          <aside className="about-profile-col">
+            <div className="card about-name-card">
+              <div className="card-body">Raúl Martín</div>
+            </div>
+
+            <article className="card about-profile-photo-card">
+              <img src={raulmartinezPhoto} className="card-img about-profile-image" alt="Raúl Martín" />
+            </article>
+          </aside>
+
+          <div className="card about-team-card">
+            <img src={teamPhoto} className="card-img about-team-image" alt="Raúl y Cristian" />
           </div>
 
-          <article className="card about-profile-photo-card">
-            <img src={raulmartinezPhoto} className="card-img about-profile-image" alt="Raúl Martín" />
-          </article>
+          <aside className="about-profile-col">
+            <div className="card about-name-card">
+              <div className="card-body">Cristian Gil</div>
+            </div>
 
+            <article className="card about-profile-photo-card">
+              <img src={cristianGilPhoto} className="card-img about-profile-image" alt="Cristian Gil" />
+            </article>
+          </aside>
+        </div>
+
+        <div className="about-content-grid">
           <section className="card about-profile-text-card">
             <div className="card-body">
               <p>
-                Raúl Martín ha sentido desde pequeno una gran pasion por los
-                videojuegos y el mundo de la tecnologia, lo que le llevo a orientar su
-                formacion hacia este sector.
+                Raúl es un apasionado por los videojuegos y la tecnología. Orientó
+                su formación a sistemas y desarrollo web desde sus primeros pasos,
+                buscando aplicar lo aprendido en proyectos reales.
               </p>
 
-              <p>
-                Inicio sus estudios en Sistemas Microinformaticos y Redes en el Centro
-                San Valero, donde adquirio una base solida en sistemas y tecnologia y
-                desperto su interes por el desarrollo web.
-              </p>
-
-              <p>
-                Actualmente cursa Desarrollo de Aplicaciones Web (DAW), aplicando sus
-                conocimientos en proyectos como SquareStruct mientras continua
-                formandose de manera autodidacta con el objetivo de crecer en el
-                ambito tecnologico.
-              </p>
+              {/* <p>
+                Estudia DAW en Centro San Valero y participa activamente en
+                SquareStruct, combinando trabajo en equipo y práctica constante para
+                consolidar sus habilidades.
+              </p> */}
             </div>
           </section>
-        </aside>
-
-        <main className="col-12 col-lg-8">
-          <div className="card about-team-card">
-            <img src={teamPhoto} className="card-img about-team-image" alt="Raul y Cristian" />
-          </div>
 
           <section className="card about-story-card about-editorial-card">
             <div className="card-body">
               <div className="about-text-content">
+                <p className="eyebrow">Sobre SquareStruct</p>
                 <h1>Nuestra historia</h1>
-                <p className="about-lead">
-                  SquareStruct es un proyecto academico con mentalidad practica: una
-                  tienda online para acercar la construccion modular a un usuario que
-                  quiere comparar, elegir y planificar con mas claridad.
+                <p>
+                  SquareStruct nace en el aula, pero mira hacia la obra real:
+                  una forma sencilla de explorar, comparar y planificar
+                  soluciones modulares antes de construir.
                 </p>
-
-                <div className="row g-4 about-newspaper-text align-items-stretch">
-                  <div className="col-12 col-md-4 d-flex">
-                    <div className="about-history-column flex-fill h-100">
-                      <p>
-                        SquareStruct nace como proyecto final del primer curso de
-                        Desarrollo de Aplicaciones Web (DAW) en el Centro San Valero,
-                        con la idea de crear una tienda online especializada en productos
-                        modulares para la construccion. El proyecto se centra
-                        principalmente en la comercializacion de bloques de distintas
-                        medidas y pilares, suministrados por una empresa que actuara
-                        como proveedora inicial.
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="col-12 col-md-4 d-flex">
-                    <div className="about-history-column flex-fill h-100">
-                      <p>
-                        La finalidad de SquareStruct es facilitar al usuario la consulta,
-                        seleccion y compra de materiales modulares, ofreciendo una
-                        plataforma clara, moderna y orientada a la construccion de
-                        viviendas o estructuras mediante piezas ensamblables.
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="col-12 col-md-4 d-flex">
-                    <div className="about-history-column flex-fill h-100">
-                      <p>
-                        La idea surge tambien de nuestra experiencia previa en otros
-                        ciclos formativos y de la buena dinamica de trabajo que hemos
-                        construido como equipo. Aunque no comenzamos a trabajar juntos
-                        directamente hasta este curso, la confianza, la coordinacion y
-                        la forma de complementarnos nos han permitido plantear un
-                        proyecto mas completo, con una vision practica y cercana a un
-                        caso real.
-                      </p>
-                    </div>
-                  </div>
-                </div>
+                <p>
+                  Queremos que elegir materiales ensamblables sea una experiencia
+                  clara y cercana, donde cada pieza tenga sentido dentro del
+                  proyecto que el usuario imagina.
+                </p>
+                <p>
+                  Detrás de la plataforma hay práctica, aprendizaje y trabajo en
+                  equipo: una idea académica convertida en una herramienta útil
+                  para resolver necesidades concretas.
+                </p>
               </div>
+              <img src={squarestructLogo} className="about-story-watermark" alt="" aria-hidden="true" />
             </div>
           </section>
-        </main>
-
-        <aside className="col-12 col-lg-2 about-profile-col">
-          <div className="card about-name-card">
-            <div className="card-body">Cristian Gil Gz</div>
-          </div>
-
-          <article className="card about-profile-photo-card">
-            <img src={cristianGilPhoto} className="card-img about-profile-image" alt="Cristian Gil" />
-          </article>
 
           <section className="card about-profile-text-card">
             <div className="card-body">
               <p>
-                Cristian Gil decidio reinventarse profesionalmente apostando por el
-                sector tecnologico, dejando atras un entorno laboral distinto para
-                enfocarse en su desarrollo como programador.
-              </p>
-
-              <p>
-                Inicio su formacion en Sistemas Microinformaticos y Redes en el Centro
-                San Valero, donde adquirio una base solida en sistemas y redes que le
-                permite comprender mejor el funcionamiento de las aplicaciones.
-              </p>
-
-              <p>
-                Actualmente cursa Desarrollo de Aplicaciones Web (DAW), aplicando sus
-                conocimientos en proyectos como SquareStruct mientras continua
-                ampliando sus habilidades dentro del desarrollo web.
+                Cristian se reinventó profesionalmente hacia el sector tecnológico.
+                Orientó su aprendizaje al desarrollo web y aporta una base práctica
+                en sistemas y redes, buscando crear soluciones útiles para proyectos reales.
               </p>
             </div>
           </section>
-        </aside>
+        </div>
       </div>
     </section>
   )

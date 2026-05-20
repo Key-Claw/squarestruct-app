@@ -1,148 +1,78 @@
-# Verificacion del frontend con lint y build
+# Verificacion Del Frontend
 
-## Objetivo
+Este documento resume como validar el frontend React/Vite de SquareStruct V2.
 
-Este documento explica como comprobar el frontend antes de entregar cambios o abrir una pull request.
-
-En esta version no hay una suite de tests automatizados de frontend. Por eso se combinan:
-
-- revision automatica con ESLint;
-- build de produccion;
-- prueba manual de los flujos afectados.
-
-## Comandos principales
-
-Los comandos se ejecutan desde `frontend/`:
+## Comandos
 
 ```bash
 cd frontend
+npm run test:run
 npm run lint
 npm run build
 ```
 
-## `npm run lint`
+## Tests
 
-Ejecuta ESLint:
+`npm run test:run` ejecuta Vitest con Testing Library.
 
-```bash
-npm run lint
-```
+Tests actuales:
 
-Sirve para detectar problemas como:
+- `App.test.jsx`
+- `Home.test.jsx`
+- `Navbar.test.jsx`
 
-- imports no usados;
-- variables no usadas;
-- errores o malas practicas con hooks de React;
-- codigo dificil de mantener;
-- problemas basicos antes de subir cambios.
+Validan que la aplicacion y componentes principales renderizan sin romper rutas ni dependencias basicas.
 
-Resultado esperado:
+## Lint
 
-```text
-eslint .
-```
+`npm run lint` ejecuta ESLint sobre el frontend. Sirve para detectar:
 
-El comando debe terminar sin errores.
+- imports sin usar;
+- problemas de hooks;
+- errores de sintaxis;
+- patrones no compatibles con la configuracion del proyecto.
 
-## `npm run build`
+## Build
 
-Ejecuta el build de Vite:
+`npm run build` compila la aplicacion con Vite. Comprueba:
 
-```bash
-npm run build
-```
+- imports de componentes;
+- imports de assets;
+- CSS;
+- compatibilidad de dependencias;
+- generacion final en `dist/`.
 
-Sirve para comprobar que la aplicacion puede compilarse para produccion.
+## Revision Manual Recomendada
 
-El build valida que:
+Despues de cambios visuales o de flujo conviene revisar:
 
-- los imports son correctos;
-- las rutas de assets se resuelven;
-- Vite puede transformar los modulos;
-- no hay errores de compilacion.
+- Home;
+- Gallery;
+- Catalog con filtros y busqueda;
+- carrito;
+- login y registro;
+- checkout;
+- Mi Cuenta como usuario;
+- Mi Cuenta como admin;
+- responsive movil/tablet/escritorio.
 
-Si aparecen warnings, hay que revisar si son nuevos y si estan relacionados con el cambio. Por ejemplo, una ruta de imagen mal movida en CSS puede compilar con aviso, pero debe corregirse antes de entregar.
+## Riesgos Habituales
 
-## Diferencia entre lint y build
-
-| Comando | Que comprueba |
+| Area | Riesgo |
 | --- | --- |
-| `npm run lint` | Calidad y reglas de codigo JavaScript/React. |
-| `npm run build` | Compilacion de produccion con Vite. |
+| Rutas | Romper alias `/setings` o redireccion `/settings`. |
+| Auth | Token caducado o usuario local inconsistente. |
+| Catalogo | Fallback demo ocultando errores reales de API. |
+| Checkout | Carrito vacio, direccion invalida o token ausente. |
+| Settings | Acceso admin mal protegido o tabs desincronizadas. |
+| CSS responsive | Reglas globales en `responsive.css` afectando varias paginas. |
 
-Un cambio puede pasar `build` y fallar `lint`, o al reves. Por eso se ejecutan ambos.
+## Criterio De Cierre
 
-## Comprobacion manual recomendada
+Un cambio de frontend queda validado cuando:
 
-Despues de lint y build, abrir la app en desarrollo:
-
-```bash
-npm run dev
-```
-
-URL habitual:
-
-```text
-http://localhost:5173
-```
-
-Revisar segun el area tocada:
-
-| Area | Comprobacion |
-| --- | --- |
-| Navbar | Navegar entre Inicio, Galeria, Catalogo y Design. Probar dropdown de usuario y carrito. |
-| Catalogo | Comprobar carga de productos, busqueda, orden, categorias y anadir al carrito. |
-| Auth | Probar login, registro, errores visibles y cierre del modal. |
-| Carrito | Anadir producto, cambiar cantidad, eliminar y revisar total. |
-| Perfil | Abrir panel, ver datos y cerrar sesion. |
-| Usuarios admin | Entrar como admin, abrir Gestionar usuarios, listar usuarios y editar rol. |
-| Responsive | Revisar al menos movil y escritorio en las pantallas tocadas. |
-| Build visual | Confirmar que no hay assets rotos ni textos descuadrados. |
-
-## Backend durante la comprobacion
-
-Para flujos con datos reales, el backend debe estar arrancado en `http://localhost:3000`.
-
-El frontend usa proxy de Vite:
-
-```text
-/api -> http://localhost:3000
-```
-
-Si el backend no esta disponible:
-
-- el catalogo puede mostrar productos demo;
-- login/registro no funcionaran;
-- gestion de usuarios no cargara datos reales.
-
-## Variables de entorno
-
-Por defecto, el frontend usa `/api`.
-
-Si se necesita otra URL:
-
-```text
-VITE_API_URL=http://localhost:3000/api
-```
-
-## Antes de crear PR
-
-Checklist minimo:
-
-- [ ] `npm run lint` termina sin errores.
-- [ ] `npm run build` termina correctamente.
-- [ ] Se ha probado manualmente la pantalla afectada.
-- [ ] Si hay backend implicado, se ha probado con backend arrancado.
-- [ ] Si hay login/admin, se ha iniciado sesion con un token nuevo.
-- [ ] No quedan warnings nuevos sin explicar.
-- [ ] No se han documentado funcionalidades que sean solo maqueta como si fueran completas.
-
-## Limitaciones actuales
-
-- No hay tests unitarios o E2E de frontend.
-- Algunas vistas son visuales/provisionales, como `Design.jsx` y `Facturacion.jsx`.
-- El flujo completo de pedido desde el carrito todavia no esta cerrado.
-
-## Idea clave para explicar
-
-`lint` demuestra que el codigo respeta reglas basicas de calidad. `build` demuestra que la app puede compilarse. La prueba manual confirma que el flujo afectado funciona de cara al usuario.
+- pasan tests;
+- pasa lint;
+- pasa build;
+- el flujo tocado se revisa manualmente en navegador;
+- no se introducen reglas CSS globales innecesarias.

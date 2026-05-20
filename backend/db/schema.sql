@@ -62,11 +62,12 @@ CREATE TABLE pedidos (
   fecha TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   total DECIMAL(12, 2) NOT NULL DEFAULT 0,
   estado VARCHAR(30) NOT NULL DEFAULT 'pendiente',
+  fechaCancelacion DATETIME NULL,
   direccionEnvio VARCHAR(250) NOT NULL,
   metodoPago VARCHAR(30) NOT NULL,
   idUsuario INT NOT NULL,
   CONSTRAINT chkPedidoTotal CHECK (total >= 0),
-  CONSTRAINT chkPedidoEstado CHECK (estado IN ('pendiente', 'pagado', 'enviado', 'entregado', 'cancelado')),
+  CONSTRAINT chkPedidoEstado CHECK (estado IN ('pendiente', 'aceptado', 'denegado', 'pagado', 'enviado', 'entregado', 'cancelado')),
   CONSTRAINT chkPedidoMetodoPago CHECK (metodoPago IN ('tarjeta', 'transferencia', 'paypal', 'efectivo')),
   CONSTRAINT fkPedidosUsuarios
     FOREIGN KEY (idUsuario)

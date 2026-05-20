@@ -1,102 +1,71 @@
-# Tests del backend
+# Tests Del Backend
 
-## Objetivo
-
-Este documento explica las pruebas automaticas actuales del backend dentro del MVP.
-
-Los tests ayudan a comprobar que partes importantes de la API siguen funcionando cuando se hacen cambios.
-
-## Herramientas usadas
-
-| Herramienta | Uso |
-| --- | --- |
-| Jest | Ejecuta los tests. |
-| Supertest | Lanza peticiones HTTP contra la app de Express. |
+Los tests del backend usan Jest y Supertest para validar la API Express contra el comportamiento real de V2.
 
 ## Comandos
 
-Desde `backend/`:
-
 ```bash
+cd backend
 npm test
-```
-
-Ejecuta todos los tests.
-
-```bash
 npm run test:unit
-```
-
-Ejecuta solo tests unitarios.
-
-```bash
 npm run test:integration
 ```
 
-Ejecuta tests de integracion.
+## Requisitos
 
-## Test de health
+Los tests de integracion necesitan MySQL levantado y variables `DB_*` correctas. En local:
 
-Archivo:
-
-```text
-backend/tests/unit/health.test.js
+```bash
+docker compose -f docker/docker-compose-dev.yml up -d
 ```
 
-Comprueba:
+## Cobertura Actual
 
-```text
-GET /api/health
-```
+| Area | Cobertura |
+| --- | --- |
+| Health | `GET /api/health`. |
+| Auth | Registro, login y generacion de token. |
+| Perfil | Rechazo sin token y perfil autenticado. |
+| Usuarios admin | Listado y detalle solo para admin. |
+| Productos | Listado publico, creacion protegida y rechazo sin token. |
+| Pedidos | Listado autenticado, creacion, detalle y cancelacion. |
+| Permisos | Rechazo de usuarios no propietarios y permisos admin. |
+| Estados | Bloqueo de doble cancelacion y de pedidos enviados/entregados. |
 
-Respuesta esperada:
+## Tests De Integracion
 
-```text
-200 OK
-```
+`tests/integration/auth-perfil.test.js` valida:
 
-## Test de auth y perfil
+- registro de usuario;
+- login;
+- perfil con y sin token;
+- login admin;
+- proteccion de usuarios admin;
+- detalle de usuario.
 
-Archivo:
+`tests/integration/productos-pedidos.test.js` valida:
 
-```text
-backend/tests/integration/auth-perfil.test.js
-```
+- catalogo publico;
+- creacion de producto con admin;
+- rechazo de producto sin token;
+- creacion de pedidos;
+- consulta de pedido;
+- cancelacion logica;
+- restricciones de cancelacion.
 
-Comprueba el flujo:
+## CI
 
-1. Registrar usuario.
-2. Iniciar sesion.
-3. Recibir token.
-4. Intentar acceder a perfil sin token.
-5. Acceder a perfil con token.
+El job `backend-tests` de GitHub Actions:
 
-## Requisitos para integracion
+1. levanta MySQL;
+2. carga `schema.sql`;
+3. carga `seeds.sql`;
+4. ejecuta `npm ci`;
+5. ejecuta `npm test`.
 
-Para los tests de integracion:
+## Pendientes Realistas
 
-- MySQL debe estar levantado.
-- El archivo `.env` debe tener credenciales correctas.
-- La base de datos debe tener el esquema creado.
-
-## Cobertura actual
-
-Los tests automaticos actuales no cubren todo el MVP.
-
-Cubren:
-
-- health check de la API;
-- registro, login y perfil autenticado.
-
-No cubren todavia:
-
-- catalogo de productos;
-- gestion de usuarios admin;
-- pedidos;
-- pruebas automatizadas de frontend.
-
-Para esas partes se usan comprobaciones manuales con Postman y la revision de frontend con `npm run lint` y `npm run build`.
-
-## Idea clave para explicar
-
-Los tests actuales validan la base de disponibilidad y autenticacion del backend. Son un punto de partida, pero la cobertura deberia ampliarse en una fase posterior para productos, pedidos y administracion.
+- Ampliar tests de endpoints admin de facturacion (`/admin/todos`, `/admin/pendientes`, `/:id/estado`).
+- Cubrir actualizacion y eliminacion de usuarios.
+- Cubrir errores de validacion de productos con mas casos.
+- Cubrir conflictos por producto asociado a pedido.

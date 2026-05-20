@@ -4,7 +4,7 @@ services:
     container_name: squarestruct-mysql
     restart: unless-stopped
     ports:
-      - "3306:3306"
+      - "3307:3306"
     environment:
       MYSQL_ROOT_PASSWORD: root1234
       MYSQL_DATABASE: squarestruct
@@ -19,6 +19,40 @@ services:
       - squarestruct_mysql_data:/var/lib/mysql
       - ../backend/db/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
       - ../backend/db/seeds.sql:/docker-entrypoint-initdb.d/02-seeds.sql:ro
+
+  backend:
+    build:
+      context: ../backend
+      dockerfile: Dockerfile
+    container_name: squarestruct-backend
+    restart: unless-stopped
+    ports:
+      - "3001:3000"
+    environment:
+      PORT: 3000
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_USER: admin
+      DB_PASSWORD: 20doblajepuro37
+      DB_NAME: squarestruct
+      JWT_SECRET: cambia_esta_clave_en_local
+      NODE_ENV: development
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  frontend:
+    build:
+      context: ../frontend
+      dockerfile: Dockerfile
+    container_name: squarestruct-frontend
+    restart: unless-stopped
+    ports:
+      - "5174:5173"
+    environment:
+      VITE_API_URL: http://localhost:3001/api
+    depends_on:
+      - backend
 
 volumes:
   squarestruct_mysql_data:
