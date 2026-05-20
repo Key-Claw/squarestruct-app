@@ -32,6 +32,9 @@ export const confirmDelete = async ({
     confirmButtonText,
     cancelButtonText,
     focusCancel: true,
+    customClass: {
+      confirmButton: 'square-alert-confirm square-alert-confirm-danger',
+    },
   })
 
   return result.isConfirmed
@@ -47,6 +50,9 @@ export const showSuccess = ({
     text,
     icon: 'success',
     confirmButtonText,
+    customClass: {
+      confirmButton: 'square-alert-confirm square-alert-confirm-success',
+    },
   })
 )
 
@@ -60,5 +66,8 @@ export const showError = ({
     text,
     icon: 'error',
     confirmButtonText,
+    customClass: {
+      confirmButton: 'square-alert-confirm square-alert-confirm-danger',
+    },
   })
 )

@@ -47,15 +47,16 @@
   transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
 }
 
-.square-alert-confirm {
+.square-alert-confirm,
+.square-alert-confirm-success {
   background: #3f9d3a;
   color: #fff;
   box-shadow: 0 10px 20px rgba(63, 157, 58, 0.2);
 }
 
-.swal2-icon-warning ~ .square-alert-actions .square-alert-confirm,
-.swal2-icon-error ~ .square-alert-actions .square-alert-confirm {
+.square-alert-confirm-danger {
   background: #dc2626;
+  color: #fff;
   box-shadow: 0 10px 20px rgba(220, 38, 38, 0.18);
 }
 
