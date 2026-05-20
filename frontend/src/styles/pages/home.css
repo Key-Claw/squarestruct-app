@@ -288,7 +288,7 @@
   margin-top: 42px;
   margin-left: auto;
   margin-right: auto;
-  overflow: hidden;
+  overflow: visible;
   background: transparent !important;
   border: 0 !important;
   box-shadow: none !important;
@@ -330,6 +330,13 @@
   --bs-gutter-y: 18px;
   width: 100%;
   margin-inline: 0;
+}
+
+.home-feature-grid-shell {
+  display: contents;
+}
+
+.home-feature-grid-shell .home-feature-grid {
   background: transparent !important;
   border: 0 !important;
   box-shadow: none !important;
@@ -344,6 +351,8 @@
 .home-feature-card {
   width: 100%;
   min-height: 430px;
+  display: flex;
+  flex-direction: column;
   overflow: hidden;
   border: 1px solid rgba(23, 63, 95, 0.14);
   border-radius: var(--ss-radius);
@@ -389,6 +398,10 @@
   align-items: center;
   text-align: center;
   gap: 8px;
+}
+
+.home-feature-body p {
+  flex: 1;
 }
 
 .home-feature-body h3 {

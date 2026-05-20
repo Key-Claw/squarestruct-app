@@ -181,27 +181,29 @@ function Home({ onNavigate }) {
           <h2>Todo lo que puedes hacer en SquareStruct</h2>
         </div>
 
-      <div className="row g-4 home-feature-grid">
-        {homeFeatureCards.map((item) => {
-          return (
-            <div className="col-12 col-md-4" key={item.title}>
-              <article className="page-card home-feature-card h-100">
-                <img src={item.image} className="home-feature-image" alt={item.title} />
-                <div className="page-card-body home-feature-body">
-                  <span className="home-feature-badge">
-                    <Icon name={item.icon} size={22} />
-                  </span>
-                  <h3>{item.title}</h3>
-                  <p>{item.text}</p>
-                  <button type="button" className="home-feature-link" onClick={() => item.handler(onNavigate)}>
-                    {item.action} →
-                  </button>
+        <div className="home-feature-grid-shell">
+          <div className="row g-4 home-feature-grid">
+            {homeFeatureCards.map((item) => {
+              return (
+                <div className="col-12 col-md-4" key={item.title}>
+                  <article className="page-card home-feature-card h-100">
+                    <img src={item.image} className="home-feature-image" alt={item.title} />
+                    <div className="page-card-body home-feature-body">
+                      <span className="home-feature-badge">
+                        <Icon name={item.icon} size={22} />
+                      </span>
+                      <h3>{item.title}</h3>
+                      <p>{item.text}</p>
+                      <button type="button" className="home-feature-link" onClick={() => item.handler(onNavigate)}>
+                        {item.action} →
+                      </button>
+                    </div>
+                  </article>
                 </div>
-              </article>
-            </div>
-          );
-        })}
-      </div>
+              )
+            })}
+          </div>
+        </div>
       </section>
 
     </section>

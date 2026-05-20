@@ -163,9 +163,14 @@ function Gallery({ onNavigate }) {
               className="gallery-cover-image gallery-feature-image"
               alt={featuredProject.title}
             />
-            <span className="gallery-feature-star" role="img" aria-label="Destacada">
+            <button
+              type="button"
+              className="btn gallery-feature-star"
+              aria-label={`Ampliar ${featuredProject.title}`}
+              onClick={() => setSelectedIdea(featuredProject)}
+            >
               ★
-            </span>
+            </button>
             <div className="card-body gallery-feature-copy">
               <div className="gallery-feature-title-grid">
                 <h2>{featuredProject.title}</h2>
@@ -207,15 +212,6 @@ function Gallery({ onNavigate }) {
               ×
             </button>
             <img src={selectedIdea.image} alt={selectedIdea.title} />
-            <div className="gallery-idea-content">
-              <span>{selectedIdea.material}</span>
-              <h2>{selectedIdea.title}</h2>
-              <p>{selectedIdea.description}</p>
-              <strong>{selectedIdea.area}</strong>
-              <button type="button" className="btn gallery-cta-btn" onClick={() => onNavigate('design')}>
-                Diseñar esta idea
-              </button>
-            </div>
           </article>
         </div>
       )}

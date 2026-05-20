@@ -1,5 +1,6 @@
 @import './styles/base/app-base.css';
 @import './styles/components/common/page-primitives.css';
+@import './styles/components/common/alerts.css';
 @import './styles/pages/home.css';
 @import './styles/pages/about.css';
 @import './styles/pages/gallery.css';

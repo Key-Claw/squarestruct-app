@@ -87,6 +87,16 @@ function AppShell() {
     navigate(MAIN_ROUTES.home)
   }
 
+  const handleUserUpdate = (userData) => {
+    setUser(userData)
+  }
+
+  const handleUserDeleted = () => {
+    setUser(null)
+    setInternalPage('')
+    navigate(MAIN_ROUTES.home)
+  }
+
   const handleNavigate = (nextPage, term = '', section = '') => {
     const settingsTabByPage = {
       settings: 'perfil',
@@ -220,6 +230,8 @@ function AppShell() {
         onAuthExpired={handleUserLogout}
         isAdminUser={isAdmin()}
         onTabChange={handleSettingsTabChange}
+        onUserUpdate={handleUserUpdate}
+        onUserDeleted={handleUserDeleted}
       />
     )
   }
