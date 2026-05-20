@@ -74,6 +74,7 @@ function RegisterForm({
               className="auth-modal-input"
               placeholder="tu@email.com"
               value={email}
+              autoComplete="email"
               onChange={(e) => onEmailChange(e.target.value)}
               disabled={isLoading}
             />
@@ -87,6 +88,7 @@ function RegisterForm({
               className="auth-modal-input"
               placeholder="********"
               value={password}
+              autoComplete="new-password"
               onChange={(e) => onPasswordChange(e.target.value)}
               disabled={isLoading}
             />
@@ -100,6 +102,7 @@ function RegisterForm({
               className="auth-modal-input"
               placeholder="********"
               value={confirmPassword}
+              autoComplete="new-password"
               onChange={(e) => onConfirmPasswordChange(e.target.value)}
               disabled={isLoading}
             />

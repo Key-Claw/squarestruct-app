@@ -11,6 +11,7 @@ El objetivo no es listar herramientas sin contexto, sino poder defender como se 
 | Tecnologia | Uso en SquareStruct |
 | --- | --- |
 | React | Construccion de la interfaz mediante componentes y estado. |
+| React Router DOM | Rutas SPA con `HashRouter` para paginas principales. |
 | Vite | Servidor de desarrollo, build de produccion y proxy hacia backend. |
 | JavaScript | Lenguaje principal del frontend. |
 | Bootstrap | Base para grid, navbar, dropdowns, botones, formularios, tablas y cards. |
@@ -24,12 +25,33 @@ React permite separar la interfaz en piezas reutilizables.
 
 En SquareStruct se usa para:
 
-- renderizar paginas segun el estado de `App.jsx`;
+- renderizar paginas principales segun la ruta activa;
 - mantener estado de usuario, carrito, modal y busqueda;
 - crear componentes reutilizables como `Navbar`, `CartPanel`, `AuthModal` o tarjetas de catalogo;
 - actualizar la interfaz cuando cambia el estado, por ejemplo al anadir productos al carrito.
 
-El proyecto no usa React Router. La navegacion del MVP se gestiona en `App.jsx` con un estado `page`.
+## React Router DOM y HashRouter
+
+SquareStruct usa `react-router-dom` para la navegacion SPA de las paginas principales.
+
+Se ha elegido `HashRouter` en lugar de `BrowserRouter` porque facilita despliegues estaticos en AWS, Apache u otros hostings donde no siempre existe una regla de fallback hacia `index.html`.
+
+Con `HashRouter`, el servidor solo recibe la ruta base y React interpreta lo que aparece despues del `#`. Esto evita errores al refrescar paginas internas si el hosting no esta configurado para redirigir todas las rutas al frontend.
+
+Rutas principales:
+
+```text
+http://localhost:5173/#/
+http://localhost:5173/#/home
+http://localhost:5173/#/gallery
+http://localhost:5173/#/catalog
+http://localhost:5173/#/design
+http://localhost:5173/#/about-us
+```
+
+La configuracion de rutas reutilizables esta en `frontend/src/routes.js`.
+
+Solo las paginas principales usan rutas reales. Login, registro, carrito, checkout y Mi Cuenta siguen funcionando como modales, paneles o estado interno de React para no crear rutas innecesarias.
 
 ## Vite
 

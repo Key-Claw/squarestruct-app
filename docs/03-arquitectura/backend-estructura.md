@@ -1,10 +1,9 @@
-# Estructura del backend
+
+# Estructura real del backend
 
 ## Objetivo
 
-El backend se encarga de recibir peticiones, aplicar la lógica de negocio, acceder a la base de datos y devolver respuestas al frontend.
-
-Está organizado por responsabilidades para que el código sea más fácil de entender, mantener y ampliar.
+El backend recibe peticiones, aplica la lógica de negocio, accede a la base de datos y responde al frontend. Está organizado en capas para facilitar la defensa DAW, el mantenimiento y la ampliación profesional.
 
 ## Estructura principal
 
@@ -81,6 +80,10 @@ export const getProductos = async (req, res) => {
 };
 ```
 
-## Idea clave para explicar
 
-El backend está dividido en capas. Cada capa tiene una función clara, lo que facilita detectar errores y añadir nuevas funcionalidades.
+## Buenas prácticas y defensa DAW
+
+- Explica la separación real de rutas, controladores, servicios y middlewares.
+- Justifica la estructura en capas para facilitar pruebas, mantenimiento y ampliaciones.
+- Muestra ejemplos reales de flujo de petición y respuesta.
+- Relaciona la estructura con la seguridad y la validación de datos.

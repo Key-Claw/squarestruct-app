@@ -42,6 +42,7 @@ function LoginForm({
               className="auth-modal-input"
               placeholder="tu@email.com"
               value={email}
+              autoComplete="username"
               onChange={(e) => onEmailChange(e.target.value)}
               disabled={isLoading}
             />
@@ -55,6 +56,7 @@ function LoginForm({
               className="auth-modal-input"
               placeholder="********"
               value={password}
+              autoComplete="current-password"
               onChange={(e) => onPasswordChange(e.target.value)}
               disabled={isLoading}
             />

@@ -1,10 +1,11 @@
-import carruselDesignImage from '../assets/inicio/carrusel-design.jpeg'
-import carruselPersonasImage from '../assets/inicio/carrusel-personas.jpeg'
-import carruselSostenibleImage from '../assets/inicio/carrusel-sostenible.jpeg'
-import inicioCatalogoImage from '../assets/inicio/inicio-catalogo.jpeg'
-import inicioDesignImage from '../assets/inicio/inicio-design.jpeg'
-import inicioGaleriaImage from '../assets/inicio/inicio-galeeria.jpeg'
-import inicioSquarestructImage from '../assets/inicio/inicio-squarestruct.jpeg'
+﻿import carruselDesignImage from '../assets/inicio/carrusel-design.webp'
+import carruselPersonasImage from '../assets/inicio/carrusel-personas.webp'
+import carruselSostenibleImage from '../assets/inicio/carrusel-sostenible.webp'
+import inicioCatalogoImage from '../assets/inicio/inicio-catalogo.webp'
+import inicioDesignImage from '../assets/inicio/inicio-design.webp'
+import inicioGaleriaImage from '../assets/inicio/inicio-galeeria.webp'
+import inicioSquarestructImage from '../assets/inicio/inicio-squarestruct.webp'
+import Icon from '../components/common/Icon'
 
 const homeHighlights = [
   {
@@ -17,34 +18,38 @@ const homeHighlights = [
   },
   {
     title: 'Plano',
-    text: 'Disena y ajusta la estructura antes de construir.',
+    text: 'Diseña y ajusta la estructura antes de construir.',
   },
   {
     title: 'Sostenible',
-    text: 'Construccion mas eficiente con un uso mejor de recursos.',
+    text: 'Construcción más eficiente con un uso mejor de recursos.',
   },
 ]
 
 const homeFeatureCards = [
-  {
-    title: 'Explorar catalogo',
-    text: 'Encuentra bloques, pilares y accesorios con una vista clara y ordenada.',
-    image: inicioCatalogoImage,
-    action: 'Ir al catalogo',
-    handler: (onNavigate) => onNavigate('catalogo', '', 'productos'),
-  },
+
   {
     title: 'Inspirarte',
-    text: 'Descubre ideas de composicion y referencias visuales para tus proyectos.',
+    text: 'Descubre ideas de composición y referencias visuales para tus proyectos.',
     image: inicioGaleriaImage,
-    action: 'Ver galeria',
-    handler: (onNavigate) => onNavigate('galeria'),
+    icon: 'image',
+    action: 'Ver galería',
+    handler: (onNavigate) => onNavigate('gallery'),
+  },
+  {
+    title: 'Explorar catálogo',
+    text: 'Encuentra bloques, pilares y accesorios con una vista clara y ordenada.',
+    image: inicioCatalogoImage,
+    icon: 'cube',
+    action: 'Ir al catálogo',
+    handler: (onNavigate) => onNavigate('catalog', '', 'productos'),
   },
   {
     title: 'Generar tu estructura',
-    text: 'Crea tu propio diseno y calcula los materiales necesarios para hacerlo realidad.',
+    text: 'Crea tu propio diseño y calcula los materiales necesarios para hacerlo realidad.',
     image: inicioDesignImage,
-    action: 'Ir a Design',
+    icon: 'penTool',
+    action: 'Ir a Deseño',
     handler: (onNavigate) => onNavigate('design'),
   },
 ]
@@ -58,15 +63,15 @@ const homeSlides = [
   },
   {
     image: carruselPersonasImage,
-    title: 'Catalogo conectado',
+    title: 'Catálogo conectado',
     text: 'Productos, medidas, stock y precios en una misma interfaz',
     alt: 'Personas planificando un proyecto modular',
   },
   {
     image: carruselSostenibleImage,
-    title: 'Disena tu estructura',
+    title: 'Diseña tu estructura',
     text: 'Base inicial para evolucionar hacia planos y presupuestos',
-    alt: 'Construccion modular sostenible',
+    alt: 'Construcción modular sostenible',
   },
 ]
 
@@ -75,18 +80,18 @@ function Home({ onNavigate }) {
     <section className="page-shell home-page container-fluid">
       <div className="home-hero card">
         <div className="row g-0 align-items-stretch home-hero-grid">
-          <div className="col-12 col-lg-4 home-hero-copy-wrap">
+          <div className="col-12 col-md-4 home-hero-copy-wrap">
             <div className="home-hero-copy">
-              <p className="eyebrow">Construccion modular sostenible</p>
-              <h1>Construye sin limites.</h1>
-              <h2>Modular, facil, real.</h2>
+              <p className="eyebrow">Construcción modular sostenible</p>
+              <h1>Construye sin límites.</h1>
+              <h2>Modular, fácil, real.</h2>
               <p>
                 SquareStruct es la plataforma que te permite descubrir, comparar y
-                planificar tu construccion modular con total claridad y confianza.
+                planificar tu construcción modular con total claridad y confianza.
               </p>
               <div className="hero-actions home-hero-actions">
-                <button type="button" className="btn btn-light" onClick={() => onNavigate('catalogo', '', 'productos')}>
-                  Ver catalogo
+                <button type="button" className="btn btn-light" onClick={() => onNavigate('catalog', '', 'productos')}>
+                  Ver catálogo
                 </button>
                 <button type="button" className="btn btn-outline-light home-design-btn" onClick={() => onNavigate('design')}>
                   Diseñar tu estructura
@@ -95,7 +100,7 @@ function Home({ onNavigate }) {
             </div>
           </div>
 
-          <div className="col-12 col-lg-8 home-carousel-wrap">
+          <div className="col-12 col-md-8 home-carousel-wrap">
             <div id="homeCarousel" className="carousel slide home-carousel" data-bs-ride="carousel">
               <div className="carousel-indicators">
                 {homeSlides.map((slide, index) => (
@@ -134,74 +139,76 @@ function Home({ onNavigate }) {
 
       <section className="home-about card">
         <div className="row g-0 align-items-stretch home-about-grid">
-          <div className="col-12 col-lg-5 home-about-media-wrap">
+          <div className="col-12 col-md-5 home-about-media-wrap">
             <img src={inicioSquarestructImage} className="home-about-image" alt="Casa modular de SquareStruct" />
           </div>
 
-          <div className="col-12 col-lg-7 home-about-copy-wrap">
+          <div className="col-12 col-md-7 home-about-copy-wrap">
             <div className="home-about-copy">
               <p className="eyebrow">SquareStruct</p>
               <h2>¿Qué es SquareStruct?</h2>
               <p>
                 Somos una tienda online especializada en soluciones modulares y
-                pilares para la construccion.
+                pilares para la construcción.
               </p>
               <p>
                 Nuestro objetivo es acercar este tipo de soluciones al usuario,
-                facilitando la eleccion de materiales y la planificacion de
+                facilitando la elección de materiales y la planificación de
                 estructuras mediante piezas ensamblables.
               </p>
 
               <div className="home-highlight-grid">
-                {homeHighlights.map((item, index) => (
-                  <article className="home-highlight" key={item.title}>
-                    <span className="home-highlight-icon">{index + 1}</span>
-                    <h3>{item.title}</h3>
-                    <p>{item.text}</p>
-                  </article>
-                ))}
+                {homeHighlights.map((item, index) => {
+                  return (
+                    <article className="home-highlight" key={item.title}>
+                      <div className="home-highlight-header">
+                        <span className="home-highlight-icon">{index + 1}</span>
+                        <h3>{item.title}</h3>
+                      </div>
+                      <p>{item.text}</p>
+                    </article>
+                  );
+                })}
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      <section className="home-section-heading">
-        <h2>Todo lo que puedes hacer en SquareStruct</h2>
-      </section>
-
-      <div className="row g-4 home-feature-grid">
-        {homeFeatureCards.map((item) => (
-          <div className="col-12 col-lg-4" key={item.title}>
-            <article className="page-card home-feature-card h-100">
-              <img src={item.image} className="home-feature-image" alt={item.title} />
-              <div className="page-card-body home-feature-body">
-                <span className="home-feature-badge">0{homeFeatureCards.indexOf(item) + 1}</span>
-                <h3>{item.title}</h3>
-                <p>{item.text}</p>
-                <button type="button" className="home-feature-link" onClick={() => item.handler(onNavigate)}>
-                  {item.action} →
-                </button>
-              </div>
-            </article>
-          </div>
-        ))}
-      </div>
-
-      <section className="page-block home-cta-block">
-        <div className="home-cta-copy">
-          <p className="eyebrow home-cta-eyebrow">SquareStruct</p>
-          <h2>Empieza a construir tu idea</h2>
-          <p>
-            Planifica, elige y consigue con la confianza de usar soluciones modulares de calidad.
-          </p>
+      <section className="home-capabilities">
+        <div className="home-section-heading">
+          <p className="eyebrow">Herramientas SquareStruct</p>
+          <h2>Todo lo que puedes hacer en SquareStruct</h2>
         </div>
-        <button type="button" className="btn btn-light home-cta-button" onClick={() => onNavigate('design')}>
-          Comienza ahora
-        </button>
+
+        <div className="home-feature-grid-shell">
+          <div className="row g-4 home-feature-grid">
+            {homeFeatureCards.map((item) => {
+              return (
+                <div className="col-12 col-md-4" key={item.title}>
+                  <article className="page-card home-feature-card h-100">
+                    <img src={item.image} className="home-feature-image" alt={item.title} />
+                    <div className="page-card-body home-feature-body">
+                      <span className="home-feature-badge">
+                        <Icon name={item.icon} size={22} />
+                      </span>
+                      <h3>{item.title}</h3>
+                      <p>{item.text}</p>
+                      <button type="button" className="home-feature-link" onClick={() => item.handler(onNavigate)}>
+                        {item.action} →
+                      </button>
+                    </div>
+                  </article>
+                </div>
+              )
+            })}
+          </div>
+        </div>
       </section>
+
     </section>
   )
 }
 
 export default Home
+

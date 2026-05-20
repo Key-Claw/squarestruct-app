@@ -1,20 +1,21 @@
-import designBocetoImage from '../assets/design/design-boceto.jpeg'
-import Icon from '../components/ui/Icon'
+import designBocetoImage from '../assets/design/design-boceto.webp'
+import designHeroImage from '../assets/design/design-hero.webp'
+import Icon from '../components/common/Icon'
 
 const designPieces = [
-  { name: 'Bloque 200', material: 'Plastico reciclado', size: '20 x 15 x 20 cm' },
-  { name: 'Bloque 200', material: 'Hormigon', size: '20 x 15 x 20 cm' },
-  { name: 'Bloque 300', material: 'Hormigon', size: '20 x 15 x 20 cm' },
-  { name: 'Bloque 600', material: 'Hormigon', size: '20 x 15 x 20 cm' },
-  { name: 'Bloque 800', material: 'Plastico reciclado', size: '20 x 15 x 20 cm' },
+  { name: 'Bloque 200', material: 'Plástico reciclado' },
+  { name: 'Bloque 200', material: 'Hormigón' },
+  { name: 'Bloque 300', material: 'Hormigón' },
+  { name: 'Bloque 600', material: 'Hormigón' },
+  { name: 'Bloque 800', material: 'Plástico reciclado' },
 ]
 
 const projectItems = [
-  ['Bloque 200', 'Plastico reciclado', 24],
-  ['Bloque 200', 'Hormigon', 18],
-  ['Bloque 300', 'Hormigon', 6],
-  ['Bloque 600', 'Hormigon', 8],
-  ['Bloque 800', 'Plastico reciclado', 4],
+  ['Bloque 200', 'Plástico reciclado', 24],
+  ['Bloque 200', 'Hormigón', 18],
+  ['Bloque 300', 'Hormigón', 6],
+  ['Bloque 600', 'Hormigón', 8],
+  ['Bloque 800', 'Plástico reciclado', 4],
 ]
 
 const howItWorks = [
@@ -24,11 +25,11 @@ const howItWorks = [
   },
   {
     title: 'Coloca en el plano',
-    text: 'Haz clic en la cuadricula para colocar la pieza.'
+    text: 'Haz clic en la cuadrícula para colocar la pieza.'
   },
   {
-    title: 'Construye tu diseno',
-    text: 'Anade piezas, mueve, elimina y ajusta tu estructura.'
+    title: 'Construye tu diseño',
+    text: 'Añade piezas, mueve, elimina y ajusta tu estructura.'
   },
 ]
 
@@ -39,16 +40,25 @@ function Design({ onNavigate }) {
           BARRA SUPERIOR - Título, descripción y botones de acción principal
           ==================================================================== */}
       <header className="card design-topbar">
-        <div>
-          <h1>Disena tu estructura modular</h1>
-          <p>Crea tu plano en 3D utilizando bloques modulares y calcula automaticamente los materiales necesarios.</p>
+        <div className="design-topbar-copy">
+          <div className="design-topbar-title">
+            <p className="design-eyebrow">Diseñador modular</p>
+            <h1>Diseña tu estructura</h1>
+          </div>
+          <div className="design-topbar-text">
+            <p>Crea tu plano en 3D utilizando bloques modulares y calcula materiales precios.</p>
+          </div>
         </div>
 
-        <div className="design-topbar-actions">
+        <div className="design-topbar-actions design-topbar-actions--hero">
           <button type="button" className="btn design-outline-btn">Guardar</button>
           <button type="button" className="btn design-outline-btn">Cargar</button>
           <button type="button" className="btn design-outline-btn">Nuevo</button>
           <button type="button" className="btn design-budget-btn">Gestionar presupuesto</button>
+        </div>
+
+        <div className="design-topbar-media" aria-hidden="true">
+          <img src={designHeroImage} alt="" />
         </div>
       </header>
 
@@ -56,7 +66,7 @@ function Design({ onNavigate }) {
         {/* ====================================================================
             PANEL IZQUIERDO - Piezas disponibles (Bloques, Pilares, Accesorios)
             ==================================================================== */}
-        <aside className="col-12 col-xl-2">
+        <aside className="col-12 col-md-3 col-xl-2">
           <section className="card design-pieces-panel">
             <h2>Bloques y piezas</h2>
             <div className="design-tabs" role="tablist" aria-label="Tipos de piezas">
@@ -72,7 +82,7 @@ function Design({ onNavigate }) {
                   <div>
                     <h3>{piece.name}</h3>
                     <p>{piece.material}</p>
-                    <span>{piece.size}</span>
+                    <span>Pieza modular</span>
                   </div>
                 </article>
               ))}
@@ -91,7 +101,7 @@ function Design({ onNavigate }) {
         {/* ====================================================================
             ÁREA CENTRAL - Canvas 2D/3D, herramientas de edición, zoom, vistas
             ==================================================================== */}
-        <main className="col-12 col-xl-8">
+        <main className="col-12 col-md-6 col-xl-8">
           <section className="card design-canvas-card" aria-label="Boceto provisional del futuro panel de Design">
             <img
               src={designBocetoImage}
@@ -101,7 +111,7 @@ function Design({ onNavigate }) {
 
             <div className="design-toolbar" aria-label="Herramientas de plano">
               <button type="button" className="active" aria-label="Seleccionar bloque">■</button>
-              <button type="button" aria-label="Mover">↕</button>
+              <button type="button" aria-label="Mover">↔</button>
               <button type="button" aria-label="Desplazar">✥</button>
               <button type="button" aria-label="Rotar">↺</button>
               <button type="button" aria-label="Pantalla completa"><Icon name="fullscreen" size={16} /></button>
@@ -124,7 +134,7 @@ function Design({ onNavigate }) {
         {/* ====================================================================
             PANEL DERECHO - Resumen del proyecto, totales, precio, acciones rápidas
             ==================================================================== */}
-        <aside className="col-12 col-xl-2">
+        <aside className="col-12 col-md-3 col-xl-2">
           <section className="card design-summary-panel">
             <h2>Resumen del proyecto</h2>
 
@@ -157,7 +167,7 @@ function Design({ onNavigate }) {
               <strong>1.250,75 EUR</strong>
             </div>
 
-            <h3>Acciones rapidas</h3>
+            <h3>Acciones rápidas</h3>
             <div className="design-quick-actions">
               <button type="button" className="btn design-outline-btn">Limpiar todo</button>
               <button type="button" className="btn design-outline-btn">Exportar plano</button>
@@ -171,7 +181,7 @@ function Design({ onNavigate }) {
           ==================================================================== */}
       <section className="card design-help-card">
         <div className="design-help-steps">
-          <h2>Como funciona</h2>
+          <h2>Cómo funciona</h2>
           <div className="design-help-step-row">
             {howItWorks.map((step, index) => (
               <article key={step.title}>
@@ -187,11 +197,11 @@ function Design({ onNavigate }) {
 
         <aside className="design-guide-box">
           <div>
-            <h2>Necesitas ayuda?</h2>
-            <p>Consulta nuestra guia rapida para aprender a usar el disenador.</p>
+            <h2>¿Necesitas ayuda?</h2>
+            <p>Consulta nuestra guía rápida para aprender a usar el diseñador.</p>
           </div>
-          <button type="button" className="btn design-guide-btn" onClick={() => onNavigate('catalogo', '', 'productos')}>
-            Ver guia
+          <button type="button" className="btn design-guide-btn" onClick={() => onNavigate('catalog', '', 'productos')}>
+            Ver guía
           </button>
         </aside>
       </section>
@@ -200,3 +210,5 @@ function Design({ onNavigate }) {
 }
 
 export default Design
+
+

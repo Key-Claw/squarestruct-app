@@ -1,10 +1,11 @@
-# Tests del backend
+
+# Tests del backend: cobertura real y defensa DAW
 
 ## Objetivo
 
-Este documento explica las pruebas automaticas actuales del backend dentro del MVP.
+Este documento explica las pruebas automáticas reales del backend, su cobertura y cómo justificarlas en una defensa DAW o presentación profesional.
 
-Los tests ayudan a comprobar que partes importantes de la API siguen funcionando cuando se hacen cambios.
+Los tests aseguran que la API y las reglas de negocio funcionan tras cada cambio y permiten demostrar calidad y seguridad en la defensa.
 
 ## Herramientas usadas
 
@@ -108,9 +109,13 @@ No cubren todavia:
 
 Para esas partes se usan comprobaciones manuales con Postman y la revision de frontend con `npm run test:run`, `npm run lint` y `npm run build`.
 
-## Idea clave para explicar
 
-Los tests actuales validan disponibilidad, autenticacion, permisos de administrador, productos y reglas principales de pedidos. La cobertura deberia ampliarse cuando se cierre el checkout completo desde frontend.
+## Buenas prácticas y defensa DAW
+
+- Explica la cobertura real: health, auth, roles, productos, pedidos y cancelación lógica.
+- Justifica la separación entre tests unitarios e integración.
+- Muestra ejemplos de tests y resultados reales.
+- Relaciona los tests con la calidad, la seguridad y la trazabilidad del backend.
 
 ## Integracion continua
 

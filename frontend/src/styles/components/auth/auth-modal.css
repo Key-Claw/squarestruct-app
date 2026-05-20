@@ -1,0 +1,459 @@
+/**
+ * ESTILOS DEL MODAL DE AUTENTICACIÓN (AUTH MODAL)
+ * 
+ * Incluye:
+ * - Animación de entrada de tarjeta desde arriba
+ * - Efecto flip 3D para cambiar entre login y registro
+ * - Backdrop oscuro con blur
+ * - Estilos de formularios, inputs y botones
+ * - Animaciones suaves y transiciones
+ */
+
+/* ============================================================================
+   BACKDROP - FONDO OSCURO Y DIFUMINADO
+   =========================================================================== */
+
+.auth-modal-backdrop {
+  /* Posición fija para cubrir toda la pantalla */
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  
+  /* Fondo oscuro semi-transparente */
+  background: rgba(16, 39, 54, 0.32);
+  backdrop-filter: blur(5px);
+  
+  /* Capas y visualización */
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 12px;
+  overflow-y: auto;
+  
+  /* Transición suave del fondo */
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+/* Animación de entrada del backdrop */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    backdrop-filter: blur(0px);
+  }
+  to {
+    opacity: 1;
+    backdrop-filter: blur(4px);
+  }
+}
+
+/* ============================================================================
+   CONTENEDOR PRINCIPAL DEL MODAL
+   =========================================================================== */
+
+.auth-modal-container {
+  /* Dimensiones responsivas */
+  width: min(94vw, 520px);
+  max-width: 520px;
+  height: min(88dvh, 820px);
+  max-height: calc(100dvh - 40px);
+  
+  /* Perspectiva para efecto 3D */
+  perspective: 1000px;
+  
+  /* Animación de caída desde arriba */
+  animation: slideDownIn 0.4s ease-out;
+}
+
+/* Animación de caída suave desde arriba */
+@keyframes slideDownIn {
+  from {
+    opacity: 0;
+    transform: translateY(-60px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ============================================================================
+   WRAPPER CON EFECTO FLIP 3D
+   =========================================================================== */
+
+.auth-modal-flip-wrapper {
+  /* Contenedor del flip 3D */
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+  
+  /* Transforma para el efecto flip */
+  transition: transform 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  transform-style: preserve-3d;
+  
+  /* Preserva la perspectiva 3D */
+  transform: rotateY(0deg);
+}
+
+/* Estado cuando está en modo registro (flip activado) */
+.auth-modal-flip-wrapper.register {
+  transform: rotateY(180deg);
+}
+
+/* ============================================================================
+   TARJETAS DE FORMULARIO (LOGIN Y REGISTRO)
+   =========================================================================== */
+
+.auth-modal-card {
+  /* Dimensiones y espaciado */
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+  max-height: calc(100dvh - 40px);
+  padding: 30px 28px;
+  display: grid;
+  grid-template-rows: auto auto auto minmax(0, 1fr);
+  overflow-y: auto;
+  
+  /* Estilos visuales */
+  background: var(--ss-panel, #ffffff);
+  color: var(--ss-ink, #102736);
+  border: 1px solid var(--ss-border, rgba(16, 39, 54, 0.14));
+  border-radius: 16px;
+  box-shadow: 0 24px 60px rgba(16, 39, 54, 0.2);
+  
+  /* Efecto backface-visibility para el flip 3D */
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* Tarjeta de login - parte frontal */
+.auth-modal-login {
+  transform: rotateY(0deg);
+}
+
+/* Tarjeta de registro - parte trasera (rotada 180 grados) */
+.auth-modal-register {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  transform: rotateY(180deg);
+}
+
+/* ============================================================================
+   ENCABEZADO DEL MODAL
+   =========================================================================== */
+
+.auth-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.auth-modal-header h2 {
+  margin: 0;
+  font-size: 1.6rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--ss-ink, #102736);
+}
+
+/* Botón de cerrar */
+.auth-modal-close-btn {
+  background: #ffffff;
+  border: 1px solid var(--ss-border, rgba(16, 39, 54, 0.14));
+  color: var(--ss-ink, #102736);
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.auth-modal-close-btn:hover {
+  background: var(--ss-green-50, #eef8ec);
+  border-color: var(--ss-green-600, #4c9a3a);
+  color: var(--ss-green-700, #2f7d2e);
+}
+
+/* ============================================================================
+   SUBTÍTULO
+   =========================================================================== */
+
+.auth-modal-subtitle {
+  margin: 0 0 18px;
+  font-size: 0.9rem;
+  color: var(--ss-muted, #607386);
+  line-height: 1.5;
+}
+
+/* ============================================================================
+   MENSAJE DE ERROR
+   =========================================================================== */
+
+.auth-modal-error {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  padding: 12px 14px;
+  background: #fff1f0;
+  border: 1px solid rgba(180, 35, 24, 0.22);
+  border-radius: 6px;
+  color: #b42318;
+  font-size: 0.85rem;
+  animation: slideDownIn 0.3s ease-out;
+}
+
+.auth-modal-error span {
+  flex: 1;
+  margin-right: 8px;
+}
+
+.auth-modal-error-close {
+  background: transparent;
+  border: none;
+  color: #b42318;
+  cursor: pointer;
+  font-size: 1rem;
+  padding: 0;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.auth-modal-error-close:hover {
+  color: #7a271a;
+}
+
+/* ============================================================================
+   FORMULARIO Y CAMPOS DE ENTRADA
+   =========================================================================== */
+
+.auth-modal-form {
+  grid-row: 4;
+  height: 100%;
+  min-height: 0;
+  display: grid;
+  align-content: space-between;
+  gap: 14px;
+  margin-bottom: 0;
+}
+
+.auth-modal-fields {
+  display: grid;
+  align-content: start;
+  gap: 14px;
+}
+
+.auth-modal-bottom {
+  display: grid;
+  gap: 14px;
+}
+
+/* Grupo de formulario (label + input) */
+.auth-modal-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.auth-modal-form-group label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--ss-blue-700, #173f5f);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Input de formulario */
+.auth-modal-input {
+  padding: 10px 12px;
+  background: #ffffff;
+  border: 1px solid var(--ss-border, rgba(16, 39, 54, 0.14));
+  border-radius: 6px;
+  color: var(--ss-ink, #102736);
+  font-size: 0.95rem;
+  font-family: inherit;
+  transition: all 0.2s ease;
+}
+
+.auth-modal-input::placeholder {
+  color: var(--ss-muted, #607386);
+}
+
+/* Estados del input */
+.auth-modal-input:focus {
+  outline: none;
+  background: #ffffff;
+  border-color: rgba(76, 154, 58, 0.54);
+  box-shadow: 0 0 0 3px rgba(76, 154, 58, 0.14);
+}
+
+.auth-modal-input:disabled {
+  background: var(--ss-blue-50, #eef7ff);
+  border-color: var(--ss-border, rgba(16, 39, 54, 0.14));
+  color: var(--ss-muted, #607386);
+  cursor: not-allowed;
+}
+
+/* ============================================================================
+   BOTÓN DE ENVÍO
+   =========================================================================== */
+
+.auth-modal-submit-btn {
+  padding: 12px 16px;
+  margin-top: 0;
+  background: linear-gradient(135deg, #63bb55, var(--ss-green-700, #2f7d2e));
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(76, 154, 58, 0.25);
+}
+
+.auth-modal-submit-btn:hover {
+  background: linear-gradient(135deg, #54a947, #2f7d2e);
+  box-shadow: 0 6px 16px rgba(76, 154, 58, 0.35);
+  transform: translateY(-2px);
+}
+
+.auth-modal-submit-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(95, 159, 56, 0.2);
+}
+
+.auth-modal-submit-btn:disabled {
+  background: rgba(76, 154, 58, 0.5);
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+  opacity: 0.8;
+}
+
+/* ============================================================================
+   PIE DEL MODAL (FOOTER)
+   =========================================================================== */
+
+.auth-modal-footer {
+  margin-top: 0;
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--ss-muted, #607386);
+}
+
+.auth-modal-footer p {
+  margin: 0;
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ============================================================================
+   BOTÓN DE ALTERNANCIA (TOGGLE ENTRE LOGIN Y REGISTRO)
+   =========================================================================== */
+
+.auth-modal-toggle-btn {
+  background: transparent;
+  border: none;
+  color: var(--ss-green-700, #2f7d2e);
+  font-weight: 700;
+  font-size: inherit;
+  cursor: pointer;
+  text-decoration: underline;
+  transition: all 0.2s ease;
+  padding: 0;
+  margin: 0;
+  font-family: inherit;
+  line-height: 1.25;
+}
+
+.auth-modal-toggle-btn:hover {
+  color: var(--ss-green-600, #4c9a3a);
+  text-decoration: none;
+}
+
+.auth-modal-toggle-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  text-decoration: none;
+}
+
+/* ============================================================================
+   RESPONSIVE
+   =========================================================================== */
+
+@media (max-width: 480px) {
+  .auth-modal-backdrop {
+    align-items: center;
+    justify-content: center;
+    padding: 12px;
+  }
+
+  .auth-modal-container {
+    width: min(100%, 440px);
+    max-width: 440px;
+    height: calc(100dvh - 24px);
+    max-height: calc(100dvh - 24px);
+  }
+
+  .auth-modal-flip-wrapper {
+    height: 100%;
+    min-height: 100%;
+  }
+
+  .auth-modal-card {
+    min-height: 100%;
+    max-height: calc(100dvh - 24px);
+    padding: 22px 18px;
+    border-radius: 16px;
+    overflow-y: auto;
+  }
+
+  .auth-modal-header h2 {
+    font-size: 1.3rem;
+  }
+
+  .auth-modal-form {
+    gap: 14px;
+  }
+
+  .auth-modal-fields {
+    gap: 13px;
+  }
+
+  .auth-modal-bottom {
+    gap: 12px;
+  }
+
+  .auth-modal-register {
+    position: absolute;
+    inset: 0;
+  }
+
+  .auth-modal-footer {
+    font-size: 0.8rem;
+  }
+}

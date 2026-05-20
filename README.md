@@ -40,261 +40,208 @@ La revision actual se centra en estabilizar la `v2 - Aplicacion completa y estil
 
 ---
 
-## Caracteristicas
 
-- **Autenticacion de usuarios**: registro, login, JWT, cierre de sesion y validacion de token.
-- **Catalogo conectado al backend**: productos obtenidos desde la API REST, con fallback de productos demo en frontend.
-- **Carrito visual**: seleccion de productos, cantidades y calculo de total en cliente.
-- **Gestion admin inicial**: vista protegida para listar usuarios, cambiar rol entre `usuario` y `admin` y gestionar escritura de productos desde API.
-- **API REST**: backend en Express con rutas para usuarios, productos, perfil, pedidos, cancelacion logica y estado de base de datos.
-- **Base de datos relacional**: MySQL con usuarios, proveedores, productos, pedidos, detalles de pedido, estado y fecha de cancelacion.
-- **Frontend modularizado**: React, Vite, Bootstrap y CSS separado por dominios en `frontend/src/styles/`.
-- **Documentacion tecnica**: explicacion de arquitectura, API, MVP, testing, workflow y recursos de defensa.
+## Características principales
+
+- **SPA real con React + Vite**: Navegación fluida entre páginas principales usando `HashRouter` para compatibilidad con despliegues estáticos (Apache, AWS, etc.).
+- **Autenticación JWT**: Registro, login, cierre de sesión y validación de token en frontend y backend. Middleware de autenticación y roles (`usuario`/`admin`).
+- **Catálogo conectado al backend**: Productos obtenidos desde la API REST, con fallback de productos demo en frontend para robustez.
+- **Carrito visual y pedidos**: Selección de productos, cantidades y cálculo de total en cliente. Base de pedidos lista para integración completa de checkout.
+- **Gestión administrativa**: Vista protegida para listar usuarios, cambiar roles y gestionar productos (solo admin).
+- **API REST Express**: Backend modular con rutas para usuarios, productos, perfil, pedidos, cancelación lógica y estado de base de datos.
+- **Base de datos relacional**: MySQL 8.4, modelo relacional documentado y migraciones versionadas.
+- **Frontend modular y responsive**: Componentes reutilizables, CSS por dominio, Bootstrap y helpers propios.
+- **Variables de entorno documentadas**: `.env.example` y explicación de `VITE_API_URL` para integración frontend-backend.
+- **Testing y calidad**: Jest, Supertest, Vitest, Testing Library, ESLint y validaciones manuales y automáticas.
+- **Docker y CI/CD**: Docker Compose para MySQL y workflows de GitHub Actions para tests, lint y build.
+- **Documentación profesional**: Explicación de arquitectura, decisiones técnicas, API, MVP, testing, workflows, recursos de defensa y patrones reutilizables.
 
 ---
 
 ## Estado del Proyecto
 
-El `MVP v1 - Funcional` es el primer hito del roadmap. Su objetivo es demostrar que la base tecnica funciona:
+El `MVP v1 - Funcional` cubre el flujo base:
 
 ```text
-registro -> login -> catalogo -> carrito/base de pedidos -> gestion admin inicial
+registro → login → catálogo → carrito/base de pedidos → gestión admin inicial
 ```
 
-### Funcional
+**Funcionalidades actuales:**
+- Registro e inicio de sesión
+- Catálogo de productos conectado al backend
+- Escritura de productos protegida para usuarios `admin`
+- Carrito visual en frontend
+- Gestión de usuarios para administradores
+- Backend con API REST y conexión a MySQL
+- Pedidos autenticados, consulta de detalle y cancelación lógica
+- Pruebas manuales con Postman y tests backend/frontend
 
-- Registro e inicio de sesion.
-- Catalogo de productos conectado al backend.
-- Escritura de productos protegida para usuarios `admin`.
-- Carrito visual en frontend.
-- Gestion de usuarios para administradores.
-- Backend con API REST y conexion a MySQL.
-- Pedidos autenticados en backend, consulta de detalle y cancelacion logica.
-- Pruebas manuales con Postman MVP y V2.
-- Tests backend con Jest/Supertest.
-- Tests, lint y build del frontend.
+**Pendiente para siguientes fases:**
+- Checkout completo desde el carrito
+- Facturación conectada con datos reales
+- Herramienta `Design` como diseñador 3D real
+- Panel administrativo completo
+- Ampliar cobertura de tests automatizados de frontend
 
-### Queda para fases siguientes
+## Tecnologías principales
 
-- Checkout completo desde el carrito.
-- Facturacion conectada con datos reales.
-- Herramienta `Design` como disenador 3D real.
-- Panel administrativo completo.
-- Ampliar cobertura de tests automatizados de frontend.
-
----
-
-## Tecnologias
-
-| Parte | Tecnologias |
+| Parte | Tecnologías |
 | --- | --- |
-| Frontend | React, Vite, JavaScript, Bootstrap, CSS |
-| Backend | Node.js, Express, JWT, bcrypt, dotenv, cors |
-| Base de datos | MySQL 8.4, mysql2 |
+| Frontend | React, Vite, JavaScript, Bootstrap, CSS modular, HashRouter |
+| Backend | Node.js, Express, JWT, bcrypt, dotenv, cors, mysql2 |
+| Base de datos | MySQL 8.4, migraciones, seeds |
 | Testing y calidad | Jest, Supertest, Vitest, Testing Library, Postman, ESLint |
 | Entorno y CI | Docker Compose, GitHub Actions |
 
----
-
-## Instalacion y Uso
+## Instalación y uso rápido
 
 ```bash
 # Clonar repositorio
 git clone https://github.com/Key-Claw/squarestruct-app.git
 cd squarestruct-app
+
+# Instalar dependencias backend y frontend
+cd backend && npm install
+cd ../frontend && npm install
 ```
 
-Instala dependencias de backend y frontend:
+## Inicialización del backend y base de datos
 
-```bash
-cd backend
-npm install
-
-cd ../frontend
-npm install
-```
-
----
-
-## Inicializacion del Backend y Base de Datos
-
-### 1. Levantar MySQL con Docker Compose
-
-Desde la raiz del proyecto:
+1. **Levantar MySQL con Docker Compose**
 
 ```bash
 docker compose -f docker/docker-compose.yml up -d
 ```
+Esto crea el contenedor MySQL y carga los scripts de `backend/db/schema.sql` y `backend/db/seeds.sql`.
 
-Este comando crea el contenedor MySQL `squarestruct-mysql` y carga:
-
-- `backend/db/schema.sql`
-- `backend/db/seeds.sql`
-
-### 2. Arrancar el backend
+2. **Arrancar el backend**
 
 ```bash
 cd backend
 npm run dev
 ```
-
 El backend queda disponible en:
-
-```text
 http://localhost:3000
-```
 
-Endpoints utiles:
-
-```text
-GET /api/health
-GET /api/db-status
-GET /api/productos
-POST /api/usuarios/register
-POST /api/usuarios/login
-```
-
-### 3. Arrancar el frontend
-
-En otra terminal:
+3. **Arrancar el frontend**
 
 ```bash
 cd frontend
 npm run dev
 ```
-
 El frontend queda disponible en:
-
-```text
 http://localhost:5173
-```
 
-Vite usa proxy para que las llamadas a `/api` apunten al backend local.
+> **Nota:** Vite usa proxy para que las llamadas a `/api` apunten al backend local. Si necesitas apuntar a otra API, configura `VITE_API_URL` en `.env` del frontend.
 
----
-
-## Estructura del Proyecto
+## Estructura del proyecto
 
 ```text
 squarestruct-app/
   backend/
     db/              Scripts SQL, seeds, migraciones y backups
-    postman/         Coleccion Postman del MVP
+    postman/         Colección Postman del MVP y V2
     src/
-      controllers/   Logica de peticiones HTTP
+      controllers/   Lógica de peticiones HTTP
       routes/        Endpoints de la API
-      middlewares/   Autenticacion, admin y validaciones
-      services/      Logica reutilizable
-      config/        Configuracion
+      middlewares/   Autenticación, admin y validaciones
+      services/      Lógica reutilizable
+      config/        Configuración
       utils/         Funciones auxiliares
-      app.js         Configuracion de Express
+      app.js         Configuración de Express
     tests/           Tests Jest/Supertest
     server.js        Punto de entrada del backend
 
   frontend/
-    public/          Recursos publicos
+    public/          Recursos públicos
     src/
-      assets/        Imagenes y logotipo
-      components/    Navbar, footer, auth, carrito, perfil y catalogo
+      assets/        Imágenes y logotipo
+      components/    Navbar, footer, auth, carrito, perfil, catálogo
       data/          Datos demo
-      pages/         Home, Catalogo, Galeria, Design, AboutUs, Usuarios...
+      pages/         Home, Catalog, Gallery, Design, AboutUs, Users...
       services/      api, auth, productos y pedidos
-      styles/        CSS separado por dominio
+      styles/        CSS modular y por dominio
       utils/         Helpers y validadores
-      App.jsx        Estado principal y navegacion interna
+      App.jsx        Estado principal y navegación interna
       main.jsx       Punto de entrada de React
 
   docker/            Docker Compose para MySQL
-  docs/              Documentacion tecnica y de presentacion
-  scripts/           Carpeta reservada para scripts auxiliares documentados
+  docs/              Documentación técnica y de defensa
+  scripts/           Scripts auxiliares documentados
 ```
 
----
+## Comandos de validación y testing
 
-## Comandos de Validacion
-
-### Frontend
-
+**Frontend:**
 ```bash
 cd frontend
-npm run test:run
-npm run lint
-npm run build
+npm run test:run   # Ejecuta tests automáticos (Vitest)
+npm run lint       # Lint con ESLint
+npm run build      # Build de producción (Vite)
 ```
 
-### Backend
-
+**Backend:**
 ```bash
 cd backend
-npm test
+npm test           # Ejecuta todos los tests (Jest)
+npm run test:unit  # Solo tests unitarios
+npm run test:integration # Solo tests de integración
 ```
 
-Tambien se pueden ejecutar pruebas separadas:
+## Colección Postman
 
-```bash
-npm run test:unit
-npm run test:integration
-```
-
----
-
-## Coleccion Postman
-
-Las colecciones Postman estan en:
+Las colecciones Postman están en:
 
 ```text
 backend/postman/squarestruct-mvp.postman_collection.json
 backend/postman/squarestruct-v2.postman_collection.json
 ```
 
-Incluye pruebas manuales para:
+Incluyen pruebas manuales para:
+- Health y estado de base de datos
+- Productos públicos y escritura de productos con token admin
+- Registro, login y perfil
+- Gestión admin de usuarios
+- Pedidos con `/api/pedidos`, detalle y cancelación lógica
+- Alias `/api/orders`
 
-- health y estado de base de datos;
-- productos publicos y escritura de productos con token admin;
-- registro, login y perfil;
-- gestion admin de usuarios;
-- pedidos con `/api/pedidos`, detalle y cancelacion logica;
-- alias `/api/orders`.
+Variables de entorno recomendadas: `baseUrl`, `token`, `adminToken`, `idUsuario`, `idProducto`.
 
-La coleccion usa variables como `baseUrl`, `token`, `adminToken`, `idUsuario` e `idProducto`.
+## Documentación ampliada
 
----
+La documentación extendida está en [`docs/`](docs/):
 
-## Documentacion Ampliada
-
-La documentacion extendida esta en [`docs/`](docs/):
-
-- [`docs/README.md`](docs/README.md): indice general de documentacion.
-- [`docs/01-proyecto/vision-general.md`](docs/01-proyecto/vision-general.md): vision del proyecto.
-- [`docs/01-proyecto/enfoque-saas-y-evolucion.md`](docs/01-proyecto/enfoque-saas-y-evolucion.md): enfoque SaaS y evolucion.
-- [`docs/02-mvp/metodologia-mvp.md`](docs/02-mvp/metodologia-mvp.md): alcance del MVP.
-- [`docs/02-mvp/decisiones-tecnicas-mvp.md`](docs/02-mvp/decisiones-tecnicas-mvp.md): decisiones tecnicas.
-- [`docs/03-arquitectura/frontend-estructura.md`](docs/03-arquitectura/frontend-estructura.md): estructura del frontend.
-- [`docs/03-arquitectura/backend-estructura.md`](docs/03-arquitectura/backend-estructura.md): estructura del backend.
-- [`docs/03-arquitectura/base-de-datos.md`](docs/03-arquitectura/base-de-datos.md): modelo de base de datos.
-- [`docs/04-api/endpoints.md`](docs/04-api/endpoints.md): endpoints principales.
-- [`docs/05-testing/frontend-lint-build.md`](docs/05-testing/frontend-lint-build.md): validacion del frontend.
-- [`docs/05-testing/postman-mvp-ejemplos.md`](docs/05-testing/postman-mvp-ejemplos.md): pruebas manuales con Postman.
-- [`docs/05-testing/revision-v2-validaciones.md`](docs/05-testing/revision-v2-validaciones.md): validaciones ejecutadas en la revision V2.
-- [`docs/07-recursos/tecnologias-y-comandos-defensa.md`](docs/07-recursos/tecnologias-y-comandos-defensa.md): tecnologias, comandos y checklist para defensa.
-
----
+- [`docs/README.md`](docs/README.md): índice general de documentación
+- [`docs/01-proyecto/vision-general.md`](docs/01-proyecto/vision-general.md): visión del proyecto
+- [`docs/01-proyecto/enfoque-saas-y-evolucion.md`](docs/01-proyecto/enfoque-saas-y-evolucion.md): enfoque SaaS y evolución
+- [`docs/02-mvp/metodologia-mvp.md`](docs/02-mvp/metodologia-mvp.md): alcance del MVP
+- [`docs/02-mvp/decisiones-tecnicas-mvp.md`](docs/02-mvp/decisiones-tecnicas-mvp.md): decisiones técnicas
+- [`docs/03-arquitectura/frontend-estructura.md`](docs/03-arquitectura/frontend-estructura.md): estructura del frontend
+- [`docs/03-arquitectura/backend-estructura.md`](docs/03-arquitectura/backend-estructura.md): estructura del backend
+- [`docs/03-arquitectura/base-de-datos.md`](docs/03-arquitectura/base-de-datos.md): modelo de base de datos
+- [`docs/03-arquitectura/modelo-datos-detallado.md`](docs/03-arquitectura/modelo-datos-detallado.md): modelo relacional y entidades
+- [`docs/04-api/endpoints.md`](docs/04-api/endpoints.md): endpoints principales
+- [`docs/05-testing/frontend-lint-build.md`](docs/05-testing/frontend-lint-build.md): validación del frontend
+- [`docs/05-testing/postman-mvp-ejemplos.md`](docs/05-testing/postman-mvp-ejemplos.md): pruebas manuales con Postman
+- [`docs/05-testing/revision-v2-validaciones.md`](docs/05-testing/revision-v2-validaciones.md): validaciones ejecutadas en la revisión V2
+- [`docs/07-recursos/tecnologias-y-comandos-defensa.md`](docs/07-recursos/tecnologias-y-comandos-defensa.md): tecnologías, comandos y checklist para defensa
 
 ## Roadmap
 
-| Version | Objetivo |
+| Versión | Objetivo |
 | --- | --- |
-| `MVP v1 - Funcional` | Registro, login, catalogo, carrito visual, base de pedidos y gestion admin inicial. |
-| `v2 - Aplicacion completa y estilizada` | Mejorar interfaz, validaciones, tests, autenticacion, pedidos y estabilidad. |
-| `v3 - Disenador de planos 3D` | Anadir editor visual, piezas modulares, presupuesto y guardado de proyectos. |
-
----
+| `MVP v1 - Funcional` | Registro, login, catálogo, carrito visual, base de pedidos y gestión admin inicial |
+| `v2 - Aplicación completa y estilizada` | Mejorar interfaz, validaciones, tests, autenticación, pedidos y estabilidad |
+| `v3 - Diseñador de planos 3D` | Añadir editor visual, piezas modulares, presupuesto y guardado de proyectos |
 
 ## Licencia
 
-Este proyecto esta bajo licencia MIT. Consulta el archivo [`LICENSE`](LICENSE) para mas detalles.
+Este proyecto está bajo licencia MIT. Consulta el archivo [`LICENSE`](LICENSE) para más detalles.
 
 ---
+## Contexto académico
+
+Proyecto realizado como reto DAW1, defendible y alineado con buenas prácticas profesionales. Documentación y código armonizados para facilitar la revisión, ampliación y defensa en entorno académico y profesional.
 
 ## Contexto Academico
 

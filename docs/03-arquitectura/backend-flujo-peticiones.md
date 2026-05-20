@@ -1,10 +1,11 @@
-# Flujo de peticiones del backend
+
+# Flujo real de peticiones en el backend
 
 ## Objetivo
 
-Este documento explica que ocurre dentro del backend cuando el frontend llama a la API.
+Este documento explica qué ocurre dentro del backend cuando el frontend llama a la API, cómo se validan y protegen los datos, y cómo se justifica en una defensa DAW o presentación profesional.
 
-La idea principal es que el backend actua como intermediario entre la interfaz y MySQL.
+El backend no es solo un puente: valida, protege rutas, calcula datos y asegura la coherencia antes de llegar a MySQL.
 
 ## Flujo general
 
@@ -140,6 +141,10 @@ Flujo:
 
 La cancelacion es logica: no borra el pedido ni sus lineas, mantiene trazabilidad.
 
-## Idea clave para explicar
 
-El backend no es solo un puente: tambien valida, protege rutas, calcula datos y asegura que la informacion que llega a MySQL sea coherente.
+## Buenas prácticas y defensa DAW
+
+- Explica el flujo real de cada endpoint clave, mostrando validaciones y protección de rutas.
+- Justifica el uso de middlewares y controladores para separar lógica y seguridad.
+- Muestra ejemplos reales de flujos protegidos (admin, usuario autenticado, cancelación lógica).
+- Relaciona cada flujo con la trazabilidad y la defensa de la integridad de los datos.

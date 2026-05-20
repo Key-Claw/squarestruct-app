@@ -1,15 +1,15 @@
-# Autenticación del backend
+
+# Autenticación y roles en el backend
 
 ## Objetivo
 
-Este documento explica cómo funciona la autenticación del MVP.
+Este documento explica cómo funciona la autenticación real del proyecto, cómo se protegen las rutas y cómo se justifica en una defensa DAW o presentación profesional.
 
-El sistema actual usa:
-
-- `bcrypt` para proteger contraseñas;
-- `jsonwebtoken` para generar tokens JWT;
-- middleware de autenticación para proteger rutas;
-- middleware de administrador para limitar rutas de gestión.
+El sistema implementa:
+- `bcrypt` para proteger contraseñas
+- `jsonwebtoken` para generar tokens JWT
+- Middlewares para proteger rutas y limitar acceso según rol
+- Variables de entorno para claves sensibles
 
 ## Registro de usuario
 
@@ -143,6 +143,10 @@ Decisiones aplicadas:
 - Usar roles para limitar operaciones administrativas.
 - Guardar `JWT_SECRET` como variable de entorno.
 
-## Idea clave para explicar
 
-El backend comprueba quién es el usuario con JWT y qué puede hacer con su rol. La contraseña se protege con bcrypt antes de guardarse en la base de datos.
+## Buenas prácticas y defensa DAW
+
+- Explica el flujo completo: registro, login, obtención de JWT, uso en frontend y protección de rutas.
+- Justifica el uso de JWT para sesiones sin estado y la separación de roles.
+- Muestra ejemplos reales de rutas públicas, protegidas y de administración.
+- Demuestra en la defensa cómo se protege la contraseña y cómo se limita el acceso según el rol.

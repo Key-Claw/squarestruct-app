@@ -1,0 +1,63 @@
+/* ========================================
+   Common Page Primitives - Base / Desktop
+   ======================================== */
+
+.page-card {
+  min-height: 220px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  background: #23272d;
+  color: #ffffff;
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.12);
+}
+
+.page-card-body {
+  padding: 14px 16px 16px;
+  text-align: left;
+}
+
+.page-card-body h2,
+.page-card-body h3,
+.page-card-body p {
+  margin: 0;
+}
+
+.page-card-body p {
+  margin-top: 8px;
+  color: rgba(255, 255, 255, 0.84);
+}
+
+/* Shared shell helpers still used by older standalone pages. */
+.page-grid {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+  gap: 18px;
+}
+
+.page-card-media {
+  min-height: 150px;
+  display: grid;
+  place-items: center;
+  background: #8a929d;
+  color: #20252d;
+  font-size: 1rem;
+}
+
+.compact-card {
+  min-height: auto;
+}
+
+/* ========================================
+   Common Page Primitives - States
+   ======================================== */
+
+.home-card-button:focus-visible,
+.page-link-button:focus-visible,
+.brand-button:focus-visible,
+.nav-button:focus-visible {
+  outline: 2px solid #93c5fd;
+  outline-offset: 2px;
+}
+

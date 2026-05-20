@@ -1,6 +1,13 @@
-# Documentacion de SquareStruct
 
-Esta carpeta reune la documentacion del proyecto. Esta organizada para consultar rapido que hace la aplicacion, como esta construida, como se prueba y como se puede explicar en una presentacion o tutoria.
+# Documentación de SquareStruct
+
+Esta carpeta reúne toda la documentación técnica y de defensa DAW del proyecto. Está organizada para consultar rápido qué hace la aplicación, cómo está construida, cómo se prueba y cómo se puede explicar en una presentación profesional o defensa.
+
+**¿Para qué sirve esta documentación?**
+- Entender la arquitectura real y los flujos de la app
+- Preparar la defensa DAW o una demo profesional
+- Consultar comandos, tecnologías, endpoints y argumentos clave
+- Acceder a ejemplos de pruebas, validaciones y errores frecuentes
 
 ## Orden recomendado de lectura
 
@@ -105,4 +112,13 @@ docs/
 
 ## Idea clave
 
-`docs/` explica el proyecto completo, `frontend/README.md` funciona como guia practica del cliente React y `backend/README.md` funciona como guia practica del servidor Express. Si una persona nueva entra al proyecto, puede leer primero este README y despues ir al documento especifico que necesite.
+
+## Buenas prácticas y defensa DAW
+
+- Lee primero este README y sigue el orden recomendado para defensa o demo.
+- Justifica siempre las decisiones técnicas con los documentos de arquitectura y MVP.
+- Usa los resúmenes de `07-recursos/` para repasar antes de la defensa.
+- Muestra ejemplos reales de login, rutas protegidas, roles y tests.
+- Explica la integración de frontend, backend y base de datos con ejemplos.
+- Ejecuta y muestra comandos reales (`lint`, `build`, `test:run`, Postman) en la presentación.
+- Si hay dudas, consulta los documentos de errores y debugging.

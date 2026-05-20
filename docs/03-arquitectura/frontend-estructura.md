@@ -31,10 +31,10 @@ frontend/
     hero/
     pages/
       AboutUs.jsx
-      Catalogo.jsx
+      Catalog.jsx
       Design.jsx
       Facturacion.jsx
-      Galeria.jsx
+      Gallery.jsx
       Home.jsx
       Login.jsx
       Register.jsx
@@ -70,6 +70,7 @@ frontend/
     App.jsx
     index.css
     main.jsx
+    routes.js
 ```
 
 ## Responsabilidad de cada carpeta
@@ -88,32 +89,48 @@ frontend/
 | `App.jsx` | Estado principal, navegacion interna, usuario actual, carrito y proteccion de vistas admin. |
 | `App.css` | Indice de imports CSS. No contiene ya toda la hoja de estilos grande. |
 | `main.jsx` | Importa Bootstrap, CSS base y monta React en `index.html`. |
+| `routes.js` | Rutas principales y enlaces reutilizables del navbar. |
 
 ## Navegacion interna
 
-El proyecto no usa React Router. La navegacion se controla con estado en `App.jsx`.
+Las paginas principales usan `react-router-dom` con `HashRouter`.
 
-`App.jsx` mantiene:
+Se usa `HashRouter` para que el frontend pueda desplegarse como aplicacion estatica en AWS, Apache u otro hosting sin depender de una configuracion de fallback hacia `index.html`.
 
-- pagina activa (`page`);
+Rutas principales:
+
+```text
+http://localhost:5173/#/
+http://localhost:5173/#/home
+http://localhost:5173/#/gallery
+http://localhost:5173/#/catalog
+http://localhost:5173/#/design
+http://localhost:5173/#/about-us
+```
+
+`frontend/src/routes.js` centraliza las rutas y los enlaces del navbar para evitar repetir strings en varios archivos.
+
+`App.jsx` conserva estado interno para:
+
 - termino de busqueda enviado al catalogo;
 - seccion inicial del catalogo;
 - usuario autenticado;
-- estado del modal de autenticacion;
-- estado del carrito lateral;
-- estado del panel de perfil.
+- modal de autenticacion;
+- carrito lateral;
+- checkout;
+- Mi Cuenta y sus pestanas internas.
 
-Cuando el usuario pulsa un boton del navbar, `handleNavigate` cambia la pagina activa. Segun ese valor, `renderPage` devuelve una pagina u otra.
+Login, registro, carrito, checkout y Mi Cuenta no tienen rutas propias en esta fase. Se mantienen como modales, paneles o vistas internas para evitar sobreingenieria.
 
-Las vistas `Usuarios` y `Facturacion` estan protegidas: si no hay usuario o el usuario no es admin, `App.jsx` redirige a `Home`.
+Las vistas `Usuarios` y `Facturacion` siguen protegidas dentro de Mi Cuenta: si el usuario no es admin, `App.jsx` muestra la pestana permitida.
 
 ## Paginas principales
 
 | Pagina | Estado actual |
 | --- | --- |
 | `Home.jsx` | Pantalla principal con carrusel e imagenes. Enlaza a catalogo, galeria y Design. |
-| `Catalogo.jsx` | Conectada a `/api/productos`. Si falla backend, muestra productos demo. Tiene busqueda, orden, categorias y anadir al carrito visual. |
-| `Galeria.jsx` | Vista visual de inspiracion con imagenes locales. |
+| `Catalog.jsx` | Conectada a `/api/productos`. Si falla backend, muestra productos demo. Tiene busqueda, orden, categorias y anadir al carrito visual. |
+| `Gallery.jsx` | Vista visual de inspiracion con imagenes locales. |
 | `Design.jsx` | Maqueta del futuro disenador. Muestra paneles, piezas, resumen y controles visuales, pero no tiene motor 3D real. |
 | `AboutUs.jsx` | Presentacion del proyecto/equipo con contenido visual. |
 | `Login.jsx` | Login como pagina tradicional. |

@@ -11,6 +11,9 @@ on:
       - dev
       - main
 
+env:
+  NODE_VERSION: 20.19.0
+
 jobs:
   backend-tests:
     # GitHub Actions ejecuta el job en un runner Linux limpio.
@@ -19,7 +22,7 @@ jobs:
     # Servicio de base de datos necesario para los tests de integracion.
     services:
       mysql:
-        image: mysql:8.4
+        image: mysql:8.0
         env:
           MYSQL_ROOT_PASSWORD: ci_root_password
           MYSQL_ROOT_HOST: "%"
@@ -60,7 +63,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: ${{ env.NODE_VERSION }}
           cache: npm
           cache-dependency-path: backend/package-lock.json
 
@@ -68,7 +71,7 @@ jobs:
       - name: Install MySQL client
         run: |
           sudo apt-get update
-          sudo apt-get install -y mysql-client
+          sudo apt-get install -y default-mysql-client
 
       # Espera a que el servicio MySQL este listo antes de seguir.
       - name: Wait for MySQL
@@ -87,7 +90,7 @@ jobs:
 
       # Instala las dependencias del backend desde backend/package.json.
       - name: Install backend dependencies
-        run: npm install
+        run: npm ci
 
       # Ejecuta Jest con el script definido en package.json.
       - name: Run backend tests
@@ -115,7 +118,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: ${{ env.NODE_VERSION }}
           cache: npm
           cache-dependency-path: frontend/package-lock.json
 

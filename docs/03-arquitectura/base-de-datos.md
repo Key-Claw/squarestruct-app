@@ -1,16 +1,11 @@
-# Base de datos
+
+# Base de datos: modelo real y defensa DAW
 
 ## Objetivo
 
-La base de datos guarda la informacion principal de SquareStruct:
+La base de datos guarda la información principal de SquareStruct y asegura la integridad y trazabilidad de los datos. Este documento resume el modelo real, su justificación y cómo defenderlo en una presentación profesional o DAW.
 
-- Usuarios.
-- Proveedores.
-- Productos.
-- Pedidos.
-- Detalles de pedido.
-
-Se usa MySQL porque el proyecto trabaja con datos relacionados entre si. Por ejemplo, un pedido pertenece a un usuario y contiene productos.
+Se usa MySQL porque el proyecto trabaja con datos conectados y relaciones reales: un pedido pertenece a un usuario y contiene productos, cada producto tiene proveedor, y todo queda trazable.
 
 ## Entidades principales
 
@@ -132,6 +127,10 @@ Archivos principales:
 - `consultas.md`: consultas utiles para revisar y explicar la base de datos.
 - `migrations/`: cambios incrementales de estructura.
 
-## Idea clave para explicar
 
-La base de datos es relacional porque los datos estan conectados: usuarios, productos y pedidos dependen unos de otros. En `MVP v1` ya existe la base tecnica para pedidos, y en la revision V2 se conserva trazabilidad mediante estado y fecha de cancelacion.
+## Buenas prácticas y defensa DAW
+
+- Explica el modelo relacional y las relaciones reales entre entidades.
+- Justifica la trazabilidad: los pedidos no se borran, se cancelan lógicamente.
+- Muestra ejemplos de consultas y scripts reales.
+- Relaciona la estructura con la seguridad y la integridad de los datos.
