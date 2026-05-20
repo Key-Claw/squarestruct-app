@@ -2470,3 +2470,135 @@ textarea {
     color: #ffffff;
   }
 }
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+  .design-page > .design-topbar {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 50%) minmax(0, 50%);
+    grid-template-rows: 300px;
+    gap: 0;
+    height: 300px;
+    min-height: 300px;
+    margin-bottom: 22px;
+    padding: 0;
+    border: 1px solid rgba(23, 63, 95, 0.18);
+    border-radius: 8px;
+    overflow: hidden;
+    background: #ffffff;
+    box-shadow: 0 14px 32px rgba(15, 23, 42, 0.06);
+  }
+
+  .design-page > .design-topbar::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    height: auto;
+    border-radius: 0;
+    pointer-events: none;
+    background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 1) 0%,
+      rgba(255, 255, 255, 1) 48%,
+      rgba(255, 255, 255, 0.86) 58%,
+      rgba(255, 255, 255, 0.42) 72%,
+      rgba(255, 255, 255, 0) 94%
+    );
+  }
+
+  .design-page > .design-topbar > .design-topbar-copy {
+    grid-column: 1;
+    grid-row: 1;
+    z-index: 2;
+    height: 300px;
+    min-height: 300px;
+    padding: 42px clamp(22px, 4vw, 46px) 24px;
+    align-content: start;
+    justify-items: start;
+    gap: 14px;
+    background: transparent;
+    text-align: left;
+  }
+
+  .design-topbar-title,
+  .design-topbar-text {
+    width: 100%;
+    text-align: left;
+  }
+
+  .design-page > .design-topbar .design-eyebrow {
+    margin: 0 0 0.4rem;
+  }
+
+  .design-page > .design-topbar > .design-topbar-media {
+    grid-column: 2;
+    grid-row: 1;
+    position: relative;
+    inset: auto;
+    z-index: 0;
+    height: 300px;
+    min-height: 300px;
+    overflow: hidden;
+    background: transparent;
+  }
+
+  .design-page > .design-topbar > .design-topbar-media img {
+    width: 100%;
+    height: 300px;
+    min-height: 300px;
+    object-fit: cover;
+    object-position: center bottom;
+    filter: none;
+  }
+
+  .design-page > .design-topbar h1 {
+    width: 100%;
+    max-width: 12ch;
+    margin: 0;
+    font-size: clamp(2.25rem, 6vw, 3.2rem);
+    line-height: 0.98;
+    text-align: left;
+    text-wrap: balance;
+  }
+
+  .design-page > .design-topbar p:not(.design-eyebrow) {
+    width: 100%;
+    max-width: 34ch;
+    margin-top: 0;
+    font-size: clamp(0.9rem, 2vw, 1rem);
+    line-height: 1.58;
+    text-align: left;
+  }
+
+  .design-topbar > .design-topbar-actions--hero {
+    position: absolute;
+    inset: auto 10px 8px;
+    z-index: 4;
+    width: auto;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 8px;
+    align-items: stretch;
+    justify-content: stretch;
+    background: transparent;
+  }
+
+  .design-topbar > .design-topbar-actions--hero .btn {
+    width: 100%;
+    min-width: 0;
+    min-height: 30px;
+    margin: 0;
+    padding: 5px 10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: initial;
+    font-size: 0.64rem;
+    line-height: 1.1;
+    text-align: center;
+    white-space: normal;
+  }
+}

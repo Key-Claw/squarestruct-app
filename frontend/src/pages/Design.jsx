@@ -50,7 +50,7 @@ function Design({ onNavigate }) {
           </div>
         </div>
 
-        <div className="design-topbar-actions">
+        <div className="design-topbar-actions design-topbar-actions--hero">
           <button type="button" className="btn design-outline-btn">Guardar</button>
           <button type="button" className="btn design-outline-btn">Cargar</button>
           <button type="button" className="btn design-outline-btn">Nuevo</button>
