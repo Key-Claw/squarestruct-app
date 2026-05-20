@@ -1007,6 +1007,30 @@
   text-shadow: none;
 }
 
+.gallery-feature-copy {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+}
+
+.gallery-feature-title-grid {
+  align-self: start;
+}
+
+.gallery-feature-info-grid {
+  align-self: center;
+  display: grid;
+  gap: 8px;
+}
+
+.gallery-feature-info-grid p,
+.gallery-feature-info-grid .gallery-area {
+  margin: 0;
+}
+
+.gallery-feature-actions {
+  align-self: end;
+}
+
 
 
 
