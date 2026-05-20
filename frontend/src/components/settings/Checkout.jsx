@@ -117,7 +117,7 @@ function Checkout({ isOpen, cartItems = [], onClose, onOrderCreated }) {
     }
   }
 
-  const handleBackdropDoubleClick = (e) => {
+  const handleBackdropClick = (e) => {
     if (e.target === e.currentTarget) {
       onClose()
     }
@@ -131,7 +131,7 @@ function Checkout({ isOpen, cartItems = [], onClose, onOrderCreated }) {
   return (
     <>
       {/* BACKDROP OSCURO */}
-      <div className="checkout-backdrop" onDoubleClick={handleBackdropDoubleClick}>
+      <div className="checkout-backdrop" onClick={handleBackdropClick}>
 
         {/* MODAL DE CHECKOUT */}
         <div className="checkout-container">

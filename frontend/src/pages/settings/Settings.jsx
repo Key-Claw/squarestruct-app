@@ -1,9 +1,11 @@
 import { useEffect, useMemo, useState } from 'react'
-import { getAllUsers, getProfile, getUserById, logoutUser, updateUser } from '../../services/authService'
+import { deleteUser, getAllUsers, getProfile, getUserById, logoutUser, updateUser } from '../../services/authService'
 import { actualizarEstadoPedido, obtenerMisPedidos, obtenerPedidosAdmin } from '../../services/orderService'
+import { confirmDelete, showError, showSuccess } from '../../utils/alerts'
 import '../../styles/pages/settings/settings.css'
 
 const FACTURACION_PAGE_SIZE = 5
+const SUPER_ADMIN_EMAIL = 'admin@squarestruct.com'
 
 const getRoleBadgeClass = (role) => {
   if (role === 'admin') return 'settings-role-badge admin'
@@ -11,7 +13,7 @@ const getRoleBadgeClass = (role) => {
 }
 
 const getRoleText = (role) => {
-  if (role === 'admin') return 'Administrador'
+  if (role === 'admin') return 'ADMIN'
   return 'Usuario'
 }
 
@@ -37,6 +39,7 @@ const getStatusClass = (status) => {
   if (normalizedStatus === 'pendiente') return 'settings-invoice-status pending'
   if (normalizedStatus === 'aceptado') return 'settings-invoice-status accepted'
   if (normalizedStatus === 'denegado') return 'settings-invoice-status rejected'
+  if (normalizedStatus === 'cancelado') return 'settings-invoice-status canceled'
 
   return 'settings-invoice-status'
 }
@@ -47,6 +50,7 @@ const getStatusLabel = (status) => {
   if (normalizedStatus === 'pendiente') return 'Pendiente'
   if (normalizedStatus === 'aceptado') return 'Aceptada'
   if (normalizedStatus === 'denegado') return 'Denegada'
+  if (normalizedStatus === 'cancelado') return 'Cancelada'
 
   return status || 'Sin estado'
 }
@@ -61,6 +65,16 @@ const getPaymentLabel = (method) => {
 
   return method || 'N/A'
 }
+
+const buildUserFormData = (userData = {}) => ({
+  nombre: userData.nombre || '',
+  primerApellido: userData.primerApellido || '',
+  segundoApellido: userData.segundoApellido || '',
+  email: userData.email || '',
+  rol: userData.rol || 'usuario',
+})
+
+const isSuperAdminAccount = (userData = {}) => userData.email?.toLowerCase() === SUPER_ADMIN_EMAIL
 
 const getInitialTab = (tab, isAdminUser) => {
   if (isAdminUser) {
@@ -98,13 +112,18 @@ const getSettingsHeader = (activeTab, tabs, isAdminUser) => {
   }
 }
 
-function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange }) {
+function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange, onUserUpdate, onUserDeleted }) {
   const [activeTab, setActiveTab] = useState(getInitialTab(initialTab, isAdminUser))
 
   // Profile tab state
   const [profileData, setProfileData] = useState(user)
   const [isProfileLoading, setIsProfileLoading] = useState(false)
   const [profileError, setProfileError] = useState('')
+  const [profileSuccessMessage, setProfileSuccessMessage] = useState('')
+  const [profileFormData, setProfileFormData] = useState(buildUserFormData(user))
+  const [isProfileEditing, setIsProfileEditing] = useState(false)
+  const [isProfileSaving, setIsProfileSaving] = useState(false)
+  const [isProfileDeleting, setIsProfileDeleting] = useState(false)
 
   // Users admin tab state
   const [usuarios, setUsuarios] = useState([])
@@ -112,8 +131,9 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange })
   const [usersError, setUsersError] = useState('')
   const [usersSuccessMessage, setUsersSuccessMessage] = useState('')
   const [editingUsuario, setEditingUsuario] = useState(null)
-  const [nuevoRol, setNuevoRol] = useState('usuario')
+  const [editingUsuarioForm, setEditingUsuarioForm] = useState(buildUserFormData())
   const [isEditLoading, setIsEditLoading] = useState(false)
+  const [deletingUsuarioId, setDeletingUsuarioId] = useState(null)
   const [selectedUsuario, setSelectedUsuario] = useState(null)
   const [isDetailLoading, setIsDetailLoading] = useState(false)
   const [detailError, setDetailError] = useState('')
@@ -164,8 +184,10 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange })
       try {
         const profile = await getProfile()
         setProfileData(profile)
+        setProfileFormData(buildUserFormData(profile))
       } catch {
         setProfileData(user)
+        setProfileFormData(buildUserFormData(user))
         setProfileError('No se pudieron cargar los datos actualizados')
       } finally {
         setIsProfileLoading(false)
@@ -299,6 +321,7 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange })
     const pendientes = facturasAdminFiltradas.filter((factura) => factura.estado === 'pendiente').length
     const aceptadas = facturasAdminFiltradas.filter((factura) => factura.estado === 'aceptado').length
     const denegadas = facturasAdminFiltradas.filter((factura) => factura.estado === 'denegado').length
+    const canceladas = facturasAdminFiltradas.filter((factura) => factura.estado === 'cancelado').length
     const ticketMedio = totalFacturas > 0 ? totalFacturado / totalFacturas : 0
     const pedidoPrincipal = facturasAdminFiltradas.reduce((top, factura) => {
       if (!top) return factura
@@ -309,6 +332,7 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange })
       { nombre: 'Aceptadas', total: aceptadas, color: 'success' },
       { nombre: 'Pendientes', total: pendientes, color: 'warning' },
       { nombre: 'Denegadas', total: denegadas, color: 'danger' },
+      { nombre: 'Canceladas', total: canceladas, color: 'secondary' },
     ].map((estado) => ({
       ...estado,
       porcentaje: totalFacturas > 0 ? Math.round((estado.total / totalFacturas) * 100) : 0,
@@ -321,6 +345,7 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange })
       pendientes,
       aceptadas,
       denegadas,
+      canceladas,
       ticketMedio,
       pedidoPrincipal,
       estados,
@@ -344,8 +369,27 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange })
   }, [facturacionPageSafe, facturasAdminFiltradas])
 
   const handleEditClick = (usuario) => {
+    if (isSuperAdminAccount(usuario)) {
+      setUsersError('La cuenta super admin no se puede editar.')
+      return
+    }
+
     setEditingUsuario(usuario)
-    setNuevoRol(usuario.rol)
+    setEditingUsuarioForm(buildUserFormData(usuario))
+  }
+
+  const handleProfileInputChange = (field, value) => {
+    setProfileFormData((currentData) => ({
+      ...currentData,
+      [field]: value,
+    }))
+  }
+
+  const handleAdminUserInputChange = (field, value) => {
+    setEditingUsuarioForm((currentData) => ({
+      ...currentData,
+      [field]: value,
+    }))
   }
 
   /**
@@ -371,7 +415,7 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange })
 
   const handleCloseModal = () => {
     setEditingUsuario(null)
-    setNuevoRol('usuario')
+    setEditingUsuarioForm(buildUserFormData())
   }
 
   /**
@@ -380,6 +424,120 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange })
   const handleCloseDetailModal = () => {
     setSelectedUsuario(null)
     setDetailError('')
+  }
+
+  const handleSaveProfile = async (event) => {
+    event.preventDefault()
+
+    if (!profileData) return
+    if (isSuperAdminAccount(profileData)) {
+      setProfileError('La cuenta super admin no se puede editar.')
+      return
+    }
+
+    setIsProfileSaving(true)
+    setProfileError('')
+    setProfileSuccessMessage('')
+
+    try {
+      const response = await updateUser(profileData.idUsuario, {
+        ...profileFormData,
+        rol: profileData.rol,
+      })
+      const updatedUser = response.usuario || { ...profileData, ...profileFormData }
+
+      setProfileData(updatedUser)
+      setProfileFormData(buildUserFormData(updatedUser))
+      setIsProfileEditing(false)
+      setProfileSuccessMessage('Datos personales actualizados correctamente.')
+
+      if (typeof onUserUpdate === 'function') {
+        onUserUpdate(updatedUser)
+      }
+
+      window.setTimeout(() => setProfileSuccessMessage(''), 3000)
+    } catch (err) {
+      setProfileError(err.message || 'No se pudieron actualizar tus datos.')
+    } finally {
+      setIsProfileSaving(false)
+    }
+  }
+
+  const handleDeleteOwnAccount = async () => {
+    if (!profileData) return
+    if (isSuperAdminAccount(profileData)) {
+      setProfileError('La cuenta super admin no se puede eliminar.')
+      return
+    }
+
+    const confirmed = await confirmDelete({
+      title: 'Eliminar cuenta',
+      text: 'Vas a eliminar tu cuenta. Tus pedidos se conservaran anonimizados para mantener el historial de la empresa.',
+    })
+    if (!confirmed) return
+
+    setIsProfileDeleting(true)
+    setProfileError('')
+
+    try {
+      await deleteUser(profileData.idUsuario)
+      await showSuccess({
+        title: 'Cuenta eliminada',
+        text: 'Tu cuenta se ha eliminado correctamente.',
+      })
+      logoutUser()
+
+      if (typeof onUserDeleted === 'function') {
+        onUserDeleted()
+      }
+    } catch (err) {
+      const message = err.message || 'No se pudo eliminar tu cuenta. Intentalo de nuevo.'
+      setProfileError(message)
+      await showError({
+        title: 'No se pudo eliminar',
+        text: message,
+      })
+    } finally {
+      setIsProfileDeleting(false)
+    }
+  }
+
+  const handleDeleteUser = async (usuario) => {
+    if (!usuario || usuario.idUsuario === user.idUsuario) return
+    if (isSuperAdminAccount(usuario)) {
+      setUsersError('La cuenta super admin no se puede eliminar.')
+      return
+    }
+
+    const confirmed = await confirmDelete({
+      title: 'Eliminar usuario',
+      text: `Vas a eliminar la cuenta de ${usuario.nombre}. Sus pedidos se conservaran anonimizados en el historial.`,
+    })
+    if (!confirmed) return
+
+    setDeletingUsuarioId(usuario.idUsuario)
+    setUsersError('')
+    setUsersSuccessMessage('')
+
+    try {
+      await deleteUser(usuario.idUsuario)
+      setUsuarios((currentUsers) => currentUsers.filter((currentUser) => currentUser.idUsuario !== usuario.idUsuario))
+      setUsersSuccessMessage(`Cuenta de ${usuario.nombre} eliminada correctamente.`)
+      await showSuccess({
+        title: 'Usuario eliminado',
+        text: `La cuenta de ${usuario.nombre} se ha eliminado correctamente.`,
+      })
+      window.setTimeout(() => setUsersSuccessMessage(''), 3000)
+    } catch (err) {
+      const message = err.message || 'No se pudo eliminar el usuario. Intentalo de nuevo.'
+      setUsersError(message)
+      await showError({
+        title: 'No se pudo eliminar',
+        text: message,
+      })
+    } finally {
+      setDeletingUsuarioId(null)
+    }
   }
 
   const actualizarFactura = async (idPedido, nuevoEstado) => {
@@ -407,6 +565,11 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange })
 
   const handleSaveChanges = async () => {
     if (!editingUsuario) return
+    if (isSuperAdminAccount(editingUsuario)) {
+      setUsersError('La cuenta super admin no se puede editar.')
+      handleCloseModal()
+      return
+    }
 
     setIsEditLoading(true)
     setUsersError('')
@@ -414,24 +577,22 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange })
 
     try {
       await updateUser(editingUsuario.idUsuario, {
-        nombre: editingUsuario.nombre,
-        email: editingUsuario.email,
-        rol: nuevoRol,
+        ...editingUsuarioForm,
       })
 
       setUsuarios((currentUsers) => (
         currentUsers.map((currentUser) => (
           currentUser.idUsuario === editingUsuario.idUsuario
-            ? { ...currentUser, rol: nuevoRol }
+            ? { ...currentUser, ...editingUsuarioForm }
             : currentUser
         ))
       ))
 
-      setUsersSuccessMessage(`Rol de ${editingUsuario.nombre} actualizado a ${nuevoRol}.`)
+      setUsersSuccessMessage(`Datos de ${editingUsuarioForm.nombre} actualizados correctamente.`)
       handleCloseModal()
       window.setTimeout(() => setUsersSuccessMessage(''), 3000)
-    } catch {
-      setUsersError('No se pudo actualizar el rol del usuario.')
+    } catch (err) {
+      setUsersError(err.message || 'No se pudo actualizar el usuario.')
     } finally {
       setIsEditLoading(false)
     }
@@ -453,21 +614,44 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange })
       return <p className="settings-empty-state">No se pudo cargar el perfil.</p>
     }
 
+    const isSuperAdminProfile = isSuperAdminAccount(profileData)
+
     return (
       <div className="settings-profile-grid">
-        <div className="settings-card settings-profile-card">
+        <div className={`settings-card settings-profile-card${isProfileEditing ? ' is-editing' : ''}`}>
           {profileError && <div className="alert alert-warning mb-3">{profileError}</div>}
+          {profileSuccessMessage && <div className="alert alert-success mb-3">{profileSuccessMessage}</div>}
+          {isSuperAdminProfile && (
+            <div className="alert alert-info mb-3">
+              Cuenta super admin protegida: no permite edicion ni eliminacion.
+            </div>
+          )}
 
-          <h2 className="settings-section-title">Perfil</h2>
+          <div className="settings-profile-head">
+            <h2 className="settings-section-title">Perfil</h2>
+            <div className="settings-profile-actions">
+              <button
+                type="button"
+                className="btn btn-outline-success"
+                onClick={() => setIsProfileEditing((isEditing) => !isEditing)}
+                disabled={isProfileSaving || isProfileDeleting || isSuperAdminProfile}
+              >
+                {isProfileEditing ? 'Cancelar edicion' : 'Editar datos'}
+              </button>
+              <button
+                type="button"
+                className="btn btn-outline-danger"
+                onClick={handleDeleteOwnAccount}
+                disabled={isProfileSaving || isProfileDeleting || isSuperAdminProfile}
+              >
+                {isProfileDeleting ? 'Eliminando...' : 'Eliminar cuenta'}
+              </button>
+            </div>
+          </div>
           <div className="settings-profile-fields">
             <div>
               <label>Rol</label>
               <span className={getRoleBadgeClass(profileData.rol)}>{getRoleText(profileData.rol)}</span>
-            </div>
-
-            <div>
-              <label>Id de usuario</label>
-              <span>{profileData.idUsuario}</span>
             </div>
 
             <div>
@@ -476,17 +660,82 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange })
             </div>
 
             <div>
+              <label>Primer apellido</label>
+              <span>{profileData.primerApellido || 'N/A'}</span>
+            </div>
+
+            <div>
+              <label>Segundo apellido</label>
+              <span>{profileData.segundoApellido || 'N/A'}</span>
+            </div>
+
+            <div>
               <label>Correo electrónico</label>
               <span>{profileData.email}</span>
             </div>
 
-            {profileData.fechaAlta && (
+            {(profileData.creadoEn || profileData.fechaAlta) && (
               <div>
                 <label>Miembro desde</label>
-                <span>{formatDate(profileData.fechaAlta)}</span>
+                <span>{formatDate(profileData.creadoEn || profileData.fechaAlta)}</span>
               </div>
             )}
           </div>
+
+          {isProfileEditing && (
+            <form className="settings-profile-form" onSubmit={handleSaveProfile}>
+              <div className="settings-profile-form-grid">
+                <label>
+                  Nombre
+                  <input
+                    className="form-control"
+                    value={profileFormData.nombre}
+                    onChange={(event) => handleProfileInputChange('nombre', event.target.value)}
+                    disabled={isProfileSaving}
+                    required
+                  />
+                </label>
+
+                <label>
+                  Primer apellido
+                  <input
+                    className="form-control"
+                    value={profileFormData.primerApellido}
+                    onChange={(event) => handleProfileInputChange('primerApellido', event.target.value)}
+                    disabled={isProfileSaving}
+                  />
+                </label>
+
+                <label>
+                  Segundo apellido
+                  <input
+                    className="form-control"
+                    value={profileFormData.segundoApellido}
+                    onChange={(event) => handleProfileInputChange('segundoApellido', event.target.value)}
+                    disabled={isProfileSaving}
+                  />
+                </label>
+
+                <label>
+                  Correo electronico
+                  <input
+                    className="form-control"
+                    type="email"
+                    value={profileFormData.email}
+                    onChange={(event) => handleProfileInputChange('email', event.target.value)}
+                    disabled={isProfileSaving}
+                    required
+                  />
+                </label>
+              </div>
+
+              <div className="settings-profile-form-actions">
+                <button type="submit" className="btn btn-success" disabled={isProfileSaving}>
+                  {isProfileSaving ? 'Guardando...' : 'Guardar cambios'}
+                </button>
+              </div>
+            </form>
+          )}
         </div>
       </div>
     )
@@ -526,7 +775,7 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange })
           <div className="settings-users-role-filter" role="group" aria-label="Filtrar por rol">
             {[
               { value: 'todos', label: 'Todos' },
-              { value: 'admin', label: 'Administradores' },
+              { value: 'admin', label: 'Admin' },
               { value: 'usuario', label: 'Usuarios' },
             ].map((option) => (
               <button
@@ -560,15 +809,23 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange })
                       className="btn btn-sm btn-outline-info"
                       onClick={() => handleViewClick(currentUser)}
                     >
-                      Ver detalle
+                      Detalle
                     </button>
                     <button
                       type="button"
                       className="btn btn-sm btn-outline-warning"
                       onClick={() => handleEditClick(currentUser)}
-                      disabled={currentUser.idUsuario === user.idUsuario}
+                      disabled={currentUser.idUsuario === user.idUsuario || isSuperAdminAccount(currentUser)}
                     >
                       Editar
+                    </button>
+                    <button
+                      type="button"
+                      className="btn btn-sm btn-outline-danger"
+                      onClick={() => handleDeleteUser(currentUser)}
+                      disabled={currentUser.idUsuario === user.idUsuario || isSuperAdminAccount(currentUser) || deletingUsuarioId === currentUser.idUsuario}
+                    >
+                      {deletingUsuarioId === currentUser.idUsuario ? 'Borrando...' : 'Borrar'}
                     </button>
                   </div>
                 </article>
@@ -584,7 +841,6 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange })
             <table className="table table-hover align-middle mb-0 settings-table">
               <thead>
                 <tr>
-                  <th>ID</th>
                   <th>Nombre</th>
                   <th>Email</th>
                   <th>Rol</th>
@@ -595,7 +851,6 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange })
                 {usuariosFiltrados.length > 0 ? (
                   usuariosFiltrados.map((currentUser) => (
                     <tr key={currentUser.idUsuario}>
-                      <td>{currentUser.idUsuario}</td>
                       <td>{currentUser.nombre}</td>
                       <td>{currentUser.email}</td>
                       <td>
@@ -608,15 +863,23 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange })
                             className="btn btn-sm btn-outline-info"
                             onClick={() => handleViewClick(currentUser)}
                           >
-                            Ver detalle
+                            Detalle
                           </button>
                         <button
                           type="button"
                           className="btn btn-sm btn-outline-warning"
                           onClick={() => handleEditClick(currentUser)}
-                          disabled={currentUser.idUsuario === user.idUsuario}
+                          disabled={currentUser.idUsuario === user.idUsuario || isSuperAdminAccount(currentUser)}
                         >
                           Editar
+                        </button>
+                        <button
+                          type="button"
+                          className="btn btn-sm btn-outline-danger"
+                          onClick={() => handleDeleteUser(currentUser)}
+                          disabled={currentUser.idUsuario === user.idUsuario || isSuperAdminAccount(currentUser) || deletingUsuarioId === currentUser.idUsuario}
+                        >
+                          {deletingUsuarioId === currentUser.idUsuario ? 'Borrando...' : 'Borrar'}
                         </button>
                         </div>
                       </td>
@@ -624,7 +887,7 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange })
                   ))
                 ) : (
                   <tr>
-                    <td colSpan="5" className="text-center py-4">No hay usuarios que coincidan con los filtros</td>
+                    <td colSpan="4" className="text-center py-4">No hay usuarios que coincidan con los filtros</td>
                   </tr>
                 )}
               </tbody>
@@ -668,6 +931,7 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange })
                 <option value="pendiente">Pendiente</option>
                 <option value="aceptado">Aceptada</option>
                 <option value="denegado">Rechazada</option>
+                <option value="cancelado">Cancelada</option>
               </select>
             </div>
             <div className="settings-billing-filter-field">
@@ -846,7 +1110,7 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange })
           </div>
         ) : (
           <>
-            <div className="table-responsive settings-table-wrap">
+            <div className="table-responsive settings-table-wrap settings-billing-history-desktop">
               <table className="table align-middle mb-0 settings-table">
                 <thead>
                   <tr>
@@ -899,6 +1163,49 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange })
                   ))}
                 </tbody>
               </table>
+            </div>
+
+            <div className="settings-billing-history-mobile" aria-label="Facturas recientes en tablet y movil">
+              {facturasAdminPaginadas.map((factura) => (
+                <article key={factura.idPedido} className="settings-billing-history-item">
+                  <div className="settings-billing-history-main">
+                    <div>
+                      <strong className="settings-billing-history-number">#{factura.idPedido}</strong>
+                      <p>{factura.nombre} {factura.primerApellido}</p>
+                      <small>{factura.email}</small>
+                    </div>
+                    <div className="settings-billing-history-total">
+                      <strong>{formatMoney(factura.total)}</strong>
+                      <span className={getStatusClass(factura.estado)}>{getStatusLabel(factura.estado)}</span>
+                    </div>
+                  </div>
+
+                  <div className="settings-billing-history-meta">
+                    <span>{formatDate(factura.fecha)}</span>
+                    <span>{factura.totalProductos ?? 0} productos</span>
+                    <span>{getPaymentLabel(factura.metodoPago)}</span>
+                  </div>
+
+                  <div className="settings-inline-actions settings-billing-history-actions">
+                    <button
+                      type="button"
+                      className="btn btn-sm btn-success"
+                      onClick={() => actualizarFactura(factura.idPedido, 'aceptado')}
+                      disabled={processingPedidoId === factura.idPedido || factura.estado !== 'pendiente'}
+                    >
+                      Aceptar
+                    </button>
+                    <button
+                      type="button"
+                      className="btn btn-sm btn-danger"
+                      onClick={() => actualizarFactura(factura.idPedido, 'denegado')}
+                      disabled={processingPedidoId === factura.idPedido || factura.estado !== 'pendiente'}
+                    >
+                      Denegar
+                    </button>
+                  </div>
+                </article>
+              ))}
             </div>
 
             <nav className="billing-pagination" aria-label="Paginación de facturas">
@@ -1092,7 +1399,7 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange })
           <div className="modal-dialog modal-dialog-centered">
             <div className="modal-content usuarios-modal-content">
               <div className="modal-header">
-                <h5 className="modal-title">Editar rol de usuario</h5>
+                <h5 className="modal-title">Editar usuario</h5>
                 <button
                   type="button"
                   className="btn-close"
@@ -1105,12 +1412,47 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange })
               <div className="modal-body">
                 <div className="mb-3">
                   <label className="form-label text-muted">Nombre:</label>
-                  <p className="mb-0 fw-bold">{editingUsuario.nombre}</p>
+                  <input
+                    className="form-control"
+                    value={editingUsuarioForm.nombre}
+                    onChange={(event) => handleAdminUserInputChange('nombre', event.target.value)}
+                    disabled={isEditLoading}
+                    required
+                  />
                 </div>
 
                 <div className="mb-3">
                   <label className="form-label text-muted">Correo electrónico:</label>
-                  <p className="mb-0">{editingUsuario.email}</p>
+                  <input
+                    className="form-control"
+                    type="email"
+                    value={editingUsuarioForm.email}
+                    onChange={(event) => handleAdminUserInputChange('email', event.target.value)}
+                    disabled={isEditLoading}
+                    required
+                  />
+                </div>
+
+                <div className="row g-3 mb-3">
+                  <div className="col-md-6">
+                    <label className="form-label text-muted">Primer apellido:</label>
+                    <input
+                      className="form-control"
+                      value={editingUsuarioForm.primerApellido}
+                      onChange={(event) => handleAdminUserInputChange('primerApellido', event.target.value)}
+                      disabled={isEditLoading}
+                    />
+                  </div>
+
+                  <div className="col-md-6">
+                    <label className="form-label text-muted">Segundo apellido:</label>
+                    <input
+                      className="form-control"
+                      value={editingUsuarioForm.segundoApellido}
+                      onChange={(event) => handleAdminUserInputChange('segundoApellido', event.target.value)}
+                      disabled={isEditLoading}
+                    />
+                  </div>
                 </div>
 
                 <div className="mb-4">
@@ -1120,12 +1462,12 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange })
                   <select
                     id="rolSelect"
                     className="form-select form-select-sm"
-                    value={nuevoRol}
-                    onChange={(event) => setNuevoRol(event.target.value)}
+                    value={editingUsuarioForm.rol}
+                    onChange={(event) => handleAdminUserInputChange('rol', event.target.value)}
                     disabled={isEditLoading}
                   >
                     <option value="usuario">Usuario</option>
-                    <option value="admin">Administrador</option>
+                    <option value="admin">ADMIN</option>
                   </select>
                 </div>
               </div>
@@ -1183,11 +1525,6 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange })
                     {detailError && <div className="alert alert-warning">{detailError}</div>}
 
                     <div className="settings-profile-fields" style={{ width: '100%' }}>
-                      <div>
-                        <label>ID de usuario</label>
-                        <span>{selectedUsuario.idUsuario}</span>
-                      </div>
-
                       <div>
                         <label>Nombre</label>
                         <span>{selectedUsuario.nombre}</span>
