@@ -46,6 +46,7 @@ function Navbar({
   const [searchValue, setSearchValue] = useState('')
   const [language, setLanguage] = useState('ES')
   const accountName = user?.nombre?.trim().split(/\s+/)[0] || 'Cuenta'
+  const mobileAccountName = accountName.length > 8 ? `${accountName.slice(0, 8)}.` : accountName
 
   const handleSearch = () => {
     const term = normalizeSearchTerm(searchValue)
@@ -218,7 +219,7 @@ function Navbar({
                   type="button"
                 >
                   <Icon name="user" size={18} />
-                  <span>{accountName}</span>
+                  <span>{mobileAccountName}</span>
                 </button>
                 {renderAccountMenu('mobileUserDropdown')}
               </li>
@@ -273,4 +274,3 @@ function Navbar({
 }
 
 export default Navbar
-
