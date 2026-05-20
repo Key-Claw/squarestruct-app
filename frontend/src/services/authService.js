@@ -4,7 +4,7 @@
  * Proporciona métodos auxiliares para verificar estado de autenticación y permisos.
  */
 
-import { postRequest, getRequest, putRequest } from './api'
+import { postRequest, getRequest, putRequest, deleteRequest } from './api'
 
 const TOKEN_KEY = 'authToken'
 const USER_KEY = 'currentUser'
@@ -58,6 +58,8 @@ const normalizarUsuario = (userData) => {
   return {
     ...userData,
     nombre: normalizarTexto(userData.nombre),
+    primerApellido: normalizarTexto(userData.primerApellido),
+    segundoApellido: normalizarTexto(userData.segundoApellido),
     email: normalizarTexto(userData.email),
     rol: normalizarTexto(userData.rol),
   }
@@ -244,7 +246,33 @@ export const getUserById = async (idUsuario) => {
  */
 export const updateUser = async (idUsuario, userData) => {
   try {
-    return await putRequest(`/usuarios/${idUsuario}`, userData)
+    const response = await putRequest(`/usuarios/${idUsuario}`, userData)
+    const updatedUser = response?.usuario ? normalizarUsuario(response.usuario) : null
+    const currentUser = getCurrentUser()
+
+    if (updatedUser && Number(currentUser?.idUsuario) === Number(updatedUser.idUsuario)) {
+      localStorage.setItem(USER_KEY, JSON.stringify(updatedUser))
+    }
+
+    return {
+      ...response,
+      usuario: updatedUser,
+    }
+  } catch (error) {
+    if (error instanceof Error) throw error
+    throw new Error(String(error), { cause: error })
+  }
+}
+
+/**
+ * Elimina una cuenta de usuario. Un admin puede borrar usuarios; un usuario solo su propia cuenta.
+ * @param {number} idUsuario - ID del usuario a eliminar.
+ * @returns {Promise<object>} Respuesta del servidor.
+ * @throws {Error} Si la peticiÃ³n falla.
+ */
+export const deleteUser = async (idUsuario) => {
+  try {
+    return await deleteRequest(`/usuarios/${idUsuario}`)
   } catch (error) {
     if (error instanceof Error) throw error
     throw new Error(String(error), { cause: error })
