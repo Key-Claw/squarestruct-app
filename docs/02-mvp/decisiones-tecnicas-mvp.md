@@ -25,7 +25,7 @@ Ventajas para el MVP:
 - El frontend puede consumir datos sin conocer MySQL.
 - El backend controla validaciones y seguridad.
 - Los endpoints se pueden probar con Postman.
-- La estructura es facil de entender en un proyecto de DAW1.
+- La estructura es facil de entender y mantener para una primera version funcional.
 
 Ejemplo:
 
@@ -122,7 +122,7 @@ Ademas, `pedidoDetalles` guarda:
 
 Guardar `precioUnitario` es importante porque conserva el precio del producto en el momento del pedido, aunque el precio del catalogo cambie mas adelante.
 
-En `MVP v1`, la base de datos y el backend ya preparan pedidos, y el frontend tiene un carrito visual y un servicio `orderService.js`. En la revision V2 el backend permite detalle de pedido y cancelacion logica. El checkout completo desde el carrito queda para fases siguientes.
+En `MVP v1`, la base de datos y el backend ya preparaban pedidos, y el frontend tenia un carrito visual. En V2 el checkout se conecta al backend mediante `Checkout.jsx` y `orderService.js`, creando pedidos reales desde el carrito.
 
 ## Por que los productos tienen dimensiones
 
@@ -168,7 +168,7 @@ En esta fase:
 - puede crear, actualizar y eliminar productos desde rutas protegidas de la API;
 - el acceso se protege con JWT y middleware de admin.
 
-No se considera todavia un panel administrativo completo. Vistas como facturacion funcionan como base visual y quedan pendientes de conexion total con datos reales.
+En la MVP no se consideraba todavia un panel administrativo completo. En V2 la gestion de usuarios y la facturacion admin ya usan datos reales, aunque la entidad `plano` y el disenador persistente siguen perteneciendo a una fase posterior.
 
 ## Por que documentar consultas SQL
 

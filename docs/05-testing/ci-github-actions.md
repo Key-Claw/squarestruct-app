@@ -1,113 +1,104 @@
-# Integracion continua con GitHub Actions
+# CI Con GitHub Actions
 
-## Objetivo
+El workflow principal esta en `.github/workflows/tests.yml`. Se ejecuta en `push` y `pull_request` contra `dev` y `main`.
 
-Este documento explica el workflow de integracion continua del proyecto.
+## Jobs
 
-La CI sirve para comprobar automaticamente que el backend y el frontend siguen funcionando antes de fusionar cambios en las ramas principales.
+| Job | Objetivo |
+| --- | --- |
+| `backend-tests` | Levanta MySQL, carga schema/seeds, instala backend y ejecuta Jest. |
+| `frontend-build` | Instala frontend, ejecuta Vitest, ESLint y build de Vite. |
 
-## Archivo del workflow
+## Version De Node
 
-El workflow esta definido en:
+El workflow usa:
 
-```text
-.github/workflows/tests.yml
+```yaml
+env:
+  NODE_VERSION: 20.19.0
 ```
 
-## Cuando se ejecuta
-
-El workflow se lanza automaticamente en:
-
-- `push` hacia `dev` o `main`;
-- `pull_request` hacia `dev` o `main`.
-
-## Jobs actuales
-
-| Job | Que comprueba |
-| --- | --- |
-| `backend-tests` | Levanta MySQL, carga schema/seeds y ejecuta los tests del backend. |
-| `frontend-build` | Ejecuta tests, lint y build del frontend React/Vite. |
+Esta version evita problemas con dependencias modernas del frontend que requieren Node reciente.
 
 ## Backend
 
-El job `backend-tests` usa un runner Linux limpio y levanta un servicio MySQL con la imagen:
+El job de backend usa MySQL como servicio temporal:
 
-```text
-mysql:8.4
+```yaml
+services:
+  mysql:
+    image: mysql:8.0
 ```
 
-Despues realiza estos pasos:
-
-1. Descarga el codigo del repositorio.
-2. Configura Node.js 20.
-3. Instala el cliente de MySQL en el runner.
-4. Espera a que MySQL este listo.
-5. Carga `backend/db/schema.sql`.
-6. Carga `backend/db/seeds.sql`.
-7. Instala las dependencias dentro de `backend/`.
-8. Ejecuta `npm test`.
-
-El script `npm test` ejecuta Jest con los tests unitarios e integracion disponibles.
-
-## Frontend
-
-El job `frontend-build` trabaja dentro de `frontend/` y realiza estos pasos:
-
-1. Descarga el codigo del repositorio.
-2. Configura Node.js 20.
-3. Instala las dependencias del frontend.
-4. Ejecuta `npm run test:run`.
-5. Ejecuta `npm run lint`.
-6. Ejecuta `npm run build`.
-
-`npm run test:run` ejecuta Vitest en modo no interactivo, adecuado para CI.
-
-`npm run lint` comprueba reglas basicas de calidad en JavaScript/React.
-
-`npm run build` comprueba que la aplicacion React puede compilarse correctamente con Vite.
-
-## Secrets necesarios
-
-El workflow usa variables guardadas como GitHub Secrets:
-
-| Secret | Uso |
-| --- | --- |
-| `DB_HOST` | Host de MySQL usado por el backend durante la CI. |
-| `DB_PORT` | Puerto de MySQL usado por el backend durante la CI. |
-| `DB_USER` | Usuario de MySQL. |
-| `DB_PASSWORD` | Password de MySQL. |
-| `DB_NAME` | Nombre de la base de datos. |
-| `JWT_SECRET` | Clave usada para firmar tokens durante los tests. |
-
-Para el entorno de CI, los valores habituales son:
+Variables del job:
 
 ```text
 DB_HOST=127.0.0.1
 DB_PORT=3306
-DB_USER=admin
-DB_NAME=squarestruct
+DB_USER=ci_user
+DB_PASSWORD=ci_password
+DB_NAME=squarestruct_test
+JWT_SECRET=ci_jwt_secret
+NODE_ENV=test
 ```
 
-`DB_PASSWORD` y `JWT_SECRET` deben configurarse en GitHub como secretos del repositorio.
+Pasos principales:
 
-## Resultado esperado
+1. checkout del repositorio;
+2. setup de Node;
+3. instalacion del cliente MySQL;
+4. espera hasta que MySQL responda;
+5. carga de `backend/db/schema.sql`;
+6. carga de `backend/db/seeds.sql`;
+7. `npm ci`;
+8. `npm test`.
 
-La pull request debe mostrar el estado del workflow en GitHub.
+## Frontend
 
-Para considerar correcta la CI:
+El job de frontend usa:
 
-- `backend-tests` debe terminar en verde;
-- `frontend-build` debe terminar en verde;
-- el estado debe aparecer en la pull request antes de fusionar.
+```text
+VITE_API_URL=http://localhost:3000/api
+```
 
-## Limitaciones actuales
+Pasos:
 
-La CI valida el backend con tests automatizados y el frontend con tests, lint y build.
+1. checkout;
+2. setup de Node;
+3. `npm install`;
+4. `npm run test:run`;
+5. `npm run lint`;
+6. `npm run build`.
 
-La base de tests frontend todavia es inicial. En local, la revision de frontend recomendada es:
+Se usa `npm install` en frontend porque el lock actual puede resolver dependencias opcionales nativas de Vite/Rolldown de forma distinta segun plataforma. El backend mantiene `npm ci` porque su lock es estable en CI.
+
+## Validacion Local Equivalente
+
+Backend:
 
 ```bash
+docker compose -f docker/docker-compose-dev.yml up -d
+cd backend
+npm test
+```
+
+Frontend:
+
+```bash
+cd frontend
 npm run test:run
 npm run lint
 npm run build
 ```
+
+## Fallos Habituales
+
+| Paso | Posible causa |
+| --- | --- |
+| Wait for MySQL | Servicio no listo, credenciales incorrectas o puerto ocupado. |
+| Load schema and seeds | SQL incompatible o datos duplicados. |
+| Backend tests | Endpoint, permisos, datos seed o `JWT_SECRET`. |
+| Frontend install | Dependencias/lock no sincronizados o dependencia opcional nativa. |
+| Frontend tests | Renderizado, rutas o mocks. |
+| Lint | Reglas ESLint incumplidas. |
+| Build | Error de import, asset, Vite o variable de entorno. |

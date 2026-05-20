@@ -1,6 +1,17 @@
 # Frontend SquareStruct
 
-Interfaz de SquareStruct App. Es un frontend academico de 1 DAW hecho con React, Vite, Bootstrap, React Router y CSS tradicional. La prioridad de la estructura es que sea facil de seguir, defender y mantener sin convertir el proyecto en una arquitectura demasiado grande.
+Frontend React/Vite de SquareStruct V2. Implementa la interfaz publica, catalogo, galeria, disenador visual provisional, autenticacion, carrito, checkout, area privada y paneles administrativos.
+
+## Stack
+
+- React 19
+- Vite 8
+- React Router DOM 7 con `HashRouter`
+- Bootstrap 5
+- SweetAlert2
+- Vitest + Testing Library
+- ESLint
+- CSS propio organizado por dominio
 
 ## Estructura
 
@@ -10,47 +21,30 @@ frontend/src/
   components/
     auth/                 Modal y formularios de login/registro
     catalog/              Filtros y tarjetas del catalogo
-    common/               Piezas reutilizables pequenas, como Icon
+    common/               Iconos reutilizables
     layout/               Navbar, footer y panel lateral del carrito
-    settings/             Componentes ligados a cuenta, perfil y checkout
-  data/                   Datos demo usados como fallback
+    settings/             Checkout y componentes ligados a cuenta
+  data/                   Productos demo como fallback
   pages/
-    auth/                 Login y Register tradicionales
-    settings/             Settings, Invoices y Users
-    *.jsx                 Home, Catalog, Gallery, Design y AboutUs
-  services/               Capa de comunicacion con la API
+    auth/                 Paginas legacy de Login y Register
+    settings/             Pantallas legacy/standalone de cuenta
+    *.jsx                 Home, Catalog, Gallery, Design, AboutUs
+  services/               api, authService, productService, orderService
   styles/
-    base/                 Variables, base visual y responsive global compartido
+    base/                 Variables, base visual y responsive global
     components/           CSS de componentes reutilizables
     layout/               Navbar y footer
-    pages/                CSS especifico de paginas
+    pages/                CSS especifico de pagina
   tests/                  Vitest + Testing Library
-  utils/                  Validadores y helpers
-  App.jsx                 Shell principal, rutas y overlays globales
+  utils/                  Validadores, alertas y normalizacion de texto
+  App.jsx                 Rutas, estado principal y overlays globales
   main.jsx                Entrada React/Vite
-  routes.js               Rutas y enlaces reutilizables
+  routes.js               Rutas, aliases y enlaces de navegacion
 ```
-
-## Organizacion CSS
-
-`App.css` es el indice de estilos. Los archivos reales viven en `src/styles/`.
-
-- `styles/layout/navbar.css`: toda la responsabilidad visual del navbar, incluyendo logo, acciones, buscador, menu y responsive propio.
-- `styles/layout/footer.css`: footer y beneficios inferiores.
-- `styles/pages/home.css`, `about.css`, `catalog.css`, `gallery.css`, `design.css`: estilos de cada pagina principal.
-- `styles/pages/auth/auth.css`: paginas tradicionales de login y registro.
-- `styles/pages/settings/settings.css`: ecosistema principal de Mi Cuenta. Incluye perfil, facturas de usuario, panel de facturacion admin y usuarios admin porque comparten layout y estado.
-- `styles/pages/settings/invoices.css`, `users.css`, `billing.css`: soporte para paginas standalone antiguas o secciones especificas.
-- `styles/components/*`: modales, carrito, checkout, profile panel y primitivas reutilizables.
-- `styles/base/responsive.css`: capa global compartida. Se mantiene solo para coordinacion visual transversal entre paginas y helpers responsive que afectan a varias areas a la vez.
-
-La regla de mantenimiento es sencilla: si una clase pertenece claramente a una pagina o componente, debe vivir en su archivo responsable. `responsive.css` no debe crecer con reglas especificas nuevas.
 
 ## Rutas
 
-La app usa `HashRouter` para que las rutas funcionen bien en despliegues estaticos.
-
-Rutas principales:
+La aplicacion usa `HashRouter` para funcionar en despliegues estaticos sin configurar fallback de servidor.
 
 ```text
 /#/
@@ -66,64 +60,96 @@ Rutas principales:
 /#/setings/plans
 ```
 
-Las rutas viven en `src/routes.js`. Se mantiene `/setings` por compatibilidad con el proyecto y `/settings` redirige al alias correcto.
+`/settings` existe como alias y redirige internamente a `/setings`, que se mantiene por compatibilidad con rutas ya usadas en el proyecto.
 
-## Auth y roles
+## Estado Global En App.jsx
 
-El modal principal de autenticacion esta en `components/auth/AuthModal.jsx` y reutiliza `LoginForm`, `RegisterForm` y `AuthErrorMessage`.
+`App.jsx` concentra estado transversal:
 
-La autenticacion se gestiona en `services/authService.js`:
+- usuario autenticado;
+- modal de login/registro;
+- carrito;
+- checkout;
+- busqueda inicial del catalogo;
+- seccion inicial del catalogo;
+- tab activa de Mi Cuenta.
 
-- guarda y lee el usuario actual;
-- maneja login, registro y logout;
-- valida expiracion del token;
-- expone helpers de rol como `isAdmin`.
+Los overlays globales (`AuthModal`, `CartPanel`, `Checkout`) viven fuera de las rutas para conservar su estado durante la navegacion.
 
-Las secciones admin de Mi Cuenta se protegen desde `App.jsx` y `Settings.jsx`. Si un usuario no admin intenta entrar en `billing` o `users`, vuelve a perfil.
+## Servicios
 
-## Servicios y backend
+| Archivo | Responsabilidad |
+| --- | --- |
+| `services/api.js` | Cliente `fetch`, URL base, headers JSON, JWT y manejo de errores. |
+| `services/authService.js` | Registro, login, logout, perfil, usuarios admin, expiracion del token y rol admin. |
+| `services/productService.js` | Carga de productos y busqueda local por nombre/descripcion. |
+| `services/orderService.js` | Checkout, pedidos, facturas de usuario y facturacion admin mediante `/orders`. |
 
-La capa API esta separada en `src/services/`:
-
-- `api.js`: cliente base para `GET`, `POST`, `PUT` y `DELETE`.
-- `authService.js`: autenticacion, perfil y usuarios.
-- `productService.js`: productos y filtrado local.
-- `orderService.js`: pedidos, facturas y cambios de estado.
-
-Por defecto Vite usa el proxy hacia el backend local. Si hace falta apuntar a otra API:
+La URL base se toma de:
 
 ```text
 VITE_API_URL=http://localhost:3000/api
 ```
 
-## Como trabajar en el frontend
+Si no existe, se usa `/api` y Vite lo redirige al backend local con el proxy de `vite.config.js`.
 
-1. Cambia componentes en su carpeta por responsabilidad.
-2. Cambia estilos en el CSS del componente o pagina correspondiente.
-3. No anadas reglas nuevas a `responsive.css` salvo que sean globales de verdad.
-4. Si tocas rutas, revisa `routes.js`, `App.jsx` y los links del navbar.
-5. Si tocas Mi Cuenta, revisa usuario normal y admin.
+## Funcionalidades Implementadas
+
+- Navbar responsive con navegacion, cuenta, carrito e idioma visual.
+- Autenticacion modal con login y registro.
+- Persistencia de JWT y usuario en `localStorage`.
+- Proteccion de tabs admin en frontend.
+- Catalogo conectado a backend con fallback a `productosDemo`.
+- Busqueda, filtros, ordenacion, paginacion y vista grid/lista.
+- Carrito lateral con cantidades, eliminacion y total.
+- Checkout con direccion, metodo de pago y creacion de pedido.
+- Facturas del usuario autenticado.
+- Facturacion admin con filtros, estadisticas, paginacion y acciones aceptar/denegar.
+- Gestion admin de usuarios con busqueda, filtro, detalle, edicion y eliminacion.
+- Galeria con filtros por material y modal de imagen.
+- Disenador visual provisional con paneles, herramientas y resumen simulado.
+- Alertas de confirmacion/error/exito con SweetAlert2.
+- Loaders, estados vacios y mensajes de error.
+
+## CSS
+
+`App.css` funciona como indice de estilos. Los archivos reales estan en `src/styles/`.
+
+- `styles/base/variables.css`: tokens visuales.
+- `styles/base/app-base.css`: base comun.
+- `styles/base/responsive.css`: reglas responsive compartidas entre varias paginas.
+- `styles/layout/navbar.css`: navbar.
+- `styles/layout/footer.css`: footer.
+- `styles/pages/*.css`: estilos de paginas.
+- `styles/components/*`: modales, checkout, carrito, profile panel y alertas.
+
+Regla de mantenimiento: si una clase pertenece claramente a una pagina o componente, debe vivir en su archivo responsable. `responsive.css` se reserva para ajustes transversales.
 
 ## Comandos
 
 ```bash
 npm install
 npm run dev
-npm run build
 npm run test:run
 npm run lint
+npm run build
 ```
 
-URL habitual:
+URL local:
 
 ```text
 http://localhost:5173
 ```
 
-## Decisiones defendibles
+## Tests
 
-- Se mantiene React + CSS tradicional para que el proyecto siga siendo realista para 1 DAW.
-- No se usan librerias nuevas de UI ni Tailwind.
-- Los componentes se agrupan por responsabilidad, no por patrones complejos.
-- `Settings.jsx` sigue siendo una pantalla central porque concentra estado compartido de Mi Cuenta; dividirla del todo ahora tendria mas riesgo que beneficio.
-- El responsive de tablet prioriza experiencia desktop cuando el ancho lo permite.
+Los tests actuales estan en `src/tests/` y usan Vitest + Testing Library. Cubren renderizado principal de la app, Home y Navbar. La cobertura puede ampliarse en componentes de flujo critico como checkout, catalogo y Settings.
+
+## Decisiones Tecnicas
+
+- `HashRouter` reduce problemas al refrescar rutas internas en hosting estatico.
+- Bootstrap se usa como apoyo de grid, botones, tablas, formularios y utilidades.
+- CSS propio mantiene la identidad visual sin introducir una libreria UI adicional.
+- SweetAlert2 se reserva para confirmaciones y feedback de acciones destructivas o relevantes.
+- El catalogo filtra en cliente porque V2 carga un volumen pequeno de productos desde `/api/productos`.
+- `Settings.jsx` concentra varias tabs porque comparten usuario, permisos, pedidos y estados administrativos.

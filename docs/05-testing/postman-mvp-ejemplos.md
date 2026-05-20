@@ -242,7 +242,7 @@ Con token de usuario normal, la respuesta esperada es:
 
 ## 7. Base de pedidos
 
-El backend tiene endpoints y tablas para pedidos. Esta prueba valida la base tecnica, aunque el checkout completo desde el carrito del frontend queda para fases siguientes.
+El backend tiene endpoints y tablas para pedidos. En V2 el checkout del frontend ya crea pedidos reales, por lo que estas pruebas sirven para validar el mismo flujo desde Postman.
 
 ```text
 Metodo: POST
