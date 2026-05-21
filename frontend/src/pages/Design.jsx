@@ -63,6 +63,7 @@ function Design({ onNavigate }) {
   const editor = useDesignEditor()
   const [activeUtilityPanel, setActiveUtilityPanel] = useState(null)
   const [isPanMode, setIsPanMode] = useState(false)
+  const activeLayerHeightLabel = `${Number(((editor.activeFloor + 1) * editor.layerHeightMeters).toFixed(1)).toString()} m`
 
   const toggleUtilityPanel = (panel) => {
     setActiveUtilityPanel((current) => (current === panel ? null : panel))
@@ -173,7 +174,7 @@ function Design({ onNavigate }) {
 
             <div className="design-drag-help">
               <span aria-hidden="true">+</span>
-              <div>
+              <div className="design-floor-controls">
                 <strong>Selecciona y coloca</strong>
                 <p>la edicion se realiza en la vista 2D</p>
               </div>
@@ -211,6 +212,7 @@ function Design({ onNavigate }) {
                 gridCellSizeMeters={editor.gridCellSizeMeters}
                 gridColumns={editor.gridColumns}
                 gridRows={editor.gridRows}
+                layerHeightMeters={editor.layerHeightMeters}
                 placements={editor.placements}
                 viewZoom={editor.viewZoom}
               />
@@ -279,25 +281,36 @@ function Design({ onNavigate }) {
               </button>
             </div>
 
-            <div className="design-floor-switch" aria-label="Cambiar planta">
-              <strong>Planta activa</strong>
-              <div>
+            <div className="design-floor-switch" aria-label="Cambiar capa">
+              <div className="design-layer-height" aria-label={`Altura actual ${activeLayerHeightLabel}`}>
+                <span className="design-layer-height-line" aria-hidden="true" />
+                <span>{activeLayerHeightLabel}</span>
+              </div>
+              <div className="design-floor-controls">
                 <button
                   type="button"
-                  aria-label="Bajar planta"
+                  aria-label="Bajar capa"
                   onClick={() => editor.setActiveFloor((current) => Math.max(0, current - 1))}
                 >
                   -
                 </button>
-                <button type="button" aria-label={`Planta activa ${editor.activeFloor}`}>
-                  P{editor.activeFloor}
+                <button type="button" aria-label={`Capa activa ${editor.activeFloor}`}>
+                  Capa {editor.activeFloor}
                 </button>
                 <button
                   type="button"
-                  aria-label="Subir planta"
+                  aria-label="Subir capa"
                   onClick={() => editor.setActiveFloor((current) => current + 1)}
                 >
                   +
+                </button>
+                <button
+                  type="button"
+                  aria-label="Volver a la capa cero"
+                  onClick={() => editor.setActiveFloor(0)}
+                  title="Volver a capa cero"
+                >
+                  <Icon name="grid" size={15} />
                 </button>
               </div>
             </div>

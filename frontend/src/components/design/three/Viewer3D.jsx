@@ -7,6 +7,7 @@ function Viewer3D({
   gridCellSizeMeters = 0.05,
   gridColumns = 12,
   gridRows = 10,
+  layerHeightMeters = 0.05,
   placements = [],
   viewZoom = 0.58,
 }) {
@@ -28,6 +29,7 @@ function Viewer3D({
           gridCellSizeMeters={gridCellSizeMeters}
           gridColumns={gridColumns}
           gridRows={gridRows}
+          layerHeightMeters={layerHeightMeters}
           placements={placements}
           viewZoom={viewZoom}
         />

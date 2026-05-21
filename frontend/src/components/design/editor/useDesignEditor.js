@@ -7,6 +7,7 @@ import {
   gridCellSizeMeters,
   gridColumns,
   gridRows,
+  layerHeightMeters,
   mapProductToDesignPiece,
 } from './designEditorData'
 
@@ -60,8 +61,24 @@ function placementsOverlap(a, b) {
   )
 }
 
-function findPlacementAtCell(placements, row, column, floor) {
-  return placements.find((placement) => placementCoversCell(placement, row, column, floor)) || null
+function getPieceLayerCount(piece) {
+  return Math.max(1, Math.ceil((piece?.heightMeters || layerHeightMeters) / layerHeightMeters))
+}
+
+function placementCoversLayer(placement, floor, pieceMap) {
+  const piece = pieceMap.get(placement.pieceId)
+  const layerCount = getPieceLayerCount(piece)
+
+  return floor >= placement.floor && floor < placement.floor + layerCount
+}
+
+function placementsOverlapInVolume(a, b, pieceMap) {
+  const aPiece = pieceMap.get(a.pieceId)
+  const bPiece = pieceMap.get(b.pieceId)
+  const aTop = a.floor + getPieceLayerCount(aPiece)
+  const bTop = b.floor + getPieceLayerCount(bPiece)
+
+  return placementsOverlap(a, b) && a.floor < bTop && aTop > b.floor
 }
 
 function isStructuralPlacement(placement, pieceMap) {
@@ -76,17 +93,23 @@ function hasLowerFloorSupport(placements, candidate, pieceMap) {
   }
 
   return placements.some((placement) => (
-    placement.floor === candidate.floor - 1
-    && isStructuralPlacement(placement, pieceMap)
+    isStructuralPlacement(placement, pieceMap)
+    && placement.floor + getPieceLayerCount(pieceMap.get(placement.pieceId)) === candidate.floor
     && placementsOverlap(placement, candidate)
   ))
 }
 
 function hasLateralSupport(placements, candidate, pieceMap) {
   return placements.some((placement) => {
-    if (placement.floor !== candidate.floor || !isStructuralPlacement(placement, pieceMap)) {
+    if (!isStructuralPlacement(placement, pieceMap)) {
       return false
     }
+
+    const candidateTop = candidate.floor + getPieceLayerCount(pieceMap.get(candidate.pieceId))
+    const placementTop = placement.floor + getPieceLayerCount(pieceMap.get(placement.pieceId))
+    const overlapsVertically = placement.floor < candidateTop && placementTop > candidate.floor
+
+    if (!overlapsVertically) return false
 
     const touchesHorizontalSide = (
       placement.column + placement.width === candidate.column
@@ -127,7 +150,7 @@ function validatePlacement(placements, candidate, designPieces) {
   }
 
   const hasCollision = placements.some((placement) => (
-    placement.floor === candidate.floor && placementsOverlap(placement, candidate)
+    placementsOverlapInVolume(placement, candidate, pieceMap)
   ))
 
   if (hasCollision) {
@@ -164,6 +187,7 @@ function buildStats(placements, designPieces) {
   const summaryMap = new Map()
   let occupiedCells = 0
   let materialsSubtotal = 0
+  let maxLayerTop = 0
   let totalPieces = 0
 
   placements.forEach((placement) => {
@@ -174,6 +198,7 @@ function buildStats(placements, designPieces) {
     totalPieces += 1
     occupiedCells += placement.width * placement.height
     materialsSubtotal += piece.price
+    maxLayerTop = Math.max(maxLayerTop, placement.floor + getPieceLayerCount(piece))
 
     const key = piece.id
     const current = summaryMap.get(key) || {
@@ -191,7 +216,7 @@ function buildStats(placements, designPieces) {
     items: Array.from(summaryMap.values()),
     totalPieces,
     totalArea: (occupiedCells * gridCellSizeMeters * gridCellSizeMeters).toFixed(2),
-    wallHeight: placements.length > 0 ? '2.40 m' : '0.00 m',
+    wallHeight: `${(maxLayerTop * layerHeightMeters).toFixed(2)} m`,
     estimatedTotal: materialsSubtotal * 1.08,
   }
 }
@@ -310,15 +335,26 @@ function useDesignEditor() {
     }
 
     setPlacements((current) => [...current, candidate])
-    setStatusMessage(`${selectedPiece.name} colocado en la planta ${activeFloor}.`)
+    setStatusMessage(`${selectedPiece.name} colocado desde la capa ${activeFloor}.`)
   }
 
   const removePiece = (row, column) => {
-    const placement = findPlacementAtCell(placements, row, column, activeFloor)
+    const pieceMap = new Map(designPieces.map((piece) => [piece.id, piece]))
+    const placement = placements.find((item) => (
+      placementCoversLayer(item, activeFloor, pieceMap)
+      && placementCoversCell(item, row, column, item.floor)
+    )) || null
     if (!placement) return
 
     setPlacements((current) => current.filter((item) => item.id !== placement.id))
     setStatusMessage('Pieza eliminada del plano.')
+  }
+
+  const jumpToSelectedPieceHeight = () => {
+    const layerCount = getPieceLayerCount(selectedPiece)
+
+    setActiveFloor((current) => current + layerCount)
+    setStatusMessage(`Capa ajustada +${layerCount} (${Math.round(layerCount * layerHeightMeters * 100)} cm).`)
   }
 
   const clearProject = () => {
@@ -418,6 +454,8 @@ function useDesignEditor() {
     gridColumns,
     gridCellSizeMeters,
     gridRows,
+    jumpToSelectedPieceHeight,
+    layerHeightMeters,
     isLoadingPieces,
     isFlipped,
     isRotated,

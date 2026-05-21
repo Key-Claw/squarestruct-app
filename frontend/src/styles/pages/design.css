@@ -2305,38 +2305,74 @@ button.design-piece-card {
   }
 }
 
-/* Selector de plantas siempre visible en el plano 2D. */
+/* Selector de capas siempre visible en el plano 2D. */
 .design-floor-switch {
   left: 24px;
   right: auto;
   top: auto;
   bottom: 24px;
   z-index: 4;
-  display: grid !important;
-  gap: 10px;
-  min-width: 218px;
-  border: 1px solid rgba(23, 63, 95, 0.1);
-  border-radius: 14px;
-  background: rgba(255, 255, 255, 0.86);
-  padding: 12px 16px;
-  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
-  backdrop-filter: blur(14px);
+  display: block !important;
+  min-width: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  padding: 0;
+  box-shadow: none;
+  backdrop-filter: none;
   transform: none;
 }
 
-.design-floor-switch strong {
+.design-layer-height {
+  position: absolute;
+  left: 115px;
+  bottom: calc(100% + 12px);
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  min-width: 96px;
   color: #102736;
-  font-size: 0.72rem;
+  font-size: 1.18rem;
   font-weight: 850;
-  letter-spacing: 0.04em;
   line-height: 1;
-  text-align: center;
-  text-transform: uppercase;
+  pointer-events: none;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.72);
+  transform: translateX(-50%);
 }
 
-.design-floor-switch > div {
+.design-layer-height-line {
+  position: relative;
+  display: block;
+  width: 20px;
+  height: 54px;
+  border-left: 1px solid rgba(23, 63, 95, 0.58);
+}
+
+.design-layer-height-line::before,
+.design-layer-height-line::after {
+  content: "";
+  position: absolute;
+  left: -10px;
+  width: 20px;
+  height: 1px;
+  background: rgba(23, 63, 95, 0.48);
+}
+
+.design-layer-height-line::before {
+  top: 0;
+}
+
+.design-layer-height-line::after {
+  bottom: 0;
+}
+
+.design-layer-height span {
+  display: block;
+}
+
+.design-floor-controls {
   display: grid;
-  grid-template-columns: 40px 1fr 40px;
+  grid-template-columns: 40px minmax(88px, auto) 40px 40px;
   gap: 8px;
 }
 
@@ -2362,8 +2398,19 @@ button.design-piece-card {
     right: auto;
     bottom: 82px;
     left: 14px;
-    min-width: min(218px, calc(100% - 96px));
-    padding: 10px 12px;
+    min-width: 0;
+    padding: 0;
+  }
+
+  .design-layer-height {
+    left: 115px;
+    bottom: calc(100% + 10px);
+    gap: 8px;
+    font-size: 1.04rem;
+  }
+
+  .design-layer-height-line {
+    height: 46px;
   }
 }
 

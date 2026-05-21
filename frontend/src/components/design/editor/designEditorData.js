@@ -5,6 +5,7 @@ export const designCategories = {
 }
 
 export const gridCellSizeMeters = 0.05
+export const layerHeightMeters = 0.1
 export const gridColumns = 300
 export const gridRows = 300
 

@@ -7,12 +7,14 @@ function formatMeters(value) {
   return `${Number(value.toFixed(1)).toString()} m`
 }
 
-function DimensionGuides({ depth, width }) {
+function DimensionGuides({ depth, height = 0, width }) {
   const offset = 0.72
   const halfWidth = width / 2
   const halfDepth = depth / 2
   const xGuideZ = halfDepth + offset
   const zGuideX = halfWidth + offset
+  const heightGuideX = -halfWidth - offset
+  const heightGuideZ = -halfDepth - offset
 
   return (
     <group>
@@ -43,6 +45,24 @@ function DimensionGuides({ depth, width }) {
       >
         {formatMeters(depth)}
       </Text>
+
+      {height > 0 && (
+        <>
+          <Line color={guideColor} lineWidth={1} points={[[heightGuideX, 0, heightGuideZ], [heightGuideX, height, heightGuideZ]]} transparent opacity={0.55} />
+          <Line color={guideColor} lineWidth={1} points={[[heightGuideX - 0.14, 0, heightGuideZ], [heightGuideX + 0.14, 0, heightGuideZ]]} transparent opacity={0.45} />
+          <Line color={guideColor} lineWidth={1} points={[[heightGuideX - 0.14, height, heightGuideZ], [heightGuideX + 0.14, height, heightGuideZ]]} transparent opacity={0.45} />
+          <Text
+            anchorX="center"
+            anchorY="middle"
+            color={guideColor}
+            fontSize={0.22}
+            position={[heightGuideX - 0.2, height / 2, heightGuideZ]}
+            rotation={[0, -Math.PI / 2, 0]}
+          >
+            {formatMeters(height)}
+          </Text>
+        </>
+      )}
     </group>
   )
 }

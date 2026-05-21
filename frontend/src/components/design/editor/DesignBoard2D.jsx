@@ -20,6 +20,16 @@ function getPlacementLabel(piece) {
   return initials || 'PZ'
 }
 
+function getPieceLayerCount(piece, gridCellSizeMeters) {
+  return Math.max(1, Math.ceil((piece?.heightMeters || gridCellSizeMeters) / gridCellSizeMeters))
+}
+
+function placementCoversLayer(placement, piece, activeFloor, gridCellSizeMeters) {
+  const layerCount = getPieceLayerCount(piece, gridCellSizeMeters)
+
+  return activeFloor >= placement.floor && activeFloor < placement.floor + layerCount
+}
+
 function DesignBoard2D({
   activeFloor,
   boardOffset,
@@ -50,13 +60,17 @@ function DesignBoard2D({
   }
 
   const hasPlacementAtCell = (row, column) => (
-    placements.some((placement) => (
-      placement.floor === activeFloor
-      && row >= placement.row
-      && row < placement.row + placement.height
-      && column >= placement.column
-      && column < placement.column + placement.width
-    ))
+    placements.some((placement) => {
+      const piece = designPieces.find((item) => item.id === placement.pieceId)
+
+      return (
+        placementCoversLayer(placement, piece, activeFloor, gridCellSizeMeters)
+        && row >= placement.row
+        && row < placement.row + placement.height
+        && column >= placement.column
+        && column < placement.column + placement.width
+      )
+    })
   )
 
   const handleBoardClick = (event) => {
@@ -172,7 +186,7 @@ function DesignBoard2D({
       <div
         className="design-board-grid"
         role="grid"
-        aria-label={`Plano 2D editable de la planta ${activeFloor}. ${gridColumns * gridCellSizeMeters} por ${gridRows * gridCellSizeMeters} metros.`}
+        aria-label={`Plano 2D editable de la capa ${activeFloor}. ${gridColumns * gridCellSizeMeters} por ${gridRows * gridCellSizeMeters} metros.`}
         onClick={handleBoardClick}
         onContextMenu={handleBoardContextMenu}
         onPointerDown={handlePointerDown}
@@ -191,9 +205,15 @@ function DesignBoard2D({
       >
         {activeFloor > 0 && (
           <div className="design-lower-floor-overlay" aria-hidden="true">
-            {placements.filter((placement) => placement.floor < activeFloor).map((placement) => {
+            {placements.filter((placement) => {
               const piece = designPieces.find((item) => item.id === placement.pieceId)
-              const floorDistance = activeFloor - placement.floor
+              const topLayer = placement.floor + getPieceLayerCount(piece, gridCellSizeMeters)
+
+              return topLayer <= activeFloor
+            }).map((placement) => {
+              const piece = designPieces.find((item) => item.id === placement.pieceId)
+              const topLayer = placement.floor + getPieceLayerCount(piece, gridCellSizeMeters)
+              const floorDistance = activeFloor - topLayer + 1
 
               return (
                 <div
@@ -214,7 +234,11 @@ function DesignBoard2D({
         )}
 
         <div className="design-placements-overlay" aria-hidden="true">
-          {placements.filter((placement) => placement.floor === activeFloor).map((placement) => {
+          {placements.filter((placement) => {
+            const piece = designPieces.find((item) => item.id === placement.pieceId)
+
+            return placementCoversLayer(placement, piece, activeFloor, gridCellSizeMeters)
+          }).map((placement) => {
             const piece = designPieces.find((item) => item.id === placement.pieceId)
             const labelFit = Math.min(1.9, Math.max(0.58, Math.min(placement.width / 24, placement.height / 10)))
 
