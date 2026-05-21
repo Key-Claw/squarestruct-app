@@ -1,9 +1,17 @@
 import { Canvas } from '@react-three/fiber'
 import Scene from './scene/Scene'
 
-function Viewer3D({ designPieces = [], gridColumns = 12, gridRows = 10, placements = [], viewZoom = 0.58 }) {
+function Viewer3D({
+  activeFloor = 0,
+  designPieces = [],
+  gridCellSizeMeters = 0.05,
+  gridColumns = 12,
+  gridRows = 10,
+  placements = [],
+  viewZoom = 0.58,
+}) {
   const gridMax = Math.max(gridColumns, gridRows)
-  const baseDistance = Math.max(22, gridMax * 0.05 * 1.15)
+  const baseDistance = Math.max(22, gridMax * gridCellSizeMeters * 1.15)
   const distance = baseDistance / viewZoom
 
   return (
@@ -15,18 +23,15 @@ function Viewer3D({ designPieces = [], gridColumns = 12, gridRows = 10, placemen
         gl={{ antialias: true, alpha: false }}
       >
         <Scene
+          activeFloor={activeFloor}
           designPieces={designPieces}
+          gridCellSizeMeters={gridCellSizeMeters}
           gridColumns={gridColumns}
           gridRows={gridRows}
           placements={placements}
           viewZoom={viewZoom}
         />
       </Canvas>
-
-      <div className="design-three-caption" aria-hidden="true">
-        <span>Plano modular 3D</span>
-        <strong>Vista interactiva</strong>
-      </div>
     </div>
   )
 }

@@ -1,12 +1,89 @@
 import { Edges } from '@react-three/drei'
 
-function ModularBlock({ block }) {
+function OpeningMarker({ block }) {
+  const [width, height, depth] = block.size
+  const frameThickness = 0.035
+  const includeBottomFrame = block.modelType === 'window'
+
+  return (
+    <group position={block.position}>
+      <mesh position={[-width / 2 + frameThickness / 2, 0, 0]} castShadow>
+        <boxGeometry args={[frameThickness, height, Math.max(depth, 0.035)]} />
+        <meshStandardMaterial color={block.color} roughness={0.78} metalness={0.02} transparent opacity={block.opacity} />
+      </mesh>
+      <mesh position={[width / 2 - frameThickness / 2, 0, 0]} castShadow>
+        <boxGeometry args={[frameThickness, height, Math.max(depth, 0.035)]} />
+        <meshStandardMaterial color={block.color} roughness={0.78} metalness={0.02} transparent opacity={block.opacity} />
+      </mesh>
+      <mesh position={[0, height / 2 - frameThickness / 2, 0]} castShadow>
+        <boxGeometry args={[width, frameThickness, Math.max(depth, 0.035)]} />
+        <meshStandardMaterial color={block.color} roughness={0.78} metalness={0.02} transparent opacity={block.opacity} />
+      </mesh>
+      {includeBottomFrame && (
+        <mesh position={[0, -height / 2 + frameThickness / 2, 0]} castShadow>
+          <boxGeometry args={[width, frameThickness, Math.max(depth, 0.035)]} />
+          <meshStandardMaterial color={block.color} roughness={0.78} metalness={0.02} transparent opacity={block.opacity} />
+        </mesh>
+      )}
+    </group>
+  )
+}
+
+function StairsMarker({ block }) {
+  const [width, height, depth] = block.size
+  const steps = 6
+  const stepDepth = depth / steps
+  const stepHeight = height / steps
+
+  return (
+    <group position={block.position}>
+      {Array.from({ length: steps }, (_, index) => {
+        const currentHeight = stepHeight * (index + 1)
+        const z = -depth / 2 + stepDepth * index + stepDepth / 2
+
+        return (
+          <mesh key={`step-${index}`} position={[0, -height / 2 + currentHeight / 2, z]} castShadow receiveShadow>
+            <boxGeometry args={[width, currentHeight, stepDepth]} />
+            <meshStandardMaterial color={block.color} roughness={0.86} metalness={0.01} transparent opacity={Math.min(block.opacity, 0.62)} />
+            <Edges color="#102736" transparent opacity={0.18} />
+          </mesh>
+        )
+      })}
+    </group>
+  )
+}
+
+function ReferenceMarker({ block }) {
   return (
     <group position={block.position}>
       <mesh castShadow receiveShadow>
         <boxGeometry args={block.size} />
-        <meshStandardMaterial color={block.color} roughness={0.64} metalness={0.04} />
-        <Edges color="#ffffff" transparent opacity={0.26} />
+        <meshStandardMaterial color={block.color} roughness={0.86} metalness={0.01} transparent opacity={Math.min(block.opacity, 0.48)} />
+        <Edges color="#102736" transparent opacity={0.18} />
+      </mesh>
+    </group>
+  )
+}
+
+function ModularBlock({ block }) {
+  if (block.role === 'opening') {
+    return <OpeningMarker block={block} />
+  }
+
+  if (block.modelType === 'stairs') {
+    return <StairsMarker block={block} />
+  }
+
+  if (block.role !== 'structure') {
+    return <ReferenceMarker block={block} />
+  }
+
+  return (
+    <group position={block.position}>
+      <mesh castShadow receiveShadow>
+        <boxGeometry args={block.size} />
+        <meshStandardMaterial color={block.color} roughness={0.88} metalness={0.01} transparent opacity={block.opacity} />
+        <Edges color="#102736" transparent opacity={block.opacity > 0.5 ? 0.28 : 0.14} />
       </mesh>
     </group>
   )
