@@ -18,6 +18,7 @@ jobs:
   backend-tests:
     # GitHub Actions ejecuta el job en un runner Linux limpio.
     runs-on: ubuntu-latest
+    timeout-minutes: 15
 
     # Servicio de base de datos necesario para los tests de integracion.
     services:
@@ -94,6 +95,7 @@ jobs:
 
       # Ejecuta Jest con el script definido en package.json.
       - name: Run backend tests
+        timeout-minutes: 5
         run: npm test
 
   # Este segundo job se ejecuta en paralelo al primero, tambien en un runner Linux limpio.
