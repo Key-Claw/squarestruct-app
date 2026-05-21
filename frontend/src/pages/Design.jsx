@@ -65,28 +65,36 @@ const layerHeightFormatter = new Intl.NumberFormat('es-ES', {
 })
 
 const FLOOR_HOLD_REPEAT_MS = 175
+const HOLD_REPEAT_DELAY_MS = 250
 
-function usePressAndHoldAction(action) {
+function usePressAndHoldAction(action, { delayMs = 0, repeatMs = FLOOR_HOLD_REPEAT_MS, fireImmediately = true } = {}) {
   const actionRef = useRef(action)
   const repeatTimerRef = useRef(null)
-  const ignoreNextClickRef = useRef(false)
+  const delayTimerRef = useRef(null)
+  const suppressNextClickRef = useRef(false)
+  const holdActivatedRef = useRef(false)
 
   useEffect(() => {
     actionRef.current = action
   }, [action])
 
   const stopRepeating = useCallback(() => {
+    if (delayTimerRef.current) {
+      window.clearTimeout(delayTimerRef.current)
+      delayTimerRef.current = null
+    }
+
     if (repeatTimerRef.current) {
       window.clearInterval(repeatTimerRef.current)
       repeatTimerRef.current = null
     }
-
-    window.setTimeout(() => {
-      ignoreNextClickRef.current = false
-    }, 0)
   }, [])
 
   useEffect(() => () => {
+    if (delayTimerRef.current) {
+      window.clearTimeout(delayTimerRef.current)
+    }
+
     if (repeatTimerRef.current) {
       window.clearInterval(repeatTimerRef.current)
     }
@@ -106,20 +114,45 @@ function usePressAndHoldAction(action) {
     if (event.button !== 0) return
 
     event.preventDefault()
-    ignoreNextClickRef.current = true
-    actionRef.current()
+    suppressNextClickRef.current = fireImmediately
+    holdActivatedRef.current = false
 
     if (repeatTimerRef.current) {
       window.clearInterval(repeatTimerRef.current)
+      repeatTimerRef.current = null
     }
 
-    repeatTimerRef.current = window.setInterval(() => {
+    if (delayTimerRef.current) {
+      window.clearTimeout(delayTimerRef.current)
+    }
+
+    if (fireImmediately) {
       actionRef.current()
-    }, FLOOR_HOLD_REPEAT_MS)
-  }, [])
+    }
+
+    delayTimerRef.current = window.setTimeout(() => {
+      holdActivatedRef.current = true
+      if (!fireImmediately) {
+        actionRef.current()
+      }
+
+      repeatTimerRef.current = window.setInterval(() => {
+        actionRef.current()
+      }, repeatMs)
+    }, delayMs)
+  }, [delayMs, fireImmediately, repeatMs])
 
   const handleClick = useCallback(() => {
-    if (ignoreNextClickRef.current) return
+    if (suppressNextClickRef.current) {
+      suppressNextClickRef.current = false
+      return
+    }
+
+    if (holdActivatedRef.current) {
+      holdActivatedRef.current = false
+      return
+    }
+
     actionRef.current()
   }, [])
 
@@ -146,6 +179,52 @@ function Design({ onNavigate }) {
   const floorUpHandlers = usePressAndHoldAction(() => {
     editor.setActiveFloor((current) => current + 1)
   })
+  const undoHandlers = usePressAndHoldAction(editor.undo, {
+    delayMs: HOLD_REPEAT_DELAY_MS,
+    fireImmediately: false,
+  })
+  const redoHandlers = usePressAndHoldAction(editor.redo, {
+    delayMs: HOLD_REPEAT_DELAY_MS,
+    fireImmediately: false,
+  })
+
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      const target = event.target
+      const isTypingField = target instanceof HTMLElement && (
+        target.tagName === 'INPUT'
+        || target.tagName === 'TEXTAREA'
+        || target.tagName === 'SELECT'
+        || target.isContentEditable
+      )
+
+      if (isTypingField) return
+
+      const hasUndoShortcut = (event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'z'
+      const hasRedoShortcut = (event.ctrlKey || event.metaKey) && (event.key.toLowerCase() === 'y' || (event.shiftKey && event.key.toLowerCase() === 'z'))
+
+      if (hasUndoShortcut) {
+        event.preventDefault()
+        if (event.shiftKey) {
+          editor.redo()
+        } else {
+          editor.undo()
+        }
+        return
+      }
+
+      if (hasRedoShortcut) {
+        event.preventDefault()
+        editor.redo()
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [editor])
 
   const toggleUtilityPanel = (panel) => {
     setActiveUtilityPanel((current) => (current === panel ? null : panel))
@@ -347,6 +426,24 @@ function Design({ onNavigate }) {
               >
                 <Icon name="rotate" size={16} />
               </button>
+              <button
+                type="button"
+                aria-label="Deshacer cambio"
+                disabled={!editor.canUndo}
+                {...undoHandlers}
+                title="Deshacer"
+              >
+                <Icon name="undo" size={16} />
+              </button>
+              <button
+                type="button"
+                aria-label="Rehacer cambio"
+                disabled={!editor.canRedo}
+                {...redoHandlers}
+                title="Rehacer"
+              >
+                <Icon name="redo" size={16} />
+              </button>
               {editor.viewMode === '3d' && (
                 <button
                   type="button"
@@ -394,7 +491,7 @@ function Design({ onNavigate }) {
                 >
                   &lt;
                 </button>
-                <button type="button" aria-label={`Capa activa ${editor.activeFloor}`}>
+                <button type="button" className="design-floor-label" aria-label={`Capa activa ${editor.activeFloor}`}>
                   Capa {editor.activeFloor}
                 </button>
                 <button

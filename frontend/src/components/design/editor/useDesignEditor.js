@@ -99,6 +99,30 @@ function placementsOverlapInVolume(a, b, pieceMap) {
   return placementsOverlap(a, b) && a.floor < bTop && aTop > b.floor
 }
 
+function clonePlacements(placements) {
+  return placements.map((placement) => ({ ...placement }))
+}
+
+function placementSignature(placement) {
+  return [
+    placement.id,
+    placement.pieceId,
+    placement.row,
+    placement.column,
+    placement.width,
+    placement.height,
+    placement.floor,
+    placement.flipped ? 1 : 0,
+    placement.rotated ? 1 : 0,
+  ].join('|')
+}
+
+function arePlacementsEqual(a, b) {
+  if (a.length !== b.length) return false
+
+  return a.every((placement, index) => placementSignature(placement) === placementSignature(b[index]))
+}
+
 function isStructuralPlacement(placement, pieceMap) {
   const piece = pieceMap.get(placement.pieceId)
 
@@ -257,6 +281,27 @@ function validatePlacement(placements, candidate, designPieces) {
   return { ok: true, message: '' }
 }
 
+function pruneUnsupportedPlacements(placements, designPieces) {
+  let nextPlacements = [...placements]
+  let removedAny = false
+
+  do {
+    removedAny = false
+
+    nextPlacements = nextPlacements.filter((placement) => {
+      const placementsWithoutCurrent = nextPlacements.filter((item) => item.id !== placement.id)
+      const validation = validatePlacement(placementsWithoutCurrent, placement, designPieces)
+
+      if (validation.ok) return true
+
+      removedAny = true
+      return false
+    })
+  } while (removedAny)
+
+  return nextPlacements
+}
+
 function loadDraft() {
   if (typeof window === 'undefined') return null
 
@@ -329,11 +374,25 @@ function useDesignEditor() {
   const [boardOffset, setBoardOffset] = useState({ x: 0, y: 0 })
   const [isRotated, setIsRotated] = useState(false)
   const [isFlipped, setIsFlipped] = useState(draft?.isFlipped || false)
+  const [undoStack, setUndoStack] = useState([])
+  const [redoStack, setRedoStack] = useState([])
   const [statusMessage, setStatusMessage] = useState('Selecciona una pieza y colocala en el plano 2D.')
 
-  const commitPlacements = (nextPlacements) => {
+  const commitPlacements = (nextPlacements, { recordHistory = true } = {}) => {
+    const currentPlacements = placementsRef.current
+
+    if (arePlacementsEqual(currentPlacements, nextPlacements)) {
+      return false
+    }
+
+    if (recordHistory) {
+      setUndoStack((current) => [...current, clonePlacements(currentPlacements)])
+      setRedoStack([])
+    }
+
     placementsRef.current = nextPlacements
     setPlacementsState(nextPlacements)
+    return true
   }
 
   useEffect(() => {
@@ -456,8 +515,18 @@ function useDesignEditor() {
     )) || null
     if (!placement) return false
 
-    commitPlacements(currentPlacements.filter((item) => item.id !== placement.id))
-    if (!silentSuccess) setStatusMessage('Pieza eliminada del plano.')
+    const remainingPlacements = currentPlacements.filter((item) => item.id !== placement.id)
+    const prunedPlacements = pruneUnsupportedPlacements(remainingPlacements, designPieces)
+    const removedCount = remainingPlacements.length - prunedPlacements.length
+
+    commitPlacements(prunedPlacements)
+    if (!silentSuccess) {
+      setStatusMessage(
+        removedCount > 0
+          ? 'Pieza eliminada junto con las piezas que dependian de ella.'
+          : 'Pieza eliminada del plano.',
+      )
+    }
     return true
   }
 
@@ -500,6 +569,32 @@ function useDesignEditor() {
     setIsFlipped(Boolean(savedDraft.isFlipped))
     commitPlacements(savedDraft.placements)
     setStatusMessage('Borrador cargado correctamente.')
+  }
+
+  const undo = () => {
+    if (!undoStack.length) return false
+
+    const previousPlacements = undoStack[undoStack.length - 1]
+    const currentPlacements = clonePlacements(placementsRef.current)
+
+    setUndoStack((current) => current.slice(0, -1))
+    setRedoStack((current) => [...current, currentPlacements])
+    commitPlacements(previousPlacements, { recordHistory: false })
+    setStatusMessage('Deshecho el ultimo cambio.')
+    return true
+  }
+
+  const redo = () => {
+    if (!redoStack.length) return false
+
+    const nextPlacements = redoStack[redoStack.length - 1]
+    const currentPlacements = clonePlacements(placementsRef.current)
+
+    setRedoStack((current) => current.slice(0, -1))
+    setUndoStack((current) => [...current, currentPlacements])
+    commitPlacements(nextPlacements, { recordHistory: false })
+    setStatusMessage('Rehecho el ultimo cambio.')
+    return true
   }
 
   const exportProject = () => {
@@ -595,6 +690,9 @@ function useDesignEditor() {
     selectCategory,
     selectedPiece,
     selectedPieceId,
+    canRedo: redoStack.length > 0,
+    canUndo: undoStack.length > 0,
+    redo,
     setActiveFloor,
     setIs3DGridVisible,
     setIsFlipped,
@@ -603,6 +701,7 @@ function useDesignEditor() {
     setSelectedPieceId,
     setViewMode,
     setThreeCameraState,
+    undo,
     stats,
     statusMessage,
     threeCameraResetKey,

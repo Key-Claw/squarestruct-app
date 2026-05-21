@@ -59,6 +59,18 @@ const iconPaths = {
       <path d="M12.75 2.4v2.95H9.8" />
     </>
   ),
+  undo: (
+    <>
+      <path d="M6.8 4.4H2.8v-4" transform="translate(0 4)" />
+      <path d="M2.8 8h5.9c2.7 0 4.8 1.9 4.8 4.3 0 1.65-.8 3.1-2.1 4" transform="translate(0 -4)" />
+    </>
+  ),
+  redo: (
+    <>
+      <path d="M9.2 4.4h4v-4" transform="translate(0 4) scale(-1 1) translate(-16 0)" />
+      <path d="M13.2 8H7.3c-2.7 0-4.8 1.9-4.8 4.3 0 1.65.8 3.1 2.1 4" transform="translate(0 -4)" />
+    </>
+  ),
   swap: (
     <>
       <path d="M3 5h9.2" />
