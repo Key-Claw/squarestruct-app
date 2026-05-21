@@ -35,12 +35,14 @@ function StairsMarker({ block }) {
   const stepDepth = depth / steps
   const stepHeight = height / steps
   const opacity = Math.min(block.opacity, 0.62)
+  const rotationY = block.rotated ? Math.PI / 2 : 0
+  const stepDirection = block.flipped ? -1 : 1
 
   return (
-    <group position={block.position}>
+    <group position={block.position} rotation={[0, rotationY, 0]}>
       {Array.from({ length: steps }, (_, index) => {
         const currentHeight = stepHeight * (index + 1)
-        const z = -depth / 2 + stepDepth * index + stepDepth / 2
+        const z = stepDirection * (-depth / 2 + stepDepth * index + stepDepth / 2)
 
         return (
           <mesh key={`step-${index}`} position={[0, -height / 2 + currentHeight / 2, z]} castShadow receiveShadow>

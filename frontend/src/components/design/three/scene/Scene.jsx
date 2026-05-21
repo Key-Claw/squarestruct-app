@@ -47,6 +47,8 @@ function resolveBlocks(placements, designPieces, gridColumns, gridRows, cellSize
         material: piece?.material || '',
         color: piece?.color || '#7e8993',
         modelType: piece?.modelType || '',
+        flipped: Boolean(placement.flipped),
+        rotated: Boolean(placement.rotated),
         opacity: role === 'structure' ? 1 : (isActiveFloor ? 0.84 : 0.56),
         role,
         position: [
