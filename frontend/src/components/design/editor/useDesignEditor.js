@@ -64,19 +64,27 @@ function findPlacementAtCell(placements, row, column, floor) {
   return placements.find((placement) => placementCoversCell(placement, row, column, floor)) || null
 }
 
-function hasLowerFloorSupport(placements, candidate) {
+function isStructuralPlacement(placement, pieceMap) {
+  const piece = pieceMap.get(placement.pieceId)
+
+  return piece?.structuralRole === 'structure'
+}
+
+function hasLowerFloorSupport(placements, candidate, pieceMap) {
   if (candidate.floor === 0) {
     return true
   }
 
   return placements.some((placement) => (
-    placement.floor === candidate.floor - 1 && placementsOverlap(placement, candidate)
+    placement.floor === candidate.floor - 1
+    && isStructuralPlacement(placement, pieceMap)
+    && placementsOverlap(placement, candidate)
   ))
 }
 
-function hasLateralSupport(placements, candidate) {
+function hasLateralSupport(placements, candidate, pieceMap) {
   return placements.some((placement) => {
-    if (placement.floor !== candidate.floor) {
+    if (placement.floor !== candidate.floor || !isStructuralPlacement(placement, pieceMap)) {
       return false
     }
 
@@ -104,7 +112,11 @@ function hasLateralSupport(placements, candidate) {
   })
 }
 
-function validatePlacement(placements, candidate) {
+function validatePlacement(placements, candidate, designPieces) {
+  const pieceMap = new Map(designPieces.map((piece) => [piece.id, piece]))
+  const candidatePiece = pieceMap.get(candidate.pieceId)
+  const needsStructuralSupport = candidatePiece?.structuralRole === 'structure'
+
   if (
     candidate.row < 0
     || candidate.column < 0
@@ -122,7 +134,11 @@ function validatePlacement(placements, candidate) {
     return { ok: false, message: 'Esa zona ya tiene una pieza colocada.' }
   }
 
-  if (!hasLowerFloorSupport(placements, candidate) && !hasLateralSupport(placements, candidate)) {
+  if (
+    needsStructuralSupport
+    && !hasLowerFloorSupport(placements, candidate, pieceMap)
+    && !hasLateralSupport(placements, candidate, pieceMap)
+  ) {
     return { ok: false, message: 'La pieza necesita apoyo inferior o conexión lateral.' }
   }
 
@@ -148,22 +164,32 @@ function buildStats(placements, designPieces) {
   const summaryMap = new Map()
   let occupiedCells = 0
   let materialsSubtotal = 0
+  let totalPieces = 0
 
   placements.forEach((placement) => {
     const piece = pieceMap.get(placement.pieceId)
     if (!piece) return
+    if (piece.category === 'accesorios' && piece.price === 0) return
 
+    totalPieces += 1
     occupiedCells += placement.width * placement.height
     materialsSubtotal += piece.price
 
-    const key = `${piece.name}-${piece.material}`
-    const current = summaryMap.get(key) || { name: piece.name, material: piece.material, amount: 0 }
+    const key = piece.id
+    const current = summaryMap.get(key) || {
+      amount: 0,
+      category: piece.category,
+      material: piece.material,
+      name: piece.name,
+      pieceId: piece.id,
+      size: piece.size,
+    }
     summaryMap.set(key, { ...current, amount: current.amount + 1 })
   })
 
   return {
     items: Array.from(summaryMap.values()),
-    totalPieces: placements.length,
+    totalPieces,
     totalArea: (occupiedCells * gridCellSizeMeters * gridCellSizeMeters).toFixed(2),
     wallHeight: placements.length > 0 ? '2.40 m' : '0.00 m',
     estimatedTotal: materialsSubtotal * 1.08,
@@ -184,6 +210,7 @@ function useDesignEditor() {
   const [viewZoom, setViewZoom] = useState(INITIAL_VIEW_ZOOM)
   const [boardOffset, setBoardOffset] = useState({ x: 0, y: 0 })
   const [isRotated, setIsRotated] = useState(false)
+  const [isFlipped, setIsFlipped] = useState(draft?.isFlipped || false)
   const [statusMessage, setStatusMessage] = useState('Selecciona una pieza y colocala en el plano 2D.')
 
   useEffect(() => {
@@ -262,17 +289,20 @@ function useDesignEditor() {
     }
 
     const footprint = getFootprint(selectedPiece, isRotated)
+    const anchorRow = isFlipped && isRotated ? row - footprint.height + 1 : row
+    const anchorColumn = isFlipped && !isRotated ? column - footprint.width + 1 : column
     const candidate = {
       id: createPlacementId(),
       pieceId: selectedPiece.id,
-      row,
-      column,
+      row: anchorRow,
+      column: anchorColumn,
       width: footprint.width,
       height: footprint.height,
       floor: activeFloor,
+      flipped: isFlipped,
       rotated: isRotated,
     }
-    const validation = validatePlacement(placements, candidate)
+    const validation = validatePlacement(placements, candidate, designPieces)
 
     if (!validation.ok) {
       setStatusMessage(validation.message)
@@ -303,6 +333,7 @@ function useDesignEditor() {
       activeCategory,
       selectedPieceId,
       activeFloor,
+      isFlipped,
       placements,
     }))
     setStatusMessage('Borrador guardado en el navegador.')
@@ -319,6 +350,7 @@ function useDesignEditor() {
     setActiveCategory(savedDraft.activeCategory || 'bloques')
     setSelectedPieceId(savedDraft.selectedPieceId || null)
     setActiveFloor(savedDraft.activeFloor || 0)
+    setIsFlipped(Boolean(savedDraft.isFlipped))
     setPlacements(savedDraft.placements)
     setStatusMessage('Borrador cargado correctamente.')
   }
@@ -345,12 +377,23 @@ function useDesignEditor() {
     setStatusMessage('Plano exportado como archivo JSON.')
   }
 
+  const updateZoom = (delta) => {
+    setViewZoom((current) => Math.max(
+      MIN_VIEW_ZOOM,
+      Math.min(MAX_VIEW_ZOOM, Number((current + delta).toFixed(2))),
+    ))
+  }
+
   const zoomIn = () => {
-    setViewZoom((current) => Math.min(MAX_VIEW_ZOOM, Number((current + 0.14).toFixed(2))))
+    updateZoom(0.14)
   }
 
   const zoomOut = () => {
-    setViewZoom((current) => Math.max(MIN_VIEW_ZOOM, Number((current - 0.14).toFixed(2))))
+    updateZoom(-0.14)
+  }
+
+  const zoomByWheel = (deltaY) => {
+    updateZoom(deltaY < 0 ? 0.14 : -0.14)
   }
 
   const panBoard = (deltaX, deltaY) => {
@@ -376,6 +419,7 @@ function useDesignEditor() {
     gridCellSizeMeters,
     gridRows,
     isLoadingPieces,
+    isFlipped,
     isRotated,
     loadProject,
     materialFilter,
@@ -390,6 +434,7 @@ function useDesignEditor() {
     selectedPiece,
     selectedPieceId,
     setActiveFloor,
+    setIsFlipped,
     setIsRotated,
     setMaterialFilter,
     setSelectedPieceId,
@@ -401,6 +446,7 @@ function useDesignEditor() {
     viewZoom,
     zoomIn,
     zoomOut,
+    zoomByWheel,
   }
 }
 

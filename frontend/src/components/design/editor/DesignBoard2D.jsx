@@ -1,4 +1,4 @@
-import { useRef } from 'react'
+import { useCallback, useEffect, useRef } from 'react'
 
 function getPlacementLabel(piece) {
   if (!piece) return 'PZ'
@@ -33,8 +33,11 @@ function DesignBoard2D({
   placePiece,
   removePiece,
   viewZoom,
+  zoomByWheel,
 }) {
+  const stageRef = useRef(null)
   const dragRef = useRef(null)
+  const suppressNextBoardActionRef = useRef(false)
 
   const getBoardCellFromEvent = (event) => {
     const bounds = event.currentTarget.getBoundingClientRect()
@@ -57,6 +60,11 @@ function DesignBoard2D({
   )
 
   const handleBoardClick = (event) => {
+    if (suppressNextBoardActionRef.current) {
+      suppressNextBoardActionRef.current = false
+      return
+    }
+
     if (isPanMode || dragRef.current?.dragged) return
 
     const cell = getBoardCellFromEvent(event)
@@ -67,6 +75,11 @@ function DesignBoard2D({
 
   const handleBoardContextMenu = (event) => {
     event.preventDefault()
+    if (suppressNextBoardActionRef.current) {
+      suppressNextBoardActionRef.current = false
+      return
+    }
+
     if (isPanMode || dragRef.current?.dragged) return
 
     const cell = getBoardCellFromEvent(event)
@@ -76,10 +89,17 @@ function DesignBoard2D({
   }
 
   const handlePointerDown = (event) => {
-    if (!isPanMode) return
+    const isDualButtonPan = event.buttons === 3
+    if (!isPanMode && !isDualButtonPan) return
+
+    if (isDualButtonPan) {
+      event.preventDefault()
+      suppressNextBoardActionRef.current = true
+    }
 
     dragRef.current = {
       dragged: false,
+      isDualButtonPan,
       pointerId: event.pointerId,
       x: event.clientX,
       y: event.clientY,
@@ -88,12 +108,31 @@ function DesignBoard2D({
   }
 
   const handlePointerMove = (event) => {
-    if (!isPanMode || !dragRef.current) return
+    const isDualButtonPan = event.buttons === 3
+
+    if (!dragRef.current && !isPanMode && isDualButtonPan) {
+      suppressNextBoardActionRef.current = true
+      dragRef.current = {
+        dragged: false,
+        isDualButtonPan: true,
+        pointerId: event.pointerId,
+        x: event.clientX,
+        y: event.clientY,
+      }
+      event.currentTarget.setPointerCapture(event.pointerId)
+    }
+
+    if ((!isPanMode && !dragRef.current?.isDualButtonPan) || !dragRef.current) return
 
     const deltaX = event.clientX - dragRef.current.x
     const deltaY = event.clientY - dragRef.current.y
 
     if (Math.abs(deltaX) > 1 || Math.abs(deltaY) > 1) {
+      if (dragRef.current.isDualButtonPan) {
+        event.preventDefault()
+        suppressNextBoardActionRef.current = true
+      }
+
       dragRef.current.dragged = true
       panBoard(deltaX, deltaY)
       dragRef.current.x = event.clientX
@@ -111,8 +150,25 @@ function DesignBoard2D({
     dragRef.current = null
   }
 
+  const handleWheel = useCallback((event) => {
+    event.preventDefault()
+    event.stopPropagation()
+    zoomByWheel(event.deltaY)
+  }, [zoomByWheel])
+
+  useEffect(() => {
+    const stage = stageRef.current
+    if (!stage) return undefined
+
+    stage.addEventListener('wheel', handleWheel, { passive: false })
+
+    return () => {
+      stage.removeEventListener('wheel', handleWheel)
+    }
+  }, [handleWheel])
+
   return (
-    <div className={`design-board-stage${isPanMode ? ' is-pan-mode' : ''}`}>
+    <div className={`design-board-stage${isPanMode ? ' is-pan-mode' : ''}`} ref={stageRef}>
       <div
         className="design-board-grid"
         role="grid"
@@ -135,14 +191,16 @@ function DesignBoard2D({
       >
         {activeFloor > 0 && (
           <div className="design-lower-floor-overlay" aria-hidden="true">
-            {placements.filter((placement) => placement.floor === activeFloor - 1).map((placement) => {
+            {placements.filter((placement) => placement.floor < activeFloor).map((placement) => {
               const piece = designPieces.find((item) => item.id === placement.pieceId)
+              const floorDistance = activeFloor - placement.floor
 
               return (
                 <div
                   className="design-lower-floor-placement"
                   key={`lower-${placement.id}`}
                   style={{
+                    '--floor-opacity': String(Math.max(0.24, 0.68 - floorDistance * 0.1)),
                     '--piece-color': piece?.color || '#6b7280',
                     left: `${(placement.column / gridColumns) * 100}%`,
                     top: `${(placement.row / gridRows) * 100}%`,
