@@ -2,7 +2,7 @@
 
 ## Objetivo
 
-El backend usa tecnologías sencillas y conocidas para construir una API REST funcional, segura y fácil de explicar en un entorno académico.
+El backend usa tecnologias sencillas y conocidas para construir una API REST funcional, segura y facil de mantener.
 
 ## Tecnologías utilizadas
 

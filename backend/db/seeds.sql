@@ -72,10 +72,11 @@ VALUES
   ('Pilar H40 Cerramiento', 'Pilar de hormigon para esquinas y remates en vallas y cerramientos perimetrales.', 98.00, 'pilar', 'Hormigon', 120.00, 40.00, 80.00, 2),
   ('Pilar H40 Ligero', 'Pilar de hormigon compacto para apoyos de cerramientos bajos y delimitaciones temporales.', 72.00, 'pilar', 'Hormigon', 80.00, 40.00, 40.00, 2);
 -- Pedidos
-INSERT INTO pedidos (fecha, total, estado, direccionEnvio, metodoPago, idUsuario)
+INSERT INTO pedidos (fecha, total, estado, fechaCancelacion, direccionEnvio, metodoPago, idUsuario)
 VALUES
-  ('2026-04-20 10:00:00', 1118.00, 'pagado', 'Calle Falsa 123, Madrid', 'tarjeta', 2),
-  ('2026-04-21 12:30:00', 912.00, 'pendiente', 'Av. Central 456, Barcelona', 'paypal', 3);
+  ('2026-04-20 10:00:00', 1118.00, 'pagado', NULL, 'Calle Falsa 123, Madrid', 'tarjeta', 2),
+  ('2026-04-21 12:30:00', 912.00, 'pendiente', NULL, 'Av. Central 456, Barcelona', 'paypal', 3),
+  ('2026-04-22 09:15:00', 42.50, 'cancelado', '2026-04-22 11:00:00', 'Paseo Modular 12, Valencia', 'transferencia', 4);
 
 -- PedidoDetalles
 INSERT INTO pedidoDetalles (idPedido, idProducto, cantidad, precioUnitario)
@@ -84,4 +85,5 @@ VALUES
   (1, 8, 4, 152.00),
   (2, 14, 3, 168.00),
   (2, 20, 3, 112.00),
-  (2, 23, 2, 36.00);
+  (2, 23, 2, 36.00),
+  (3, 1, 1, 42.50);

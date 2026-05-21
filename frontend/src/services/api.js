@@ -107,3 +107,20 @@ export const deleteRequest = async (endpoint) => {
 
   return handleResponse(response)
 }
+
+/**
+ * Realiza una petición PATCH.
+ * @param {string} endpoint - Ruta relativa del backend.
+ * @param {object} payload - Datos parciales a actualizar.
+ * @returns {Promise<any>} Respuesta JSON.
+ */
+export const patchRequest = async (endpoint, payload) => {
+  // Petición de actualización parcial, usada para cambios específicos sin reemplazar toda la entidad.
+  const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+    method: 'PATCH',
+    headers: getHeaders(),
+    body: JSON.stringify(payload),
+  })
+
+  return handleResponse(response)
+}

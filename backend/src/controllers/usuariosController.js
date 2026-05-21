@@ -4,6 +4,8 @@ import { db } from '../app.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
+const SUPER_ADMIN_EMAIL = 'admin@squarestruct.com';
+
 /**
  * Corrige texto con mojibake típico de una mala decodificación UTF-8/latin1 (Para las tildes y eso).
  * Se usa para normalizar nombres y datos de usuario ya guardados en la base.
@@ -151,24 +153,62 @@ export const getUsuarioById = async (req, res) => {
 export const actualizarUsuario = async (req, res) => {
   try {
     const { id } = req.params;
-    const { nombre, email, rol } = req.body;
+    const { nombre, primerApellido = '', segundoApellido = '', email, rol } = req.body;
+    const isAdmin = req.user?.rol?.toLowerCase() === 'admin';
+    const isOwnAccount = Number(req.user?.idUsuario) === Number(id);
 
-    if (!nombre || !email || !rol) {
+    if (!isAdmin && !isOwnAccount) {
+      return res.status(403).json({ error: 'Solo puedes editar tu propia cuenta' });
+    }
+
+    if (!nombre || !email) {
       return res.status(400).json({ error: 'Faltan campos obligatorios' });
     }
 
+    const [usuarios] = await db.query(
+      'SELECT idUsuario, email, rol FROM usuarios WHERE idUsuario = ?',
+      [id]
+    );
+
+    if (usuarios.length === 0) {
+      return res.status(404).json({ error: 'Usuario no encontrado' });
+    }
+
+    if (usuarios[0].email?.toLowerCase() === SUPER_ADMIN_EMAIL) {
+      return res.status(403).json({ error: 'La cuenta super admin no se puede editar' });
+    }
+
+    const [emailDuplicado] = await db.query(
+      'SELECT idUsuario FROM usuarios WHERE email = ? AND idUsuario <> ?',
+      [email, id]
+    );
+
+    if (emailDuplicado.length > 0) {
+      return res.status(409).json({ error: 'El email ya estÃ¡ registrado' });
+    }
+
+    const nextRole = isAdmin ? (rol || usuarios[0].rol) : usuarios[0].rol;
+
     const [result] = await db.query(
       `UPDATE usuarios
-       SET nombre = ?, email = ?, rol = ?
+       SET nombre = ?, primerApellido = ?, segundoApellido = ?, email = ?, rol = ?
        WHERE idUsuario = ?`,
-      [nombre, email, rol, id]
+      [nombre, primerApellido, segundoApellido, email, nextRole, id]
     );
 
     if (result.affectedRows === 0) {
       return res.status(404).json({ error: 'Usuario no encontrado' });
     }
 
-    res.json({ mensaje: 'Usuario actualizado correctamente' });
+    const [updatedUsers] = await db.query(
+      'SELECT idUsuario, nombre, primerApellido, segundoApellido, email, rol, creadoEn FROM usuarios WHERE idUsuario = ?',
+      [id]
+    );
+
+    res.json({
+      mensaje: 'Usuario actualizado correctamente',
+      usuario: normalizarUsuario(updatedUsers[0])
+    });
   } catch (error) {
     res.status(500).json({
       error: 'Error al actualizar usuario',
@@ -181,20 +221,44 @@ export const actualizarUsuario = async (req, res) => {
 export const eliminarUsuario = async (req, res) => {
   try {
     const { id } = req.params;
+    const isAdmin = req.user?.rol?.toLowerCase() === 'admin';
+    const isOwnAccount = Number(req.user?.idUsuario) === Number(id);
+
+    if (!isAdmin && !isOwnAccount) {
+      return res.status(403).json({ error: 'Solo puedes eliminar tu propia cuenta' });
+    }
+
+    const [usuarios] = await db.query(
+      'SELECT idUsuario, email FROM usuarios WHERE idUsuario = ?',
+      [id]
+    );
+
+    if (usuarios.length === 0) {
+      return res.status(404).json({ error: 'Usuario no encontrado' });
+    }
+
+    if (usuarios[0].email?.toLowerCase() === SUPER_ADMIN_EMAIL) {
+      return res.status(403).json({ error: 'La cuenta super admin no se puede eliminar' });
+    }
+
+    const disabledPassword = await bcrypt.hash(`deleted-${id}-${Date.now()}`, 10);
+    const deletedEmail = `deleted-user-${id}-${Date.now()}@squarestruct.local`;
 
     const [result] = await db.query(
-      'DELETE FROM usuarios WHERE idUsuario = ?',
-      [id]
+      `UPDATE usuarios
+       SET nombre = ?, primerApellido = ?, segundoApellido = ?, email = ?, contrasena = ?, rol = ?
+       WHERE idUsuario = ?`,
+      ['Usuario eliminado', '', '', deletedEmail, disabledPassword, 'usuario', id]
     );
 
     if (result.affectedRows === 0) {
       return res.status(404).json({ error: 'Usuario no encontrado' });
     }
 
-    res.json({ mensaje: 'Usuario eliminado correctamente' });
+    res.json({ mensaje: 'Cuenta eliminada correctamente. Los pedidos se conservan anonimizados.' });
   } catch (error) {
-    res.status(409).json({
-      error: 'No se puede eliminar el usuario porque tiene pedidos asociados',
+    res.status(500).json({
+      error: 'Error al eliminar usuario',
       detalle: error.message
     });
   }

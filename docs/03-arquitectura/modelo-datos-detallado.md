@@ -2,11 +2,11 @@
 
 ## Objetivo
 
-Este documento amplia la explicacion de la base de datos del MVP.
+Este documento amplia la explicacion de la base de datos de SquareStruct V2.
 
 La base de datos se ha disenado con MySQL porque el proyecto necesita relaciones claras entre usuarios, proveedores, productos y pedidos.
 
-## Entidades del MVP
+## Entidades principales
 
 | Tabla | Representa |
 | --- | --- |
@@ -90,6 +90,7 @@ Campos importantes:
 - `fecha`: momento de creacion.
 - `total`: importe total calculado.
 - `estado`: situacion del pedido.
+- `fechaCancelacion`: momento en el que se cancela logicamente, si el pedido llega a estado `cancelado`.
 - `direccionEnvio`: direccion del usuario.
 - `metodoPago`: forma de pago elegida.
 - `idUsuario`: usuario que realiza el pedido.
@@ -97,7 +98,7 @@ Campos importantes:
 Estados permitidos:
 
 ```text
-pendiente, pagado, enviado, entregado, cancelado
+pendiente, aceptado, denegado, pagado, enviado, entregado, cancelado
 ```
 
 Metodos de pago permitidos:
@@ -106,7 +107,9 @@ Metodos de pago permitidos:
 tarjeta, transferencia, paypal, efectivo
 ```
 
-En `MVP v1`, estas tablas existen como base tecnica. El frontend ya tiene carrito visual y servicio de pedidos, pero el checkout completo desde carrito todavia no esta integrado.
+En V2 el checkout del frontend crea pedidos reales desde el carrito. El backend permite crear pedidos, consultar detalle, listar facturas de usuario, listar facturacion admin, aceptar/denegar pedidos pendientes y cancelar logicamente cuando corresponde.
+
+La cancelacion no borra registros: cambia `estado` a `cancelado` y conserva el historial del pedido y sus lineas.
 
 ## PedidoDetalles
 

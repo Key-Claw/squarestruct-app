@@ -4,7 +4,7 @@
  * Proporciona métodos auxiliares para verificar estado de autenticación y permisos.
  */
 
-import { postRequest, getRequest, putRequest } from './api'
+import { postRequest, getRequest, putRequest, deleteRequest } from './api'
 
 const TOKEN_KEY = 'authToken'
 const USER_KEY = 'currentUser'
@@ -35,7 +35,7 @@ const isTokenExpired = (token) => {
  * @returns {string} Texto normalizado o el original.
  */
 const normalizarTexto = (value) => {
-  if (typeof value !== 'string' || !/[ÃÂ�]/.test(value)) {
+  if (typeof value !== 'string' || !/[\u00c3\u00c2\ufffd]/.test(value)) {
     return value
   }
 
@@ -58,6 +58,8 @@ const normalizarUsuario = (userData) => {
   return {
     ...userData,
     nombre: normalizarTexto(userData.nombre),
+    primerApellido: normalizarTexto(userData.primerApellido),
+    segundoApellido: normalizarTexto(userData.segundoApellido),
     email: normalizarTexto(userData.email),
     rol: normalizarTexto(userData.rol),
   }
@@ -67,16 +69,17 @@ const normalizarUsuario = (userData) => {
  * Registra un nuevo usuario en el sistema.
  * @param {string} nombre - Nombre completo del usuario.
  * @param {string} email - Correo electrónico único.
- * @param {string} contrasena - Contraseña del usuario.
+ * @param {string} contraseña - Contraseña del usuario.
  * @returns {Promise<object>} Respuesta del servidor con mensaje de éxito.
  * @throws {Error} Si fallan validaciones o si el email ya existe.
  */
-export const registerUser = async (nombre, primerApellido, email, contrasena) => {
+export const registerUser = async (nombre, primerApellido, email, contraseña) => {
+  const password = String(contraseña ?? '').trim()
   const response = await postRequest('/usuarios/register', {
-    nombre,
-    primerApellido,
-    email,
-    contrasena,
+    nombre: nombre.trim(),
+    primerApellido: primerApellido.trim(),
+    email: email.trim(),
+    contrasena: password,
   })
   return response
 }
@@ -85,20 +88,21 @@ export const registerUser = async (nombre, primerApellido, email, contrasena) =>
  * Inicia sesión con credenciales de usuario.
  * Valida credenciales en backend, almacena JWT token y datos de usuario en localStorage.
  * @param {string} email - Correo electrónico del usuario.
- * @param {string} contrasena - Contraseña del usuario.
+ * @param {string} contraseña - Contraseña del usuario.
  * @returns {Promise<object>} Objeto con datos del usuario autenticado.
  * @throws {Error} Si las credenciales son inválidas.
  */
-export const loginUser = async ({ email, nombre, primerApellido, contrasena }) => {
+export const loginUser = async ({ email, nombre, primerApellido, contraseña, contrasena }) => {
   try {
+    const password = String(contraseña ?? contrasena ?? '').trim()
     const payload = {}
     if (nombre && primerApellido) {
-      payload.nombre = nombre
-      payload.primerApellido = primerApellido
+      payload.nombre = nombre.trim()
+      payload.primerApellido = primerApellido.trim()
     } else if (email) {
-      payload.email = email
+      payload.email = email.trim()
     }
-    payload.contrasena = contrasena
+    payload.contrasena = password
 
     // Llamar al endpoint de login (acepta email o nombre+primerApellido)
     const response = await postRequest('/usuarios/login', payload)
@@ -188,7 +192,8 @@ export const getProfile = async () => {
   }
 
   try {
-    const userData = await getRequest(`/usuarios/${user.idUsuario}`)
+    const response = await getRequest('/perfil')
+    const userData = response?.usuario ?? response
     // Actualizar datos en localStorage
     const normalizedUser = normalizarUsuario(userData)
     localStorage.setItem(USER_KEY, JSON.stringify(normalizedUser))
@@ -214,6 +219,25 @@ export const getAllUsers = async () => {
 }
 
 /**
+ * Obtiene el detalle completo de un usuario por su ID.
+ * Se usa en el panel de administracion para abrir una vista detallada sin
+ * depender solo de los datos resumidos de la tabla.
+ * @param {number} idUsuario - ID del usuario a consultar.
+ * @returns {Promise<object>} Datos completos del usuario.
+ * @throws {Error} Si la petición falla.
+ */
+export const getUserById = async (idUsuario) => {
+  try {
+    const response = await getRequest(`/usuarios/${idUsuario}`)
+    const userData = response?.usuario ?? response
+    return normalizarUsuario(userData)
+  } catch (error) {
+    if (error instanceof Error) throw error
+    throw new Error(String(error), { cause: error })
+  }
+}
+
+/**
  * Actualiza los datos de un usuario (principalmente usado para cambiar rol por admin).
  * @param {number} idUsuario - ID del usuario a actualizar.
  * @param {object} userData - Objeto con los campos a actualizar (nombre, email, rol).
@@ -222,9 +246,36 @@ export const getAllUsers = async () => {
  */
 export const updateUser = async (idUsuario, userData) => {
   try {
-    return await putRequest(`/usuarios/${idUsuario}`, userData)
+    const response = await putRequest(`/usuarios/${idUsuario}`, userData)
+    const updatedUser = response?.usuario ? normalizarUsuario(response.usuario) : null
+    const currentUser = getCurrentUser()
+
+    if (updatedUser && Number(currentUser?.idUsuario) === Number(updatedUser.idUsuario)) {
+      localStorage.setItem(USER_KEY, JSON.stringify(updatedUser))
+    }
+
+    return {
+      ...response,
+      usuario: updatedUser,
+    }
   } catch (error) {
     if (error instanceof Error) throw error
     throw new Error(String(error), { cause: error })
   }
 }
+
+/**
+ * Elimina una cuenta de usuario. Un admin puede borrar usuarios; un usuario solo su propia cuenta.
+ * @param {number} idUsuario - ID del usuario a eliminar.
+ * @returns {Promise<object>} Respuesta del servidor.
+ * @throws {Error} Si la peticiÃ³n falla.
+ */
+export const deleteUser = async (idUsuario) => {
+  try {
+    return await deleteRequest(`/usuarios/${idUsuario}`)
+  } catch (error) {
+    if (error instanceof Error) throw error
+    throw new Error(String(error), { cause: error })
+  }
+}
+

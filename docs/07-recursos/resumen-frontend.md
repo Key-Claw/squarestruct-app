@@ -13,6 +13,7 @@ El frontend es la interfaz que ve el usuario. Esta hecho con React y Vite, usa B
 - JavaScript
 - Bootstrap
 - CSS propio en `src/styles/`
+- Vitest y Testing Library
 - ESLint
 
 ## Estructura principal
@@ -23,7 +24,7 @@ frontend/
     assets/       Imagenes y recursos
     components/   Navbar, footer, modal auth, carrito, perfil, catalogo
     data/         Datos demo o fallback
-    pages/        Home, Catalogo, Galeria, Design, AboutUs, Login, Register, Usuarios, Facturacion
+    pages/        Home, Catalogo, Galeria, Design, AboutUs, Login, Register, Usuarios, Facturacion, Settings
     services/     api, auth, productos y pedidos
     styles/       CSS separado por dominio
     utils/        Helpers y validadores
@@ -41,6 +42,7 @@ frontend/
 - `Login` y `Register`: vistas tradicionales de autenticacion.
 - `Usuarios`: gestion admin conectada al backend.
 - `Facturacion`: panel visual administrativo con datos de ejemplo.
+- `Settings`: vista de ajustes visuales de usuario/interfaz.
 
 ## Servicios
 
@@ -67,13 +69,14 @@ Authorization: Bearer <token>
 
 ```bash
 cd frontend
+npm run test:run
 npm run lint
 npm run build
 ```
 
 Ademas hay que probar manualmente la pantalla tocada en navegador.
 
-## Estado MVP
+## Estado V2 sobre base MVP
 
 Funcional:
 
@@ -82,10 +85,10 @@ Funcional:
 - login y registro;
 - gestion de usuarios admin;
 - carrito visual en cliente.
+- base inicial de tests con Vitest.
 
 Provisional:
 
 - Design es maqueta visual.
-- Facturacion usa datos mock.
+- Facturacion usa pedidos reales obtenidos desde `/api/orders/admin/todos`.
 - checkout/pedidos no esta integrado por completo desde carrito.
-- no hay tests automatizados de frontend.

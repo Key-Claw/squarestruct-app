@@ -1,86 +1,139 @@
-# Estructura del backend
+# Estructura Del Backend
 
-## Objetivo
+El backend esta en `backend/` y usa Express con modulos ES. La API se organiza en rutas, controladores y middlewares. La conexion a MySQL/MariaDB se centraliza en `src/app.js` mediante `mysql2/promise`.
 
-El backend se encarga de recibir peticiones, aplicar la lógica de negocio, acceder a la base de datos y devolver respuestas al frontend.
-
-Está organizado por responsabilidades para que el código sea más fácil de entender, mantener y ampliar.
-
-## Estructura principal
+## Estructura
 
 ```text
-backend/
-  db/
-    schema.sql       Define las tablas
-    seeds.sql        Inserta datos de prueba
-    migrations/      Cambios futuros de base de datos
-    backups/         Copias de seguridad
-  postman/           Colecciones para probar la API
-  src/
-    config/          Configuración general
-    controllers/     Gestionan las peticiones HTTP
-    services/        Lógica reutilizable
-    routes/          Definen los endpoints
-    middlewares/     Autenticación y validaciones
-    utils/           Funciones auxiliares
-    app.js           Configura Express
-  tests/             Pruebas del backend
-  server.js          Arranca el servidor
+backend/src/
+  app.js             Express, CORS, JSON, rutas y pool MySQL
+  routes/
+    usuarios.js      Registro, login y gestion de usuarios
+    productos.js     Catalogo y CRUD protegido de productos
+    pedidos.js       Pedidos de usuario y gestion admin
+    perfil.js        Perfil autenticado
+  controllers/
+    usuariosController.js
+    productosController.js
+    pedidosController.js
+  middlewares/
+    auth.js          Valida JWT
+    admin.js         Valida rol admin
+    validacion.js    Registro y login
+    validacionProducto.js
+  utils/
+    formatDate.js
+    generateId.js
 ```
 
-## Responsabilidad de cada carpeta
+## app.js
 
-| Carpeta | Responsabilidad |
-| --- | --- |
-| `routes/` | Decide qué controlador se ejecuta según la URL. |
-| `controllers/` | Recibe `req` y `res`, valida el flujo y responde al cliente. |
-| `services/` | Contiene lógica reutilizable, por ejemplo operaciones de usuarios o productos. |
-| `middlewares/` | Ejecuta comprobaciones antes del controlador, como validar JWT. |
-| `config/` | Centraliza configuración como puerto o conexión a base de datos. |
-| `utils/` | Guarda funciones pequeñas reutilizables. |
-| `db/` | Contiene scripts SQL de estructura y datos iniciales. |
+`app.js` hace cuatro cosas principales:
 
-## Flujo de una petición
+1. carga variables de entorno con `dotenv`;
+2. configura Express, CORS y JSON;
+3. crea el pool MySQL exportado como `db`;
+4. monta rutas.
 
-Ejemplo con productos:
-
-```text
-frontend -> GET /api/productos -> route -> controller -> service/base de datos -> respuesta JSON
-```
-
-Explicado paso a paso:
-
-1. El frontend pide la lista de productos.
-2. La ruta `/api/productos` recibe la petición.
-3. El controlador decide qué hacer.
-4. El servicio o la consulta obtiene los datos.
-5. El backend devuelve JSON al frontend.
-
-## Patrón usado
-
-El backend sigue esta idea:
-
-```text
-Ruta -> Controlador -> Servicio -> Base de datos
-```
-
-Esto permite separar responsabilidades:
-
-- Las rutas no contienen lógica compleja.
-- Los controladores organizan la respuesta.
-- Los servicios reutilizan lógica.
-- La base de datos queda separada del resto del flujo.
-
-## Ejemplo sencillo
+Rutas montadas:
 
 ```js
-// productosController.js
-export const getProductos = async (req, res) => {
-  const productos = await productService.getAllProducts();
-  res.json(productos);
-};
+app.use('/api/perfil', perfilRouter)
+app.use('/api/pedidos', pedidosRouter)
+app.use('/api/orders', pedidosRouter)
+app.use('/api/productos', productosRouter)
+app.use('/api/usuarios', usuariosRouter)
 ```
 
-## Idea clave para explicar
+Tambien define:
 
-El backend está dividido en capas. Cada capa tiene una función clara, lo que facilita detectar errores y añadir nuevas funcionalidades.
+- `GET /`
+- `GET /api/health`
+- `GET /api/db-status`
+
+## Rutas
+
+Las rutas solo definen URL, metodo y middlewares. La logica queda en controladores.
+
+Ejemplo real:
+
+```js
+router.post('/', authMiddleware, adminMiddleware, validarProducto, crearProducto)
+```
+
+Esto significa que crear productos requiere:
+
+1. token valido;
+2. rol `admin`;
+3. producto valido;
+4. controlador `crearProducto`.
+
+## Controladores
+
+Los controladores contienen la logica actual de V2:
+
+- consultas a `db`;
+- validaciones especificas de negocio;
+- calculo de total de pedidos;
+- transacciones;
+- normalizacion de texto;
+- respuestas JSON.
+
+`pedidosController.js` usa transaccion al crear pedidos:
+
+```text
+beginTransaction
+  comprobar productos
+  calcular total
+  insertar pedido
+  insertar detalles
+commit
+```
+
+Si algo falla, ejecuta rollback.
+
+## Middlewares
+
+| Middleware | Funcion |
+| --- | --- |
+| `auth.js` | Lee `Authorization: Bearer TOKEN`, valida JWT y guarda payload en `req.user`. |
+| `admin.js` | Rechaza si `req.user.rol` no es `admin`. |
+| `validacion.js` | Valida registro y login. |
+| `validacionProducto.js` | Valida campos, tipos y valores de productos. |
+
+## Servicios Historicos
+
+`src/services/userService.js` y `src/services/productService.js` no siguen el estilo activo de V2: usan `require` y hacen referencia a un `db` que no forma parte del flujo ESM actual. Se consideran restos historicos del MVP y no deben documentarse como capa activa.
+
+## Integracion Con Base De Datos
+
+El pool:
+
+```js
+mysql.createPool({
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
+  port: process.env.DB_PORT,
+  charset: 'utf8mb4'
+})
+```
+
+Las tablas usadas son:
+
+- `usuarios`
+- `proveedores`
+- `productos`
+- `pedidos`
+- `pedidoDetalles`
+
+## Decisiones Tecnicas
+
+- Express mantiene la API directa y facil de depurar.
+- `mysql2/promise` permite usar `async/await`.
+- JWT evita sesiones de servidor.
+- `bcrypt` protege contrasenas guardadas.
+- CORS permite separar frontend y backend.
+- La cancelacion de pedidos es logica para conservar trazabilidad.
+- `/api/orders` se mantiene como alias para el frontend sin duplicar controladores.

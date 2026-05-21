@@ -23,7 +23,7 @@ router.post('/login', validarLogin, loginUsuario);
 // Rutas privadas CRUD usuarios
 router.get('/', authMiddleware, adminMiddleware, getUsuarios);
 router.get('/:id', authMiddleware, adminMiddleware, getUsuarioById);
-router.put('/:id', authMiddleware, adminMiddleware, actualizarUsuario);
-router.delete('/:id', authMiddleware, adminMiddleware, eliminarUsuario);
+router.put('/:id', authMiddleware, actualizarUsuario);
+router.delete('/:id', authMiddleware, eliminarUsuario);
 
 export default router;

@@ -1,147 +1,150 @@
-# API REST
+# API REST De SquareStruct
 
-## Objetivo
+Este documento recoge los endpoints reales montados en `backend/src/app.js` y definidos en `backend/src/routes/`. La API responde bajo `/api` y usa JSON.
 
-La API REST permite que el frontend se comunique con el backend.
+## Base
 
-El frontend envia peticiones HTTP y el backend responde con datos en formato JSON.
+| Metodo | Ruta | Proteccion | Uso |
+| --- | --- | --- | --- |
+| `GET` | `/` | Publica | Comprobacion rapida del backend. |
+| `GET` | `/api/health` | Publica | Health check simple. Devuelve `OK`. |
+| `GET` | `/api/db-status` | Publica | Comprueba tablas y totales basicos de MySQL. |
 
-## URL base
+## Autenticacion Y Usuarios
 
-En desarrollo local:
+Rutas definidas en `backend/src/routes/usuarios.js`.
 
-```text
-http://localhost:3000
-```
+| Metodo | Ruta | Proteccion | Uso |
+| --- | --- | --- | --- |
+| `POST` | `/api/usuarios/register` | Publica | Registra un usuario con contrasena hasheada con bcrypt. |
+| `POST` | `/api/usuarios/login` | Publica | Valida credenciales y devuelve JWT. |
+| `GET` | `/api/usuarios` | JWT + admin | Lista usuarios. |
+| `GET` | `/api/usuarios/:id` | JWT + admin | Consulta un usuario. |
+| `PUT` | `/api/usuarios/:id` | JWT | Actualiza datos. Admin puede cambiar rol; usuario normal solo su propia cuenta. |
+| `DELETE` | `/api/usuarios/:id` | JWT | Anonimiza/elimina cuenta. Admin puede eliminar usuarios; usuario normal solo su propia cuenta. |
 
-Prefijo general:
-
-```text
-/api
-```
-
-En el frontend, Vite usa proxy para que las llamadas a `/api` apunten al backend local.
-
-## Convenciones
-
-- Los recursos se nombran en plural: `usuarios`, `productos`, `pedidos`.
-- Se usan metodos HTTP estandar.
-- Las respuestas se devuelven en JSON.
-- Las rutas privadas usan JWT.
-
-## Metodos HTTP usados
-
-| Metodo | Uso |
-| --- | --- |
-| `GET` | Consultar datos. |
-| `POST` | Crear datos o iniciar una accion. |
-| `PUT` | Actualizar datos. |
-| `DELETE` | Eliminar datos. |
-
-## Endpoints publicos
-
-| Metodo | Endpoint | Funcion |
-| --- | --- | --- |
-| `POST` | `/api/usuarios/register` | Registrar un usuario. |
-| `POST` | `/api/usuarios/login` | Iniciar sesion y obtener token JWT. |
-| `GET` | `/api/productos` | Consultar productos. |
-| `GET` | `/api/productos/:id` | Consultar un producto concreto. |
-| `GET` | `/api/health` | Comprobar que el backend responde. |
-| `GET` | `/api/db-status` | Comprobar tablas y totales de base de datos. |
-
-## Endpoints protegidos
-
-Requieren:
-
-```text
-Authorization: Bearer <TOKEN>
-```
-
-| Metodo | Endpoint | Funcion |
-| --- | --- | --- |
-| `GET` | `/api/perfil` | Consultar datos del usuario autenticado desde el JWT. |
-| `GET` | `/api/pedidos` | Listar pedidos del usuario autenticado. |
-| `POST` | `/api/pedidos` | Crear un pedido. |
-| `GET` | `/api/orders` | Alias de pedidos para clientes que usan nomenclatura en ingles. |
-| `POST` | `/api/orders` | Alias para crear pedido. |
-
-## Endpoints de administracion
-
-Requieren token JWT y rol `admin`.
-
-| Metodo | Endpoint | Funcion |
-| --- | --- | --- |
-| `GET` | `/api/usuarios` | Listar usuarios. |
-| `GET` | `/api/usuarios/:id` | Consultar un usuario por id. |
-| `PUT` | `/api/usuarios/:id` | Actualizar datos o rol de usuario. |
-| `DELETE` | `/api/usuarios/:id` | Eliminar usuario si no tiene dependencias que lo impidan. |
-| `POST` | `/api/productos` | Crear producto. |
-| `PUT` | `/api/productos/:id` | Actualizar producto. |
-| `DELETE` | `/api/productos/:id` | Eliminar producto. |
-
-Nota: las rutas de productos de escritura existen en backend, aunque el frontend actual se centra sobre todo en la consulta del catalogo.
-
-## Seguridad
-
-El login devuelve un token JWT.
-
-Ese token se envia en rutas protegidas usando el header:
-
-```text
-Authorization: Bearer <TOKEN>
-```
-
-El backend valida el token con `authMiddleware`.
-
-Para rutas de administracion, tambien se usa `adminMiddleware`, que comprueba que el rol sea `admin`.
-
-## Ejemplo de producto
+Registro:
 
 ```json
 {
-  "idProducto": 1,
-  "nombre": "Bloque modular",
-  "descripcion": "Bloque para construccion modular",
-  "precio": 25.5,
+  "nombre": "Ana",
+  "primerApellido": "Gomez",
+  "email": "ana@example.com",
+  "contrasena": "12345678"
+}
+```
+
+Login por email:
+
+```json
+{
+  "email": "ana@example.com",
+  "contrasena": "12345678"
+}
+```
+
+El login tambien admite `nombre` + `primerApellido` + `contrasena`, aunque el flujo principal del frontend usa email.
+
+## Perfil
+
+Ruta definida en `backend/src/routes/perfil.js`.
+
+| Metodo | Ruta | Proteccion | Uso |
+| --- | --- | --- | --- |
+| `GET` | `/api/perfil` | JWT | Devuelve el perfil del usuario autenticado. |
+
+## Productos
+
+Rutas definidas en `backend/src/routes/productos.js`.
+
+| Metodo | Ruta | Proteccion | Uso |
+| --- | --- | --- | --- |
+| `GET` | `/api/productos` | Publica | Lista productos con datos del proveedor. |
+| `GET` | `/api/productos/:id` | Publica | Consulta un producto. |
+| `POST` | `/api/productos` | JWT + admin | Crea producto. |
+| `PUT` | `/api/productos/:id` | JWT + admin | Actualiza producto. |
+| `DELETE` | `/api/productos/:id` | JWT + admin | Elimina producto si no esta asociado a pedidos. |
+
+Producto:
+
+```json
+{
+  "nombre": "Bloque EcoBase",
+  "descripcion": "Bloque ligero de plastico reciclable",
+  "precio": 42.5,
   "tipo": "bloque",
-  "material": "Hormigon",
-  "alto": 80,
-  "ancho": 80,
-  "largo": 160,
-  "idProveedor": 2
+  "material": "Plastico reciclable",
+  "alto": 22.7,
+  "ancho": 19.7,
+  "largo": 39.4,
+  "idProveedor": 1
 }
 ```
 
-## Ejemplo de usuario admin
+## Pedidos
+
+Rutas definidas en `backend/src/routes/pedidos.js`. Estan montadas tanto en `/api/pedidos` como en `/api/orders`. El frontend V2 usa el alias `/api/orders` desde `frontend/src/services/orderService.js`.
+
+| Metodo | Ruta | Proteccion | Uso |
+| --- | --- | --- | --- |
+| `GET` | `/api/pedidos` | JWT | Lista pedidos del usuario autenticado. |
+| `POST` | `/api/pedidos` | JWT | Crea pedido desde una lista de productos. |
+| `GET` | `/api/pedidos/:id` | JWT | Consulta un pedido si pertenece al usuario o si el usuario es admin. |
+| `PATCH` | `/api/pedidos/:id/cancelar` | JWT | Cancela logicamente un pedido si esta permitido. |
+| `GET` | `/api/pedidos/admin/pendientes` | JWT + admin | Lista pedidos pendientes. |
+| `GET` | `/api/pedidos/admin/todos` | JWT + admin | Lista el historial completo de pedidos. |
+| `PATCH` | `/api/pedidos/:id/estado` | JWT + admin | Cambia estado de pedido pendiente a `aceptado` o `denegado`. |
+
+Alias equivalentes:
+
+```text
+/api/orders
+/api/orders/:id
+/api/orders/admin/pendientes
+/api/orders/admin/todos
+/api/orders/:id/estado
+```
+
+Crear pedido:
 
 ```json
 {
-  "idUsuario": 1,
-  "nombre": "Admin",
-  "primerApellido": "SquareStruct",
-  "email": "admin@squarestruct.com",
-  "rol": "admin",
-  "creadoEn": "2026-05-09T07:23:31.000Z"
+  "direccionEnvio": "Calle Principal 123, Madrid",
+  "metodoPago": "tarjeta",
+  "productos": [
+    {
+      "idProducto": 1,
+      "cantidad": 2
+    }
+  ]
 }
 ```
 
-## Ejemplo de error
+Cambiar estado admin:
 
 ```json
 {
-  "error": "Token no proporcionado"
+  "nuevoEstado": "aceptado"
 }
 ```
 
-## Estado actual de MVP v1
+## Autorizacion
 
-- Catalogo conectado a `/api/productos`.
-- Login y registro conectados a `/api/usuarios`.
-- Gestion de usuarios admin conectada a `/api/usuarios`.
-- Pedidos tienen backend y servicios, pero el checkout completo desde carrito queda para fases siguientes.
+Las rutas protegidas esperan:
 
-## Idea clave para explicar
+```http
+Authorization: Bearer TOKEN
+```
 
-La API es el puente entre frontend y base de datos. El frontend no consulta MySQL directamente: siempre pasa por el backend.
+`authMiddleware` valida el JWT y anade `req.user`. `adminMiddleware` comprueba `req.user.rol === 'admin'`.
 
-Si usas la coleccion de Postman del repo, la URL base se configura con la variable `baseUrl` y por defecto apunta a `http://localhost:3000`.
+## Errores Habituales
+
+| Codigo | Causa |
+| --- | --- |
+| `400` | Datos incompletos o formato invalido. |
+| `401` | Falta token. |
+| `403` | Token invalido o usuario sin rol suficiente. |
+| `404` | Recurso inexistente. |
+| `409` | Conflicto: email duplicado, pedido no cancelable o producto asociado a pedido. |
+| `500` | Error interno o problema de base de datos. |

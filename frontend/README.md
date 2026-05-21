@@ -1,152 +1,155 @@
 # Frontend SquareStruct
 
-## Objetivo
+Frontend React/Vite de SquareStruct V2. Implementa la interfaz publica, catalogo, galeria, disenador visual provisional, autenticacion, carrito, checkout, area privada y paneles administrativos.
 
-El frontend es la interfaz de usuario de SquareStruct. Esta desarrollado con React y Vite, y permite navegar por la web, consultar el catalogo, registrarse, iniciar sesion, usar un carrito visual y acceder a vistas de administracion cuando el usuario tiene rol `admin`.
+## Stack
 
-Esta guia resume lo necesario para instalar, arrancar y validar el frontend. La explicacion mas detallada de arquitectura esta en `docs/03-arquitectura/`.
-
-## Tecnologias
-
-- React
-- Vite
-- JavaScript
+- React 19
+- Vite 8
+- React Router DOM 7 con `HashRouter`
 - Bootstrap 5
-- CSS propio organizado en `src/styles/`
+- SweetAlert2
+- Vitest + Testing Library
 - ESLint
+- CSS propio organizado por dominio
 
 ## Estructura
 
 ```text
-frontend/
-  public/             Recursos publicos de Vite
-  src/
-    assets/           Imagenes, logos y recursos visuales
-    components/       Componentes reutilizables
-      auth/           Formularios y mensajes del modal de autenticacion
-      catalogo/       Filtros y tarjetas del catalogo
-    data/             Datos demo usados como fallback
-    pages/            Vistas principales
-    services/         Comunicacion con la API REST
-    styles/           CSS separado por dominio o componente
-    utils/            Helpers y validadores
-    App.jsx           Componente principal y navegacion interna
-    main.jsx          Punto de entrada de React
-  package.json
-  vite.config.js
+frontend/src/
+  assets/                 Imagenes, logos y recursos visuales
+  components/
+    auth/                 Modal y formularios de login/registro
+    catalog/              Filtros y tarjetas del catalogo
+    common/               Iconos reutilizables
+    layout/               Navbar, footer y panel lateral del carrito
+    settings/             Checkout y componentes ligados a cuenta
+  data/                   Productos demo como fallback
+  pages/
+    auth/                 Paginas legacy de Login y Register
+    settings/             Pantallas legacy/standalone de cuenta
+    *.jsx                 Home, Catalog, Gallery, Design, AboutUs
+  services/               api, authService, productService, orderService
+  styles/
+    base/                 Variables, base visual y responsive global
+    components/           CSS de componentes reutilizables
+    layout/               Navbar y footer
+    pages/                CSS especifico de pagina
+  tests/                  Vitest + Testing Library
+  utils/                  Validadores, alertas y normalizacion de texto
+  App.jsx                 Rutas, estado principal y overlays globales
+  main.jsx                Entrada React/Vite
+  routes.js               Rutas, aliases y enlaces de navegacion
 ```
 
-`App.css` funciona como indice de imports CSS. Los estilos reales estan repartidos en `src/styles/` para que cada pagina o componente tenga su archivo.
+## Rutas
 
-## Paginas principales
+La aplicacion usa `HashRouter` para funcionar en despliegues estaticos sin configurar fallback de servidor.
 
-| Pagina | Funcion |
+```text
+/#/
+/#/home
+/#/gallery
+/#/catalog
+/#/design
+/#/about-us
+/#/setings/profile
+/#/setings/invoices
+/#/setings/billing
+/#/setings/users
+/#/setings/plans
+```
+
+`/settings` existe como alias y redirige internamente a `/setings`, que se mantiene por compatibilidad con rutas ya usadas en el proyecto.
+
+## Estado Global En App.jsx
+
+`App.jsx` concentra estado transversal:
+
+- usuario autenticado;
+- modal de login/registro;
+- carrito;
+- checkout;
+- busqueda inicial del catalogo;
+- seccion inicial del catalogo;
+- tab activa de Mi Cuenta.
+
+Los overlays globales (`AuthModal`, `CartPanel`, `Checkout`) viven fuera de las rutas para conservar su estado durante la navegacion.
+
+## Servicios
+
+| Archivo | Responsabilidad |
 | --- | --- |
-| `Home.jsx` | Portada con carrusel, accesos a catalogo, galeria y Design. |
-| `Catalogo.jsx` | Carga productos desde backend y usa productos demo si la API falla. Permite buscar, filtrar por categoria, ordenar y anadir al carrito visual. |
-| `Galeria.jsx` | Muestra proyectos e imagenes de inspiracion. |
-| `Design.jsx` | Maqueta visual del futuro disenador de estructuras. Todavia no es una herramienta 3D real. |
-| `AboutUs.jsx` | Presentacion del proyecto y del equipo. |
-| `Login.jsx` | Vista de login tradicional. |
-| `Register.jsx` | Vista de registro tradicional. |
-| `Usuarios.jsx` | Vista protegida para administradores. Lista usuarios y permite cambiar rol entre `usuario` y `admin`. |
-| `Facturacion.jsx` | Panel administrativo visual de facturacion. Sus datos actuales son de maqueta. |
+| `services/api.js` | Cliente `fetch`, URL base, headers JSON, JWT y manejo de errores. |
+| `services/authService.js` | Registro, login, logout, perfil, usuarios admin, expiracion del token y rol admin. |
+| `services/productService.js` | Carga de productos y busqueda local por nombre/descripcion. |
+| `services/orderService.js` | Checkout, pedidos, facturas de usuario y facturacion admin mediante `/orders`. |
 
-Ademas, la autenticacion principal del navbar se gestiona con `AuthModal`, que muestra login y registro en un modal reutilizable.
-
-## Componentes principales
-
-| Componente | Funcion |
-| --- | --- |
-| `Navbar.jsx` | Barra superior, navegacion, busqueda, dropdown de usuario, acceso al carrito y selector visual de idioma. |
-| `SiteFooter.jsx` | Footer para paginas publicas. |
-| `AuthModal.jsx` | Modal de autenticacion con modo login/registro. |
-| `auth/LoginForm.jsx` | Formulario de login dentro del modal. |
-| `auth/RegisterForm.jsx` | Formulario de registro dentro del modal. |
-| `auth/AuthErrorMessage.jsx` | Mensaje de error reutilizable del modal. |
-| `CartPanel.jsx` | Panel lateral del carrito. Calcula cantidades y total en cliente. |
-| `ProfilePanel.jsx` | Panel lateral de perfil. Muestra datos del usuario y acceso admin a usuarios. |
-| `catalogo/CatalogFilters.jsx` | Sidebar de filtros del catalogo. |
-| `catalogo/CatalogProductCard.jsx` | Tarjeta de producto del catalogo. |
-
-## Servicios y backend
-
-Los servicios viven en `src/services/` y evitan hacer `fetch` directamente desde todas las paginas.
-
-| Servicio | Funcion |
-| --- | --- |
-| `api.js` | Base comun para `GET`, `POST`, `PUT` y `DELETE`. Lee `VITE_API_URL` o usa `/api` por defecto. Anade `Authorization: Bearer <token>` si hay token. |
-| `authService.js` | Registro, login, logout, usuario actual, validacion de expiracion JWT, perfil, listado y actualizacion de usuarios. |
-| `productService.js` | Carga productos con `/productos` y filtra productos en cliente. |
-| `orderService.js` | Funciones para crear y consultar pedidos usando `/orders`. Existe la base, pero la integracion completa de checkout queda para fases siguientes. |
-
-Durante desarrollo, `vite.config.js` redirige `/api` a `http://localhost:3000`, por lo que normalmente no hace falta configurar nada si el backend esta arrancado en ese puerto.
-
-Si se quiere apuntar a otra API, se puede crear un `.env` del frontend con:
+La URL base se toma de:
 
 ```text
 VITE_API_URL=http://localhost:3000/api
 ```
 
-## Comandos
+Si no existe, se usa `/api` y Vite lo redirige al backend local con el proxy de `vite.config.js`.
 
-Instalar dependencias:
+## Funcionalidades Implementadas
+
+- Navbar responsive con navegacion, cuenta, carrito e idioma visual.
+- Autenticacion modal con login y registro.
+- Persistencia de JWT y usuario en `localStorage`.
+- Proteccion de tabs admin en frontend.
+- Catalogo conectado a backend con fallback a `productosDemo`.
+- Busqueda, filtros, ordenacion, paginacion y vista grid/lista.
+- Carrito lateral con cantidades, eliminacion y total.
+- Checkout con direccion, metodo de pago y creacion de pedido.
+- Facturas del usuario autenticado.
+- Facturacion admin con filtros, estadisticas, paginacion y acciones aceptar/denegar.
+- Gestion admin de usuarios con busqueda, filtro, detalle, edicion y eliminacion.
+- Galeria con filtros por material y modal de imagen.
+- Disenador visual provisional con paneles, herramientas y resumen simulado.
+- Alertas de confirmacion/error/exito con SweetAlert2.
+- Loaders, estados vacios y mensajes de error.
+
+## CSS
+
+`App.css` funciona como indice de estilos. Los archivos reales estan en `src/styles/`.
+
+- `styles/base/variables.css`: tokens visuales.
+- `styles/base/app-base.css`: base comun.
+- `styles/base/responsive.css`: reglas responsive compartidas entre varias paginas.
+- `styles/layout/navbar.css`: navbar.
+- `styles/layout/footer.css`: footer.
+- `styles/pages/*.css`: estilos de paginas.
+- `styles/components/*`: modales, checkout, carrito, profile panel y alertas.
+
+Regla de mantenimiento: si una clase pertenece claramente a una pagina o componente, debe vivir en su archivo responsable. `responsive.css` se reserva para ajustes transversales.
+
+## Comandos
 
 ```bash
 npm install
-```
-
-Arrancar en desarrollo:
-
-```bash
 npm run dev
+npm run test:run
+npm run lint
+npm run build
 ```
 
-URL local habitual:
+URL local:
 
 ```text
 http://localhost:5173
 ```
 
-Revisar calidad del codigo:
+## Tests
 
-```bash
-npm run lint
-```
+Los tests actuales estan en `src/tests/` y usan Vitest + Testing Library. Cubren renderizado principal de la app, Home y Navbar. La cobertura puede ampliarse en componentes de flujo critico como checkout, catalogo y Settings.
 
-Comprobar compilacion de produccion:
+## Decisiones Tecnicas
 
-```bash
-npm run build
-```
-
-## Comprobacion antes de entregar
-
-Antes de abrir una pull request o dar por terminada una tarea de frontend:
-
-1. Arrancar backend si la tarea usa datos reales.
-2. Ejecutar `npm run lint`.
-3. Ejecutar `npm run build`.
-4. Probar en navegador las rutas afectadas.
-5. Si hay login/admin, cerrar sesion e iniciar sesion de nuevo para renovar el JWT.
-6. Revisar que no quedan errores visibles en consola.
-
-## Relacion con MVP v1
-
-El frontend cubre las partes principales de `MVP v1 - Funcional`:
-
-- registro e inicio de sesion;
-- catalogo conectado al backend;
-- carrito visual en cliente;
-- base de pedidos preparada en servicios;
-- vistas protegidas para administracion;
-- gestion de usuarios admin;
-- maqueta de Design como base del futuro disenador.
-
-## Queda para fases siguientes
-
-- Integrar por completo el flujo de pedidos desde el carrito.
-- Sustituir datos de maqueta en `Facturacion.jsx` por datos reales.
-- Evolucionar `Design.jsx` hacia una herramienta real de diseno o calculo.
-- Anadir tests automatizados de frontend.
-- Revisar textos con caracteres especiales si aparecen problemas de codificacion.
+- `HashRouter` reduce problemas al refrescar rutas internas en hosting estatico.
+- Bootstrap se usa como apoyo de grid, botones, tablas, formularios y utilidades.
+- CSS propio mantiene la identidad visual sin introducir una libreria UI adicional.
+- SweetAlert2 se reserva para confirmaciones y feedback de acciones destructivas o relevantes.
+- El catalogo filtra en cliente porque V2 carga un volumen pequeno de productos desde `/api/productos`.
+- `Settings.jsx` concentra varias tabs porque comparten usuario, permisos, pedidos y estados administrativos.
