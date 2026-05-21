@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useCallback, useEffect, useMemo, useRef } from 'react'
 import { useThree } from '@react-three/fiber'
 import Controls from '../controls/Controls'
 import DimensionGuides from './DimensionGuides'
@@ -47,19 +47,109 @@ function resolveBlocks(placements, designPieces, gridColumns, gridRows, cellSize
     })
 }
 
-function CameraDistance({ cellSize, gridColumns, gridRows, layerHeight, visibleLayers, viewZoom }) {
+function CameraDistance({
+  cellSize,
+  gridColumns,
+  gridRows,
+  layerHeight,
+  onCameraStateChange,
+  resetSignal,
+  savedCameraState,
+  target,
+  visibleLayers,
+  viewZoom,
+}) {
   const { camera } = useThree()
+  const initializedRef = useRef(false)
+  const lastResetSignalRef = useRef(resetSignal)
+  const latestRef = useRef({})
+  const orbitTargetRef = useRef(target)
+  const skipNextZoomRef = useRef(true)
   const gridWidth = gridColumns * cellSize
   const gridDepth = gridRows * cellSize
   const gridHeight = Math.max(layerHeight, visibleLayers * layerHeight)
   const baseDistance = Math.max(22, Math.max(gridWidth, gridDepth, gridHeight * 2.2) * 1.15)
 
+  const saveCameraState = useCallback(() => {
+    if (!onCameraStateChange) return
+
+    const orbitTarget = orbitTargetRef.current || latestRef.current.target
+    onCameraStateChange({
+      position: camera.position.toArray(),
+      target: [...orbitTarget],
+    })
+  }, [camera, onCameraStateChange])
+
   useEffect(() => {
-    const distance = baseDistance / viewZoom
-    camera.position.set(distance * 0.7, Math.max(distance * 0.44, gridHeight * 0.9 + 2), distance)
-    camera.lookAt(0, Math.min(gridHeight / 2, 1.8), 0)
+    latestRef.current = {
+      baseDistance,
+      gridHeight,
+      savedCameraState,
+      target,
+      viewZoom,
+    }
+  }, [baseDistance, gridHeight, savedCameraState, target, viewZoom])
+
+  useEffect(() => {
+    const isFirstRun = !initializedRef.current
+    const {
+      baseDistance: currentBaseDistance,
+      gridHeight: currentGridHeight,
+      savedCameraState: currentSavedCameraState,
+      target: currentTarget,
+      viewZoom: currentViewZoom,
+    } = latestRef.current
+    const defaultDistance = currentBaseDistance / currentViewZoom
+    const defaultPosition = [
+      defaultDistance * 0.7,
+      Math.max(defaultDistance * 0.44, currentGridHeight * 0.9 + 2),
+      defaultDistance,
+    ]
+    const shouldReset = lastResetSignalRef.current !== resetSignal
+    const state = !shouldReset && currentSavedCameraState
+      ? currentSavedCameraState
+      : { position: defaultPosition, target: currentTarget }
+
+    camera.position.set(...state.position)
+    orbitTargetRef.current = [...state.target]
+    camera.lookAt(...state.target)
     camera.updateProjectionMatrix()
-  }, [baseDistance, camera, gridHeight, viewZoom])
+    initializedRef.current = true
+    skipNextZoomRef.current = isFirstRun
+    lastResetSignalRef.current = resetSignal
+    saveCameraState()
+  }, [camera, resetSignal, saveCameraState])
+
+  useEffect(() => {
+    if (!initializedRef.current) return
+
+    if (skipNextZoomRef.current) {
+      skipNextZoomRef.current = false
+      return
+    }
+
+    const distance = baseDistance / viewZoom
+    const orbitTarget = orbitTargetRef.current || latestRef.current.target
+    const direction = camera.position.clone().sub({
+      x: orbitTarget[0],
+      y: orbitTarget[1],
+      z: orbitTarget[2],
+    })
+
+    if (direction.lengthSq() === 0) {
+      direction.set(0.7, 0.44, 1)
+    }
+
+    direction.normalize().multiplyScalar(distance)
+    camera.position.set(
+      orbitTarget[0] + direction.x,
+      orbitTarget[1] + direction.y,
+      orbitTarget[2] + direction.z,
+    )
+    camera.lookAt(...orbitTarget)
+    camera.updateProjectionMatrix()
+    saveCameraState()
+  }, [baseDistance, camera, saveCameraState, viewZoom])
 
   return null
 }
@@ -157,7 +247,20 @@ function LayerVolumeGuides({ activeFloor, depth, layerHeight, width }) {
   )
 }
 
-function Scene({ activeFloor, designPieces, gridCellSizeMeters, gridColumns, gridRows, layerHeightMeters, placements, viewZoom }) {
+function Scene({
+  activeFloor,
+  designPieces,
+  gridCellSizeMeters,
+  gridColumns,
+  gridRows,
+  isGridVisible,
+  layerHeightMeters,
+  onCameraStateChange,
+  placements,
+  resetSignal,
+  savedCameraState,
+  viewZoom,
+}) {
   const cellSize = gridCellSizeMeters
   const layerHeight = layerHeightMeters || cellSize
   const blocks = resolveBlocks(placements, designPieces, gridColumns, gridRows, cellSize, activeFloor, layerHeight)
@@ -165,22 +268,46 @@ function Scene({ activeFloor, designPieces, gridCellSizeMeters, gridColumns, gri
   const gridDepth = gridRows * cellSize
   const gridSize = Math.max(gridWidth, gridDepth)
   const visibleLayers = Math.max(1, activeFloor + 1)
+  const cameraTarget = useMemo(() => (
+    savedCameraState?.target || [0, Math.min((visibleLayers * layerHeight) / 2, 1.8), 0]
+  ), [layerHeight, savedCameraState, visibleLayers])
 
   return (
     <>
       <color attach="background" args={['#fbfdff']} />
-      <CameraDistance cellSize={cellSize} gridColumns={gridColumns} gridRows={gridRows} layerHeight={layerHeight} visibleLayers={visibleLayers} viewZoom={viewZoom} />
+      <CameraDistance
+        cellSize={cellSize}
+        gridColumns={gridColumns}
+        gridRows={gridRows}
+        layerHeight={layerHeight}
+        onCameraStateChange={onCameraStateChange}
+        resetSignal={resetSignal}
+        savedCameraState={savedCameraState}
+        target={cameraTarget}
+        visibleLayers={visibleLayers}
+        viewZoom={viewZoom}
+      />
       <Lights />
-      <Grid columns={gridColumns} rows={gridRows} cellSize={cellSize} />
-      <LayerGrid activeFloor={activeFloor} cellSize={cellSize} columns={gridColumns} layerHeight={layerHeight} rows={gridRows} />
-      <LayerVolumeGuides activeFloor={activeFloor} depth={gridDepth} layerHeight={layerHeight} width={gridWidth} />
-      <DimensionGuides depth={gridDepth} height={visibleLayers * layerHeight} width={gridWidth} />
+      {isGridVisible && (
+        <>
+          <Grid columns={gridColumns} rows={gridRows} cellSize={cellSize} />
+          <LayerGrid activeFloor={activeFloor} cellSize={cellSize} columns={gridColumns} layerHeight={layerHeight} rows={gridRows} />
+          <LayerVolumeGuides activeFloor={activeFloor} depth={gridDepth} layerHeight={layerHeight} width={gridWidth} />
+          <DimensionGuides depth={gridDepth} height={visibleLayers * layerHeight} width={gridWidth} />
+        </>
+      )}
       <group>
         {blocks.map((block) => (
           <ModularBlock block={block} key={block.id} />
         ))}
       </group>
-      <Controls maxDistance={Math.max(42, gridSize * 2.2)} minDistance={Math.max(3, gridSize * 0.08)} />
+      <Controls
+        maxDistance={Math.max(42, gridSize * 2.2)}
+        minDistance={Math.max(3, gridSize * 0.08)}
+        onCameraStateChange={onCameraStateChange}
+        resetSignal={resetSignal}
+        target={cameraTarget}
+      />
     </>
   )
 }

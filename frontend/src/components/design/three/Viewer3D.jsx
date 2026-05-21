@@ -7,8 +7,12 @@ function Viewer3D({
   gridCellSizeMeters = 0.05,
   gridColumns = 12,
   gridRows = 10,
+  isGridVisible = true,
   layerHeightMeters = 0.05,
+  onCameraStateChange,
   placements = [],
+  resetSignal = 0,
+  savedCameraState = null,
   viewZoom = 0.58,
 }) {
   const gridMax = Math.max(gridColumns, gridRows)
@@ -29,8 +33,12 @@ function Viewer3D({
           gridCellSizeMeters={gridCellSizeMeters}
           gridColumns={gridColumns}
           gridRows={gridRows}
+          isGridVisible={isGridVisible}
           layerHeightMeters={layerHeightMeters}
+          onCameraStateChange={onCameraStateChange}
           placements={placements}
+          resetSignal={resetSignal}
+          savedCameraState={savedCameraState}
           viewZoom={viewZoom}
         />
       </Canvas>

@@ -64,6 +64,9 @@ function Design({ onNavigate }) {
   const [activeUtilityPanel, setActiveUtilityPanel] = useState(null)
   const [isPanMode, setIsPanMode] = useState(false)
   const activeLayerHeightLabel = `${Number(((editor.activeFloor + 1) * editor.layerHeightMeters).toFixed(1)).toString()} m`
+  const canvasTitle = editor.viewMode === '2d'
+    ? `Plano 2D · Capa ${editor.activeFloor}`
+    : `Vista 3D del proyecto · Capa ${editor.activeFloor}`
 
   const toggleUtilityPanel = (panel) => {
     setActiveUtilityPanel((current) => (current === panel ? null : panel))
@@ -174,7 +177,7 @@ function Design({ onNavigate }) {
 
             <div className="design-drag-help">
               <span aria-hidden="true">+</span>
-              <div className="design-floor-controls">
+              <div>
                 <strong>Selecciona y coloca</strong>
                 <p>la edicion se realiza en la vista 2D</p>
               </div>
@@ -185,7 +188,7 @@ function Design({ onNavigate }) {
         <main className="col-12 col-lg-9 col-xl-9 design-editor-column">
           <section className="card design-canvas-card" aria-label="Editor modular 2D y visualizador 3D">
             <div className="design-canvas-status">
-              <strong>{editor.viewMode === '2d' ? 'Plano 2D editable' : 'Vista 3D del proyecto'}</strong>
+              <strong>{canvasTitle}</strong>
               <span>{editor.statusMessage}</span>
             </div>
 
@@ -212,8 +215,12 @@ function Design({ onNavigate }) {
                 gridCellSizeMeters={editor.gridCellSizeMeters}
                 gridColumns={editor.gridColumns}
                 gridRows={editor.gridRows}
+                isGridVisible={editor.is3DGridVisible}
                 layerHeightMeters={editor.layerHeightMeters}
+                onCameraStateChange={editor.setThreeCameraState}
                 placements={editor.placements}
+                resetSignal={editor.threeCameraResetKey}
+                savedCameraState={editor.threeCameraState}
                 viewZoom={editor.viewZoom}
               />
             )}
@@ -259,6 +266,18 @@ function Design({ onNavigate }) {
               >
                 <Icon name="rotate" size={16} />
               </button>
+              {editor.viewMode === '3d' && (
+                <button
+                  type="button"
+                  className={!editor.is3DGridVisible ? 'active' : ''}
+                  aria-label="Ver solo lo construido"
+                  aria-pressed={!editor.is3DGridVisible}
+                  onClick={() => editor.setIs3DGridVisible((current) => !current)}
+                  title="Ver solo lo construido"
+                >
+                  <Icon name="eye" size={16} />
+                </button>
+              )}
             </div>
 
             <div className="design-zoom" aria-label="Control de zoom">
@@ -276,7 +295,7 @@ function Design({ onNavigate }) {
               >
                 -
               </button>
-              <button type="button" aria-label="Centrar vista" onClick={editor.resetBoardOffset}>
+              <button type="button" aria-label="Centrar vista" onClick={editor.resetView}>
                 <Icon name="fullscreen" size={16} />
               </button>
             </div>
@@ -292,7 +311,7 @@ function Design({ onNavigate }) {
                   aria-label="Bajar capa"
                   onClick={() => editor.setActiveFloor((current) => Math.max(0, current - 1))}
                 >
-                  -
+                  &lt;
                 </button>
                 <button type="button" aria-label={`Capa activa ${editor.activeFloor}`}>
                   Capa {editor.activeFloor}
@@ -302,7 +321,7 @@ function Design({ onNavigate }) {
                   aria-label="Subir capa"
                   onClick={() => editor.setActiveFloor((current) => current + 1)}
                 >
-                  +
+                  &gt;
                 </button>
                 <button
                   type="button"

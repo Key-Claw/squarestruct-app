@@ -233,6 +233,9 @@ function useDesignEditor() {
   const [activeFloor, setActiveFloor] = useState(draft?.activeFloor || 0)
   const [viewMode, setViewMode] = useState('2d')
   const [viewZoom, setViewZoom] = useState(INITIAL_VIEW_ZOOM)
+  const [is3DGridVisible, setIs3DGridVisible] = useState(true)
+  const [threeCameraResetKey, setThreeCameraResetKey] = useState(0)
+  const [threeCameraState, setThreeCameraState] = useState(null)
   const [boardOffset, setBoardOffset] = useState({ x: 0, y: 0 })
   const [isRotated, setIsRotated] = useState(false)
   const [isFlipped, setIsFlipped] = useState(draft?.isFlipped || false)
@@ -443,6 +446,16 @@ function useDesignEditor() {
     setBoardOffset({ x: 0, y: 0 })
   }
 
+  const resetView = () => {
+    if (viewMode === '3d') {
+      setThreeCameraState(null)
+      setThreeCameraResetKey((current) => current + 1)
+      return
+    }
+
+    resetBoardOffset()
+  }
+
   return {
     activeCategory,
     activeFloor,
@@ -454,6 +467,7 @@ function useDesignEditor() {
     gridColumns,
     gridCellSizeMeters,
     gridRows,
+    is3DGridVisible,
     jumpToSelectedPieceHeight,
     layerHeightMeters,
     isLoadingPieces,
@@ -467,18 +481,23 @@ function useDesignEditor() {
     placePiece,
     removePiece,
     resetBoardOffset,
+    resetView,
     saveProject,
     selectCategory,
     selectedPiece,
     selectedPieceId,
     setActiveFloor,
+    setIs3DGridVisible,
     setIsFlipped,
     setIsRotated,
     setMaterialFilter,
     setSelectedPieceId,
     setViewMode,
+    setThreeCameraState,
     stats,
     statusMessage,
+    threeCameraResetKey,
+    threeCameraState,
     viewMode,
     visiblePieces,
     viewZoom,

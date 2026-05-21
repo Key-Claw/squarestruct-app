@@ -1,6 +1,6 @@
 # Backend SquareStruct
 
-Backend Express de SquareStruct V2. Expone una API REST para autenticacion, usuarios, perfil, productos y pedidos, usando MySQL/MariaDB mediante `mysql2/promise`.
+Backend Express de SquareStruct V3. Expone una API REST para autenticacion, usuarios, perfil, productos y pedidos, usando MySQL/MariaDB mediante `mysql2/promise`.
 
 ## Stack
 
@@ -23,9 +23,9 @@ backend/
   db/
     schema.sql       Modelo relacional completo
     seeds.sql        Datos iniciales
-    migrations/      Cambios incrementales aplicados durante V2
+    migrations/      Cambios incrementales aplicados durante V3
     consultas.md     Consultas SQL de comprobacion
-  postman/           Colecciones MVP y V2
+  postman/           Colecciones MVP y V3
   src/
     app.js           Express, CORS, JSON, pool MySQL y montaje de rutas
     routes/          usuarios, productos, pedidos y perfil
@@ -39,7 +39,7 @@ backend/
   server.js          Arranque del servidor
 ```
 
-Nota: `src/services/userService.js` y `src/services/productService.js` son restos historicos en CommonJS y no forman parte del flujo ESM activo de V2. La logica real esta actualmente en controladores y middlewares.
+Nota: `src/services/userService.js` y `src/services/productService.js` son restos historicos en CommonJS y no forman parte del flujo ESM activo de V3. La logica real esta actualmente en controladores y middlewares.
 
 ## Variables De Entorno
 
@@ -139,11 +139,11 @@ Roles:
 | `GET` | `/api/pedidos/admin/todos` | JWT + admin |
 | `PATCH` | `/api/pedidos/:id/estado` | JWT + admin |
 
-`/api/orders` es alias de `/api/pedidos` y lo usa el frontend V2.
+`/api/orders` es alias de `/api/pedidos` y lo usa el frontend V3.
 
 ## Pedidos Y Facturacion
 
-V2 tiene checkout conectado al backend:
+V3 tiene checkout conectado al backend:
 
 - `Checkout.jsx` construye un pedido desde el carrito.
 - `orderService.js` envia `POST /api/orders`.
@@ -191,11 +191,11 @@ Los tests de integracion requieren MySQL levantado y datos cargados desde `schem
 ## Postman
 
 ```text
-backend/postman/squarestruct-v2.postman_collection.json
+backend/postman/squarestruct-v3.postman_collection.json
 backend/postman/squarestruct-mvp.postman_collection.json
 ```
 
-La coleccion V2 es la referencia actual para pruebas manuales.
+La coleccion V3 es la referencia actual para pruebas manuales.
 
 ## Despliegue
 

@@ -131,5 +131,5 @@ jobs:
       - name: Lint frontend # Esto es opcional, pero es buena practica tener un paso de lint para asegurarnos de que el codigo sigue las reglas de estilo definidas.
         run: npm run lint
 
-      - name: Build frontend # Esto compila la aplicacion React usando Vite. Si el backend no esta corriendo o no se puede conectar, este paso fallara, lo cual es bueno porque nos asegura que el frontend siempre se construye con una API funcional.
+      - name: Build frontend # Compila la aplicacion React usando Vite y valida imports, assets, CSS y variables de build.
         run: npm run build
