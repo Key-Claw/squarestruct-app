@@ -466,9 +466,12 @@ button.design-piece-card {
   height: 100%;
   min-height: inherit;
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.68), rgba(251, 253, 255, 0.94)),
-    radial-gradient(circle at 66% 22%, rgba(95, 159, 56, 0.1), transparent 34%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.58), rgba(251, 253, 255, 0.94)),
+    linear-gradient(to right, rgba(23, 63, 95, 0.035) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(23, 63, 95, 0.035) 1px, transparent 1px),
+    radial-gradient(circle at 66% 22%, rgba(95, 159, 56, 0.07), transparent 34%),
     #fbfdff;
+  background-size: auto, 18px 18px, 18px 18px, auto, auto;
 }
 
 .design-three-shell canvas {
@@ -515,6 +518,45 @@ button.design-piece-card {
   margin-top: 4px;
   color: #4f8f2f;
   font-size: 0.95rem;
+}
+
+.design-view-cube {
+  position: absolute;
+  top: 28px;
+  right: 108px;
+  z-index: 3;
+  width: 72px;
+  height: 72px;
+  transform: rotateX(58deg) rotateZ(45deg);
+  transform-style: preserve-3d;
+  filter: drop-shadow(0 12px 22px rgba(15, 23, 42, 0.12));
+  pointer-events: none;
+}
+
+.design-view-cube span {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border: 1px solid rgba(23, 63, 95, 0.18);
+  background: rgba(255, 255, 255, 0.86);
+  color: #102736;
+  font-size: 0.5rem;
+  font-weight: 850;
+  letter-spacing: 0.04em;
+}
+
+.design-view-cube__top {
+  transform: translate3d(12px, 0, 24px);
+}
+
+.design-view-cube__front {
+  transform: rotateX(90deg) translate3d(12px, 24px, 0);
+}
+
+.design-view-cube__side {
+  transform: rotateY(90deg) translate3d(24px, 0, 12px);
 }
 
 .design-boceto-image {
@@ -668,7 +710,7 @@ button.design-piece-card {
       transparent 4px 8px
     ),
     color-mix(in srgb, var(--piece-color, #6b7280) 8%, transparent);
-  opacity: 0.62;
+  opacity: var(--floor-opacity, 0.62);
 }
 
 .design-placement {
@@ -704,6 +746,7 @@ button.design-piece-card {
 }
 
 .design-toolbar,
+.design-editor-toolbar,
 .design-zoom,
 .design-floor-switch,
 .design-side-tools,
@@ -720,7 +763,21 @@ button.design-piece-card {
   left: 44px;
 }
 
+.design-editor-toolbar {
+  top: 22px;
+  left: 24px;
+  z-index: 4;
+  gap: 4px;
+  padding: 4px;
+  border: 1px solid rgba(23, 63, 95, 0.12);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.82);
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.08);
+  backdrop-filter: blur(12px);
+}
+
 .design-toolbar button,
+.design-editor-toolbar button,
 .design-zoom button,
 .design-floor-switch button,
 .design-view-switch button {
@@ -734,7 +791,25 @@ button.design-piece-card {
   box-shadow: none;
 }
 
+.design-editor-toolbar button {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  font-size: 0.82rem;
+  line-height: 1;
+  transition: background 160ms ease, border-color 160ms ease, color 160ms ease, transform 160ms ease;
+}
+
+.design-editor-toolbar button:hover {
+  transform: translateY(-1px);
+  border-color: rgba(95, 159, 56, 0.35);
+}
+
 .design-toolbar .active,
+.design-editor-toolbar .active,
 .design-view-switch .active {
   border-color: #5f9f38;
   background: #5f9f38;
@@ -749,11 +824,10 @@ button.design-piece-card {
 }
 
 .design-floor-switch {
-  display: none;
-  right: clamp(78px, 5vw, 96px);
-  top: 50%;
+  left: 24px;
+  bottom: 24px;
   flex-direction: column;
-  transform: translateY(-22%);
+  transform: none;
 }
 
 .design-floor-switch button:nth-child(2) {
@@ -861,6 +935,62 @@ button.design-piece-card {
   font-weight: 750;
 }
 
+.design-utility-popover--pieces button {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 2px 10px;
+  align-items: center;
+  width: 100%;
+  border: 1px solid rgba(23, 63, 95, 0.1);
+  border-radius: 8px;
+  background: rgba(244, 251, 239, 0.72);
+  padding: 9px 10px;
+  color: #102736;
+  text-align: left;
+  transition: border-color 160ms ease, background 160ms ease, color 160ms ease;
+}
+
+.design-utility-popover--pieces button:hover,
+.design-utility-popover--pieces button.active {
+  border-color: rgba(95, 159, 56, 0.52);
+  background: #eef8e9;
+}
+
+.design-utility-popover--pieces button.active {
+  color: #4f8f2f;
+}
+
+.design-utility-popover--pieces button span,
+.design-utility-popover--pieces button small,
+.design-utility-popover--pieces button b {
+  padding: 0;
+  background: transparent;
+}
+
+.design-utility-popover--pieces button span {
+  overflow: hidden;
+  font-weight: 850;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.design-utility-popover--pieces button small {
+  grid-column: 1;
+  color: rgba(23, 63, 95, 0.72);
+  font-size: 0.68rem;
+  font-weight: 800;
+}
+
+.design-utility-popover--pieces button b {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  min-width: 28px;
+  border-radius: 999px;
+  background: #fff;
+  padding: 4px 8px;
+  text-align: center;
+}
+
 .design-plan-actions {
   display: grid;
   gap: 8px;
@@ -869,6 +999,9 @@ button.design-piece-card {
 .design-plan-actions .design-outline-btn {
   width: 100%;
   min-height: 40px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   justify-content: center;
   font-size: 0.72rem;
 }
@@ -1574,7 +1707,7 @@ button.design-piece-card {
   }
 
   .design-workspace {
-    --design-desktop-tool-height: clamp(500px, calc(100vh - 245px), 700px);
+    --design-desktop-tool-height: clamp(620px, calc(100vh - 190px), 820px);
   }
 
   .design-pieces-panel,
@@ -1961,6 +2094,38 @@ button.design-piece-card {
   background: #5f9f38;
 }
 
+.design-clear-canvas-btn {
+  position: absolute;
+  right: 0;
+  bottom: 24px;
+  z-index: 4;
+  display: grid;
+  place-items: center;
+  gap: 6px;
+  width: 78px;
+  min-height: 76px;
+  border: 1px solid rgba(23, 63, 95, 0.09);
+  border-right: 0;
+  border-radius: 16px 0 0 16px;
+  background: rgba(255, 255, 255, 0.78);
+  color: #102736;
+  font-size: 0.56rem;
+  font-weight: 850;
+  letter-spacing: 0.03em;
+  line-height: 1;
+  text-transform: uppercase;
+  box-shadow: 0 18px 38px rgba(15, 23, 42, 0.08);
+  backdrop-filter: blur(14px);
+  transition: border-color 160ms ease, background 160ms ease, color 160ms ease, transform 160ms ease;
+}
+
+.design-clear-canvas-btn:hover {
+  border-color: rgba(95, 159, 56, 0.34);
+  background: rgba(95, 159, 56, 0.06);
+  color: #4f8f2f;
+  transform: translateY(-1px);
+}
+
 .design-utility-popover,
 .design-summary-panel {
   border-color: rgba(23, 63, 95, 0.1);
@@ -2058,6 +2223,15 @@ button.design-piece-card {
     height: 15px;
   }
 
+  .design-clear-canvas-btn {
+    right: 0;
+    bottom: 16px;
+    width: 58px;
+    min-height: 58px;
+    border-radius: 14px 0 0 14px;
+    font-size: 0.48rem;
+  }
+
   .design-utility-popover,
   .design-summary-panel {
     top: 70px;
@@ -2128,6 +2302,68 @@ button.design-piece-card {
   .design-topbar-media img {
     height: 225px;
     min-height: 225px;
+  }
+}
+
+/* Selector de plantas siempre visible en el plano 2D. */
+.design-floor-switch {
+  left: 24px;
+  right: auto;
+  top: auto;
+  bottom: 24px;
+  z-index: 4;
+  display: grid !important;
+  gap: 10px;
+  min-width: 218px;
+  border: 1px solid rgba(23, 63, 95, 0.1);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.86);
+  padding: 12px 16px;
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
+  backdrop-filter: blur(14px);
+  transform: none;
+}
+
+.design-floor-switch strong {
+  color: #102736;
+  font-size: 0.72rem;
+  font-weight: 850;
+  letter-spacing: 0.04em;
+  line-height: 1;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.design-floor-switch > div {
+  display: grid;
+  grid-template-columns: 40px 1fr 40px;
+  gap: 8px;
+}
+
+.design-floor-switch button,
+.design-floor-switch button:nth-child(2) {
+  width: 100%;
+  height: 38px;
+  border: 1px solid rgba(23, 63, 95, 0.13);
+  border-radius: 7px;
+  background: rgba(255, 255, 255, 0.92);
+  color: #102736;
+  font-weight: 850;
+  box-shadow: none;
+}
+
+.design-floor-switch button:nth-child(2) {
+  color: #4f8f2f;
+}
+
+@media (max-width: 767.98px) {
+  .design-floor-switch {
+    top: auto;
+    right: auto;
+    bottom: 82px;
+    left: 14px;
+    min-width: min(218px, calc(100% - 96px));
+    padding: 10px 12px;
   }
 }
 

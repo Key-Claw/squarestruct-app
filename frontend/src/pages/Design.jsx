@@ -1,5 +1,9 @@
 import { useState } from 'react'
 import designHeroImage from '../assets/design/design-hero.webp'
+import escalerasImage from '../assets/design/escaleras.webp'
+import puertaImage from '../assets/design/puerta.webp'
+import sueloImage from '../assets/design/suelo.webp'
+import ventanaImage from '../assets/design/ventana.webp'
 import bloqueEcoImage from '../assets/catalog/bloque-eco.webp'
 import bloqueHormigonImage from '../assets/catalog/bloque-hormigon.webp'
 import pilarEcoImage from '../assets/catalog/pilar-eco.webp'
@@ -32,6 +36,11 @@ const normalizeDesignText = (value) => (
 )
 
 const getDesignPieceImage = (piece) => {
+  if (piece.id === 'accessory-door-basic') return puertaImage
+  if (piece.id === 'accessory-window-basic') return ventanaImage
+  if (piece.id === 'accessory-stairs-basic') return escalerasImage
+  if (piece.id === 'accessory-floor-basic') return sueloImage
+
   const material = normalizeDesignText(piece.material)
   const isEco = material.includes('plastico') || material.includes('eco') || material.includes('recicl')
 
@@ -42,7 +51,7 @@ const getDesignPieceImage = (piece) => {
 }
 
 const getDesignPieceBadge = (piece) => {
-  if (piece.category === 'accesorios') return 'Accesorio'
+  if (piece.category === 'accesorios') return 'Modelo'
 
   const material = normalizeDesignText(piece.material)
   return material.includes('plastico') || material.includes('eco') || material.includes('recicl')
@@ -193,16 +202,62 @@ function Design({ onNavigate }) {
                 placePiece={editor.placePiece}
                 removePiece={editor.removePiece}
                 viewZoom={editor.viewZoom}
+                zoomByWheel={editor.zoomByWheel}
               />
             ) : (
               <Viewer3D
+                activeFloor={editor.activeFloor}
                 designPieces={editor.designPieces}
+                gridCellSizeMeters={editor.gridCellSizeMeters}
                 gridColumns={editor.gridColumns}
                 gridRows={editor.gridRows}
                 placements={editor.placements}
                 viewZoom={editor.viewZoom}
               />
             )}
+
+            <div className="design-editor-toolbar" aria-label="Herramientas de edición">
+              <button
+                type="button"
+                className={!isPanMode ? 'active' : ''}
+                aria-label="Modo colocar piezas"
+                aria-pressed={!isPanMode}
+                onClick={() => setIsPanMode(false)}
+                title="Colocar piezas"
+              >
+                <Icon name="penTool" size={16} />
+              </button>
+              <button
+                type="button"
+                className={isPanMode ? 'active' : ''}
+                aria-label="Mover por el plano"
+                aria-pressed={isPanMode}
+                onClick={() => setIsPanMode((current) => !current)}
+                title="Mover por el plano"
+              >
+                <Icon name="move" size={16} />
+              </button>
+              <button
+                type="button"
+                className={editor.isFlipped ? 'active' : ''}
+                aria-label="Cambiar sentido de la siguiente pieza"
+                aria-pressed={editor.isFlipped}
+                onClick={() => editor.setIsFlipped((current) => !current)}
+                title="Cambiar sentido"
+              >
+                <Icon name="swap" size={16} />
+              </button>
+              <button
+                type="button"
+                className={editor.isRotated ? 'active' : ''}
+                aria-label="Girar siguiente pieza"
+                aria-pressed={editor.isRotated}
+                onClick={() => editor.setIsRotated((current) => !current)}
+                title="Girar siguiente pieza"
+              >
+                <Icon name="rotate" size={16} />
+              </button>
+            </div>
 
             <div className="design-zoom" aria-label="Control de zoom">
               <button
@@ -219,91 +274,88 @@ function Design({ onNavigate }) {
               >
                 -
               </button>
-              <button type="button" aria-label={`Zoom ${Math.round(editor.viewZoom * 100)} por ciento`}>
-                {Math.round(editor.viewZoom * 100)}
+              <button type="button" aria-label="Centrar vista" onClick={editor.resetBoardOffset}>
+                <Icon name="fullscreen" size={16} />
               </button>
             </div>
 
             <div className="design-floor-switch" aria-label="Cambiar planta">
-              <button
-                type="button"
-                aria-label="Subir planta"
-                onClick={() => editor.setActiveFloor((current) => current + 1)}
-              >
-                ↑
-              </button>
-              <button type="button" aria-label={`Planta activa ${editor.activeFloor}`}>
-                P{editor.activeFloor}
-              </button>
-              <button
-                type="button"
-                aria-label="Bajar planta"
-                onClick={() => editor.setActiveFloor((current) => Math.max(0, current - 1))}
-              >
-                ↓
-              </button>
+              <strong>Planta activa</strong>
+              <div>
+                <button
+                  type="button"
+                  aria-label="Bajar planta"
+                  onClick={() => editor.setActiveFloor((current) => Math.max(0, current - 1))}
+                >
+                  -
+                </button>
+                <button type="button" aria-label={`Planta activa ${editor.activeFloor}`}>
+                  P{editor.activeFloor}
+                </button>
+                <button
+                  type="button"
+                  aria-label="Subir planta"
+                  onClick={() => editor.setActiveFloor((current) => current + 1)}
+                >
+                  +
+                </button>
+              </div>
             </div>
 
             <div className="design-side-tools" aria-label="Utilidades del plano">
               <button type="button" className={activeUtilityPanel === 'plan' ? 'active' : ''} onClick={() => toggleUtilityPanel('plan')}>
-                <span aria-hidden="true">💾</span>
+                <Icon name="save" size={18} />
                 <span>Plano</span>
-              </button>
-              <button
-                type="button"
-                aria-pressed={isPanMode}
-                className={isPanMode ? 'active' : ''}
-                onClick={() => setIsPanMode((current) => !current)}
-              >
-                <span aria-hidden="true">↔</span>
-                <span>Mover</span>
               </button>
               <button type="button" className={activeUtilityPanel === 'pieces' ? 'active' : ''} onClick={() => toggleUtilityPanel('pieces')}>
                 <Icon name="cube" size={18} />
                 <span>Piezas</span>
               </button>
-              <button type="button" className={activeUtilityPanel === 'floor' ? 'active' : ''} onClick={() => toggleUtilityPanel('floor')}>
-                <Icon name="grid" size={18} />
-                <span>Plantas</span>
-              </button>
               <button type="button" className={`design-side-tool--divider${activeUtilityPanel === 'budget' ? ' active' : ''}`} onClick={() => toggleUtilityPanel('budget')}>
                 <Icon name="list" size={18} />
                 <span>Presupuesto</span>
               </button>
+            </div>
+
+            <div className="design-view-switch" aria-label="Cambiar vista">
               <button
                 type="button"
-                aria-pressed={editor.isRotated}
-                className={`design-side-tool--divider${editor.isRotated ? ' active' : ''}`}
-                onClick={() => editor.setIsRotated((current) => !current)}
+                className={editor.viewMode === '2d' ? 'active' : ''}
+                onClick={() => editor.setViewMode('2d')}
               >
-                <Icon name="fit" size={18} />
-                <span>Girar</span>
+                2D
               </button>
-              <button type="button" onClick={() => editor.setViewMode(editor.viewMode === '2d' ? '3d' : '2d')}>
-                <Icon name={editor.viewMode === '2d' ? 'cube' : 'grid'} size={18} />
-                <span>{editor.viewMode === '2d' ? '3D' : '2D'}</span>
+              <button
+                type="button"
+                className={editor.viewMode === '3d' ? 'active' : ''}
+                onClick={() => editor.setViewMode('3d')}
+              >
+                3D
               </button>
             </div>
+
+            <button
+              type="button"
+              className="design-clear-canvas-btn"
+              aria-label="Limpiar plano"
+              onClick={editor.clearProject}
+              title="Limpiar plano"
+            >
+              <Icon name="trash" size={18} />
+              <span>Limpiar</span>
+            </button>
 
             {activeUtilityPanel === 'plan' && (
               <div className="design-utility-popover design-utility-popover--plan">
                 <strong>Plano</strong>
                 <div className="design-plan-actions">
                   <button type="button" className="btn design-outline-btn" onClick={editor.clearProject}>Nuevo plano</button>
-                  <button type="button" className="btn design-outline-btn" onClick={editor.saveProject}>💾 Guardar plano</button>
+                  <button type="button" className="btn design-outline-btn" onClick={editor.saveProject}>
+                    <Icon name="save" size={15} />
+                    <span>Guardar plano</span>
+                  </button>
                   <button type="button" className="btn design-outline-btn" onClick={editor.loadProject}>Cargar plano</button>
                   <button type="button" className="btn design-outline-btn" onClick={editor.exportProject}>Exportar</button>
-                </div>
-              </div>
-            )}
-
-            {activeUtilityPanel === 'floor' && (
-              <div className="design-utility-popover design-utility-popover--floor">
-                <strong>Planta activa</strong>
-                <div className="design-floor-mini">
-                  <button type="button" onClick={() => editor.setActiveFloor((current) => Math.max(0, current - 1))}>-</button>
-                  <span>P{editor.activeFloor}</span>
-                  <button type="button" onClick={() => editor.setActiveFloor((current) => current + 1)}>+</button>
                 </div>
               </div>
             )}
@@ -313,7 +365,19 @@ function Design({ onNavigate }) {
                 <strong>Piezas colocadas</strong>
                 {editor.stats.items.length > 0 ? (
                   editor.stats.items.map((item) => (
-                    <span key={`${item.name}-${item.material}`}>{item.name} · {item.amount}</span>
+                    <button
+                      type="button"
+                      className={editor.selectedPieceId === item.pieceId ? 'active' : ''}
+                      key={item.pieceId}
+                      onClick={() => {
+                        editor.selectCategory(item.category)
+                        editor.setSelectedPieceId(item.pieceId)
+                      }}
+                    >
+                      <span>{item.name}</span>
+                      <small>{item.size}</small>
+                      <b>{item.amount}</b>
+                    </button>
                   ))
                 ) : (
                   <span>Sin piezas colocadas</span>
