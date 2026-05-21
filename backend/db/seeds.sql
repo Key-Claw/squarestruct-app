@@ -38,7 +38,7 @@ VALUES
   (14, 'Alberto', 'Cano', 'Serrano', 'alberto.cano@gmail.com', '$2b$10$uDPwExnvB1b.4fDtKNOKZOx.4BmAODWoLc23EtZZOa6IPljXf3cjW', 'usuario'),
   (15, 'Marta', 'Iglesias', NULL, 'marta.iglesias@gmail.com', '$2b$10$uDPwExnvB1b.4fDtKNOKZOx.4BmAODWoLc23EtZZOa6IPljXf3cjW', 'usuario'),
   (16, 'Sergio', 'Delgado', 'Nieto', 'sergio.delgado@gmail.com', '$2b$10$uDPwExnvB1b.4fDtKNOKZOx.4BmAODWoLc23EtZZOa6IPljXf3cjW', 'usuario'),
-  (17, 'Andrea', 'Reyes', NULL, 'andrea.reyes@gmail.com]', '$2b$10$uDPwExnvB1b.4fDtKNOKZOx.4BmAODWoLc23EtZZOa6IPljXf3cjW', 'usuario'),
+  (17, 'Andrea', 'Reyes', NULL, 'andrea.reyes@gmail.com', '$2b$10$uDPwExnvB1b.4fDtKNOKZOx.4BmAODWoLc23EtZZOa6IPljXf3cjW', 'usuario'),
   (18, 'Fernando', 'Vidal', 'Prieto', 'fernando.vidal@gmail.com', '$2b$10$uDPwExnvB1b.4fDtKNOKZOx.4BmAODWoLc23EtZZOa6IPljXf3cjW', 'usuario'),
   (19, 'Natalia', 'Flores', NULL, 'natalia.flores@gmail.com', '$2b$10$uDPwExnvB1b.4fDtKNOKZOx.4BmAODWoLc23EtZZOa6IPljXf3cjW', 'usuario'),
   (20, 'Pablo', 'Romero', 'Saez', 'pablo.romero@gmail.com', '$2b$10$uDPwExnvB1b.4fDtKNOKZOx.4BmAODWoLc23EtZZOa6IPljXf3cjW', 'usuario');
