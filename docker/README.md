@@ -261,4 +261,4 @@ docker pull mysql:8.4
 
 ## Idea clave
 
-Para trabajar en clase y desarrollar con rapidez, use `docker-compose-dev.yml`. Para comprobar que todo el proyecto puede arrancar en contenedores, use `docker-compose.yml`.
+Para desarrollo diario, use `docker-compose-dev.yml`. Para comprobar que todo el proyecto puede arrancar en contenedores, use `docker-compose.yml`.

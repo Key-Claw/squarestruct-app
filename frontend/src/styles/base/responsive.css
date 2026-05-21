@@ -584,16 +584,49 @@
     --bs-gutter-y: 16px;
   }
 
+  .about-top-grid,
+  .about-content-grid {
+    display: contents;
+  }
+
+  .about-profile-col {
+    display: contents;
+  }
+
   .about-layout-row > main {
     order: 1;
   }
 
-  .about-layout-row > .about-profile-col {
+  .about-layout-row > .about-team-card {
+    order: 1;
+  }
+
+  .about-content-grid > .about-story-card {
     order: 2;
   }
 
-  .about-profile-col {
-    gap: 8px;
+  .about-top-grid > .about-profile-col:first-of-type .about-profile-photo-card {
+    order: 3;
+  }
+
+  .about-top-grid > .about-profile-col:first-of-type .about-name-card {
+    order: 4;
+  }
+
+  .about-content-grid > .about-profile-text-card:first-child {
+    order: 5;
+  }
+
+  .about-top-grid > .about-profile-col:last-of-type .about-profile-photo-card {
+    order: 6;
+  }
+
+  .about-top-grid > .about-profile-col:last-of-type .about-name-card {
+    order: 7;
+  }
+
+  .about-content-grid > .about-profile-text-card:last-child {
+    order: 8;
   }
 
   .about-name-card .card-body {
