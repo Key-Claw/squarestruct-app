@@ -1,5 +1,5 @@
 import request from 'supertest';
-import app from '../../src/app.js';
+import app, { db } from '../../src/app.js';
 
 describe('Registro y login de usuario', () => {
   const email = `test${Date.now()}@mail.com`;
