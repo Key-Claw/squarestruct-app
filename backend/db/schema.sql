@@ -96,6 +96,31 @@ CREATE TABLE pedidoDetalles (
     ON DELETE RESTRICT
 ) ENGINE=InnoDB;
 
+/*
+-- Preparacion para la entidad de planos que se usara mas adelante desde design.
+-- Se deja comentada para revisar la estructura sin activar cambios todavia.
+CREATE TABLE planos (
+  idPlano INT AUTO_INCREMENT PRIMARY KEY,
+  idUsuario INT NOT NULL,
+  nombre VARCHAR(150) NOT NULL,
+  descripcion VARCHAR(500),
+  metrosCuadrados DECIMAL(10, 2) NOT NULL,
+  precioEstimado DECIMAL(12, 2) NOT NULL DEFAULT 0,
+  datosJSON JSON,
+  fechaCreacion TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  fechaActualizacion TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  CONSTRAINT chkPlanoMetrosCuadrados CHECK (metrosCuadrados >= 0),
+  CONSTRAINT chkPlanoPrecioEstimado CHECK (precioEstimado >= 0),
+  CONSTRAINT fkPlanosUsuarios
+    FOREIGN KEY (idUsuario)
+    REFERENCES usuarios (idUsuario)
+    ON UPDATE CASCADE
+    ON DELETE RESTRICT
+) ENGINE=InnoDB;
+
+CREATE INDEX idxPlanosIdUsuario ON planos (idUsuario);
+*/
+
 -- Indices para optimizar las consultas que usan FOREIGN KEYS en WHERE o JOIN
 -- Mejora el rendimiento de busquedas como: productos por idProveedor, pedidos por idUsuario, etc.
 CREATE INDEX idxProductosIdProveedor ON productos (idProveedor);
