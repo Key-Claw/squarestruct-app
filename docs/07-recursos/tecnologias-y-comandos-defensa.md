@@ -1,6 +1,6 @@
 # Tecnologias Y Comandos
 
-Resumen rapido de tecnologias, comandos y comprobaciones de SquareStruct V2.
+Resumen rapido de tecnologias, comandos y comprobaciones de SquareStruct V3.
 
 ## Tecnologias
 
@@ -10,6 +10,7 @@ Resumen rapido de tecnologias, comandos y comprobaciones de SquareStruct V2.
 | Frontend | Vite | Desarrollo, proxy y build. |
 | Frontend | React Router DOM | Rutas con `HashRouter`. |
 | Frontend | Bootstrap | Grid, formularios, tablas y utilidades. |
+| Frontend | Three.js + React Three Fiber + Drei | Vista 3D del disenador modular. |
 | Frontend | SweetAlert2 | Confirmaciones y alertas. |
 | Backend | Node.js | Entorno de ejecucion. |
 | Backend | Express | API REST. |

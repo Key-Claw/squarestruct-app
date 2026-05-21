@@ -48,9 +48,9 @@ Los overlays `AuthModal`, `CartPanel` y `Checkout` se renderizan fuera de las ru
 | `Home.jsx` | Pagina inicial y acceso a secciones principales. |
 | `Gallery.jsx` | Galeria visual de soluciones modulares con filtro y modal. |
 | `Catalog.jsx` | Catalogo conectado a API con filtros y carrito. |
-| `Design.jsx` | Prototipo visual del disenador modular; no persiste planos. |
+| `Design.jsx` | Editor visual modular 2D/3D: carga piezas de catalogo, coloca elementos, calcula resumen y gestiona borrador local. |
 | `AboutUs.jsx` | Presentacion del equipo/proyecto. |
-| `settings/Settings.jsx` | Perfil, facturas, facturacion admin, usuarios admin y planos placeholder. |
+| `settings/Settings.jsx` | Perfil, facturas, facturacion admin, usuarios admin y seccion de planos pendiente de persistencia en BD. |
 
 ## Componentes
 
@@ -109,6 +109,21 @@ Las tabs administrativas se protegen en `App.jsx` y `Settings.jsx`. Si un usuari
 5. el backend crea el pedido;
 6. el carrito se limpia y se navega a facturas.
 
+## Disenador
+
+`Design.jsx` usa `useDesignEditor.js` como hook principal. El flujo real es:
+
+1. carga productos desde `/api/productos`;
+2. transforma bloques y pilares en piezas colocables con `mapProductToDesignPiece`;
+3. anade accesorios locales como puerta, ventana, escalera y suelo;
+4. permite colocar piezas en un plano 2D por celdas;
+5. visualiza el resultado en 3D con Three.js, React Three Fiber y Drei;
+6. calcula piezas colocadas, superficie, altura y precio estimado;
+7. guarda/carga un borrador en `localStorage` con la clave `squarestruct-design-draft`;
+8. exporta el plano como JSON.
+
+El limite importante para defenderlo es que todavia no existe una tabla `planos`: el borrador no se guarda en MySQL ni esta asociado a un usuario.
+
 ## Settings
 
 `Settings.jsx` concentra tabs porque comparten usuario, permisos y datos de pedidos:
@@ -117,7 +132,7 @@ Las tabs administrativas se protegen en `App.jsx` y `Settings.jsx`. Si un usuari
 - `facturas`: pedidos reales del usuario autenticado.
 - `facturacion`: historial admin con filtros, estadisticas y acciones aceptar/denegar.
 - `usuarios`: administracion de usuarios.
-- `planos`: placeholder hasta que exista entidad `plano`.
+- `planos`: seccion pendiente de persistencia en BD; el disenador guarda borrador local en navegador.
 
 ## Estilos
 

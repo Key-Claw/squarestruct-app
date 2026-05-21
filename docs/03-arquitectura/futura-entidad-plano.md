@@ -4,7 +4,7 @@
 
 Este documento explica como podria crecer la base de datos cuando se implemente el disenador de planos 3D.
 
-En `MVP v1` todavia no existe la entidad `plano`. La prioridad actual es validar registro, login, catalogo, carrito/base de pedidos y administracion inicial.
+En V3 todavia no existe la entidad `plano` en MySQL. El disenador actual permite trabajar en 2D/3D y guardar un borrador local en el navegador, pero no guarda proyectos en la base de datos.
 
 ## Por que no esta en el MVP
 
@@ -17,7 +17,7 @@ El disenador 3D es una funcionalidad mas compleja que requiere:
 - calculo de presupuesto;
 - posible visualizacion 3D.
 
-Por eso se deja para una fase posterior. La pagina `Design.jsx` existe como maqueta visual para explicar la direccion futura, pero no guarda planos ni calcula estructuras reales.
+Por eso la persistencia en base de datos se deja para una fase posterior. La pagina `Design.jsx` ya permite colocar piezas, verlas en 3D, calcular resumen estimado y exportar JSON, pero el guardado real por usuario requiere nuevas tablas.
 
 ## Que problema resolveria
 
@@ -79,10 +79,10 @@ La futura entidad se conectaria con:
 
 El modelo actual ya prepara parte de esta evolucion porque los productos tienen dimensiones y los pedidos pueden guardar varias lineas mediante `pedidoDetalles`.
 
-## Relacion con el SaaS
+## Relacion con la aplicacion actual
 
-Guardar planos es una funcionalidad tipica de SaaS porque permite que el usuario conserve proyectos en su cuenta y vuelva a ellos desde cualquier dispositivo.
+Guardar planos permitiria que el usuario conserve proyectos en su cuenta, los retome mas adelante y los conecte con catalogo, presupuesto y pedidos.
 
 ## Idea clave para explicar
 
-`MVP v1` prepara la base para el futuro disenador 3D porque ya separa usuarios, productos, pedidos y roles. La entidad `plano` seria la evolucion natural para guardar disenos modulares creados por usuarios en `v3`.
+V3 prepara la base para persistir el disenador porque ya separa usuarios, productos, pedidos y roles, y porque el frontend ya genera colocaciones de piezas. La entidad `plano` seria la evolucion natural para guardar disenos modulares creados por usuarios.

@@ -122,7 +122,7 @@ Ademas, `pedidoDetalles` guarda:
 
 Guardar `precioUnitario` es importante porque conserva el precio del producto en el momento del pedido, aunque el precio del catalogo cambie mas adelante.
 
-En `MVP v1`, la base de datos y el backend ya preparaban pedidos, y el frontend tenia un carrito visual. En V2 el checkout se conecta al backend mediante `Checkout.jsx` y `orderService.js`, creando pedidos reales desde el carrito.
+En `MVP v1`, la base de datos y el backend ya preparaban pedidos, y el frontend tenia un carrito visual. En V3 el checkout se conecta al backend mediante `Checkout.jsx` y `orderService.js`, creando pedidos reales desde el carrito.
 
 ## Por que los productos tienen dimensiones
 
@@ -154,7 +154,7 @@ Requiere:
 
 Por eso se deja para `v3`. `MVP v1` prepara la base, pero no intenta resolver todo el producto final.
 
-La pagina `Design.jsx` existe como maqueta visual para explicar la direccion futura, pero no implementa todavia un motor 3D ni guardado real de planos.
+En la V3, `Design.jsx` ya incorpora editor 2D, visualizacion 3D y borrador local en navegador. Lo que sigue pendiente es guardar planos reales en MySQL asociados a usuarios.
 
 ## Por que hay gestion admin inicial
 
@@ -168,7 +168,7 @@ En esta fase:
 - puede crear, actualizar y eliminar productos desde rutas protegidas de la API;
 - el acceso se protege con JWT y middleware de admin.
 
-En la MVP no se consideraba todavia un panel administrativo completo. En V2 la gestion de usuarios y la facturacion admin ya usan datos reales, aunque la entidad `plano` y el disenador persistente siguen perteneciendo a una fase posterior.
+En la MVP no se consideraba todavia un panel administrativo completo. En V3 la gestion de usuarios y la facturacion admin ya usan datos reales, aunque la entidad `plano` y el disenador persistente siguen perteneciendo a una fase posterior.
 
 ## Por que documentar consultas SQL
 
@@ -182,9 +182,9 @@ Incluyen consultas para:
 - preparar una presentacion;
 - conectar base de datos con frontend, gestion admin inicial y futuro diseno 3D.
 
-## Por que pensar en SaaS desde el MVP
+## Por que preparar una aplicacion web desde el MVP
 
-SquareStruct se plantea como una aplicacion SaaS porque busca ser un servicio online.
+SquareStruct se plantea como una aplicacion web completa porque necesita conectar interfaz, API y datos persistentes desde una base comprensible.
 
 Aunque el MVP se ejecute en local, la arquitectura ya separa:
 
@@ -199,4 +199,4 @@ Esa separacion facilita una futura subida a AWS o a una infraestructura similar.
 
 ## Idea clave para explicar
 
-Las decisiones tecnicas del MVP buscan equilibrio: construir algo funcional y comprensible ahora, pero preparado para crecer hacia una plataforma SaaS con disenador de planos, presupuestos y persistencia de proyectos.
+Las decisiones tecnicas del MVP buscan equilibrio: construir algo funcional y comprensible ahora, pero preparado para crecer hacia una aplicacion con disenador de planos, presupuestos y persistencia de proyectos.
