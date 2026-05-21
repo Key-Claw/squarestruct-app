@@ -17,6 +17,17 @@ Jobs:
 
 El backend usa `npm ci`. El frontend usa `npm install` por compatibilidad con dependencias opcionales nativas del stack Vite/Rolldown en el estado actual del lock.
 
+## Tecnologias Del Workflow
+
+| Area | Tecnologia |
+| --- | --- |
+| Runner | `ubuntu-latest`. |
+| Node | `20.19.0`. |
+| Base de datos | MySQL `8.0` como servicio de GitHub Actions. |
+| Backend | Express, mysql2, Jest y Supertest. |
+| Frontend | React, Vite, Vitest, Testing Library, jsdom y ESLint. |
+| Datos | `schema.sql` y `seeds.sql` cargados antes de ejecutar los tests de backend. |
+
 ## Comprobacion Local Rapida
 
 Frontend:

@@ -1,6 +1,6 @@
-# Revision V2 - Validaciones por comando
+# Revision V3 - Validaciones por comando
 
-Este documento recoge las validaciones ejecutadas durante la revision general de V2.
+Este documento recoge las validaciones ejecutadas durante la revision general de V3.
 
 La revision manual del frontend queda pendiente hasta terminar los retoques visuales finales.
 
@@ -120,8 +120,8 @@ Se revisaron las colecciones Postman de forma estatica.
 Acciones realizadas:
 
 - Se sustituyeron JWTs hardcodeados por variables `{{adminToken}}`.
-- Se sustituyo el placeholder `Bearer <JWT>` por `Bearer {{token}}`.
-- En Postman v2, se corrigio el request de cancelacion para apuntar a `http://localhost:3000/api/pedidos/1/cancelar` con metodo `PATCH`.
+- Se sustituyo el placeholder `Bearer <JWT>` por variables de coleccion como `Bearer {{userToken}}` y `Bearer {{adminToken}}`.
+- En Postman V3, se corrigio el request de cancelacion para apuntar a `http://localhost:3000/api/pedidos/1/cancelar` con metodo `PATCH`.
 
 Pendientes detectados:
 
