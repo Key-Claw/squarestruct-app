@@ -59,6 +59,7 @@ export const mapProductToDesignPiece = (product) => {
     },
     heightMeters: Math.max(0.05, (Number(product.alto) || 20) / 100),
     source: 'db',
+    structuralRole: 'structure',
   }
 }
 
@@ -66,7 +67,7 @@ export const accessoryPieces = [
   {
     id: 'accessory-door-basic',
     category: 'accesorios',
-    name: 'Puerta modelo',
+    name: 'Puerta',
     material: 'Accesorio local',
     size: '90 x 10 x 210 cm',
     price: 0,
@@ -74,11 +75,13 @@ export const accessoryPieces = [
     footprint: { width: 18, height: 2 },
     heightMeters: 2.1,
     source: 'local',
+    structuralRole: 'opening',
+    modelType: 'door',
   },
   {
     id: 'accessory-window-basic',
     category: 'accesorios',
-    name: 'Ventana modelo',
+    name: 'Ventana',
     material: 'Accesorio local',
     size: '100 x 10 x 120 cm',
     price: 0,
@@ -86,11 +89,13 @@ export const accessoryPieces = [
     footprint: { width: 20, height: 2 },
     heightMeters: 1.2,
     source: 'local',
+    structuralRole: 'opening',
+    modelType: 'window',
   },
   {
     id: 'accessory-stairs-basic',
     category: 'accesorios',
-    name: 'Escalera modelo',
+    name: 'Escalera',
     material: 'Accesorio local',
     size: '120 x 80 x 80 cm',
     price: 0,
@@ -98,11 +103,13 @@ export const accessoryPieces = [
     footprint: { width: 24, height: 16 },
     heightMeters: 0.8,
     source: 'local',
+    structuralRole: 'reference',
+    modelType: 'stairs',
   },
   {
     id: 'accessory-floor-basic',
     category: 'accesorios',
-    name: 'Suelo modelo',
+    name: 'Suelo',
     material: 'Accesorio local',
     size: '100 x 100 x 5 cm',
     price: 0,
@@ -110,5 +117,7 @@ export const accessoryPieces = [
     footprint: { width: 20, height: 20 },
     heightMeters: 0.05,
     source: 'local',
+    structuralRole: 'surface',
+    modelType: 'floor',
   },
 ]
