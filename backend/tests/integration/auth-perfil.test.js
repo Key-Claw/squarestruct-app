@@ -1,5 +1,5 @@
 import request from 'supertest';
-import app from '../../src/app.js';
+import app, { db } from '../../src/app.js';
 
 describe('Registro y login de usuario', () => {
   const email = `test${Date.now()}@mail.com`;
@@ -8,6 +8,10 @@ describe('Registro y login de usuario', () => {
   const adminPassword = '123456';
   let token;
   let adminToken;
+
+  afterAll(async () => {
+    await db.end();
+  });
 
   it('POST /api/usuarios/register debe registrar un usuario', async () => {
     const res = await request(app)
