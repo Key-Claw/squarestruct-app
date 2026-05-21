@@ -4,6 +4,8 @@ import escalerasImage from '../assets/design/escaleras.webp'
 import puertaImage from '../assets/design/puerta.webp'
 import sueloImage from '../assets/design/suelo.webp'
 import ventanaImage from '../assets/design/ventana.webp'
+import galleryCompactImage from '../assets/gallery/galeria-casa-compacta.webp'
+import galleryMinimalImage from '../assets/gallery/galeria-casa-minimalista.webp'
 import bloqueEcoImage from '../assets/catalog/bloque-eco.webp'
 import bloqueHormigonImage from '../assets/catalog/bloque-hormigon.webp'
 import pilarEcoImage from '../assets/catalog/pilar-eco.webp'
@@ -25,6 +27,115 @@ const howItWorks = [
   {
     title: 'Visualiza en 3D',
     text: 'Revisa el volumen construido con la vista tridimensional.',
+  },
+]
+
+const quickToolHelp = [
+  {
+    icon: 'penTool',
+    title: 'Colocar piezas',
+    text: 'Activa el modo de dibujo para añadir piezas sobre el plano 2D.',
+  },
+  {
+    icon: 'move',
+    title: 'Mover plano',
+    text: 'Desplaza el tablero por el plano para navegar.',
+  },
+  {
+    icon: 'swap',
+    title: 'Invertir sentido',
+    text: 'Cambia el sentido de la siguiente pieza antes de colocarla.',
+  },
+  {
+    icon: 'rotate',
+    title: 'Girar pieza',
+    text: 'Rota la próxima pieza para ajustar su orientación sobre la cuadrícula.',
+  },
+  {
+    icon: 'undo',
+    title: 'Deshacer',
+    text: 'Revierte el último cambio realizado sobre el plano.',
+  },
+  {
+    icon: 'redo',
+    title: 'Rehacer',
+    text: 'Recupera el último cambio que acabas de deshacer.',
+  },
+]
+
+const designGuides = {
+  '2d': {
+    title: 'Guía 2D',
+    intro: 'El plano 2D es el lugar donde construyes la lógica del proyecto antes de ver el volumen final.',
+    sections: [
+      {
+        title: '1. Elige la pieza adecuada',
+        text: 'Selecciona un bloque, pilar o accesorio desde la barra lateral y comprueba el material, el tipo y la planta activa antes de colocarlo.',
+      },
+      {
+        title: '2. Coloca y corrige en el plano',
+        text: 'Haz clic sobre el tablero para situar la pieza. Si mantienes pulsado, puedes pintar varios puntos seguidos; si cambias de idea, borra con la misma lógica.',
+      },
+      {
+        title: '3. Respeta las reglas de apoyo',
+        text: 'El editor valida si una pieza necesita apoyo debajo, una conexión lateral o estar en planta 0 para no dejar elementos flotando o mal anclados.',
+      },
+      {
+        title: '4. Cambia de planta cuando haga falta',
+        text: 'Sube y baja de altura para revisar cada capa del proyecto. Así puedes ajustar huecos, comprobar coincidencias y trabajar sección por sección.',
+      },
+      {
+        title: '5. Usa las acciones rápidas',
+        text: 'Deshacer, rehacer, guardar, cargar, exportar y mover el tablero están pensados para que puedas iterar sin perder tiempo.',
+      },
+      {
+        title: '6. Revisa la vista previa',
+        text: 'El plano muestra una previsualización cuando el cursor pasa por encima, de manera que sepas antes de confirmar si la colocación es válida o no.',
+      },
+    ],
+    footer: 'Consejo: si dudas, trabaja primero en 2D hasta que el reparto general de piezas esté cerrado y usa el 3D solo para verificar proporciones y altura.',
+  },
+  '3d': {
+    title: 'Guía 3D',
+    intro: 'La vista 3D transforma el plano en una lectura espacial más intuitiva para entender el resultado final.',
+    sections: [
+      {
+        title: '1. Mira el volumen completo',
+        text: 'Cada pieza se convierte en un bloque volumétrico con su altura real, lo que permite entender la forma final del conjunto.',
+      },
+      {
+        title: '2. Lee las capas visibles',
+        text: 'Las guías de altura y la rejilla tridimensional te ayudan a entender qué capas están activas y cuánto volumen se ha acumulado.',
+      },
+      {
+        title: '3. Diferencia estructura y accesorios',
+        text: 'Los elementos estructurales se perciben más sólidos, mientras que los accesorios se muestran con una presencia más ligera para facilitar la lectura.',
+      },
+      {
+        title: '4. Compara medidas y proporciones',
+        text: 'Las guías de dimensiones y el contorno del volumen permiten comprobar ancho, fondo y altura con una referencia visual rápida.',
+      },
+      {
+        title: '5. Ajusta la cámara',
+        text: 'Gira, acerca y aleja la escena para inspeccionar el proyecto desde distintos puntos de vista sin perder la orientación espacial.',
+      },
+      {
+        title: '6. Usa 3D como validación final',
+        text: 'Cuando el plano 2D ya está resuelto, el 3D te sirve para confirmar que la composición general, las alturas y los apoyos tienen sentido.',
+      },
+    ],
+    footer: 'Consejo: vuelve al plano 2D si detectas una capa que no encaja; la vista 3D está pensada como comprobación final del diseño.',
+  },
+}
+
+const communityExamples = [
+  {
+    title: 'Plano 2D',
+    image: galleryCompactImage,
+  },
+  {
+    title: 'Plano 3D',
+    image: galleryMinimalImage,
   },
 ]
 
@@ -169,6 +280,9 @@ function Design({ onNavigate }) {
   const editor = useDesignEditor()
   const [activeUtilityPanel, setActiveUtilityPanel] = useState(null)
   const [isPanMode, setIsPanMode] = useState(false)
+  const [selectedQuickHelp, setSelectedQuickHelp] = useState(0)
+  const [selectedGuide, setSelectedGuide] = useState(null)
+  const [selectedCommunityExample, setSelectedCommunityExample] = useState(null)
   const activeLayerHeightLabel = `${layerHeightFormatter.format(editor.activeFloor * editor.layerHeightMeters)} m`
   const canvasTitle = editor.viewMode === '2d'
     ? `Plano 2D · Capa ${editor.activeFloor}`
@@ -225,6 +339,23 @@ function Design({ onNavigate }) {
       window.removeEventListener('keydown', handleKeyDown)
     }
   }, [editor])
+
+  useEffect(() => {
+    if (!selectedGuide && !selectedCommunityExample) return undefined
+
+    const handleEscape = (event) => {
+      if (event.key === 'Escape') {
+        setSelectedGuide(null)
+        setSelectedCommunityExample(null)
+      }
+    }
+
+    window.addEventListener('keydown', handleEscape)
+
+    return () => {
+      window.removeEventListener('keydown', handleEscape)
+    }
+  }, [selectedCommunityExample, selectedGuide])
 
   const toggleUtilityPanel = (panel) => {
     setActiveUtilityPanel((current) => (current === panel ? null : panel))
@@ -334,10 +465,27 @@ function Design({ onNavigate }) {
             </div>
 
             <div className="design-drag-help">
-              <span aria-hidden="true">+</span>
               <div>
-                <strong>Selecciona y coloca</strong>
-                <p>la edicion se realiza en la vista 2D</p>
+                <strong>Ayuda rápida</strong>
+                <div className="design-drag-help-icons" role="tablist" aria-label="Herramientas rápidas">
+                  {quickToolHelp.map((item, index) => (
+                    <button
+                      key={item.title}
+                      type="button"
+                      className={selectedQuickHelp === index ? 'is-active' : ''}
+                      aria-pressed={selectedQuickHelp === index}
+                      aria-label={item.title}
+                      onClick={() => setSelectedQuickHelp(index)}
+                      title={item.title}
+                    >
+                      <Icon name={item.icon} size={16} />
+                    </button>
+                  ))}
+                </div>
+                <div className="design-drag-help-copy">
+                  <strong>{quickToolHelp[selectedQuickHelp].title}</strong>
+                  <p>{quickToolHelp[selectedQuickHelp].text}</p>
+                </div>
               </div>
             </div>
           </section>
@@ -641,6 +789,9 @@ function Design({ onNavigate }) {
       <section className="card design-help-card">
         <div className="design-help-steps">
           <h2>Como funciona</h2>
+          <p className="design-help-intro">
+            Esta guía resume el flujo completo del diseñador para que puedas colocar piezas, validar apoyos y revisar el volumen final sin perder contexto.
+          </p>
           <div className="design-help-step-row">
             {howItWorks.map((step, index) => (
               <article key={step.title}>
@@ -652,18 +803,92 @@ function Design({ onNavigate }) {
               </article>
             ))}
           </div>
+
+          <div className="design-help-guide-actions">
+            <button type="button" className="btn design-help-guide-btn" onClick={() => setSelectedGuide('2d')}>
+              Guía 2D
+            </button>
+            <button type="button" className="btn design-help-guide-btn" onClick={() => setSelectedGuide('3d')}>
+              Guía 3D
+            </button>
+          </div>
         </div>
 
         <aside className="design-guide-box">
           <div>
-            <h2>Necesitas ayuda?</h2>
-            <p>Consulta nuestra guia rapida para aprender a usar el disenador.</p>
+            <h2>Ejemplos</h2>
           </div>
-          <button type="button" className="btn design-guide-btn" onClick={() => onNavigate('catalog', '', 'productos')}>
-            Ver guia
-          </button>
+
+          <div className="design-community-grid">
+            {communityExamples.map((example) => (
+              <button
+                key={example.title}
+                type="button"
+                className="design-community-example"
+                onClick={() => setSelectedCommunityExample(example)}
+                aria-label={`Abrir ejemplo ${example.title}`}
+              >
+                <img src={example.image} alt={example.title} />
+                <span>
+                  <strong>{example.title}</strong>
+                </span>
+              </button>
+            ))}
+          </div>
         </aside>
       </section>
+
+      {selectedGuide && (
+        <div className="design-guide-backdrop" role="presentation" onClick={() => setSelectedGuide(null)}>
+          <article
+            className="design-guide-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-label={designGuides[selectedGuide].title}
+            onClick={(event) => event.stopPropagation()}
+          >
+            <button type="button" className="design-guide-close" aria-label="Cerrar" onClick={() => setSelectedGuide(null)}>
+              ×
+            </button>
+            <header className="design-guide-modal-header">
+              <p>Manual de instrucciones</p>
+              <h2>{designGuides[selectedGuide].title}</h2>
+              <p>{designGuides[selectedGuide].intro}</p>
+            </header>
+            <div className="design-guide-modal-body">
+              {designGuides[selectedGuide].sections.map((section) => (
+                <section key={section.title}>
+                  <h3>{section.title}</h3>
+                  <p>{section.text}</p>
+                </section>
+              ))}
+            </div>
+            <footer className="design-guide-modal-footer">
+              <strong>{designGuides[selectedGuide].footer}</strong>
+            </footer>
+          </article>
+        </div>
+      )}
+
+      {selectedCommunityExample && (
+        <div className="design-community-backdrop" role="presentation" onClick={() => setSelectedCommunityExample(null)}>
+          <article
+            className="design-community-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-label={selectedCommunityExample.title}
+            onClick={(event) => event.stopPropagation()}
+          >
+            <button type="button" className="design-community-close" aria-label="Cerrar" onClick={() => setSelectedCommunityExample(null)}>
+              ×
+            </button>
+            <img src={selectedCommunityExample.image} alt={selectedCommunityExample.title} />
+            <div className="design-community-caption">
+              <strong>{selectedCommunityExample.title}</strong>
+            </div>
+          </article>
+        </div>
+      )}
     </section>
   )
 }

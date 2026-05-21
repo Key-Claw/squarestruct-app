@@ -168,11 +168,6 @@
   display: flex;
 }
 
-.design-workspace > .design-editor-column > .card {
-  width: 100%;
-  height: 100%;
-}
-
 .design-pieces-panel,
 .design-canvas-card {
   min-height: 760px;
@@ -350,6 +345,7 @@ button.design-piece-card {
   overflow-wrap: normal;
   word-break: normal;
   display: -webkit-box;
+  line-clamp: 2;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
@@ -1352,6 +1348,19 @@ button.design-piece-card {
   background: rgba(255, 255, 255, 0.96);
 }
 
+.design-help-steps {
+  display: flex;
+  flex-direction: column;
+}
+
+.design-help-intro {
+  max-width: 82ch;
+  margin: 14px 0 0;
+  color: #506273;
+  font-size: 0.94rem;
+  line-height: 1.6;
+}
+
 .design-help-step-row {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -1366,14 +1375,18 @@ button.design-piece-card {
 }
 
 .design-help-step-row span {
-  width: 42px;
-  height: 42px;
+  width: 38px;
+  height: 38px;
+  flex: 0 0 38px;
+  aspect-ratio: 1 / 1;
   display: grid;
   place-items: center;
   border: 1px solid rgba(95, 159, 56, 0.35);
   border-radius: 50%;
   color: #5f9f38;
-  font-size: 0.72rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  line-height: 1;
 }
 
 .design-help-step-row h3,
@@ -1392,15 +1405,37 @@ button.design-piece-card {
   font-size: 0.78rem;
 }
 
+.design-help-guide-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  width: calc(100% - 16px);
+  margin-left: -2px;
+  margin-top: 30px;
+}
+
+.design-help-guide-btn {
+  width: 100%;
+  min-height: 68px;
+  padding: 0 26px;
+  border-radius: 20px;
+  background: #173f5f;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  box-shadow: 0 10px 24px rgba(23, 63, 95, 0.12);
+}
+
 .design-guide-box {
   background: #f4fbef;
   border: 1px solid rgba(95, 159, 56, 0.45);
   border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 22px;
-  padding: 28px 36px;
+  display: grid;
+  align-content: start;
+  gap: 18px;
+  padding: 28px 30px;
 }
 
 .design-guide-box h2,
@@ -1410,15 +1445,197 @@ button.design-piece-card {
 }
 
 .design-guide-box p {
-  margin-top: 18px;
   font-size: 0.92rem;
 }
 
-.design-guide-btn {
-  min-width: 170px;
-  min-height: 58px;
-  font-size: 1.2rem;
-  text-transform: none;
+.design-community-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+}
+
+.design-community-example {
+  display: grid;
+  grid-template-columns: 112px minmax(0, 1fr);
+  gap: 14px;
+  align-items: center;
+  padding: 12px;
+  border: 1px solid rgba(95, 159, 56, 0.18);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.96);
+  text-align: left;
+  transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
+}
+
+.design-community-example:hover {
+  transform: translateY(-2px);
+  border-color: rgba(95, 159, 56, 0.34);
+  box-shadow: 0 12px 26px rgba(15, 23, 42, 0.08);
+}
+
+.design-community-example img {
+  width: 112px;
+  height: 84px;
+  object-fit: cover;
+  border-radius: 14px;
+  background: linear-gradient(135deg, rgba(95, 159, 56, 0.12), rgba(173, 216, 230, 0.18));
+}
+
+.design-community-example span {
+  display: grid;
+  gap: 4px;
+}
+
+.design-community-example strong {
+  color: #132739;
+  font-size: 1rem;
+  font-weight: 900;
+}
+
+.design-guide-backdrop,
+.design-community-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1200;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgba(8, 20, 29, 0.72);
+  backdrop-filter: blur(6px);
+}
+
+.design-guide-modal,
+.design-community-modal {
+  position: relative;
+  width: min(980px, 94vw);
+  max-height: 90vh;
+  display: grid;
+  gap: 18px;
+  padding: 22px;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.98);
+  box-shadow: 0 30px 80px rgba(3, 13, 20, 0.35);
+  overflow: auto;
+}
+
+.design-guide-modal-header {
+  display: grid;
+  gap: 8px;
+}
+
+.design-guide-modal-header p,
+.design-guide-modal-footer strong,
+.design-guide-modal-body p {
+  margin: 0;
+}
+
+.design-guide-modal-header p:first-child {
+  color: #5f9f38;
+  font-size: 0.76rem;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.design-guide-modal-header h2 {
+  margin: 0;
+  color: #0f172a;
+  font-size: clamp(1.8rem, 3vw, 2.4rem);
+  font-weight: 900;
+}
+
+.design-guide-modal-header p:last-child {
+  color: #4f6273;
+  font-size: 0.96rem;
+  line-height: 1.65;
+}
+
+.design-guide-modal-body {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.design-guide-modal-body section {
+  padding: 18px;
+  border: 1px solid rgba(23, 63, 95, 0.1);
+  border-radius: 18px;
+  background: linear-gradient(180deg, rgba(244, 251, 239, 0.92) 0%, rgba(255, 255, 255, 0.92) 100%);
+}
+
+.design-guide-modal-body h3 {
+  margin: 0;
+  color: #132739;
+  font-size: 0.96rem;
+  font-weight: 900;
+}
+
+.design-guide-modal-body p {
+  margin-top: 8px;
+  color: #4f6273;
+  font-size: 0.83rem;
+  line-height: 1.65;
+}
+
+.design-guide-modal-footer {
+  padding-top: 4px;
+}
+
+.design-guide-modal-footer strong {
+  display: block;
+  color: #173f5f;
+  font-size: 0.88rem;
+  line-height: 1.6;
+}
+
+.design-guide-close,
+.design-community-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(15, 39, 57, 0.88);
+  color: #fff;
+  font-size: 1.6rem;
+  line-height: 1;
+}
+
+.design-community-modal img {
+  display: block;
+  width: 100%;
+  max-height: calc(90vh - 110px);
+  object-fit: contain;
+  border-radius: 16px;
+  background: #f8fbff;
+}
+
+.design-community-caption {
+  display: grid;
+  gap: 2px;
+  padding: 0 6px 4px;
+}
+
+.design-community-caption strong {
+  color: #0f172a;
+  font-size: 1rem;
+  font-weight: 900;
+}
+
+.design-community-caption span {
+  color: #5f7282;
+  font-size: 0.82rem;
+}
+
+@media (max-width: 1024px) {
+  .design-community-grid,
+  .design-guide-modal-body {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width: 767.98px) {
@@ -1933,6 +2150,7 @@ button.design-piece-card {
 }
 
 .design-drag-help {
+  display: grid;
   min-height: 92px;
   margin-top: 20px;
   border-style: dashed;
@@ -1948,23 +2166,59 @@ button.design-piece-card {
   text-align: center;
 }
 
-.design-drag-help span {
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
-  background: #eef8e9;
-  color: #4f8f2f;
-  display: grid;
-  place-items: center;
-  font-size: 1.5rem;
-}
-
 .design-drag-help strong {
   color: #102736;
 }
 
 .design-drag-help p {
   color: rgba(15, 23, 42, 0.62);
+}
+
+.design-drag-help-icons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.design-drag-help-icons button {
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(23, 63, 95, 0.14);
+  border-radius: 14px;
+  background: #fff;
+  color: #173f5f;
+  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.05);
+  transition: transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease, background 160ms ease;
+}
+
+.design-drag-help-icons button:hover {
+  transform: translateY(-1px);
+  border-color: rgba(95, 159, 56, 0.28);
+  box-shadow: 0 12px 22px rgba(15, 23, 42, 0.08);
+}
+
+.design-drag-help-icons button.is-active {
+  border-color: rgba(95, 159, 56, 0.5);
+  background: rgba(95, 159, 56, 0.1);
+  color: #4f8f2f;
+}
+
+.design-drag-help-copy {
+  max-width: 320px;
+  margin: 8px auto 0;
+}
+
+.design-drag-help-copy strong {
+  display: block;
+  font-size: 0.92rem;
+}
+
+.design-drag-help-copy p {
+  margin-top: 6px;
 }
 
 .design-canvas-card {
