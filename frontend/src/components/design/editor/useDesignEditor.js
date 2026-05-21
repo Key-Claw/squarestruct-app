@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { getProductos } from '../../../services/productService'
 import { normalizarProducto } from '../../../utils/text'
 import {
@@ -40,6 +40,24 @@ function getFootprint(piece, rotated) {
   return rotated
     ? { width: footprint.height, height: footprint.width }
     : footprint
+}
+
+function buildPlacementCandidate(row, column, piece, isRotated, isFlipped, floor, id = 'preview') {
+  const footprint = getFootprint(piece, isRotated)
+  const anchorRow = isFlipped && isRotated ? row - footprint.height + 1 : row
+  const anchorColumn = isFlipped && !isRotated ? column - footprint.width + 1 : column
+
+  return {
+    id,
+    pieceId: piece.id,
+    row: anchorRow,
+    column: anchorColumn,
+    width: footprint.width,
+    height: footprint.height,
+    floor,
+    flipped: isFlipped,
+    rotated: isRotated,
+  }
 }
 
 function placementCoversCell(placement, row, column, floor = placement.floor) {
@@ -87,11 +105,11 @@ function isStructuralPlacement(placement, pieceMap) {
   return piece?.structuralRole === 'structure'
 }
 
-function hasLowerFloorSupport(placements, candidate, pieceMap) {
-  if (candidate.floor === 0) {
-    return true
-  }
+function isAccessoryPiece(piece) {
+  return piece?.category === 'accesorios'
+}
 
+function hasDirectLowerStructuralSupport(placements, candidate, pieceMap) {
   return placements.some((placement) => (
     isStructuralPlacement(placement, pieceMap)
     && placement.floor + getPieceLayerCount(pieceMap.get(placement.pieceId)) === candidate.floor
@@ -99,39 +117,101 @@ function hasLowerFloorSupport(placements, candidate, pieceMap) {
   ))
 }
 
-function hasLateralSupport(placements, candidate, pieceMap) {
-  return placements.some((placement) => {
+function hasLowerFloorSupport(placements, candidate, pieceMap) {
+  return candidate.floor === 0 || hasDirectLowerStructuralSupport(placements, candidate, pieceMap)
+}
+
+function intervalsCoverSpan(intervals, start, end) {
+  let coveredUntil = start
+
+  const sortedIntervals = intervals
+    .sort((a, b) => a.start - b.start)
+
+  for (const interval of sortedIntervals) {
+    if (interval.end <= coveredUntil) continue
+    if (interval.start > coveredUntil) return false
+
+    coveredUntil = Math.max(coveredUntil, interval.end)
+    if (coveredUntil >= end) return true
+  }
+
+  return coveredUntil >= end
+}
+
+function getAllowedAccessorySupportSides(piece, candidate) {
+  if (piece?.modelType === 'door') {
+    return ['left', 'right', 'top', 'bottom']
+  }
+
+  if (candidate.width > candidate.height) {
+    return ['top', 'bottom']
+  }
+
+  if (candidate.height > candidate.width) {
+    return ['left', 'right']
+  }
+
+  return ['left', 'right', 'top', 'bottom']
+}
+
+function getAdjacentSupportInterval(placement, candidate, side) {
+  if (side === 'left' || side === 'right') {
+    const touchesSide = side === 'left'
+      ? placement.column + placement.width === candidate.column
+      : candidate.column + candidate.width === placement.column
+
+    if (!touchesSide) return null
+
+    const start = Math.max(placement.row, candidate.row)
+    const end = Math.min(placement.row + placement.height, candidate.row + candidate.height)
+
+    return end > start ? { start, end } : null
+  }
+
+  const touchesSide = side === 'top'
+    ? placement.row + placement.height === candidate.row
+    : candidate.row + candidate.height === placement.row
+
+  if (!touchesSide) return null
+
+  const start = Math.max(placement.column, candidate.column)
+  const end = Math.min(placement.column + placement.width, candidate.column + candidate.width)
+
+  return end > start ? { start, end } : null
+}
+
+function hasFullAdjacentStructuralSupport(placements, candidate, pieceMap) {
+  const candidatePiece = pieceMap.get(candidate.pieceId)
+  const candidateTop = candidate.floor + getPieceLayerCount(candidatePiece)
+  const allowedSides = getAllowedAccessorySupportSides(candidatePiece, candidate)
+  const intervalsBySide = new Map(allowedSides.map((side) => [side, []]))
+
+  placements.forEach((placement) => {
     if (!isStructuralPlacement(placement, pieceMap)) {
-      return false
+      return
     }
 
-    const candidateTop = candidate.floor + getPieceLayerCount(pieceMap.get(candidate.pieceId))
     const placementTop = placement.floor + getPieceLayerCount(pieceMap.get(placement.pieceId))
     const overlapsVertically = placement.floor < candidateTop && placementTop > candidate.floor
 
-    if (!overlapsVertically) return false
+    if (!overlapsVertically) return
 
-    const touchesHorizontalSide = (
-      placement.column + placement.width === candidate.column
-      || candidate.column + candidate.width === placement.column
-    )
-    const hasVerticalOverlap = (
-      placement.row < candidate.row + candidate.height
-      && placement.row + placement.height > candidate.row
-    )
-    const touchesVerticalSide = (
-      placement.row + placement.height === candidate.row
-      || candidate.row + candidate.height === placement.row
-    )
-    const hasHorizontalOverlap = (
-      placement.column < candidate.column + candidate.width
-      && placement.column + placement.width > candidate.column
-    )
+    allowedSides.forEach((side) => {
+      const interval = getAdjacentSupportInterval(placement, candidate, side)
 
-    return (
-      (touchesHorizontalSide && hasVerticalOverlap)
-      || (touchesVerticalSide && hasHorizontalOverlap)
-    )
+      if (interval) intervalsBySide.get(side).push(interval)
+    })
+  })
+
+  return allowedSides.some((side) => {
+    const sideIntervals = intervalsBySide.get(side)
+    const isVerticalSide = side === 'left' || side === 'right'
+    const start = isVerticalSide ? candidate.row : candidate.column
+    const end = isVerticalSide
+      ? candidate.row + candidate.height
+      : candidate.column + candidate.width
+
+    return intervalsCoverSpan(sideIntervals, start, end)
   })
 }
 
@@ -139,6 +219,7 @@ function validatePlacement(placements, candidate, designPieces) {
   const pieceMap = new Map(designPieces.map((piece) => [piece.id, piece]))
   const candidatePiece = pieceMap.get(candidate.pieceId)
   const needsStructuralSupport = candidatePiece?.structuralRole === 'structure'
+  const needsAccessorySupport = isAccessoryPiece(candidatePiece)
 
   if (
     candidate.row < 0
@@ -160,9 +241,17 @@ function validatePlacement(placements, candidate, designPieces) {
   if (
     needsStructuralSupport
     && !hasLowerFloorSupport(placements, candidate, pieceMap)
-    && !hasLateralSupport(placements, candidate, pieceMap)
   ) {
-    return { ok: false, message: 'La pieza necesita apoyo inferior o conexión lateral.' }
+    return { ok: false, message: 'La pieza necesita apoyo justo debajo.' }
+  }
+
+  if (
+    needsAccessorySupport
+    && candidate.floor > 0
+    && !hasDirectLowerStructuralSupport(placements, candidate, pieceMap)
+    && !hasFullAdjacentStructuralSupport(placements, candidate, pieceMap)
+  ) {
+    return { ok: false, message: 'El accesorio necesita estar en planta 0, tener apoyo debajo o contacto completo con una pieza estructural.' }
   }
 
   return { ok: true, message: '' }
@@ -193,7 +282,6 @@ function buildStats(placements, designPieces) {
   placements.forEach((placement) => {
     const piece = pieceMap.get(placement.pieceId)
     if (!piece) return
-    if (piece.category === 'accesorios' && piece.price === 0) return
 
     totalPieces += 1
     occupiedCells += placement.width * placement.height
@@ -229,7 +317,9 @@ function useDesignEditor() {
   const [piecesError, setPiecesError] = useState('')
   const [materialFilter, setMaterialFilter] = useState(MATERIAL_ECO)
   const [selectedPieceId, setSelectedPieceId] = useState(draft?.selectedPieceId || null)
-  const [placements, setPlacements] = useState(draft?.placements || [])
+  const initialPlacements = draft?.placements || []
+  const [placements, setPlacementsState] = useState(initialPlacements)
+  const placementsRef = useRef(initialPlacements)
   const [activeFloor, setActiveFloor] = useState(draft?.activeFloor || 0)
   const [viewMode, setViewMode] = useState('2d')
   const [viewZoom, setViewZoom] = useState(INITIAL_VIEW_ZOOM)
@@ -240,6 +330,15 @@ function useDesignEditor() {
   const [isRotated, setIsRotated] = useState(false)
   const [isFlipped, setIsFlipped] = useState(draft?.isFlipped || false)
   const [statusMessage, setStatusMessage] = useState('Selecciona una pieza y colocala en el plano 2D.')
+
+  const commitPlacements = (nextPlacements) => {
+    placementsRef.current = nextPlacements
+    setPlacementsState(nextPlacements)
+  }
+
+  useEffect(() => {
+    placementsRef.current = placements
+  }, [placements])
 
   useEffect(() => {
     let isMounted = true
@@ -310,47 +409,56 @@ function useDesignEditor() {
     setSelectedPieceId(firstPiece?.id || null)
   }
 
-  const placePiece = (row, column) => {
+  const getPlacementPreview = (row, column) => {
     if (!selectedPiece) {
-      setStatusMessage('Selecciona una pieza disponible antes de colocarla.')
-      return
+      return null
     }
 
-    const footprint = getFootprint(selectedPiece, isRotated)
-    const anchorRow = isFlipped && isRotated ? row - footprint.height + 1 : row
-    const anchorColumn = isFlipped && !isRotated ? column - footprint.width + 1 : column
-    const candidate = {
-      id: createPlacementId(),
-      pieceId: selectedPiece.id,
-      row: anchorRow,
-      column: anchorColumn,
-      width: footprint.width,
-      height: footprint.height,
-      floor: activeFloor,
-      flipped: isFlipped,
-      rotated: isRotated,
-    }
-    const validation = validatePlacement(placements, candidate, designPieces)
+    const candidate = buildPlacementCandidate(row, column, selectedPiece, isRotated, isFlipped, activeFloor)
+    const validation = validatePlacement(placementsRef.current, candidate, designPieces)
 
-    if (!validation.ok) {
-      setStatusMessage(validation.message)
-      return
+    return {
+      ...candidate,
+      isValid: validation.ok,
+      message: validation.message,
     }
-
-    setPlacements((current) => [...current, candidate])
-    setStatusMessage(`${selectedPiece.name} colocado desde la capa ${activeFloor}.`)
   }
 
-  const removePiece = (row, column) => {
+  const placePiece = (row, column, options = {}) => {
+    const { silentInvalid = false, silentSuccess = false } = options
+
+    if (!selectedPiece) {
+      if (!silentInvalid) setStatusMessage('Selecciona una pieza disponible antes de colocarla.')
+      return false
+    }
+
+    const candidate = buildPlacementCandidate(row, column, selectedPiece, isRotated, isFlipped, activeFloor, createPlacementId())
+    const currentPlacements = placementsRef.current
+    const validation = validatePlacement(currentPlacements, candidate, designPieces)
+
+    if (!validation.ok) {
+      if (!silentInvalid) setStatusMessage(validation.message)
+      return false
+    }
+
+    commitPlacements([...currentPlacements, candidate])
+    if (!silentSuccess) setStatusMessage(`${selectedPiece.name} colocado desde la capa ${activeFloor}.`)
+    return true
+  }
+
+  const removePiece = (row, column, options = {}) => {
+    const { silentSuccess = false } = options
     const pieceMap = new Map(designPieces.map((piece) => [piece.id, piece]))
-    const placement = placements.find((item) => (
+    const currentPlacements = placementsRef.current
+    const placement = currentPlacements.find((item) => (
       placementCoversLayer(item, activeFloor, pieceMap)
       && placementCoversCell(item, row, column, item.floor)
     )) || null
-    if (!placement) return
+    if (!placement) return false
 
-    setPlacements((current) => current.filter((item) => item.id !== placement.id))
-    setStatusMessage('Pieza eliminada del plano.')
+    commitPlacements(currentPlacements.filter((item) => item.id !== placement.id))
+    if (!silentSuccess) setStatusMessage('Pieza eliminada del plano.')
+    return true
   }
 
   const jumpToSelectedPieceHeight = () => {
@@ -361,7 +469,7 @@ function useDesignEditor() {
   }
 
   const clearProject = () => {
-    setPlacements([])
+    commitPlacements([])
     setStatusMessage('Plano reiniciado.')
   }
 
@@ -373,7 +481,7 @@ function useDesignEditor() {
       selectedPieceId,
       activeFloor,
       isFlipped,
-      placements,
+      placements: placementsRef.current,
     }))
     setStatusMessage('Borrador guardado en el navegador.')
   }
@@ -390,7 +498,7 @@ function useDesignEditor() {
     setSelectedPieceId(savedDraft.selectedPieceId || null)
     setActiveFloor(savedDraft.activeFloor || 0)
     setIsFlipped(Boolean(savedDraft.isFlipped))
-    setPlacements(savedDraft.placements)
+    commitPlacements(savedDraft.placements)
     setStatusMessage('Borrador cargado correctamente.')
   }
 
@@ -464,6 +572,7 @@ function useDesignEditor() {
     designCategories,
     designPieces,
     exportProject,
+    getPlacementPreview,
     gridColumns,
     gridCellSizeMeters,
     gridRows,

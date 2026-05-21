@@ -13,21 +13,33 @@ function getPieceRole(piece) {
   return 'structure'
 }
 
+function getPieceLayerCount(piece, layerHeight) {
+  return Math.max(1, Math.ceil((piece?.heightMeters || layerHeight) / layerHeight))
+}
+
+function getProjectTopLayer(placements, designPieces, layerHeight) {
+  return placements.reduce((maxLayer, placement) => {
+    const piece = designPieces.find((item) => item.id === placement.pieceId)
+
+    return Math.max(maxLayer, placement.floor + getPieceLayerCount(piece, layerHeight))
+  }, 0)
+}
+
 function resolveBlocks(placements, designPieces, gridColumns, gridRows, cellSize, activeFloor, layerHeight) {
   if (!placements.length) {
     return []
   }
 
   return placements
-    .filter((placement) => placement.floor <= activeFloor)
     .map((placement) => {
       const piece = designPieces.find((item) => item.id === placement.pieceId)
       const width = placement.width * cellSize
       const depth = placement.height * cellSize
       const height = piece?.heightMeters || 0.2
-      const layerCount = Math.max(1, Math.ceil(height / layerHeight))
+      const layerCount = getPieceLayerCount(piece, layerHeight)
       const isActiveFloor = activeFloor >= placement.floor && activeFloor < placement.floor + layerCount
       const role = getPieceRole(piece)
+      const footprintInset = 0.002
 
       return {
         id: placement.id,
@@ -35,14 +47,14 @@ function resolveBlocks(placements, designPieces, gridColumns, gridRows, cellSize
         material: piece?.material || '',
         color: piece?.color || '#7e8993',
         modelType: piece?.modelType || '',
-        opacity: isActiveFloor ? 0.84 : 0.34,
+        opacity: role === 'structure' ? 1 : (isActiveFloor ? 0.84 : 0.56),
         role,
         position: [
           (placement.column - gridColumns / 2) * cellSize + width / 2,
           height / 2 + placement.floor * layerHeight,
           (placement.row - gridRows / 2) * cellSize + depth / 2,
         ],
-        size: [Math.max(width - 0.01, 0.02), height, Math.max(depth - 0.01, 0.02)],
+        size: [Math.max(width - footprintInset, 0.02), height, Math.max(depth - footprintInset, 0.02)],
       }
     })
 }
@@ -198,8 +210,7 @@ function LayerGrid({ activeFloor, cellSize, columns, layerHeight, rows }) {
   )
 }
 
-function LayerVolumeGuides({ activeFloor, depth, layerHeight, width }) {
-  const visibleLayers = Math.max(1, activeFloor + 1)
+function LayerVolumeGuides({ activeFloor, depth, layerHeight, visibleLayers, width }) {
   const height = visibleLayers * layerHeight
   const halfWidth = width / 2
   const halfDepth = depth / 2
@@ -232,7 +243,7 @@ function LayerVolumeGuides({ activeFloor, depth, layerHeight, width }) {
           </group>
         )
       })}
-      {[
+      {height > 0 && [
         [-halfWidth, halfDepth],
         [halfWidth, halfDepth],
         [-halfWidth, -halfDepth],
@@ -267,10 +278,12 @@ function Scene({
   const gridWidth = gridColumns * cellSize
   const gridDepth = gridRows * cellSize
   const gridSize = Math.max(gridWidth, gridDepth)
-  const visibleLayers = Math.max(1, activeFloor + 1)
+  const projectTopLayer = getProjectTopLayer(placements, designPieces, layerHeight)
+  const visibleLayers = Math.max(0, activeFloor, projectTopLayer)
+  const visibleHeight = visibleLayers * layerHeight
   const cameraTarget = useMemo(() => (
-    savedCameraState?.target || [0, Math.min((visibleLayers * layerHeight) / 2, 1.8), 0]
-  ), [layerHeight, savedCameraState, visibleLayers])
+    savedCameraState?.target || [0, Math.min(visibleHeight / 2, 1.8), 0]
+  ), [savedCameraState, visibleHeight])
 
   return (
     <>
@@ -292,8 +305,8 @@ function Scene({
         <>
           <Grid columns={gridColumns} rows={gridRows} cellSize={cellSize} />
           <LayerGrid activeFloor={activeFloor} cellSize={cellSize} columns={gridColumns} layerHeight={layerHeight} rows={gridRows} />
-          <LayerVolumeGuides activeFloor={activeFloor} depth={gridDepth} layerHeight={layerHeight} width={gridWidth} />
-          <DimensionGuides depth={gridDepth} height={visibleLayers * layerHeight} width={gridWidth} />
+          <LayerVolumeGuides activeFloor={activeFloor} depth={gridDepth} layerHeight={layerHeight} visibleLayers={visibleLayers} width={gridWidth} />
+          <DimensionGuides depth={gridDepth} height={visibleHeight} width={gridWidth} />
         </>
       )}
       <group>

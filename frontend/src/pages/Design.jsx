@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import designHeroImage from '../assets/design/design-hero.webp'
 import escalerasImage from '../assets/design/escaleras.webp'
 import puertaImage from '../assets/design/puerta.webp'
@@ -59,14 +59,93 @@ const getDesignPieceBadge = (piece) => {
     : 'Hormigón'
 }
 
+const layerHeightFormatter = new Intl.NumberFormat('es-ES', {
+  maximumFractionDigits: 1,
+  minimumFractionDigits: 1,
+})
+
+const FLOOR_HOLD_REPEAT_MS = 175
+
+function usePressAndHoldAction(action) {
+  const actionRef = useRef(action)
+  const repeatTimerRef = useRef(null)
+  const ignoreNextClickRef = useRef(false)
+
+  useEffect(() => {
+    actionRef.current = action
+  }, [action])
+
+  const stopRepeating = useCallback(() => {
+    if (repeatTimerRef.current) {
+      window.clearInterval(repeatTimerRef.current)
+      repeatTimerRef.current = null
+    }
+
+    window.setTimeout(() => {
+      ignoreNextClickRef.current = false
+    }, 0)
+  }, [])
+
+  useEffect(() => () => {
+    if (repeatTimerRef.current) {
+      window.clearInterval(repeatTimerRef.current)
+    }
+  }, [])
+
+  useEffect(() => {
+    const handleWindowBlur = () => stopRepeating()
+
+    window.addEventListener('blur', handleWindowBlur)
+
+    return () => {
+      window.removeEventListener('blur', handleWindowBlur)
+    }
+  }, [stopRepeating])
+
+  const handlePointerDown = useCallback((event) => {
+    if (event.button !== 0) return
+
+    event.preventDefault()
+    ignoreNextClickRef.current = true
+    actionRef.current()
+
+    if (repeatTimerRef.current) {
+      window.clearInterval(repeatTimerRef.current)
+    }
+
+    repeatTimerRef.current = window.setInterval(() => {
+      actionRef.current()
+    }, FLOOR_HOLD_REPEAT_MS)
+  }, [])
+
+  const handleClick = useCallback(() => {
+    if (ignoreNextClickRef.current) return
+    actionRef.current()
+  }, [])
+
+  return {
+    onClick: handleClick,
+    onPointerCancel: stopRepeating,
+    onPointerDown: handlePointerDown,
+    onPointerLeave: stopRepeating,
+    onPointerUp: stopRepeating,
+  }
+}
+
 function Design({ onNavigate }) {
   const editor = useDesignEditor()
   const [activeUtilityPanel, setActiveUtilityPanel] = useState(null)
   const [isPanMode, setIsPanMode] = useState(false)
-  const activeLayerHeightLabel = `${Number(((editor.activeFloor + 1) * editor.layerHeightMeters).toFixed(1)).toString()} m`
+  const activeLayerHeightLabel = `${layerHeightFormatter.format(editor.activeFloor * editor.layerHeightMeters)} m`
   const canvasTitle = editor.viewMode === '2d'
     ? `Plano 2D · Capa ${editor.activeFloor}`
     : `Vista 3D del proyecto · Capa ${editor.activeFloor}`
+  const floorDownHandlers = usePressAndHoldAction(() => {
+    editor.setActiveFloor((current) => Math.max(0, current - 1))
+  })
+  const floorUpHandlers = usePressAndHoldAction(() => {
+    editor.setActiveFloor((current) => current + 1)
+  })
 
   const toggleUtilityPanel = (panel) => {
     setActiveUtilityPanel((current) => (current === panel ? null : panel))
@@ -197,7 +276,9 @@ function Design({ onNavigate }) {
                 activeFloor={editor.activeFloor}
                 boardOffset={editor.boardOffset}
                 designPieces={editor.designPieces}
+                getPlacementPreview={editor.getPlacementPreview}
                 gridCellSizeMeters={editor.gridCellSizeMeters}
+                layerHeightMeters={editor.layerHeightMeters}
                 gridColumns={editor.gridColumns}
                 gridRows={editor.gridRows}
                 isPanMode={isPanMode}
@@ -309,7 +390,7 @@ function Design({ onNavigate }) {
                 <button
                   type="button"
                   aria-label="Bajar capa"
-                  onClick={() => editor.setActiveFloor((current) => Math.max(0, current - 1))}
+                  {...floorDownHandlers}
                 >
                   &lt;
                 </button>
@@ -319,7 +400,7 @@ function Design({ onNavigate }) {
                 <button
                   type="button"
                   aria-label="Subir capa"
-                  onClick={() => editor.setActiveFloor((current) => current + 1)}
+                  {...floorUpHandlers}
                 >
                   &gt;
                 </button>

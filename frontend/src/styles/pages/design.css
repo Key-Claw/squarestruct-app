@@ -713,6 +713,34 @@ button.design-piece-card {
   opacity: var(--floor-opacity, 0.62);
 }
 
+.design-lower-floor-placement.is-direct-support {
+  border-style: solid;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.36);
+}
+
+.design-placement-preview {
+  position: absolute;
+  z-index: 4;
+  pointer-events: none;
+  border: 1px solid var(--preview-border, rgba(95, 159, 56, 0.72));
+  background:
+    repeating-linear-gradient(
+      45deg,
+      var(--preview-stripe, rgba(95, 159, 56, 0.18)) 0 5px,
+      transparent 5px 10px
+    ),
+    var(--preview-fill, rgba(95, 159, 56, 0.18));
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.44),
+    0 0 0 1px rgba(255, 255, 255, 0.34);
+}
+
+.design-placement-preview.is-invalid {
+  --preview-border: rgba(211, 47, 47, 0.78);
+  --preview-fill: rgba(211, 47, 47, 0.16);
+  --preview-stripe: rgba(211, 47, 47, 0.18);
+}
+
 .design-placement {
   position: absolute;
   display: grid;
