@@ -206,8 +206,8 @@ El indice principal esta en [`docs/README.md`](docs/README.md).
 Documentos clave:
 
 - [`docs/01-proyecto/vision-general.md`](docs/01-proyecto/vision-general.md)
-- [`docs/07-recursos/guia-defensa-daw1.md`](docs/07-recursos/guia-defensa-daw1.md)
-- [`docs/07-recursos/inventario-codigo-daw1.md`](docs/07-recursos/inventario-codigo-daw1.md)
+- [`docs/14-defensa-presentacion/guia-defensa-daw1.md`](docs/14-defensa-presentacion/guia-defensa-daw1.md)
+- [`docs/13-documentacion-codigo/inventario-codigo-daw1.md`](docs/13-documentacion-codigo/inventario-codigo-daw1.md)
 - [`docs/03-arquitectura/frontend-estructura.md`](docs/03-arquitectura/frontend-estructura.md)
 - [`docs/03-arquitectura/backend-estructura.md`](docs/03-arquitectura/backend-estructura.md)
 - [`docs/03-arquitectura/base-de-datos.md`](docs/03-arquitectura/base-de-datos.md)
