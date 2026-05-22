@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import Icon from '../../components/common/Icon'
 import { obtenerMisPedidos } from '../../services/orderService'
 import '../../styles/pages/settings/invoices.css'
@@ -34,7 +34,7 @@ function Invoices() {
   /**
    * Obtiene todas las órdenes del usuario autenticado.
    */
-  const cargarMisOrdenes = async () => {
+  const cargarMisOrdenes = useCallback(async () => {
     try {
       setIsLoading(true)
       setError('')
@@ -47,7 +47,7 @@ function Invoices() {
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [t])
 
   /**
    * Carga las órdenes del usuario cuando el componente se monta.
@@ -58,7 +58,7 @@ function Invoices() {
     })
 
     return () => window.cancelAnimationFrame(frameId)
-  }, [])
+  }, [cargarMisOrdenes])
 
   // ============================================================================
   // FUNCIONES AUXILIARES

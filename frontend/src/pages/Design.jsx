@@ -4,6 +4,7 @@ import escalerasImage from '../assets/design/escaleras.webp'
 import puertaImage from '../assets/design/puerta.webp'
 import sueloImage from '../assets/design/suelo.webp'
 import ventanaImage from '../assets/design/ventana.webp'
+import designBocetoImage from '../assets/design/design-boceto.webp'
 import bloqueEcoImage from '../assets/catalog/bloque-eco.webp'
 import bloqueHormigonImage from '../assets/catalog/bloque-hormigon.webp'
 import pilarEcoImage from '../assets/catalog/pilar-eco.webp'
@@ -21,6 +22,23 @@ const normalizeDesignText = (value) => (
     .replace(/[\u0300-\u036f]/g, '')
     .toLowerCase()
 )
+
+const normalizeDesignList = (value) => {
+  if (Array.isArray(value)) {
+    return value.filter(Boolean)
+  }
+
+  if (value && typeof value === 'object') {
+    return Object.values(value).filter(Boolean)
+  }
+
+  return []
+}
+
+const normalizeDesignGuide = (value) => ({
+  ...(value && typeof value === 'object' ? value : {}),
+  sections: normalizeDesignList(value?.sections),
+})
 
 const getDesignPieceImage = (piece) => {
   if (piece.id === 'accessory-door-basic') return puertaImage
@@ -166,13 +184,18 @@ function Design() {
   const canvasTitle = editor.viewMode === '2d'
     ? t('design.topbar.2d', { floor: editor.activeFloor })
     : t('design.topbar.3d', { floor: editor.activeFloor })
-  const howItWorks = t('design.howItWorks', { returnObjects: true })
-  const quickToolHelp = t('design.quickHelp', { returnObjects: true })
+  const howItWorks = normalizeDesignList(t('design.howItWorks', { returnObjects: true }))
+  const quickToolHelp = normalizeDesignList(t('design.quickHelp', { returnObjects: true }))
+  const activeQuickHelp = quickToolHelp[selectedQuickHelp] || quickToolHelp[0] || null
   const designGuides = {
-    '2d': t('design.guide2d', { returnObjects: true }),
-    '3d': t('design.guide3d', { returnObjects: true }),
+    '2d': normalizeDesignGuide(t('design.guide2d', { returnObjects: true })),
+    '3d': normalizeDesignGuide(t('design.guide3d', { returnObjects: true })),
   }
-  const communityExamples = t('design.examples', { returnObjects: true })
+  const communityExamples = normalizeDesignList(t('design.examples', { returnObjects: true })).map((example) => ({
+    ...example,
+    alt: example.alt || example.title,
+    image: example.image || designBocetoImage,
+  }))
   const floorDownHandlers = usePressAndHoldAction(() => {
     editor.setActiveFloor((current) => Math.max(0, current - 1))
   })
@@ -372,8 +395,14 @@ function Design() {
                   ))}
                 </div>
                 <div className="design-drag-help-copy">
-                  <strong>{quickToolHelp[selectedQuickHelp].title}</strong>
-                  <p>{quickToolHelp[selectedQuickHelp].text}</p>
+                  {activeQuickHelp ? (
+                    <>
+                      <strong>{activeQuickHelp.title}</strong>
+                      <p>{activeQuickHelp.text}</p>
+                    </>
+                  ) : (
+                    <p>{t('design.quickHelpTitle')}</p>
+                  )}
                 </div>
               </div>
             </div>
@@ -732,7 +761,7 @@ function Design() {
             className="design-guide-modal"
             role="dialog"
             aria-modal="true"
-            aria-label={designGuides[selectedGuide].title}
+            aria-label={designGuides[selectedGuide]?.title || t('design.guideManual')}
             onClick={(event) => event.stopPropagation()}
           >
             <button type="button" className="design-guide-close" aria-label={t('design.modalClose')} onClick={() => setSelectedGuide(null)}>
@@ -740,11 +769,11 @@ function Design() {
             </button>
             <header className="design-guide-modal-header">
               <p>{t('design.guideManual')}</p>
-              <h2>{designGuides[selectedGuide].title}</h2>
-              <p>{designGuides[selectedGuide].intro}</p>
+              <h2>{designGuides[selectedGuide]?.title}</h2>
+              <p>{designGuides[selectedGuide]?.intro}</p>
             </header>
             <div className="design-guide-modal-body">
-              {designGuides[selectedGuide].sections.map((section, index) => (
+              {designGuides[selectedGuide]?.sections.map((section, index) => (
                 <section key={`section-${index}`}>
                   <h3>{section.title}</h3>
                   <p>{section.text}</p>
@@ -752,7 +781,7 @@ function Design() {
               ))}
             </div>
             <footer className="design-guide-modal-footer">
-              <strong>{designGuides[selectedGuide].footer}</strong>
+              <strong>{designGuides[selectedGuide]?.footer}</strong>
             </footer>
           </article>
         </div>

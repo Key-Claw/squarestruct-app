@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 
 import heroGalleryImage from '../assets/gallery/gallery-hero.webp'
 import compactHouseImage from '../assets/gallery/galeria-casa-compacta.webp'
@@ -94,11 +94,7 @@ function Gallery({ onNavigate }) {
     },
   ]
 
-  const allProjects = [...topProjects, ...bottomProjects]
-
-  const filteredProjects = useMemo(() => {
-    return allProjects.filter((project) => project.material === activeFilter)
-  }, [activeFilter, allProjects])
+  const filteredProjects = [...topProjects, ...bottomProjects].filter((project) => project.material === activeFilter)
 
   const firstRow = filteredProjects.slice(0, 3)
   const secondRow = filteredProjects.slice(3, 6)
