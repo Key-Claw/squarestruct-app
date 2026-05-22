@@ -29,13 +29,13 @@ Ese texto parece un hash, pero no es un hash bcrypt valido.
 Desde la carpeta `backend`, ejecuta:
 
 ```bash
-node -e "const bcrypt=require('bcrypt'); bcrypt.hash('123456', 10).then(console.log)"
+node -e "const bcrypt=require('bcrypt'); bcrypt.hash('Hola123!', 10).then(console.log)"
 ```
 
 Este comando genera un hash para la contrasena:
 
 ```text
-123456
+Hola123!
 ```
 
 El resultado sera parecido a:
@@ -67,10 +67,10 @@ const bcrypt=require('bcrypt');
 Importa la libreria `bcrypt`.
 
 ```js
-bcrypt.hash('123456', 10)
+bcrypt.hash('Hola123!', 10)
 ```
 
-Genera el hash de la contrasena `123456`.
+Genera el hash de la contrasena `Hola123!`.
 
 El valor `10` son las rondas de coste. Es un valor habitual para desarrollo.
 
@@ -89,15 +89,15 @@ Ejemplo:
 ```sql
 INSERT INTO usuarios (nombre, primerApellido, segundoApellido, email, contrasena, rol)
 VALUES
-  ('Admin', 'SquareStruct', NULL, 'admin@squarestruct.com', '$2b$10$HASH_REAL_GENERADO', 'admin');
+  ('Admin', 'SquareStruct', NULL, 'admin@sqst.com', '$2b$10$HASH_REAL_GENERADO', 'admin');
 ```
 
-Si el hash se genero para `123456`, el usuario podra iniciar sesion con:
+Si el hash se genero para `Hola123!`, el usuario podra iniciar sesion con:
 
 ```json
 {
-  "email": "admin@squarestruct.com",
-  "contrasena": "123456"
+  "email": "admin@sqst.com",
+  "contrasena": "Hola123!"
 }
 ```
 

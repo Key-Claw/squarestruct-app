@@ -266,8 +266,8 @@ INSERT INTO usuarios (
     'Admin',
     'SquareStruct',
     NULL,
-    'admin@squarestruct.com',
-    '$2b$10$uDPwExnvB1b.4fDtKNOKZOx.4BmAODWoLc23EtZZOa6IPljXf3cjW',
+    'admin@sqst.com',
+    '$2b$10$VSCt51JCe5d2kYdchOmB.uTTROriNQkZAlBxqTJMtNjA5F.QwjMPm',
     'admin'
 ),
 (
@@ -276,7 +276,7 @@ INSERT INTO usuarios (
     'Perez',
     'Guarnizo',
     'juan.perez@gmail.com',
-    '$2b$10$uDPwExnvB1b.4fDtKNOKZOx.4BmAODWoLc23EtZZOa6IPljXf3cjW',
+    '$2b$10$VSCt51JCe5d2kYdchOmB.uTTROriNQkZAlBxqTJMtNjA5F.QwjMPm',
     'usuario'
 ),
 (
@@ -285,7 +285,7 @@ INSERT INTO usuarios (
     'Gomez',
     NULL,
     'ana.gomez@email.com',
-    '$2b$10$uDPwExnvB1b.4fDtKNOKZOx.4BmAODWoLc23EtZZOa6IPljXf3cjW',
+    '$2b$10$VSCt51JCe5d2kYdchOmB.uTTROriNQkZAlBxqTJMtNjA5F.QwjMPm',
     'usuario'
 );
 

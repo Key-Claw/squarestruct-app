@@ -3,9 +3,9 @@ import app, { db } from '../../src/app.js';
 
 describe('Registro y login de usuario', () => {
   const email = `test${Date.now()}@mail.com`;
-  const password = '12345678';
-  const adminEmail = 'admin@squarestruct.com';
-  const adminPassword = '123456';
+  const password = 'Hola123!';
+  const adminEmail = `admin-auth${Date.now()}@mail.com`;
+  const adminPassword = 'Hola123!';
   let token;
   let adminToken;
 
@@ -46,6 +46,18 @@ describe('Registro y login de usuario', () => {
   });
 
   it('prepara un token de administrador para validar permisos', async () => {
+    await db.query(
+      `INSERT INTO usuarios (nombre, primerApellido, email, contrasena, rol)
+       VALUES (?, ?, ?, ?, ?)`,
+      [
+        'Admin Auth',
+        'Test',
+        adminEmail,
+        '$2b$10$VSCt51JCe5d2kYdchOmB.uTTROriNQkZAlBxqTJMtNjA5F.QwjMPm',
+        'admin'
+      ]
+    );
+
     const res = await request(app)
       .post('/api/usuarios/login')
       .send({ email: adminEmail, contrasena: adminPassword });

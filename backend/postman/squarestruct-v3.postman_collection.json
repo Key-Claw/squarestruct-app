@@ -72,7 +72,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"email\": \"admin@squarestruct.com\",\n  \"contrasena\": \"123456\"\n}"
+              "raw": "{\n  \"email\": \"admin@sqst.com\",\n  \"contrasena\": \"Hola123!\"\n}"
             },
             "url": "{{baseUrl}}/usuarios/login"
           },
@@ -103,7 +103,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"email\": \"juan.perez@gmail.com\",\n  \"contrasena\": \"123456\"\n}"
+              "raw": "{\n  \"email\": \"juan.perez@gmail.com\",\n  \"contrasena\": \"Hola123!\"\n}"
             },
             "url": "{{baseUrl}}/usuarios/login"
           },
@@ -134,7 +134,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"nombre\": \"Demo\",\n  \"primerApellido\": \"DAW\",\n  \"email\": \"demo{{$timestamp}}@squarestruct.com\",\n  \"contrasena\": \"12345678\"\n}"
+              "raw": "{\n  \"nombre\": \"Demo\",\n  \"primerApellido\": \"DAW\",\n  \"email\": \"demo{{$timestamp}}@squarestruct.com\",\n  \"contrasena\": \"Hola123!\"\n}"
             },
             "url": "{{baseUrl}}/usuarios/register"
           },

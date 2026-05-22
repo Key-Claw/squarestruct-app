@@ -7,7 +7,7 @@ import '../../styles/pages/settings/settings.css'
 import { useTranslation } from 'react-i18next'
 
 const FACTURACION_PAGE_SIZE = 5
-const SUPER_ADMIN_EMAIL = 'admin@squarestruct.com'
+const SUPER_ADMIN_EMAIL = 'admin@sqst.com'
 
 const getRoleBadgeClass = (role) => {
   if (role === 'admin') return 'settings-role-badge admin'

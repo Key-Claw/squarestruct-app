@@ -30,7 +30,7 @@ Registro:
   "nombre": "Ana",
   "primerApellido": "Gomez",
   "email": "ana@example.com",
-  "contrasena": "12345678"
+  "contrasena": "Hola123!"
 }
 ```
 
@@ -39,7 +39,7 @@ Login por email:
 ```json
 {
   "email": "ana@example.com",
-  "contrasena": "12345678"
+  "contrasena": "Hola123!"
 }
 ```
 

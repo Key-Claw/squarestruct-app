@@ -130,7 +130,7 @@ Body:
 {
   "nombre": "Test User",
   "email": "test{{$timestamp}}@mail.com",
-  "contrasena": "12345678"
+  "contrasena": "Hola123!"
 }
 ```
 
@@ -165,7 +165,7 @@ Body:
 ```json
 {
   "email": "testuser@mail.com",
-  "contrasena": "12345678"
+  "contrasena": "Hola123!"
 }
 ```
 
