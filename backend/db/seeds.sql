@@ -135,3 +135,53 @@ VALUES
   (9, 34, 1, 36.00),
   (10, 35, 1, 98.00),
   (10, 36, 1, 72.00);
+
+
+-- =========================================================
+-- PROPUESTA - SEEDS PLANOS
+-- =========================================================
+-- Datos de prueba asociados al sistema conceptual
+-- de planos/editor 2D/3D de SquareStruct v3.
+--
+-- Actualmente NO integrado en:
+-- - backend
+-- - frontend
+-- - API REST
+-- - schema.sql operativo
+-- - seeds.sql operativo
+--
+-- Su implementación real queda prevista para
+-- futuras actualizaciones del proyecto.
+-- =========================================================
+
+/*
+
+INSERT INTO planos (
+    idPlano,
+    nombre,
+    descripcion,
+    metrosCuadrados,
+    precioEstimado,
+    datosJSON,
+    idUsuario
+) VALUES
+(
+    1,
+    'Plano modular inicial',
+    'Diseño conceptual del editor 2D/3D.',
+    85.00,
+    1540.00,
+    '{"version":"v3","bloques":[]}',
+    2
+),
+(
+    2,
+    'Vivienda eco demo',
+    'Plano de prueba con materiales ecologicos.',
+    120.00,
+    2450.00,
+    '{"version":"v3","bloques":[]}',
+    3
+);
+
+*/
