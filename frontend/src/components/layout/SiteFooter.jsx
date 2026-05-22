@@ -1,35 +1,21 @@
 import Icon from '../common/Icon'
-
-const footerBenefits = [
-  {
-    icon: 'box',
-    title: 'Envíos rápidos',
-    text: 'A todo el país',
-  },
-  {
-    icon: 'checkCircle',
-    title: 'Calidad garantizada',
-    text: 'Materiales certificados',
-  },
-  {
-    icon: 'headset',
-    title: 'Atención personalizada',
-    text: 'Te ayudamos a elegir',
-  },
-  {
-    icon: 'shield',
-    title: 'Compra segura',
-    text: 'Tus datos protegidos',
-  },
-]
+import { useTranslation } from 'react-i18next'
 
 function SiteFooter({ showBenefits = true }) {
+  const { t } = useTranslation()
+  const footerBenefits = [
+    { icon: 'box', title: t('footer.benefits.shipping.title'), text: t('footer.benefits.shipping.text') },
+    { icon: 'checkCircle', title: t('footer.benefits.quality.title'), text: t('footer.benefits.quality.text') },
+    { icon: 'headset', title: t('footer.benefits.support.title'), text: t('footer.benefits.support.text') },
+    { icon: 'shield', title: t('footer.benefits.secure.title'), text: t('footer.benefits.secure.text') },
+  ]
+
   return (
-    <footer className="site-footer" aria-label="Información de SquareStruct">
+    <footer className="site-footer" aria-label={t('footer.ariaLabel')}>
       {showBenefits && (
         <div className="site-benefits-footer">
           {footerBenefits.map((benefit) => (
-            <article key={benefit.title}>
+            <article key={benefit.icon}>
               <span><Icon name={benefit.icon} size={24} /></span>
               <div className="site-benefit-copy">
                 <h2>{benefit.title}</h2>
@@ -41,7 +27,7 @@ function SiteFooter({ showBenefits = true }) {
       )}
 
       <p className="site-footer-copy">
-        SquareStruct © 2026 · Proyecto académico de construcción modular desarrollado por Raúl Martín y Cristian Gil
+        {t('footer.copy')}
       </p>
     </footer>
   )

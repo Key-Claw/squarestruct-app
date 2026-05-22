@@ -137,7 +137,7 @@
 
 .settings-header-bar h2 {
   margin: 0;
-  max-width: 18ch;
+  max-width: none; /* allow longer translations without forced clipping */
   font-size: clamp(2.2rem, 3.4vw, 3.25rem);
   line-height: 0.98;
   color: var(--ss-ink);
@@ -605,7 +605,7 @@
 
 .settings-invoices-head h2 {
   position: absolute;
-  left: 49%;
+  left: 50%;
   transform: translateX(-50%);
   margin: 0;
   text-align: center;

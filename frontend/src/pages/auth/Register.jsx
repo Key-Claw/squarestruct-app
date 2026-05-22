@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { registerUser, loginUser } from '../../services/authService'
+import { useTranslation } from 'react-i18next'
 
 /**
  * Página de registro - formulario para crear nueva cuenta.
@@ -8,6 +9,7 @@ import { registerUser, loginUser } from '../../services/authService'
  * @param {function} onUserLogin - Callback al hacer login exitoso después del registro.
  */
 function Register({ onNavigate, onUserLogin }) {
+  const { t } = useTranslation()
   // Nombre y primer apellido del usuario a registrar.
   const [nombre, setNombre] = useState('')
   const [primerApellido, setPrimerApellido] = useState('')
@@ -32,31 +34,31 @@ function Register({ onNavigate, onUserLogin }) {
 
     // Validación básica de campos obligatorios.
     if (!nombre || !primerApellido || !email || !contrasena || !confirmaContrasena) {
-      setError('Completa todos los campos para crear tu cuenta.')
+      setError(t('auth.errors.registerMissing'))
       return
     }
 
     // Validación de longitud mínima del nombre.
     if (nombre.trim().length < 3) {
-      setError('El nombre debe tener al menos 3 caracteres')
+      setError(t('auth.errors.registerName'))
       return
     }
 
     // Validación de formato de email.
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      setError('Introduce un correo electrónico válido.')
+      setError(t('auth.errors.registerEmail'))
       return
     }
 
     // Validación de longitud mínima de contraseña.
     if (contrasena.length < 6) {
-      setError('La contraseña debe tener al menos 6 caracteres')
+      setError(t('auth.errors.registerPassword'))
       return
     }
 
     // Validación de coincidencia de contraseñas.
     if (contrasena !== confirmaContrasena) {
-      setError('Las contraseñas no coinciden')
+      setError(t('auth.errors.registerMismatch'))
       return
     }
 
@@ -84,7 +86,7 @@ function Register({ onNavigate, onUserLogin }) {
       onNavigate('home')
     } catch (err) {
       // Mostrar error específico al usuario.
-      setError(err.message || 'No se pudo crear la cuenta. Inténtalo de nuevo.')
+      setError(err.message || t('auth.errors.registerFailed'))
     } finally {
       setIsLoading(false)
     }
@@ -106,11 +108,11 @@ function Register({ onNavigate, onUserLogin }) {
                 <div className="mb-md-4 mt-md-2 pb-3">
                   {/* Título y contexto de la creación de cuenta. */}
                   <h2 className="fw-bold mb-2 text-uppercase">
-                    Crear cuenta
+                    {t('auth.register.title')}
                   </h2>
 
                   <p className="text-white-50 mb-4">
-                    Crea tu cuenta para guardar tus datos y avanzar con el proyecto.
+                    {t('auth.register.subtitle')}
                   </p>
 
                   {/* Mostrar mensaje de error si ocurre. */}
@@ -121,7 +123,7 @@ function Register({ onNavigate, onUserLogin }) {
                         type="button"
                         className="btn-close"
                         onClick={() => setError('')}
-                        aria-label="Cerrar"
+                        aria-label={t('common.close')}
                       ></button>
                     </div>
                   )}
@@ -139,7 +141,7 @@ function Register({ onNavigate, onUserLogin }) {
                         placeholder=" "
                         disabled={isLoading}
                       />
-                      <label className="form-label" htmlFor="registerNombre">Nombre</label>
+                      <label className="form-label" htmlFor="registerNombre">{t('auth.register.name')}</label>
 
                       <input
                         type="text"
@@ -150,7 +152,7 @@ function Register({ onNavigate, onUserLogin }) {
                         placeholder=" "
                         disabled={isLoading}
                       />
-                      <label className="form-label" htmlFor="registerPrimerApellido">Primer apellido</label>
+                      <label className="form-label" htmlFor="registerPrimerApellido">{t('auth.register.firstSurname')}</label>
                     </div>
 
                     {/* Campo para el correo de acceso. */}
@@ -169,7 +171,7 @@ function Register({ onNavigate, onUserLogin }) {
                         className="form-label"
                         htmlFor="registerEmail"
                       >
-                        Correo electrónico
+                        {t('auth.register.email')}
                       </label>
                     </div>
 
@@ -189,7 +191,7 @@ function Register({ onNavigate, onUserLogin }) {
                         className="form-label"
                         htmlFor="registerPassword"
                       >
-                        Contraseña
+                        {t('auth.register.password')}
                       </label>
                     </div>
 
@@ -209,7 +211,7 @@ function Register({ onNavigate, onUserLogin }) {
                         className="form-label"
                         htmlFor="registerConfirmPassword"
                       >
-                        Confirmar contraseña
+                        {t('auth.register.confirmPassword')}
                       </label>
                     </div>
 
@@ -219,7 +221,7 @@ function Register({ onNavigate, onUserLogin }) {
                       type="submit"
                       disabled={isLoading}
                     >
-                      {isLoading ? 'Creando cuenta...' : 'Crear cuenta'}
+                        {isLoading ? t('auth.register.submitLoading') : t('auth.register.submit')}
                     </button>
                   </form>
                 </div>
@@ -227,14 +229,14 @@ function Register({ onNavigate, onUserLogin }) {
                 {/* Enlace para volver al acceso si ya existe una cuenta. */}
                 <div>
                   <p className="mb-0">
-                    ¿Ya tienes una cuenta?{' '}
+                    {t('auth.register.hasAccount')}{' '}
                     <button
                       type="button"
                       className="btn btn-link text-white-50 fw-bold p-0 text-decoration-none"
                       onClick={() => onNavigate('login')}
                       disabled={isLoading}
                     >
-                      Iniciar sesión
+                      {t('auth.register.toggle')}
                     </button>
                   </p>
                 </div>

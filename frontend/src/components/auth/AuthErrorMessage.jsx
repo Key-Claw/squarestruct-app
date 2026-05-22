@@ -1,4 +1,8 @@
+import { useTranslation } from 'react-i18next'
+
 function AuthErrorMessage({ error, onClear }) {
+  const { t } = useTranslation()
+
   if (!error) {
     return null
   }
@@ -10,7 +14,7 @@ function AuthErrorMessage({ error, onClear }) {
         type="button"
         className="auth-modal-error-close"
         onClick={onClear}
-        aria-label="Cerrar error"
+        aria-label={t('auth.closeError')}
       >
         X
       </button>

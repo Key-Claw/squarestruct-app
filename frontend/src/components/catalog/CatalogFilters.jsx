@@ -1,6 +1,8 @@
+import { useTranslation } from 'react-i18next'
+
 const materialTabs = [
-  { id: 'Hormigon', label: 'Hormigón' },
-  { id: 'ECO', label: 'ECO' },
+  { id: 'hormigon', labelKey: 'catalog.materials.hormigon' },
+  { id: 'eco', labelKey: 'catalog.materials.eco' },
 ]
 
 function CatalogFilters({
@@ -17,6 +19,7 @@ function CatalogFilters({
   onCloseMobile,
   ...asideProps
 }) {
+  const { t } = useTranslation()
   const safeMaxPrice = Math.max(1, Math.ceil(Number(maxCatalogPrice) || 1000))
   const safePriceMax = Math.min(Number(priceMax) || safeMaxPrice, safeMaxPrice)
 
@@ -29,17 +32,17 @@ function CatalogFilters({
         type="button"
         className="btn catalog-mobile-filters-close d-md-none"
         onClick={onCloseMobile}
-        aria-label="Cerrar filtros"
+        aria-label={t('catalog.filters.close')}
       >
-        Cerrar
+        {t('catalog.filters.close')}
       </button>
 
       <button type="button" className="btn catalog-filter-title">
-        Filtros
+        {t('catalog.filters.title')}
       </button>
 
       <section className="card catalog-filter-card">
-        <div className="card-header">Categoria</div>
+        <div className="card-header">{t('catalog.filters.category')}</div>
         <div className="list-group list-group-flush">
           {categorias.map((category) => (
             <button
@@ -55,8 +58,8 @@ function CatalogFilters({
       </section>
 
       <section className="card catalog-filter-card catalog-material-card">
-        <div className="card-header">Material</div>
-        <div className="card-body catalog-material-tabs" role="tablist" aria-label="Material del producto">
+        <div className="card-header">{t('catalog.filters.material')}</div>
+        <div className="card-body catalog-material-tabs" role="tablist" aria-label={t('catalog.filters.materialAria')}>
           {materialTabs.map((material) => (
             <button
               key={material.id}
@@ -64,14 +67,14 @@ function CatalogFilters({
               className={`btn catalog-material-tab${materialActivo === material.id ? ' active' : ''}`}
               onClick={() => onSelectMaterial(material.id)}
             >
-              {material.label}
+              {t(material.labelKey)}
             </button>
           ))}
         </div>
       </section>
 
       <section className="card catalog-filter-card">
-        <div className="card-header">Rango de precio</div>
+        <div className="card-header">{t('catalog.filters.priceRange')}</div>
         <div className="card-body catalog-price-filter">
           <div className="catalog-price-values">
             <span>0 EUR</span>
@@ -85,13 +88,13 @@ function CatalogFilters({
             step="1"
             value={safePriceMax}
             onChange={(event) => onPriceMaxChange(Number(event.target.value))}
-            aria-label="Rango maximo de precio"
+            aria-label={t('catalog.filters.priceAria')}
           />
         </div>
       </section>
 
       <button type="button" className="btn catalog-reset-btn" onClick={onResetFilters}>
-        Desactivar filtros
+        {t('catalog.filters.reset')}
       </button>
     </aside>
   )

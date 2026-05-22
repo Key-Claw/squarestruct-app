@@ -1,4 +1,5 @@
 import '../../styles/components/layout/cart-panel.css'
+import { useTranslation } from 'react-i18next'
 
 /**
  * Panel deslizante del carrito
@@ -20,6 +21,14 @@ import '../../styles/components/layout/cart-panel.css'
  * @param {function} props.onCheckout - Callback para abrir el checkout (nueva compra)
  */
 function CartPanel({ isOpen, items = [], onClose, onRemoveItem, onUpdateQuantity, onCheckout }) {
+  const { t } = useTranslation()
+  const getItemTypeLabel = (value) => {
+    const normalized = String(value || '').trim().toLowerCase()
+
+    if (normalized === 'bloque') return t('catalog.types.bloque')
+    if (normalized === 'pilar') return t('catalog.types.pilar')
+    return value || t('catalog.types.product')
+  }
   /**
    * Calcula el total del carrito basado en los items.
    * @returns {number} Total en euros
@@ -65,12 +74,12 @@ function CartPanel({ isOpen, items = [], onClose, onRemoveItem, onUpdateQuantity
           
           {/* ENCABEZADO DEL PANEL */}
           <div className="cart-panel-header">
-            <h2>Mi cesta</h2>
+            <h2>{t('cart.title')}</h2>
             <button
               type="button"
               className="cart-panel-close-btn"
               onClick={onClose}
-              aria-label="Cerrar carrito"
+              aria-label={t('cart.close')}
             >
               ×
             </button>
@@ -87,7 +96,7 @@ function CartPanel({ isOpen, items = [], onClose, onRemoveItem, onUpdateQuantity
                     {/* INFORMACIÓN DEL PRODUCTO */}
                     <div className="cart-item-info">
                       <h3 className="cart-item-name">{item.nombre}</h3>
-                      <p className="cart-item-type">{item.tipo}</p>
+                      <p className="cart-item-type">{getItemTypeLabel(item.tipo)}</p>
                       <p className="cart-item-dimensions">
                         {item.largo} x {item.ancho} x {item.alto} cm
                       </p>
@@ -106,7 +115,7 @@ function CartPanel({ isOpen, items = [], onClose, onRemoveItem, onUpdateQuantity
                         type="button"
                         className="cart-quantity-btn"
                         onClick={() => onUpdateQuantity(index, Math.max(1, (item.cantidad || 1) - 1))}
-                        aria-label="Reducir cantidad"
+                        aria-label={t('cart.reduce')}
                       >
                         -
                       </button>
@@ -121,7 +130,7 @@ function CartPanel({ isOpen, items = [], onClose, onRemoveItem, onUpdateQuantity
                         type="button"
                         className="cart-quantity-btn"
                         onClick={() => onUpdateQuantity(index, (item.cantidad || 1) + 1)}
-                        aria-label="Aumentar cantidad"
+                        aria-label={t('cart.increase')}
                       >
                         +
                       </button>
@@ -139,7 +148,7 @@ function CartPanel({ isOpen, items = [], onClose, onRemoveItem, onUpdateQuantity
                       type="button"
                       className="cart-item-remove-btn"
                       onClick={() => onRemoveItem(index)}
-                      aria-label="Eliminar del carrito"
+                      aria-label={t('cart.remove')}
                     >
                       ×
                     </button>
@@ -150,10 +159,8 @@ function CartPanel({ isOpen, items = [], onClose, onRemoveItem, onUpdateQuantity
               /* MENSAJE CUANDO EL CARRITO ESTÁ VACÍO */
               <div className="cart-empty-state">
                 <div className="cart-empty-icon">🛒</div>
-                <p className="cart-empty-message">Tu cesta está vacía</p>
-                <p className="cart-empty-hint">
-                  Añade productos desde el catálogo para empezar
-                </p>
+                <p className="cart-empty-message">{t('cart.empty')}</p>
+                <p className="cart-empty-hint">{t('cart.hint')}</p>
               </div>
             )}
 
@@ -166,7 +173,7 @@ function CartPanel({ isOpen, items = [], onClose, onRemoveItem, onUpdateQuantity
               {/* RESUMEN DE CANTIDAD */}
               <div className="cart-summary-row">
                 <span className="cart-summary-label">
-                  {itemCount} {itemCount === 1 ? 'artículo' : 'artículos'}
+                  {t('cart.item', { count: itemCount })}
                 </span>
               </div>
 
@@ -175,7 +182,7 @@ function CartPanel({ isOpen, items = [], onClose, onRemoveItem, onUpdateQuantity
 
               {/* TOTAL */}
               <div className="cart-total-row">
-                <span className="cart-total-label">Total</span>
+                <span className="cart-total-label">{t('common.total')}</span>
                 <span className="cart-total-value">{'\u20ac'}{total.toFixed(2)}</span>
               </div>
 
@@ -186,7 +193,7 @@ function CartPanel({ isOpen, items = [], onClose, onRemoveItem, onUpdateQuantity
                   className="cart-action-btn cart-continue-btn"
                   onClick={onClose}
                 >
-                  Seguir comprando
+                  {t('cart.continue')}
                 </button>
                 <button
                   type="button"
@@ -194,7 +201,7 @@ function CartPanel({ isOpen, items = [], onClose, onRemoveItem, onUpdateQuantity
                   onClick={onCheckout}
                   disabled={items.length === 0}
                 >
-                  Proceder al pedido
+                  {t('cart.checkout')}
                 </button>
               </div>
 

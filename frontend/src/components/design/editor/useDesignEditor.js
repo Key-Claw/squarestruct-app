@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { getProductos } from '../../../services/productService'
+import i18n from '../../../i18n'
 import { normalizarProducto } from '../../../utils/text'
 import {
   accessoryPieces,
@@ -19,15 +20,7 @@ const MATERIAL_ALL = 'todos'
 const MATERIAL_HORMIGON = 'hormigon'
 const MATERIAL_ECO = 'eco'
 
-function getDefaultViewZoom() {
-  if (typeof window === 'undefined') return INITIAL_VIEW_ZOOM
-
-  if (window.innerWidth < 576) return 1.02
-  if (window.innerWidth < 768) return 1.14
-  if (window.innerWidth < 1200) return 1.34
-
-  return INITIAL_VIEW_ZOOM
-}
+const t = (key, options) => i18n.t(key, options)
 
 const normalizeMaterial = (value) => (
   String(value || '')
@@ -261,7 +254,7 @@ function validatePlacement(placements, candidate, designPieces) {
     || candidate.row + candidate.height > gridRows
     || candidate.column + candidate.width > gridColumns
   ) {
-    return { ok: false, message: 'La pieza no cabe dentro del plano.' }
+    return { ok: false, message: t('design.messages.outOfBounds') }
   }
 
   const hasCollision = placements.some((placement) => (
@@ -269,14 +262,14 @@ function validatePlacement(placements, candidate, designPieces) {
   ))
 
   if (hasCollision) {
-    return { ok: false, message: 'Esa zona ya tiene una pieza colocada.' }
+    return { ok: false, message: t('design.messages.collision') }
   }
 
   if (
     needsStructuralSupport
     && !hasLowerFloorSupport(placements, candidate, pieceMap)
   ) {
-    return { ok: false, message: 'La pieza necesita apoyo justo debajo.' }
+    return { ok: false, message: t('design.messages.needsSupport') }
   }
 
   if (
@@ -285,7 +278,7 @@ function validatePlacement(placements, candidate, designPieces) {
     && !hasDirectLowerStructuralSupport(placements, candidate, pieceMap)
     && !hasFullAdjacentStructuralSupport(placements, candidate, pieceMap)
   ) {
-    return { ok: false, message: 'El accesorio necesita estar en planta 0, tener apoyo debajo o contacto completo con una pieza estructural.' }
+    return { ok: false, message: t('design.messages.needsAccessorySupport') }
   }
 
   return { ok: true, message: '' }
@@ -386,7 +379,7 @@ function useDesignEditor() {
   const [isFlipped, setIsFlipped] = useState(draft?.isFlipped || false)
   const [undoStack, setUndoStack] = useState([])
   const [redoStack, setRedoStack] = useState([])
-  const [statusMessage, setStatusMessage] = useState('Selecciona una pieza y colocala en el plano 2D.')
+  const [statusMessage, setStatusMessage] = useState(t('design.messages.initial'))
 
   const commitPlacements = (nextPlacements, { recordHistory = true } = {}) => {
     const currentPlacements = placementsRef.current
@@ -428,13 +421,13 @@ function useDesignEditor() {
 
         setDbPieces(mappedPieces)
         if (!mappedPieces.length) {
-          setPiecesError('No hay bloques o pilares publicados en la base de datos.')
+          setPiecesError(t('design.errors.noPieces'))
         }
       } catch (error) {
         if (!isMounted) return
 
         setDbPieces([])
-        setPiecesError(error.message || 'No se pudieron cargar los bloques y pilares.')
+        setPiecesError(error.message || t('design.errors.loadFailed'))
       } finally {
         if (isMounted) setIsLoadingPieces(false)
       }
@@ -497,7 +490,7 @@ function useDesignEditor() {
     const { silentInvalid = false, silentSuccess = false } = options
 
     if (!selectedPiece) {
-      if (!silentInvalid) setStatusMessage('Selecciona una pieza disponible antes de colocarla.')
+      if (!silentInvalid) setStatusMessage(t('design.messages.selectAvailable'))
       return false
     }
 
@@ -511,7 +504,7 @@ function useDesignEditor() {
     }
 
     commitPlacements([...currentPlacements, candidate])
-    if (!silentSuccess) setStatusMessage(`${selectedPiece.name} colocado desde la capa ${activeFloor}.`)
+    if (!silentSuccess) setStatusMessage(t('design.messages.placed', { name: selectedPiece.name, floor: activeFloor }))
     return true
   }
 
@@ -533,8 +526,8 @@ function useDesignEditor() {
     if (!silentSuccess) {
       setStatusMessage(
         removedCount > 0
-          ? 'Pieza eliminada junto con las piezas que dependian de ella.'
-          : 'Pieza eliminada del plano.',
+          ? t('design.messages.removedWithDependents')
+          : t('design.messages.removed'),
       )
     }
     return true
@@ -544,12 +537,12 @@ function useDesignEditor() {
     const layerCount = getPieceLayerCount(selectedPiece)
 
     setActiveFloor((current) => current + layerCount)
-    setStatusMessage(`Capa ajustada +${layerCount} (${Math.round(layerCount * layerHeightMeters * 100)} cm).`)
+    setStatusMessage(t('design.messages.layerAdjusted', { layers: layerCount, cm: Math.round(layerCount * layerHeightMeters * 100) }))
   }
 
   const clearProject = () => {
     commitPlacements([])
-    setStatusMessage('Plano reiniciado.')
+    setStatusMessage(t('design.messages.reset'))
   }
 
   const saveProject = () => {
@@ -562,14 +555,14 @@ function useDesignEditor() {
       isFlipped,
       placements: placementsRef.current,
     }))
-    setStatusMessage('Borrador guardado en el navegador.')
+    setStatusMessage(t('design.messages.draftSaved'))
   }
 
   const loadProject = () => {
     const savedDraft = loadDraft()
 
     if (!savedDraft) {
-      setStatusMessage('No hay borrador guardado todavia.')
+      setStatusMessage(t('design.messages.draftMissing'))
       return
     }
 
@@ -578,7 +571,7 @@ function useDesignEditor() {
     setActiveFloor(savedDraft.activeFloor || 0)
     setIsFlipped(Boolean(savedDraft.isFlipped))
     commitPlacements(savedDraft.placements)
-    setStatusMessage('Borrador cargado correctamente.')
+    setStatusMessage(t('design.messages.draftLoaded'))
   }
 
   const undo = () => {
@@ -590,7 +583,7 @@ function useDesignEditor() {
     setUndoStack((current) => current.slice(0, -1))
     setRedoStack((current) => [...current, currentPlacements])
     commitPlacements(previousPlacements, { recordHistory: false })
-    setStatusMessage('Deshecho el ultimo cambio.')
+    setStatusMessage(t('design.messages.undo'))
     return true
   }
 
@@ -603,7 +596,7 @@ function useDesignEditor() {
     setRedoStack((current) => current.slice(0, -1))
     setUndoStack((current) => [...current, currentPlacements])
     commitPlacements(nextPlacements, { recordHistory: false })
-    setStatusMessage('Rehecho el ultimo cambio.')
+    setStatusMessage(t('design.messages.redo'))
     return true
   }
 
@@ -626,7 +619,7 @@ function useDesignEditor() {
     link.download = 'squarestruct-plano.json'
     link.click()
     window.URL.revokeObjectURL(url)
-    setStatusMessage('Plano exportado como archivo JSON.')
+    setStatusMessage(t('design.messages.exported'))
   }
 
   const updateZoom = (delta) => {
