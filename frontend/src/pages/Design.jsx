@@ -421,18 +421,43 @@ function Design() {
               </div>
             )}
 
+            {editor.isLoadingPieces && editor.activeCategory !== 'accesorios' && (
+              <div className="design-piece-empty">Cargando piezas desde la base de datos...</div>
+            )}
+
+            {!editor.isLoadingPieces && editor.piecesError && editor.activeCategory !== 'accesorios' && (
+              <div className="design-piece-empty">{editor.piecesError}</div>
+            )}
+
+            {!editor.isLoadingPieces && !editor.visiblePieces.length && !editor.piecesError && (
+              <div className="design-piece-empty">No hay piezas disponibles en esta categoria.</div>
+            )}
+
+            {editor.visiblePieces.length > 0 && (
+              <div className="design-piece-dropdown">
+                <label htmlFor="design-piece-select">Pieza activa</label>
+                <select
+                  id="design-piece-select"
+                  value={editor.selectedPiece?.id || ''}
+                  onChange={(event) => editor.setSelectedPieceId(event.target.value)}
+                >
+                  {editor.visiblePieces.map((piece) => (
+                    <option key={piece.id} value={piece.id}>
+                      {piece.name} - {piece.size}
+                    </option>
+                  ))}
+                </select>
+                {editor.selectedPiece && (
+                  <div className="design-piece-dropdown-summary" style={{ '--piece-color': editor.selectedPiece.color }}>
+                    <span>{getDesignPieceBadge(editor.selectedPiece)}</span>
+                    <strong>{editor.selectedPiece.name}</strong>
+                    <small>{editor.selectedPiece.size}</small>
+                  </div>
+                )}
+              </div>
+            )}
+
             <div className="design-piece-list">
-              {editor.isLoadingPieces && editor.activeCategory !== 'accesorios' && (
-                <div className="design-piece-empty">Cargando piezas desde la base de datos...</div>
-              )}
-
-              {!editor.isLoadingPieces && editor.piecesError && editor.activeCategory !== 'accesorios' && (
-                <div className="design-piece-empty">{editor.piecesError}</div>
-              )}
-
-              {!editor.isLoadingPieces && !editor.visiblePieces.length && !editor.piecesError && (
-                <div className="design-piece-empty">No hay piezas disponibles en esta categoria.</div>
-              )}
 
               {editor.visiblePieces.map((piece) => (
                 (() => {
@@ -509,6 +534,7 @@ function Design() {
                 gridColumns={editor.gridColumns}
                 gridRows={editor.gridRows}
                 isPanMode={isPanMode}
+                onBoardMessage={editor.setStatusMessage}
                 panBoard={editor.panBoard}
                 placements={editor.placements}
                 placePiece={editor.placePiece}

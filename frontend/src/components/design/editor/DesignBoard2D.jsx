@@ -1,5 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 
+const DOUBLE_TAP_REMOVE_MS = 420
+const DOUBLE_TAP_SLOP_PX = 18
+
 function getPlacementLabel(piece) {
   if (!piece) return 'PZ'
 
@@ -80,6 +83,7 @@ function DesignBoard2D({
   gridColumns,
   gridRows,
   isPanMode,
+  onBoardMessage,
   panBoard,
   placements,
   placePiece,
@@ -89,6 +93,7 @@ function DesignBoard2D({
 }) {
   const stageRef = useRef(null)
   const dragRef = useRef(null)
+  const lastFilledTapRef = useRef(null)
   const suppressNextBoardActionRef = useRef(false)
   const [hoverPreview, setHoverPreview] = useState(null)
 
@@ -102,8 +107,10 @@ function DesignBoard2D({
     return { row, column }
   }
 
-  const hasPlacementAtCell = (row, column) => (
-    placements.some((placement) => {
+  const getPlacementAtCell = (row, column) => {
+    const reversedPlacements = [...placements].reverse()
+
+    return reversedPlacements.find((placement) => {
       const piece = designPieces.find((item) => item.id === placement.pieceId)
 
       return (
@@ -113,8 +120,58 @@ function DesignBoard2D({
         && column >= placement.column
         && column < placement.column + placement.width
       )
-    })
-  )
+    }) || null
+  }
+
+  const hasPlacementAtCell = (row, column) => Boolean(getPlacementAtCell(row, column))
+
+  const resetLastFilledTap = () => {
+    lastFilledTapRef.current = null
+  }
+
+  const handleFilledCellTap = (event, cell) => {
+    const placement = getPlacementAtCell(cell.row, cell.column)
+
+    if (!placement) {
+      resetLastFilledTap()
+      return false
+    }
+
+    const lastTap = lastFilledTapRef.current
+    const now = event.timeStamp || Date.now()
+    const pointerDistance = lastTap
+      ? Math.hypot(event.clientX - lastTap.x, event.clientY - lastTap.y)
+      : Number.POSITIVE_INFINITY
+    const isDoubleTap = (
+      lastTap
+      && lastTap.placementId === placement.id
+      && now - lastTap.time <= DOUBLE_TAP_REMOVE_MS
+      && pointerDistance <= DOUBLE_TAP_SLOP_PX
+    )
+
+    event.preventDefault()
+    suppressNextBoardActionRef.current = true
+    setHoverPreview(null)
+
+    if (isDoubleTap) {
+      resetLastFilledTap()
+      removePiece(cell.row, cell.column)
+      return true
+    }
+
+    lastFilledTapRef.current = {
+      placementId: placement.id,
+      time: now,
+      x: event.clientX,
+      y: event.clientY,
+    }
+
+    if (event.pointerType !== 'mouse') {
+      onBoardMessage?.('Toca dos veces una pieza para quitarla.')
+    }
+
+    return true
+  }
 
   const paintCell = (cell, options = {}) => {
     if (!cell) return false
@@ -127,6 +184,7 @@ function DesignBoard2D({
 
     if (hasPlacementAtCell(cell.row, cell.column)) return false
 
+    resetLastFilledTap()
     return placePiece(cell.row, cell.column, options)
   }
 
@@ -139,6 +197,7 @@ function DesignBoard2D({
     if (visitedCells?.has(key)) return false
     visitedCells?.add(key)
 
+    resetLastFilledTap()
     return removePiece(cell.row, cell.column, options)
   }
 
@@ -194,6 +253,10 @@ function DesignBoard2D({
       setHoverPreview(null)
 
       const cell = getBoardCellFromEvent(event)
+
+      if (cell && handleFilledCellTap(event, cell)) {
+        return
+      }
 
       dragRef.current = {
         dragged: false,

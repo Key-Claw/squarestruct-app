@@ -413,6 +413,81 @@ button.design-piece-card {
   font-weight: 700;
 }
 
+.design-piece-dropdown {
+  display: none;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.design-piece-dropdown label {
+  color: #102736;
+  font-size: 0.72rem;
+  font-weight: 850;
+  letter-spacing: 0.05em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.design-piece-dropdown select {
+  width: 100%;
+  min-height: 46px;
+  border: 1px solid rgba(23, 63, 95, 0.14);
+  border-radius: 10px;
+  background: #fff;
+  color: #102736;
+  padding: 0 42px 0 12px;
+  font: 800 0.82rem/1.2 var(--sans);
+  text-transform: none;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.04);
+}
+
+.design-piece-dropdown-summary {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 4px 10px;
+  align-items: center;
+  border: 1px solid rgba(23, 63, 95, 0.1);
+  border-left: 4px solid var(--piece-color, #5f9f38);
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--piece-color, #5f9f38) 7%, white);
+  padding: 11px 12px;
+  text-align: left;
+}
+
+.design-piece-dropdown-summary span {
+  grid-row: 1 / span 2;
+  align-self: center;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.84);
+  color: #4f8f2f;
+  padding: 5px 8px;
+  font-size: 0.58rem;
+  font-weight: 900;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.design-piece-dropdown-summary strong,
+.design-piece-dropdown-summary small {
+  min-width: 0;
+  color: #102736;
+  line-height: 1.15;
+}
+
+.design-piece-dropdown-summary strong {
+  overflow: hidden;
+  font-size: 0.82rem;
+  font-weight: 900;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.design-piece-dropdown-summary small {
+  color: rgba(23, 63, 95, 0.76);
+  font-size: 0.72rem;
+  font-weight: 800;
+}
+
 .design-drag-help {
   min-height: 78px;
   margin-top: 22px;
@@ -2713,5 +2788,96 @@ button.design-piece-card {
   .design-layer-height-line {
     height: 46px;
   }
+}
+
+/* Pulido táctil del editor 2D: el tablero captura gestos y las zonas
+   desplazables mantienen inercia natural en móviles. */
+.design-board-stage {
+  overscroll-behavior: contain;
+}
+
+.design-board-grid {
+  cursor: crosshair;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  background:
+    linear-gradient(to right, rgba(16, 39, 54, 0.08) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(16, 39, 54, 0.08) 1px, transparent 1px),
+    linear-gradient(to right, rgba(95, 159, 56, 0.34) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(95, 159, 56, 0.34) 1px, transparent 1px),
+    radial-gradient(circle at 58% 26%, rgba(95, 159, 56, 0.07), transparent 34%),
+    #fbfdff;
+  background-size:
+    calc(100% / var(--cols)) calc(100% / var(--rows)),
+    calc(100% / var(--cols)) calc(100% / var(--rows)),
+    calc(100% / var(--major-cols)) calc(100% / var(--major-rows)),
+    calc(100% / var(--major-cols)) calc(100% / var(--major-rows)),
+    auto,
+    auto;
+}
+
+.design-placement {
+  border-color: color-mix(in srgb, var(--piece-color, #6b7280) 56%, white);
+  background: color-mix(in srgb, var(--piece-color, #6b7280) 18%, white);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.58),
+    0 1px 0 rgba(16, 39, 54, 0.06);
+}
+
+.design-placement-preview {
+  border-width: 2px;
+}
+
+.design-piece-list,
+.design-summary-content,
+.design-summary-list,
+.design-utility-popover,
+.design-guide-modal,
+.design-community-modal {
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+}
+
+.design-tabs button,
+.design-material-filter button,
+.design-piece-card,
+.design-drag-help-icons button,
+.design-editor-toolbar button,
+.design-zoom button,
+.design-floor-switch button,
+.design-view-switch button,
+.design-side-tools button,
+.design-clear-canvas-btn,
+.design-plan-actions .design-outline-btn,
+.design-help-guide-btn,
+.design-community-example,
+.design-guide-close,
+.design-community-close {
+  touch-action: manipulation;
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .design-piece-card:hover,
+  .design-drag-help-icons button:hover,
+  .design-side-tools button:hover,
+  .design-clear-canvas-btn:hover,
+  .design-community-example:hover {
+    transform: none;
+  }
+}
+
+.design-three-shell {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: auto;
+  height: auto;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.design-three-shell canvas {
+  min-height: 0;
 }
 
