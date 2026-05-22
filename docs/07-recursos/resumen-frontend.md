@@ -37,7 +37,7 @@ frontend/
 - `Home`: portada.
 - `Catalogo`: productos conectados al backend con fallback demo.
 - `Galeria`: inspiracion visual.
-- `Design`: maqueta del futuro disenador.
+- `Design`: editor visual 2D/3D con piezas del catalogo, accesorios locales, borrador en navegador y presupuesto estimado.
 - `AboutUs`: informacion del proyecto y equipo.
 - `Login` y `Register`: vistas tradicionales de autenticacion.
 - `Usuarios`: gestion admin conectada al backend.
@@ -76,7 +76,7 @@ npm run build
 
 Ademas hay que probar manualmente la pantalla tocada en navegador.
 
-## Estado V2 sobre base MVP
+## Estado V3 sobre base MVP
 
 Funcional:
 

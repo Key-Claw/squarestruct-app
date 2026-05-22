@@ -2,7 +2,7 @@
 
 ## Objetivo
 
-Este documento amplia la explicacion de la base de datos de SquareStruct V2.
+Este documento amplia la explicacion de la base de datos de SquareStruct V3.
 
 La base de datos se ha disenado con MySQL porque el proyecto necesita relaciones claras entre usuarios, proveedores, productos y pedidos.
 
@@ -107,7 +107,7 @@ Metodos de pago permitidos:
 tarjeta, transferencia, paypal, efectivo
 ```
 
-En V2 el checkout del frontend crea pedidos reales desde el carrito. El backend permite crear pedidos, consultar detalle, listar facturas de usuario, listar facturacion admin, aceptar/denegar pedidos pendientes y cancelar logicamente cuando corresponde.
+En V3 el checkout del frontend crea pedidos reales desde el carrito. El backend permite crear pedidos, consultar detalle, listar facturas de usuario, listar facturacion admin, aceptar/denegar pedidos pendientes y cancelar logicamente cuando corresponde.
 
 La cancelacion no borra registros: cambia `estado` a `cancelado` y conserva el historial del pedido y sus lineas.
 

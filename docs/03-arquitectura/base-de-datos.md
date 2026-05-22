@@ -100,7 +100,7 @@ El panel admin cambia pedidos pendientes a:
 - `ancho`
 - `largo`
 
-Estos campos ya se usan en catalogo y preparan calculos futuros de volumen, presupuesto y compatibilidad de piezas. No existe todavia una tabla `planos`.
+Estos campos ya se usan en catalogo y en el disenador para transformar productos en piezas colocables. No existe todavia una tabla `planos`, por lo que los borradores del disenador se guardan solo en el navegador.
 
 ## Migraciones
 

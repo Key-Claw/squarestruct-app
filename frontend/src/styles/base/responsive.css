@@ -291,6 +291,25 @@
   }
 }
 
+/* Altura compartida final de heroes: Galeria, Catalogo y Disenador. */
+@media (min-width: 768px) {
+  .gallery-page > .gallery-intro-card,
+  .catalog-page > .catalog-heading,
+  .design-page > .design-topbar,
+  .gallery-page > .gallery-intro-card > .gallery-intro-copy,
+  .catalog-page > .catalog-heading > .catalog-heading-copy,
+  .design-page > .design-topbar > .design-topbar-copy,
+  .gallery-page > .gallery-intro-card > .gallery-intro-media,
+  .catalog-page > .catalog-heading > .catalog-heading-media,
+  .design-page > .design-topbar > .design-topbar-media,
+  .gallery-page > .gallery-intro-card > .gallery-intro-media .gallery-cover-image,
+  .catalog-page > .catalog-heading > .catalog-heading-media img,
+  .design-page > .design-topbar > .design-topbar-media img {
+    height: 250px;
+    min-height: 250px;
+  }
+}
+
 /* Responsive tablet: 768px - 1199.98px. Rejillas de dos columnas y separación media. */
 @media (min-width: 768px) and (max-width: 1199.98px) {
   .page-shell,
@@ -1602,7 +1621,7 @@ button,
 }
 
 /* ============================================================================
-   FASE 3: SISTEMA VISUAL GLOBAL V2
+   FASE 3: SISTEMA VISUAL GLOBAL V3
    ============================================================================ */
 
 body,
@@ -2658,5 +2677,30 @@ textarea {
     line-height: 1.1;
     text-align: center;
     white-space: normal;
+  }
+}
+
+/* Regla comun final: altura real de las heroes de Galeria, Catalogo y Disenador. */
+@media (min-width: 768px) {
+  .gallery-page > .gallery-intro-card,
+  .catalog-page > .catalog-heading,
+  .design-page > .design-topbar {
+    grid-template-rows: 250px;
+  }
+
+  .gallery-page > .gallery-intro-card,
+  .catalog-page > .catalog-heading,
+  .design-page > .design-topbar,
+  .gallery-page > .gallery-intro-card > .gallery-intro-copy,
+  .catalog-page > .catalog-heading > .catalog-heading-copy,
+  .design-page > .design-topbar > .design-topbar-copy,
+  .gallery-page > .gallery-intro-card > .gallery-intro-media,
+  .catalog-page > .catalog-heading > .catalog-heading-media,
+  .design-page > .design-topbar > .design-topbar-media,
+  .gallery-page > .gallery-intro-card > .gallery-intro-media .gallery-cover-image,
+  .catalog-page > .catalog-heading > .catalog-heading-media img,
+  .design-page > .design-topbar > .design-topbar-media img {
+    height: 250px;
+    min-height: 250px;
   }
 }

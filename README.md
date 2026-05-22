@@ -5,7 +5,7 @@
 <p align="center">
   <a href="https://img.shields.io/badge/React-19.2.5-61dafb?logo=react&logoColor=white&style=flat-square"><img src="https://img.shields.io/badge/React-19.2.5-61dafb?logo=react&logoColor=white&style=flat-square" alt="React"/></a>
   <a href="https://img.shields.io/badge/Vite-8.0.10-646cff?logo=vite&logoColor=white&style=flat-square"><img src="https://img.shields.io/badge/Vite-8.0.10-646cff?logo=vite&logoColor=white&style=flat-square" alt="Vite"/></a>
-  <a href="https://img.shields.io/badge/Node.js-22.17.0-339933?logo=node.js&logoColor=white&style=flat-square"><img src="https://img.shields.io/badge/Node.js-22.17.0-339933?logo=node.js&logoColor=white&style=flat-square" alt="Node.js"/></a>
+  <a href="https://img.shields.io/badge/Node.js-20.19.0-339933?logo=node.js&logoColor=white&style=flat-square"><img src="https://img.shields.io/badge/Node.js-20.19.0-339933?logo=node.js&logoColor=white&style=flat-square" alt="Node.js"/></a>
   <a href="https://img.shields.io/badge/Express-5.1.0-000000?logo=express&logoColor=white&style=flat-square"><img src="https://img.shields.io/badge/Express-5.1.0-000000?logo=express&logoColor=white&style=flat-square" alt="Express"/></a>
   <a href="https://img.shields.io/badge/MySQL-8.4-4479a1?logo=mysql&logoColor=white&style=flat-square"><img src="https://img.shields.io/badge/MySQL-8.4-4479a1?logo=mysql&logoColor=white&style=flat-square" alt="MySQL"/></a>
 </p>
@@ -21,9 +21,9 @@
 
 <h2 align="center">Aplicacion web full stack para catalogo, pedidos y gestion de construccion modular sostenible</h2>
 
-SquareStruct es una aplicacion web centrada en construccion modular sostenible. La version actual es la **V2**: una aplicacion full stack con frontend React, API REST Express, base de datos MySQL/MariaDB, autenticacion JWT, roles, catalogo conectado a backend, carrito, checkout, pedidos, facturacion de usuario y paneles de administracion.
+SquareStruct es una aplicacion web centrada en construccion modular sostenible. La version actual es la **V3**: una aplicacion full stack con frontend React, API REST Express, base de datos MySQL/MariaDB, autenticacion JWT, roles, catalogo conectado a backend, carrito, checkout, pedidos, facturacion de usuario, paneles de administracion y base visual para el disenador.
 
-La MVP queda como contexto historico: sirvio para validar el flujo inicial de registro, login, catalogo y carrito visual. La documentacion actual describe principalmente el estado real de V2.
+La MVP queda como contexto historico: sirvio para validar el flujo inicial de registro, login, catalogo y carrito visual. La documentacion actual describe principalmente el estado real de V3.
 
 ## Tabla De Contenidos
 
@@ -59,17 +59,17 @@ La MVP queda como contexto historico: sirvio para validar el flujo inicial de re
 - Loaders, estados vacios, mensajes de error y layout responsive.
 - Docker Compose para MySQL y entorno completo.
 - GitHub Actions para backend, frontend, lint y build.
-- Colecciones Postman para MVP historica y V2.
+- Colecciones Postman para MVP historica y V3.
 
 ## Tecnologias
 
 | Parte | Tecnologias reales |
 | --- | --- |
-| Frontend | React 19, Vite 8, React Router DOM 7, HashRouter, Bootstrap 5, CSS modular, SweetAlert2 |
+| Frontend | React 19, Vite 8, React Router DOM 7, HashRouter, Bootstrap 5, Three.js, React Three Fiber, Drei, CSS modular, SweetAlert2 |
 | Backend | Node.js, Express 5, mysql2/promise, JWT, bcrypt, dotenv, CORS |
 | Base de datos | MySQL 8.4 en Docker local, MySQL 8.0 en CI, modelo compatible con MariaDB |
-| Testing | Vitest, Testing Library, Jest, Supertest, Postman |
-| Calidad y entrega | ESLint, Docker, Docker Compose, GitHub Actions, GitFlow |
+| Testing | Jest 29, Supertest 7, Vitest 4, Testing Library, jsdom, Postman |
+| Calidad y entrega | ESLint 10, Docker, Docker Compose, GitHub Actions sobre Ubuntu, Node.js 20.19.0, npm, Vite build |
 
 ## Arquitectura
 
@@ -87,7 +87,7 @@ squarestruct-app/
 
   backend/
     db/              Schema, seeds, migraciones y consultas SQL
-    postman/         Colecciones Postman MVP y V2
+    postman/         Colecciones Postman MVP y V3
     src/
       routes/        Usuarios, productos, pedidos y perfil
       controllers/   Logica HTTP y acceso a base de datos
@@ -181,10 +181,10 @@ Colecciones disponibles:
 
 ```text
 backend/postman/squarestruct-mvp.postman_collection.json
-backend/postman/squarestruct-v2.postman_collection.json
+backend/postman/squarestruct-v3.postman_collection.json
 ```
 
-La coleccion V2 cubre salud, estado de base de datos, auth, perfil, usuarios, productos y pedidos. Variables recomendadas: `baseUrl`, `token`, `adminToken`, `idUsuario`, `idProducto` e `idPedido`.
+La coleccion V3 cubre salud, estado de base de datos, auth, perfil, usuarios, productos, pedidos y seguridad. Variables principales: `baseUrl`, `adminToken`, `userToken`, `testUserToken`, `idUsuarioDemo`, `idProductoSeed`, `idProductoTemporal` e `idPedido`.
 
 ## Testing Y CI
 
@@ -195,6 +195,8 @@ GitHub Actions ejecuta:
 - lint de frontend;
 - build de produccion con Vite.
 
+El workflow usa Ubuntu, Node.js `20.19.0`, MySQL `8.0`, cliente MySQL del runner, `npm ci` en backend, `npm install` en frontend, Jest/Supertest para API, Vitest/Testing Library/jsdom para interfaz, ESLint y Vite.
+
 Workflow: [`.github/workflows/tests.yml`](.github/workflows/tests.yml).
 
 ## Documentacion
@@ -204,6 +206,8 @@ El indice principal esta en [`docs/README.md`](docs/README.md).
 Documentos clave:
 
 - [`docs/01-proyecto/vision-general.md`](docs/01-proyecto/vision-general.md)
+- [`docs/07-recursos/guia-defensa-daw1.md`](docs/07-recursos/guia-defensa-daw1.md)
+- [`docs/07-recursos/inventario-codigo-daw1.md`](docs/07-recursos/inventario-codigo-daw1.md)
 - [`docs/03-arquitectura/frontend-estructura.md`](docs/03-arquitectura/frontend-estructura.md)
 - [`docs/03-arquitectura/backend-estructura.md`](docs/03-arquitectura/backend-estructura.md)
 - [`docs/03-arquitectura/base-de-datos.md`](docs/03-arquitectura/base-de-datos.md)
@@ -216,8 +220,9 @@ Documentos clave:
 | Version | Estado | Alcance |
 | --- | --- | --- |
 | MVP v1 | Cerrada | Registro, login, catalogo inicial, carrito visual y base administrativa. |
-| V2 | Actual | Aplicacion full stack estilizada con pedidos, checkout, facturacion, roles, tests, Docker y CI. |
-| V3 | Futura | Disenador 3D real, persistencia de planos, presupuesto avanzado y despliegue productivo. |
+| Version anterior | Cerrada | Aplicacion full stack estilizada con pedidos, checkout, facturacion, roles, tests, Docker y CI. |
+| V3 | Actual | Evolucion actual con base de disenador, stack actualizado, documentacion alineada y pruebas automatizadas. |
+| Siguiente fase | Pendiente | Persistencia de planos, presupuesto avanzado, pagos y despliegue productivo. |
 
 ## Licencia
 
