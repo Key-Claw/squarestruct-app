@@ -283,7 +283,7 @@ function validatePlacement(placements, candidate, designPieces) {
 
 function pruneUnsupportedPlacements(placements, designPieces) {
   let nextPlacements = [...placements]
-  let removedAny = false
+  let removedAny
 
   do {
     removedAny = false

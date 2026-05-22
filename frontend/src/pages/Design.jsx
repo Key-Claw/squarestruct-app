@@ -276,7 +276,7 @@ function usePressAndHoldAction(action, { delayMs = 0, repeatMs = FLOOR_HOLD_REPE
   }
 }
 
-function Design({ onNavigate }) {
+function Design() {
   const editor = useDesignEditor()
   const [activeUtilityPanel, setActiveUtilityPanel] = useState(null)
   const [isPanMode, setIsPanMode] = useState(false)
