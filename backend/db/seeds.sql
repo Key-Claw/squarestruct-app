@@ -22,26 +22,26 @@ VALUES
 -- Hash bcrypt de la contrasena temporal de ejemplo para usuarios seed. Cambiar antes de desplegar en AWS.
 INSERT INTO usuarios (idUsuario, nombre, primerApellido, segundoApellido, email, contrasena, rol)
 VALUES
-  (1, 'Admin', 'SquareStruct', NULL, 'admin@squarestruct.com', '$2b$10$uDPwExnvB1b.4fDtKNOKZOx.4BmAODWoLc23EtZZOa6IPljXf3cjW', 'admin'),
-  (2, 'Juan', 'Perez', 'Guarnizo', 'juan.perez@gmail.com', '$2b$10$uDPwExnvB1b.4fDtKNOKZOx.4BmAODWoLc23EtZZOa6IPljXf3cjW', 'usuario'),
-  (3, 'Ana', 'Gomez', NULL, 'ana.gomez@email.com', '$2b$10$uDPwExnvB1b.4fDtKNOKZOx.4BmAODWoLc23EtZZOa6IPljXf3cjW', 'usuario'),
-  (4, 'Carlos', 'Martinez', 'Lopez', 'carlos.martinez@gmail.com', '$2b$10$uDPwExnvB1b.4fDtKNOKZOx.4BmAODWoLc23EtZZOa6IPljXf3cjW', 'usuario'),
-  (5, 'Lucia', 'Fernandez', NULL, 'lucia.fernandez@gmail.com', '$2b$10$uDPwExnvB1b.4fDtKNOKZOx.4BmAODWoLc23EtZZOa6IPljXf3cjW', 'usuario'),
-  (6, 'Miguel', 'Sanchez', 'Ruiz', 'miguel.sanchez@gmail.com', '$2b$10$uDPwExnvB1b.4fDtKNOKZOx.4BmAODWoLc23EtZZOa6IPljXf3cjW', 'usuario'),
-  (7, 'Elena', 'Torres', NULL, 'elena.torres@gmail.com', '$2b$10$uDPwExnvB1b.4fDtKNOKZOx.4BmAODWoLc23EtZZOa6IPljXf3cjW', 'usuario'),
-  (8, 'David', 'Ramirez', 'Moreno', 'david.ramirez@gmail.com', '$2b$10$uDPwExnvB1b.4fDtKNOKZOx.4BmAODWoLc23EtZZOa6IPljXf3cjW', 'usuario'),
-  (9, 'Sara', 'Navarro', NULL, 'sara.navarro@gmail.com', '$2b$10$uDPwExnvB1b.4fDtKNOKZOx.4BmAODWoLc23EtZZOa6IPljXf3cjW', 'usuario'),
-  (10, 'Javier', 'Ortega', 'Gil', 'javier.ortega@gmail.com', '$2b$10$uDPwExnvB1b.4fDtKNOKZOx.4BmAODWoLc23EtZZOa6IPljXf3cjW', 'usuario'),
-  (11, 'Paula', 'Castro', NULL, 'paula.castro@gmail.com', '$2b$10$uDPwExnvB1b.4fDtKNOKZOx.4BmAODWoLc23EtZZOa6IPljXf3cjW', 'usuario'),
-  (12, 'Raul', 'Mendez', 'Vega', 'raul.mendez@gmail.com', '$2b$10$uDPwExnvB1b.4fDtKNOKZOx.4BmAODWoLc23EtZZOa6IPljXf3cjW', 'usuario'),
-  (13, 'Claudia', 'Herrera', NULL, 'claudia.herrera@gmail.com', '$2b$10$uDPwExnvB1b.4fDtKNOKZOx.4BmAODWoLc23EtZZOa6IPljXf3cjW', 'usuario'),
-  (14, 'Alberto', 'Cano', 'Serrano', 'alberto.cano@gmail.com', '$2b$10$uDPwExnvB1b.4fDtKNOKZOx.4BmAODWoLc23EtZZOa6IPljXf3cjW', 'usuario'),
-  (15, 'Marta', 'Iglesias', NULL, 'marta.iglesias@gmail.com', '$2b$10$uDPwExnvB1b.4fDtKNOKZOx.4BmAODWoLc23EtZZOa6IPljXf3cjW', 'usuario'),
-  (16, 'Sergio', 'Delgado', 'Nieto', 'sergio.delgado@gmail.com', '$2b$10$uDPwExnvB1b.4fDtKNOKZOx.4BmAODWoLc23EtZZOa6IPljXf3cjW', 'usuario'),
-  (17, 'Andrea', 'Reyes', NULL, 'andrea.reyes@gmail.com', '$2b$10$uDPwExnvB1b.4fDtKNOKZOx.4BmAODWoLc23EtZZOa6IPljXf3cjW', 'usuario'),
-  (18, 'Fernando', 'Vidal', 'Prieto', 'fernando.vidal@gmail.com', '$2b$10$uDPwExnvB1b.4fDtKNOKZOx.4BmAODWoLc23EtZZOa6IPljXf3cjW', 'usuario'),
-  (19, 'Natalia', 'Flores', NULL, 'natalia.flores@gmail.com', '$2b$10$uDPwExnvB1b.4fDtKNOKZOx.4BmAODWoLc23EtZZOa6IPljXf3cjW', 'usuario'),
-  (20, 'Pablo', 'Romero', 'Saez', 'pablo.romero@gmail.com', '$2b$10$uDPwExnvB1b.4fDtKNOKZOx.4BmAODWoLc23EtZZOa6IPljXf3cjW', 'usuario');
+  (1, 'Admin', 'SquareStruct', NULL, 'admin@sqst.com', '$2b$10$Hw6f8aERFlF7pndY7DpenOEKw9kcdLUq.CKYRSGGk0j/TGRbD3epm', 'admin'),
+  (2, 'Juan', 'Perez', 'Guarnizo', 'perez@gmail.com', '$2b$10$Hw6f8aERFlF7pndY7DpenOEKw9kcdLUq.CKYRSGGk0j/TGRbD3epm', 'usuario'),
+  (3, 'Ana', 'Gomez', NULL, 'gomez@email.com', '$2b$10$Hw6f8aERFlF7pndY7DpenOEKw9kcdLUq.CKYRSGGk0j/TGRbD3epm', 'usuario'),
+  (4, 'Carlos', 'Martinez', 'Lopez', 'martinez@gmail.com', '$2b$10$Hw6f8aERFlF7pndY7DpenOEKw9kcdLUq.CKYRSGGk0j/TGRbD3epm', 'usuario'),
+  (5, 'Lucia', 'Fernandez', NULL, 'fernandez@gmail.com', '$2b$10$Hw6f8aERFlF7pndY7DpenOEKw9kcdLUq.CKYRSGGk0j/TGRbD3epm', 'usuario'),
+  (6, 'Miguel', 'Sanchez', 'Ruiz', 'sanchez@gmail.com', '$2b$10$Hw6f8aERFlF7pndY7DpenOEKw9kcdLUq.CKYRSGGk0j/TGRbD3epm', 'usuario'),
+  (7, 'Elena', 'Torres', NULL, 'torres@gmail.com', '$2b$10$Hw6f8aERFlF7pndY7DpenOEKw9kcdLUq.CKYRSGGk0j/TGRbD3epm', 'usuario'),
+  (8, 'David', 'Ramirez', 'Moreno', 'ramirez@gmail.com', '$2b$10$Hw6f8aERFlF7pndY7DpenOEKw9kcdLUq.CKYRSGGk0j/TGRbD3epm', 'usuario'),
+  (9, 'Sara', 'Navarro', NULL, 'navarro@gmail.com', '$2b$10$Hw6f8aERFlF7pndY7DpenOEKw9kcdLUq.CKYRSGGk0j/TGRbD3epm', 'usuario'),
+  (10, 'Javier', 'Ortega', 'Gil', 'ortega@gmail.com', '$2b$10$Hw6f8aERFlF7pndY7DpenOEKw9kcdLUq.CKYRSGGk0j/TGRbD3epm', 'usuario'),
+  (11, 'Paula', 'Castro', NULL, 'castro@gmail.com', '$2b$10$Hw6f8aERFlF7pndY7DpenOEKw9kcdLUq.CKYRSGGk0j/TGRbD3epm', 'usuario'),
+  (12, 'Raul', 'Mendez', 'Vega', 'mendez@gmail.com', '$2b$10$Hw6f8aERFlF7pndY7DpenOEKw9kcdLUq.CKYRSGGk0j/TGRbD3epm', 'usuario'),
+  (13, 'Claudia', 'Herrera', NULL, 'herrera@gmail.com', '$2b$10$Hw6f8aERFlF7pndY7DpenOEKw9kcdLUq.CKYRSGGk0j/TGRbD3epm', 'usuario'),
+  (14, 'Alberto', 'Cano', 'Serrano', 'cano@gmail.com', '$2b$10$Hw6f8aERFlF7pndY7DpenOEKw9kcdLUq.CKYRSGGk0j/TGRbD3epm', 'usuario'),
+  (15, 'Marta', 'Iglesias', NULL, 'iglesias@gmail.com', '$2b$10$Hw6f8aERFlF7pndY7DpenOEKw9kcdLUq.CKYRSGGk0j/TGRbD3epm', 'usuario'),
+  (16, 'Sergio', 'Delgado', 'Nieto', 'delgado@gmail.com', '$2b$10$Hw6f8aERFlF7pndY7DpenOEKw9kcdLUq.CKYRSGGk0j/TGRbD3epm', 'usuario'),
+  (17, 'Andrea', 'Reyes', NULL, 'reyes@gmail.com', '$2b$10$Hw6f8aERFlF7pndY7DpenOEKw9kcdLUq.CKYRSGGk0j/TGRbD3epm', 'admin'),
+  (18, 'Fernando', 'Vidal', 'Prieto', 'vidal@gmail.com', '$2b$10$Hw6f8aERFlF7pndY7DpenOEKw9kcdLUq.CKYRSGGk0j/TGRbD3epm', 'usuario'),
+  (19, 'Natalia', 'Flores', NULL, 'flores@gmail.com', '$2b$10$Hw6f8aERFlF7pndY7DpenOEKw9kcdLUq.CKYRSGGk0j/TGRbD3epm', 'usuario'),
+  (20, 'Pablo', 'Romero', 'Saez', 'romero@gmail.com', '$2b$10$Hw6f8aERFlF7pndY7DpenOEKw9kcdLUq.CKYRSGGk0j/TGRbD3epm', 'usuario');
 
 -- Productos
 INSERT INTO productos (idProducto, nombre, descripcion, precio, tipo, material, alto, ancho, largo, idProveedor)
