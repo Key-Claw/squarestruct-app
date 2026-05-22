@@ -1,5 +1,6 @@
 ﻿import { useState } from 'react'
 import { Link, NavLink } from 'react-router-dom'
+import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import i18n from '../../i18n'
 
@@ -50,6 +51,10 @@ function Navbar({
   const currentLanguage = i18n.resolvedLanguage?.startsWith('en') ? 'en' : 'es'
   const accountName = user?.nombre?.trim().split(/\s+/)[0] || t('account.guest')
   const mobileAccountName = accountName.length > 8 ? `${accountName.slice(0, 8)}.` : accountName
+
+  useEffect(() => {
+    document.documentElement.lang = currentLanguage
+  }, [currentLanguage])
 
   const handleSearch = () => {
     const term = normalizeSearchTerm(searchValue)

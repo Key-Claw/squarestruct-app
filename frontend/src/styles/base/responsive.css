@@ -3544,3 +3544,55 @@ textarea {
     font-size: 0.58rem;
   }
 }
+
+/* Heroes principales: replica la colocacion del texto del modelo de Design. */
+@media (min-width: 992px) {
+  .gallery-page > .gallery-intro-card > .gallery-intro-copy,
+  .catalog-page > .catalog-heading > .catalog-heading-copy,
+  .design-page > .design-topbar > .design-topbar-copy {
+    padding-top: 72px;
+    padding-right: 96px;
+    padding-bottom: 22px;
+    padding-left: 114px;
+    align-content: start;
+    justify-items: start;
+  }
+
+  .gallery-intro-title,
+  .gallery-intro-text,
+  .catalog-heading-title,
+  .catalog-heading-text,
+  .design-topbar-title,
+  .design-topbar-text {
+    width: min(100%, 620px);
+  }
+
+  .gallery-page > .gallery-intro-card > .gallery-intro-copy h1,
+  .catalog-page > .catalog-heading > .catalog-heading-copy h1,
+  .design-page > .design-topbar > .design-topbar-copy h1 {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    text-align: left;
+    text-wrap: balance;
+  }
+
+  .gallery-page > .gallery-intro-card > .gallery-intro-copy p:not(.gallery-eyebrow),
+  .catalog-page > .catalog-heading > .catalog-heading-copy p:not(.catalog-eyebrow),
+  .design-page > .design-topbar > .design-topbar-copy p:not(.design-eyebrow) {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    text-align: left;
+  }
+
+  .gallery-page > .gallery-intro-card .gallery-eyebrow,
+  .catalog-page > .catalog-heading .catalog-eyebrow,
+  .design-page > .design-topbar .design-eyebrow {
+    margin: 0 0 0.4rem;
+  }
+
+  .catalog-page > .catalog-heading > .catalog-heading-copy {
+    padding-top: 82px;
+  }
+}
