@@ -262,7 +262,7 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange, o
     }
 
     loadUserProfile()
-  }, [activeTab, t, user])
+  }, [activeTab, user])
 
   useEffect(() => {
     if (!isAdminUser || activeTab !== 'usuarios') return
@@ -294,7 +294,7 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange, o
     }
 
     loadUsuarios()
-  }, [activeTab, isAdminUser, onAuthExpired, t])
+  }, [activeTab, isAdminUser, onAuthExpired])
 
   useEffect(() => {
     if (activeTab !== 'facturas') return
@@ -314,7 +314,7 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange, o
     }
 
     loadFacturas()
-  }, [activeTab, t])
+  }, [activeTab])
 
   useEffect(() => {
     if (!isAdminUser || activeTab !== 'facturacion') return
@@ -344,7 +344,7 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange, o
     }
 
     loadFacturacion()
-  }, [activeTab, isAdminUser, onAuthExpired, t])
+  }, [activeTab, isAdminUser, onAuthExpired])
 
   const facturasAdminFiltradas = useMemo(() => {
     const search = facturacionSearchTerm.trim().toLowerCase()
@@ -1066,7 +1066,7 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange, o
                 <strong>{facturacionStats.totalProductos}</strong>
                 <small>
                   {facturacionStats.pedidoPrincipal
-                    ? t('settings.billing.orderWithItems', { id: facturacionStats.pedidoPrincipal.idPedido })
+                    ? `${t('settings.billing.table.order')} #${facturacionStats.pedidoPrincipal.idPedido} ${i18n.resolvedLanguage?.startsWith('en') ? 'with more items' : 'con mas piezas'}`
                     : t('settings.billing.empty')}
                 </small>
               </div>

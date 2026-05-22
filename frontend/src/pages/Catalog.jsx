@@ -5,6 +5,7 @@ import CatalogProductCard from '../components/catalog/CatalogProductCard'
 import catalogHeroImage from '../assets/catalog/catalog-hero.webp'
 import { productosDemo } from '../data/productosDemo'
 import { getProductos, filtrarProductos } from '../services/productService'
+import { getCatalogDisplayName } from '../utils/catalogLocalization'
 import { normalizarProducto } from '../utils/text'
 import { useTranslation } from 'react-i18next'
 import i18n from '../i18n'
@@ -30,6 +31,7 @@ const getCatalogTypeLabel = (type, t) => {
 
 function Catalog({ onNavigate, onAddToCart, searchTerm = '', initialSection = '' }) {
   const { t } = useTranslation()
+  const catalogLanguage = i18n.resolvedLanguage || i18n.language
   const resultsBarRef = useRef(null)
   const [productos, setProductos] = useState([])
   const [cargando, setCargando] = useState(true)
@@ -58,7 +60,7 @@ function Catalog({ onNavigate, onAddToCart, searchTerm = '', initialSection = ''
     }
 
     cargarProductos()
-  }, [])
+  }, [catalogLanguage])
 
   useEffect(() => {
     if (initialSection === 'productos') {
@@ -120,7 +122,12 @@ function Catalog({ onNavigate, onAddToCart, searchTerm = '', initialSection = ''
   const productosCatalogo = useMemo(() => (
     (productos.length > 0 ? productos : productosDemo)
       .filter((product) => product.tipo?.toLowerCase() !== 'plano')
-  ), [productos])
+      .map((product) => ({
+        ...product,
+        nombreOriginal: product.nombre,
+        nombre: getCatalogDisplayName(product.nombre, catalogLanguage) || product.nombre,
+      }))
+  ), [catalogLanguage, productos])
 
   const categorias = useMemo(() => {
     const resumen = productosCatalogo.reduce((acc, product) => {

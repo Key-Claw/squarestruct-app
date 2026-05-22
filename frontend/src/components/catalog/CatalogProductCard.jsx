@@ -40,6 +40,7 @@ const getCatalogProductImage = (product) => {
 function CatalogProductCard({ product, onAddProduct }) {
   const { t } = useTranslation()
   const tipo = getCatalogTypeLabel(product.tipo, t)
+  const nombre = product.nombre || product.nombreOriginal || ''
   const normalizedMaterial = normalizeCatalogText(product.material)
   const material = normalizedMaterial.includes('hormigon')
     ? t('catalog.materials.hormigon')
@@ -57,12 +58,12 @@ function CatalogProductCard({ product, onAddProduct }) {
   return (
     <article className="card h-100 catalog-product-card" id={`producto-${product.idProducto}`}>
       <div className="catalog-product-media">
-        <img src={productImage} alt={product.nombre} />
+        <img src={productImage} alt={nombre} />
         <span>{tipo}</span>
       </div>
       <div className="card-body">
         <span className="catalog-product-tag">{tipo}</span>
-        <h2>{product.nombre}</h2>
+        <h2>{nombre}</h2>
         <p>{descripcion}</p>
         <strong className="catalog-product-price">
           {Number(product.precio).toFixed(2)} EUR

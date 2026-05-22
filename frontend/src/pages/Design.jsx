@@ -4,7 +4,7 @@ import escalerasImage from '../assets/design/escaleras.webp'
 import puertaImage from '../assets/design/puerta.webp'
 import sueloImage from '../assets/design/suelo.webp'
 import ventanaImage from '../assets/design/ventana.webp'
-import designBocetoImage from '../assets/design/design-boceto.webp'
+import bocetoImage from '../assets/design/design-boceto.webp'
 import bloqueEcoImage from '../assets/catalog/bloque-eco.webp'
 import bloqueHormigonImage from '../assets/catalog/bloque-hormigon.webp'
 import pilarEcoImage from '../assets/catalog/pilar-eco.webp'
@@ -22,23 +22,6 @@ const normalizeDesignText = (value) => (
     .replace(/[\u0300-\u036f]/g, '')
     .toLowerCase()
 )
-
-const normalizeDesignList = (value) => {
-  if (Array.isArray(value)) {
-    return value.filter(Boolean)
-  }
-
-  if (value && typeof value === 'object') {
-    return Object.values(value).filter(Boolean)
-  }
-
-  return []
-}
-
-const normalizeDesignGuide = (value) => ({
-  ...(value && typeof value === 'object' ? value : {}),
-  sections: normalizeDesignList(value?.sections),
-})
 
 const getDesignPieceImage = (piece) => {
   if (piece.id === 'accessory-door-basic') return puertaImage
@@ -65,6 +48,20 @@ const getDesignPieceBadge = (piece) => {
     ? i18n.t('design.materials.eco')
     : i18n.t('design.materials.hormigon')
 }
+
+const buildIndexedTranslations = (t, baseKey, count, fields) => (
+  Array.from({ length: count }, (_, index) => {
+    const item = fields.reduce((accumulator, field) => {
+      const value = t(`${baseKey}.${index}.${field}`)
+      if (value) {
+        accumulator[field] = value
+      }
+      return accumulator
+    }, {})
+
+    return item
+  }).filter((item) => Object.keys(item).length > 0)
+)
 
 const layerHeightFormatter = new Intl.NumberFormat('es-ES', {
   maximumFractionDigits: 1,
@@ -184,18 +181,27 @@ function Design() {
   const canvasTitle = editor.viewMode === '2d'
     ? t('design.topbar.2d', { floor: editor.activeFloor })
     : t('design.topbar.3d', { floor: editor.activeFloor })
-  const howItWorks = normalizeDesignList(t('design.howItWorks', { returnObjects: true }))
-  const quickToolHelp = normalizeDesignList(t('design.quickHelp', { returnObjects: true }))
-  const activeQuickHelp = quickToolHelp[selectedQuickHelp] || quickToolHelp[0] || null
+  const quickToolHelp = buildIndexedTranslations(t, 'design.quickHelp', 6, ['icon', 'title', 'text'])
+  const howItWorks = buildIndexedTranslations(t, 'design.howItWorks', 3, ['title', 'text'])
+  const communityExamples = buildIndexedTranslations(t, 'design.examples', 2, ['title', 'alt'])
+    .map((example, index) => ({
+      ...example,
+      image: index === 0 ? bocetoImage : designHeroImage,
+    }))
   const designGuides = {
-    '2d': normalizeDesignGuide(t('design.guide2d', { returnObjects: true })),
-    '3d': normalizeDesignGuide(t('design.guide3d', { returnObjects: true })),
+    '2d': {
+      title: t('design.guide2d.title'),
+      intro: t('design.guide2d.intro'),
+      footer: t('design.guide2d.footer'),
+      sections: buildIndexedTranslations(t, 'design.guide2d.sections', 6, ['title', 'text']),
+    },
+    '3d': {
+      title: t('design.guide3d.title'),
+      intro: t('design.guide3d.intro'),
+      footer: t('design.guide3d.footer'),
+      sections: buildIndexedTranslations(t, 'design.guide3d.sections', 6, ['title', 'text']),
+    },
   }
-  const communityExamples = normalizeDesignList(t('design.examples', { returnObjects: true })).map((example) => ({
-    ...example,
-    alt: example.alt || example.title,
-    image: example.image || designBocetoImage,
-  }))
   const floorDownHandlers = usePressAndHoldAction(() => {
     editor.setActiveFloor((current) => Math.max(0, current - 1))
   })
@@ -335,9 +341,9 @@ function Design() {
                 <div className="design-piece-empty">{t('design.loadingPieces')}</div>
               )}
 
-            {!editor.isLoadingPieces && editor.piecesError && editor.activeCategory !== 'accesorios' && (
-              <div className="design-piece-empty">{editor.piecesError}</div>
-            )}
+              {!editor.isLoadingPieces && editor.piecesError && editor.activeCategory !== 'accesorios' && (
+                <div className="design-piece-empty">{editor.piecesError}</div>
+              )}
 
               {!editor.isLoadingPieces && !editor.visiblePieces.length && !editor.piecesError && (
                 <div className="design-piece-empty">{t('design.noPieces')}</div>
@@ -394,16 +400,12 @@ function Design() {
                     </button>
                   ))}
                 </div>
-                <div className="design-drag-help-copy">
-                  {activeQuickHelp ? (
-                    <>
-                      <strong>{activeQuickHelp.title}</strong>
-                      <p>{activeQuickHelp.text}</p>
-                    </>
-                  ) : (
-                    <p>{t('design.quickHelpTitle')}</p>
-                  )}
-                </div>
+                {quickToolHelp[selectedQuickHelp] && (
+                  <div className="design-drag-help-copy">
+                    <strong>{quickToolHelp[selectedQuickHelp].title}</strong>
+                    <p>{quickToolHelp[selectedQuickHelp].text}</p>
+                  </div>
+                )}
               </div>
             </div>
           </section>
@@ -427,7 +429,6 @@ function Design() {
                 gridColumns={editor.gridColumns}
                 gridRows={editor.gridRows}
                 isPanMode={isPanMode}
-                onBoardMessage={editor.setStatusMessage}
                 panBoard={editor.panBoard}
                 placements={editor.placements}
                 placePiece={editor.placePiece}
@@ -761,7 +762,7 @@ function Design() {
             className="design-guide-modal"
             role="dialog"
             aria-modal="true"
-            aria-label={designGuides[selectedGuide]?.title || t('design.guideManual')}
+            aria-label={designGuides[selectedGuide]?.title || t('design.modalClose')}
             onClick={(event) => event.stopPropagation()}
           >
             <button type="button" className="design-guide-close" aria-label={t('design.modalClose')} onClick={() => setSelectedGuide(null)}>
