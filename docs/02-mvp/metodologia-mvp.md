@@ -4,7 +4,7 @@
 
 MVP significa Producto Minimo Viable.
 
-En este proyecto, `MVP v1 - Funcional` es la primera fase del roadmap de SquareStruct. No incluye todas las ideas futuras, pero permite comprobar que la base tecnica funciona y que el proyecto puede seguir creciendo hacia `v2` y `v3`.
+En este proyecto, `MVP v1 - Funcional` es la primera fase del roadmap de SquareStruct. No incluye todas las ideas futuras, pero permite comprobar que la base tecnica funciona y que el proyecto puede seguir creciendo hacia la V3 y las fases posteriores.
 
 ## Flujo principal
 
@@ -91,4 +91,4 @@ Esto ayuda a trabajar de forma ordenada y a evitar mezclar cambios sin revisar.
 
 ## Idea clave para explicar
 
-`MVP v1` no es el proyecto final. Es la primera version que demuestra que la base tecnica funciona: frontend, backend, base de datos, autenticacion, catalogo, carrito visual y administracion inicial. Despues, `v2` y `v3` completaran la aplicacion y el disenador 3D.
+`MVP v1` no es el proyecto final. Es la primera version que demuestra que la base tecnica funciona: frontend, backend, base de datos, autenticacion, catalogo, carrito visual y administracion inicial. La V3 completa el flujo principal y deja preparadas fases posteriores para persistir planos, presupuesto avanzado y despliegue.

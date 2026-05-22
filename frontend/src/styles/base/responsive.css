@@ -1621,7 +1621,7 @@ button,
 }
 
 /* ============================================================================
-   FASE 3: SISTEMA VISUAL GLOBAL V2
+   FASE 3: SISTEMA VISUAL GLOBAL V3
    ============================================================================ */
 
 body,
@@ -2702,5 +2702,845 @@ textarea {
   .design-page > .design-topbar > .design-topbar-media img {
     height: 250px;
     min-height: 250px;
+  }
+}
+
+/* Design: ajustes finales responsive para que el editor sea usable en tablet y tactil. */
+@media (max-width: 1199.98px) {
+  .design-workspace {
+    --bs-gutter-x: clamp(16px, 3vw, 24px);
+    --bs-gutter-y: clamp(18px, 3vw, 26px);
+  }
+
+  .design-canvas-card {
+    min-height: 700px;
+  }
+
+  .design-editor-toolbar button {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+  }
+
+  .design-canvas-status {
+    max-width: calc(100% - 116px);
+  }
+}
+
+@media (max-width: 991.98px) {
+  .design-canvas-card {
+    min-height: 760px;
+  }
+
+  .design-board-stage,
+  .design-three-shell {
+    inset: 142px 0 204px;
+  }
+
+  .design-editor-toolbar {
+    top: 14px;
+    right: 18px;
+    left: 18px;
+    max-width: none;
+    overflow-x: auto;
+    padding: 5px;
+    scrollbar-width: none;
+  }
+
+  .design-editor-toolbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .design-editor-toolbar button {
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+  }
+
+  .design-canvas-status {
+    top: 74px;
+    right: 76px;
+    left: 18px;
+    width: auto;
+    max-width: none;
+  }
+
+  .design-clear-canvas-btn {
+    top: 74px;
+    right: 18px;
+    bottom: auto;
+    width: 48px;
+    min-height: 48px;
+    border: 1px solid rgba(23, 63, 95, 0.1);
+    border-radius: 14px;
+  }
+
+  .design-clear-canvas-btn span {
+    display: none;
+  }
+
+  .design-floor-switch {
+    right: 18px;
+    bottom: 142px;
+    left: 18px;
+    width: auto;
+  }
+
+  .design-layer-height {
+    position: static;
+    justify-content: center;
+    min-width: 0;
+    margin: 0 0 8px;
+    font-size: 0.96rem;
+    transform: none;
+  }
+
+  .design-layer-height-line {
+    width: 48px;
+    height: 1px;
+    border-top: 1px solid rgba(23, 63, 95, 0.48);
+    border-left: 0;
+  }
+
+  .design-layer-height-line::before,
+  .design-layer-height-line::after {
+    content: none;
+  }
+
+  .design-floor-controls {
+    grid-template-columns: 46px minmax(0, 1fr) 46px 46px;
+    gap: 8px;
+  }
+
+  .design-floor-switch button,
+  .design-floor-switch button.design-floor-label {
+    height: 46px;
+    min-height: 46px;
+  }
+
+  .design-zoom {
+    top: auto;
+    bottom: 84px;
+    left: 18px;
+    flex-direction: row;
+    transform: none;
+  }
+
+  .design-zoom button {
+    width: 46px;
+    height: 46px;
+  }
+
+  .design-zoom button + button {
+    border-top: 0;
+    border-left: 1px solid rgba(23, 63, 95, 0.08);
+  }
+
+  .design-view-switch {
+    right: 18px;
+    bottom: 84px;
+    left: auto;
+    transform: none;
+  }
+
+  .design-view-switch button {
+    width: 56px;
+    height: 46px;
+  }
+
+  .design-side-tools {
+    top: auto;
+    right: 18px;
+    bottom: 16px;
+    left: 18px;
+    flex-direction: row;
+    border: 1px solid rgba(23, 63, 95, 0.09);
+    border-radius: 14px;
+  }
+
+  .design-side-tools button {
+    width: auto;
+    min-height: 56px;
+    flex: 1 1 0;
+    gap: 6px;
+    padding: 8px 6px;
+  }
+
+  .design-side-tools button + button {
+    border-top: 0;
+    border-left: 1px solid rgba(23, 63, 95, 0.075);
+  }
+
+  .design-side-tools button.design-side-tool--divider {
+    border-top: 0;
+    border-left: 8px solid rgba(23, 63, 95, 0.055);
+  }
+
+  .design-side-tools button.active::before {
+    top: auto;
+    right: 14px;
+    bottom: 0;
+    left: 14px;
+    width: auto;
+    height: 3px;
+    border-radius: 999px 999px 0 0;
+  }
+
+  .design-utility-popover,
+  .design-summary-panel {
+    top: auto;
+    right: 18px;
+    bottom: 82px;
+    left: 18px;
+    width: auto;
+    max-width: none;
+    min-width: 0;
+    max-height: min(54vh, 430px);
+    overflow: auto;
+  }
+
+  .design-summary-panel {
+    transform: translateY(calc(100% + 110px));
+  }
+
+  .design-summary-panel.is-open {
+    transform: translateY(0);
+  }
+}
+
+@media (min-width: 992px) and (max-width: 1199.98px) {
+  .design-pieces-panel {
+    padding: 20px;
+  }
+
+  .design-tabs {
+    grid-template-columns: 1fr;
+  }
+
+  .design-piece-list {
+    display: none;
+  }
+
+  .design-piece-dropdown {
+    display: grid;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+  .design-pieces-panel {
+    min-height: auto;
+    padding: 22px;
+  }
+
+  .design-tabs {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .design-tabs button {
+    min-height: 44px;
+    text-align: center;
+  }
+
+  .design-piece-list {
+    display: none;
+  }
+
+  .design-piece-dropdown {
+    display: grid;
+  }
+
+  .design-drag-help {
+    margin-top: 18px;
+  }
+
+  .design-canvas-card {
+    min-height: 720px;
+  }
+
+  .design-help-card {
+    gap: 26px;
+    padding: 28px;
+  }
+
+  .design-help-step-row {
+    gap: 22px;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .design-page > .design-workspace {
+    --bs-gutter-y: 22px;
+  }
+
+  .design-pieces-panel {
+    min-height: auto;
+    padding: 20px;
+    overflow: visible;
+  }
+
+  .design-tabs button,
+  .design-material-filter button {
+    min-height: 44px;
+    font-size: 0.7rem;
+  }
+
+  .design-piece-list {
+    display: none;
+  }
+
+  .design-piece-dropdown {
+    display: grid;
+  }
+
+  .design-piece-card {
+    grid-template-columns: 108px minmax(0, 1fr);
+    min-height: 112px;
+    aspect-ratio: auto;
+  }
+
+  .design-piece-media {
+    position: relative;
+    inset: auto;
+    grid-column: 1;
+    min-height: 100%;
+  }
+
+  .design-piece-card::after {
+    background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.12) 0%,
+      rgba(255, 255, 255, 0.74) 64%,
+      rgba(255, 255, 255, 0.94) 100%
+    );
+  }
+
+  .design-piece-card div:last-child {
+    grid-column: 2;
+    min-height: auto;
+    align-content: center;
+    justify-items: start;
+    padding: 14px 12px;
+    text-align: left;
+  }
+
+  .design-piece-card h3 {
+    font-size: 0.78rem;
+    text-align: left;
+  }
+
+  .design-piece-size {
+    justify-self: start;
+    font-size: 0.72rem;
+  }
+
+  .design-piece-badge {
+    right: auto;
+    left: 8px;
+  }
+
+  .design-drag-help {
+    min-height: auto;
+    margin-top: 16px;
+    padding: 16px;
+  }
+
+  .design-drag-help-icons button {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+  }
+
+  .design-canvas-card {
+    min-height: 720px;
+    overflow: hidden;
+  }
+
+  .design-editor-toolbar {
+    top: 12px;
+    right: 12px;
+    left: 12px;
+    max-width: none;
+    gap: 6px;
+    overflow-x: auto;
+    padding: 5px;
+    scrollbar-width: none;
+  }
+
+  .design-editor-toolbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .design-editor-toolbar button {
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+  }
+
+  .design-canvas-status {
+    top: 76px;
+    right: 12px;
+    left: 12px;
+    width: auto;
+    max-width: none;
+    min-height: 58px;
+    padding: 10px 12px;
+  }
+
+  .design-canvas-status strong {
+    font-size: 0.82rem;
+  }
+
+  .design-canvas-status span {
+    font-size: 0.7rem;
+  }
+
+  .design-clear-canvas-btn {
+    top: 134px;
+    right: 12px;
+    bottom: auto;
+    width: 48px;
+    min-height: 48px;
+    border: 1px solid rgba(23, 63, 95, 0.1);
+    border-radius: 14px;
+  }
+
+  .design-clear-canvas-btn span {
+    display: none;
+  }
+
+  .design-zoom {
+    top: auto;
+    bottom: 82px;
+    left: 12px;
+    flex-direction: row;
+    transform: none;
+  }
+
+  .design-zoom button {
+    width: 44px;
+    height: 44px;
+  }
+
+  .design-zoom button + button {
+    border-top: 0;
+    border-left: 1px solid rgba(23, 63, 95, 0.08);
+  }
+
+  .design-view-switch {
+    right: 12px;
+    bottom: 82px;
+    left: auto;
+    transform: none;
+  }
+
+  .design-view-switch button {
+    width: 52px;
+    height: 44px;
+  }
+
+  .design-floor-switch {
+    right: 12px;
+    bottom: 138px;
+    left: 12px;
+    width: auto;
+  }
+
+  .design-layer-height {
+    position: static;
+    justify-content: center;
+    min-width: 0;
+    margin: 0 0 8px;
+    font-size: 0.92rem;
+    transform: none;
+  }
+
+  .design-layer-height-line {
+    width: 44px;
+    height: 1px;
+    border-top: 1px solid rgba(23, 63, 95, 0.48);
+    border-left: 0;
+  }
+
+  .design-layer-height-line::before,
+  .design-layer-height-line::after {
+    content: none;
+  }
+
+  .design-floor-controls {
+    grid-template-columns: 44px minmax(0, 1fr) 44px 44px;
+    gap: 8px;
+  }
+
+  .design-floor-switch button,
+  .design-floor-switch button.design-floor-label {
+    height: 44px;
+    min-height: 44px;
+  }
+
+  .design-side-tools {
+    top: auto;
+    right: 12px;
+    bottom: 12px;
+    left: 12px;
+    flex-direction: row;
+    border: 1px solid rgba(23, 63, 95, 0.09);
+    border-radius: 14px;
+  }
+
+  .design-side-tools button {
+    width: auto;
+    min-height: 54px;
+    flex: 1 1 0;
+    gap: 5px;
+    padding: 8px 4px;
+    font-size: 0.5rem;
+  }
+
+  .design-side-tools button + button {
+    border-top: 0;
+    border-left: 1px solid rgba(23, 63, 95, 0.075);
+  }
+
+  .design-side-tools button.design-side-tool--divider {
+    border-top: 0;
+    border-left: 8px solid rgba(23, 63, 95, 0.055);
+  }
+
+  .design-side-tools button.active::before {
+    top: auto;
+    right: 12px;
+    bottom: 0;
+    left: 12px;
+    width: auto;
+    height: 3px;
+    border-radius: 999px 999px 0 0;
+  }
+
+  .design-utility-popover,
+  .design-summary-panel {
+    top: auto;
+    right: 12px;
+    bottom: 76px;
+    left: 12px;
+    width: auto;
+    max-width: none;
+    min-width: 0;
+    max-height: min(54vh, 420px);
+    padding: 16px;
+    overflow: auto;
+  }
+
+  .design-summary-panel {
+    transform: translateY(calc(100% + 96px));
+  }
+
+  .design-summary-panel.is-open {
+    transform: translateY(0);
+  }
+
+  .design-summary-content {
+    max-height: none;
+  }
+
+  .design-plan-actions .design-outline-btn,
+  .design-utility-popover--pieces button {
+    min-height: 46px;
+  }
+
+  .design-three-caption {
+    right: 12px;
+    bottom: 142px;
+    max-width: min(210px, calc(100% - 24px));
+  }
+
+  .design-help-card {
+    gap: 24px;
+    padding: 24px 20px;
+  }
+
+  .design-help-step-row {
+    gap: 18px;
+  }
+
+  .design-help-step-row article {
+    align-items: flex-start;
+  }
+
+  .design-help-guide-actions {
+    grid-template-columns: 1fr;
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .design-help-guide-btn {
+    min-height: 54px;
+    border-radius: 12px;
+  }
+
+  .design-guide-box {
+    padding: 22px 18px;
+  }
+
+  .design-community-example {
+    grid-template-columns: 92px minmax(0, 1fr);
+    border-radius: 12px;
+  }
+
+  .design-community-example img {
+    width: 92px;
+    height: 72px;
+    border-radius: 10px;
+  }
+
+  .design-guide-backdrop,
+  .design-community-backdrop {
+    align-items: end;
+    padding: 12px;
+  }
+
+  .design-guide-modal,
+  .design-community-modal {
+    width: 100%;
+    max-height: 88svh;
+    gap: 14px;
+    padding: 18px;
+    border-radius: 18px 18px 8px 8px;
+  }
+
+  .design-guide-close,
+  .design-community-close {
+    width: 44px;
+    height: 44px;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .design-page {
+    padding-right: 12px;
+    padding-left: 12px;
+  }
+
+  .design-canvas-card {
+    min-height: 700px;
+  }
+
+  .design-board-grid {
+    min-width: 108%;
+  }
+
+  .design-piece-card {
+    grid-template-columns: 96px minmax(0, 1fr);
+  }
+
+  .design-piece-card h3 {
+    font-size: 0.74rem;
+  }
+
+  .design-community-example {
+    grid-template-columns: 1fr;
+  }
+
+  .design-community-example img {
+    width: 100%;
+    height: 126px;
+  }
+}
+
+@media (max-width: 380px) {
+  .design-editor-toolbar button,
+  .design-zoom button,
+  .design-view-switch button,
+  .design-floor-switch button,
+  .design-floor-switch button.design-floor-label {
+    min-height: 42px;
+    height: 42px;
+  }
+
+  .design-floor-controls {
+    grid-template-columns: 42px minmax(0, 1fr) 42px 42px;
+    gap: 6px;
+  }
+
+  .design-side-tools button {
+    font-size: 0.46rem;
+  }
+}
+
+/* Design responsive final: el tablero queda limpio, con controles en bandas externas. */
+@media (max-width: 991.98px) {
+  .design-canvas-card {
+    min-height: 760px;
+  }
+
+  .design-board-stage,
+  .design-three-shell {
+    inset: 146px 0 206px;
+  }
+
+  .design-editor-toolbar {
+    top: 14px;
+    right: 18px;
+    left: 18px;
+  }
+
+  .design-canvas-status {
+    top: 74px;
+    right: 76px;
+    left: 18px;
+    width: auto;
+    max-width: none;
+  }
+
+  .design-clear-canvas-btn {
+    top: 74px;
+    right: 18px;
+    bottom: auto;
+  }
+
+  .design-floor-switch {
+    right: 18px;
+    bottom: 144px;
+    left: 18px;
+    width: auto;
+  }
+
+  .design-zoom,
+  .design-view-switch {
+    bottom: 86px;
+  }
+
+  .design-zoom {
+    left: 18px;
+  }
+
+  .design-view-switch {
+    right: 18px;
+    left: auto;
+  }
+
+  .design-side-tools {
+    top: auto;
+    right: 18px;
+    bottom: 16px;
+    left: 18px;
+  }
+
+  .design-utility-popover,
+  .design-summary-panel {
+    top: auto;
+    right: 18px;
+    bottom: 84px;
+    left: 18px;
+    width: auto;
+    max-width: none;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .design-canvas-card {
+    min-height: 760px;
+  }
+
+  .design-board-stage,
+  .design-three-shell {
+    inset: 146px 0 206px;
+  }
+
+  .design-editor-toolbar {
+    top: 12px;
+    right: 12px;
+    left: 12px;
+  }
+
+  .design-canvas-status {
+    top: 74px;
+    right: 72px;
+    left: 12px;
+  }
+
+  .design-clear-canvas-btn {
+    top: 74px;
+    right: 12px;
+    bottom: auto;
+  }
+
+  .design-floor-switch {
+    right: 12px;
+    bottom: 144px;
+    left: 12px;
+  }
+
+  .design-zoom {
+    bottom: 86px;
+    left: 12px;
+  }
+
+  .design-view-switch {
+    right: 12px;
+    bottom: 86px;
+  }
+
+  .design-side-tools {
+    right: 12px;
+    bottom: 12px;
+    left: 12px;
+  }
+
+  .design-utility-popover,
+  .design-summary-panel {
+    right: 12px;
+    bottom: 78px;
+    left: 12px;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .design-canvas-card {
+    min-height: 740px;
+  }
+
+  .design-board-stage,
+  .design-three-shell {
+    inset: 148px 0 204px;
+  }
+}
+
+/* Ajuste fino mobile: toolbar completa y tabs sin cortes de palabra. */
+@media (max-width: 767.98px) {
+  .design-editor-toolbar {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(0, 1fr);
+    gap: 4px;
+    overflow: visible;
+  }
+
+  .design-editor-toolbar button {
+    width: 100%;
+    min-width: 0;
+    height: 42px;
+  }
+
+  .design-tabs {
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 0.9fr) minmax(0, 1.22fr);
+    gap: 4px;
+  }
+
+  .design-tabs button {
+    min-width: 0;
+    padding-inline: 4px;
+    font-size: 0.64rem;
+    line-height: 1;
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 380px) {
+  .design-editor-toolbar button {
+    height: 40px;
+  }
+
+  .design-tabs button {
+    font-size: 0.58rem;
   }
 }

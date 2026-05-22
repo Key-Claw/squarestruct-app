@@ -1,5 +1,6 @@
 import Swal from 'sweetalert2'
 import 'sweetalert2/dist/sweetalert2.min.css'
+import i18n from '../i18n'
 
 const squareStructAlert = Swal.mixin({
   customClass: {
@@ -19,10 +20,10 @@ const squareStructAlert = Swal.mixin({
 })
 
 export const confirmDelete = async ({
-  title = 'Eliminar elemento',
-  text = 'Esta accion no se puede deshacer.',
-  confirmButtonText = 'Eliminar',
-  cancelButtonText = 'Cancelar',
+  title = i18n.t('alerts.deleteTitle'),
+  text = i18n.t('alerts.deleteText'),
+  confirmButtonText = i18n.t('alerts.deleteConfirm'),
+  cancelButtonText = i18n.t('alerts.cancel'),
 } = {}) => {
   const result = await squareStructAlert.fire({
     title,
@@ -41,9 +42,9 @@ export const confirmDelete = async ({
 }
 
 export const showSuccess = ({
-  title = 'Accion completada',
-  text = 'La operacion se ha realizado correctamente.',
-  confirmButtonText = 'Aceptar',
+  title = i18n.t('alerts.successTitle'),
+  text = i18n.t('alerts.successText'),
+  confirmButtonText = i18n.t('alerts.ok'),
 } = {}) => (
   squareStructAlert.fire({
     title,
@@ -57,9 +58,9 @@ export const showSuccess = ({
 )
 
 export const showError = ({
-  title = 'No se pudo completar',
-  text = 'Intentelo de nuevo.',
-  confirmButtonText = 'Aceptar',
+  title = i18n.t('alerts.errorTitle'),
+  text = i18n.t('alerts.errorText'),
+  confirmButtonText = i18n.t('alerts.ok'),
 } = {}) => (
   squareStructAlert.fire({
     title,

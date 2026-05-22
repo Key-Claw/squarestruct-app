@@ -1,6 +1,6 @@
 # Tecnologias Del Frontend
 
-Este documento describe las tecnologias reales usadas en `frontend/package.json` y su papel en SquareStruct V2.
+Este documento describe las tecnologias reales usadas en `frontend/package.json` y su papel en SquareStruct V3.
 
 ## Stack Principal
 
@@ -10,6 +10,9 @@ Este documento describe las tecnologias reales usadas en `frontend/package.json`
 | Vite 8 | Servidor de desarrollo, build y proxy `/api`. |
 | React Router DOM 7 | Rutas de la SPA mediante `HashRouter`. |
 | Bootstrap 5 | Grid, utilidades, tablas, formularios, botones y dropdowns. |
+| Three.js | Renderizado 3D del visor/disenador visual. |
+| React Three Fiber | Integracion declarativa de Three.js con React. |
+| Drei | Utilidades y controles para la escena 3D. |
 | SweetAlert2 | Confirmaciones y alertas de acciones relevantes. |
 | CSS propio | Identidad visual, responsive y componentes. |
 | Vitest | Tests unitarios/de renderizado. |
@@ -100,7 +103,7 @@ Vitest y Testing Library validan renderizado basico. ESLint revisa consistencia 
 
 ## Decisiones
 
-- No se usa TypeScript en V2; se compensa con nombres claros, servicios separados y validaciones.
+- No se usa TypeScript en V3; se compensa con nombres claros, servicios separados y validaciones.
 - No se usa libreria UI adicional porque Bootstrap + CSS propio cubren el alcance actual.
 - Los filtros de catalogo son locales porque el volumen de datos es pequeno.
 - `Settings.jsx` sigue centralizando tabs por estado compartido de usuario, facturas y permisos.

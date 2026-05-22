@@ -13,6 +13,7 @@ import CartPanel from './components/layout/CartPanel'
 import Checkout from './components/settings/Checkout'
 import { getCurrentUser, logoutUser, isAdmin } from './services/authService'
 import { MAIN_ROUTES, PAGE_BY_PATH, SETTINGS_SECTION_TO_TAB, getSettingsRoute } from './routes'
+import i18n from './i18n'
 import './App.css'
 
 function SettingsAliasRedirect() {
@@ -238,7 +239,7 @@ function AppShell() {
 
   const renderMainContent = () => {
     if (isLoading) {
-      return <div className="text-center p-5">Cargando...</div>
+      return <div className="text-center p-5">{i18n.t('common.loading')}</div>
     }
 
     if (internalPage === 'settings') {

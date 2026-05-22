@@ -1,6 +1,6 @@
 # Verificacion Del Frontend
 
-Este documento resume como validar el frontend React/Vite de SquareStruct V2.
+Este documento resume como validar el frontend React/Vite de SquareStruct V3.
 
 ## Comandos
 

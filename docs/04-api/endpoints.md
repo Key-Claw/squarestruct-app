@@ -83,7 +83,7 @@ Producto:
 
 ## Pedidos
 
-Rutas definidas en `backend/src/routes/pedidos.js`. Estan montadas tanto en `/api/pedidos` como en `/api/orders`. El frontend V2 usa el alias `/api/orders` desde `frontend/src/services/orderService.js`.
+Rutas definidas en `backend/src/routes/pedidos.js`. Estan montadas tanto en `/api/pedidos` como en `/api/orders`. El frontend V3 usa el alias `/api/orders` desde `frontend/src/services/orderService.js`.
 
 | Metodo | Ruta | Proteccion | Uso |
 | --- | --- | --- | --- |

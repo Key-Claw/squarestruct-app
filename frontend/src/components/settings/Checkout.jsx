@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import Icon from '../common/Icon'
 import { crearPedido } from '../../services/orderService'
+import { useTranslation } from 'react-i18next'
 import '../../styles/components/settings/checkout.css'
 
 /**
@@ -20,6 +21,7 @@ import '../../styles/components/settings/checkout.css'
  * @param {function} props.onOrderCreated - Callback cuando la orden se crea exitosamente
  */
 function Checkout({ isOpen, cartItems = [], onClose, onOrderCreated }) {
+  const { t } = useTranslation()
   // ============================================================================
   // ESTADO DEL FORMULARIO
   // ============================================================================
@@ -60,18 +62,18 @@ function Checkout({ isOpen, cartItems = [], onClose, onOrderCreated }) {
 
     // Validación: dirección de envío
     if (!direccionEnvio.trim()) {
-      setError('Por favor, ingresa una dirección de envío')
+      setError(t('checkout.errors.shippingRequired'))
       return
     }
 
     if (direccionEnvio.trim().length < 10) {
-      setError('La dirección debe tener al menos 10 caracteres')
+      setError(t('checkout.errors.shippingLength'))
       return
     }
 
     // Validación: carrito no vacío
     if (cartItems.length === 0) {
-      setError('El carrito está vacío')
+      setError(t('checkout.errors.emptyCart'))
       return
     }
 
@@ -94,7 +96,7 @@ function Checkout({ isOpen, cartItems = [], onClose, onOrderCreated }) {
       const response = await crearPedido(pedido)
 
       // Mostrar mensaje de éxito
-      setSuccess('¡Pedido creado exitosamente! Tu pedido está pendiente de aprobación.')
+      setSuccess(t('checkout.success'))
 
       // Ejecutar callback de orden creada (para limpiar carrito, etc.)
       if (typeof onOrderCreated === 'function') {
@@ -110,8 +112,8 @@ function Checkout({ isOpen, cartItems = [], onClose, onOrderCreated }) {
         onClose()
       }, 2000)
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Error desconocido'
-      setError(errorMessage || 'No se pudo crear el pedido. Intenta de nuevo.')
+      const errorMessage = err instanceof Error ? err.message : t('checkout.errors.unknown')
+      setError(errorMessage || t('checkout.errors.createFailed'))
     } finally {
       setIsLoading(false)
     }
@@ -138,12 +140,12 @@ function Checkout({ isOpen, cartItems = [], onClose, onOrderCreated }) {
 
           {/* ENCABEZADO */}
           <div className="checkout-header">
-            <h2>Completar compra</h2>
+            <h2>{t('checkout.title')}</h2>
             <button
               type="button"
               className="checkout-close-btn"
               onClick={onClose}
-              aria-label="Cerrar checkout"
+              aria-label={t('common.closeCheckout')}
             >
               ×
             </button>
@@ -154,7 +156,7 @@ function Checkout({ isOpen, cartItems = [], onClose, onOrderCreated }) {
 
             {/* SECCIÓN IZQUIERDA: Resumen del carrito */}
             <div className="checkout-summary-section">
-              <h3>Resumen de tu pedido</h3>
+              <h3>{t('checkout.summary')}</h3>
 
               {cartItems && cartItems.length > 0 ? (
                 <>
@@ -164,9 +166,7 @@ function Checkout({ isOpen, cartItems = [], onClose, onOrderCreated }) {
                       <div key={index} className="checkout-item-row">
                         <div className="checkout-item-info">
                           <p className="checkout-item-name">{item.nombre}</p>
-                          <p className="checkout-item-qty">
-                            Cantidad: {item.cantidad || 1}
-                          </p>
+                          <p className="checkout-item-qty">{t('checkout.quantity', { count: item.cantidad || 1 })}</p>
                         </div>
                         <div className="checkout-item-subtotal">
                           {'\u20ac'}{(parseFloat(item.precio) * (item.cantidad || 1)).toFixed(2)}
@@ -180,12 +180,12 @@ function Checkout({ isOpen, cartItems = [], onClose, onOrderCreated }) {
 
                   {/* Total */}
                   <div className="checkout-total-row">
-                    <span className="checkout-total-label">Total:</span>
+                    <span className="checkout-total-label">{t('checkout.total')}</span>
                     <span className="checkout-total-amount">{'\u20ac'}{total.toFixed(2)}</span>
                   </div>
                 </>
               ) : (
-                <p className="checkout-empty">Tu carrito está vacío</p>
+                <p className="checkout-empty">{t('checkout.empty')}</p>
               )}
             </div>
 
@@ -196,24 +196,24 @@ function Checkout({ isOpen, cartItems = [], onClose, onOrderCreated }) {
                 {/* DIRECCIÓN DE ENVÍO */}
                 <div className="checkout-form-group">
                   <label htmlFor="direccion-input" className="checkout-label">
-                    Dirección de envío *
+                    {t('checkout.shippingLabel')}
                   </label>
                   <textarea
                     id="direccion-input"
                     className="checkout-textarea"
-                    placeholder="Ej: Calle Principal 123, 28001 Madrid, España"
+                    placeholder={t('checkout.shippingPlaceholder')}
                     value={direccionEnvio}
                     onChange={(e) => setDireccionEnvio(e.target.value)}
                     rows="4"
                     disabled={isLoading}
                   />
-                  <small className="checkout-hint">Mínimo 10 caracteres</small>
+                  <small className="checkout-hint">{t('checkout.shippingHint')}</small>
                 </div>
 
                 {/* MÉTODO DE PAGO */}
                 <div className="checkout-form-group">
                   <label htmlFor="pago-select" className="checkout-label">
-                    Método de pago *
+                    {t('checkout.paymentLabel')}
                   </label>
                   <select
                     id="pago-select"
@@ -222,10 +222,10 @@ function Checkout({ isOpen, cartItems = [], onClose, onOrderCreated }) {
                     onChange={(e) => setMetodoPago(e.target.value)}
                     disabled={isLoading}
                   >
-                    <option value="tarjeta">Tarjeta de crédito/débito</option>
-                    <option value="transferencia">Transferencia bancaria</option>
-                    <option value="paypal">PayPal</option>
-                    <option value="efectivo">Efectivo contra reembolso</option>
+                    <option value="tarjeta">{t('checkout.paymentOptions.tarjeta')}</option>
+                    <option value="transferencia">{t('checkout.paymentOptions.transferencia')}</option>
+                    <option value="paypal">{t('checkout.paymentOptions.paypal')}</option>
+                    <option value="efectivo">{t('checkout.paymentOptions.efectivo')}</option>
                   </select>
                 </div>
 
@@ -253,14 +253,14 @@ function Checkout({ isOpen, cartItems = [], onClose, onOrderCreated }) {
                     onClick={onClose}
                     disabled={isLoading}
                   >
-                    Cancelar
+                    {t('checkout.cancel')}
                   </button>
                   <button
                     type="submit"
                     className="checkout-btn checkout-submit-btn"
                     disabled={isLoading || cartItems.length === 0}
                   >
-                    {isLoading ? 'Procesando...' : 'Confirmar pedido'}
+                    {isLoading ? t('checkout.submitLoading') : t('checkout.submit')}
                   </button>
                 </div>
 

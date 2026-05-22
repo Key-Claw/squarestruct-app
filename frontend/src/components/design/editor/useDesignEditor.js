@@ -1,5 +1,6 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { getProductos } from '../../../services/productService'
+import i18n from '../../../i18n'
 import { normalizarProducto } from '../../../utils/text'
 import {
   accessoryPieces,
@@ -18,6 +19,8 @@ const MAX_VIEW_ZOOM = 2.2
 const MATERIAL_ALL = 'todos'
 const MATERIAL_HORMIGON = 'hormigon'
 const MATERIAL_ECO = 'eco'
+
+const t = (key, options) => i18n.t(key, options)
 
 const normalizeMaterial = (value) => (
   String(value || '')
@@ -40,6 +43,24 @@ function getFootprint(piece, rotated) {
   return rotated
     ? { width: footprint.height, height: footprint.width }
     : footprint
+}
+
+function buildPlacementCandidate(row, column, piece, isRotated, isFlipped, floor, id = 'preview') {
+  const footprint = getFootprint(piece, isRotated)
+  const anchorRow = isFlipped && isRotated ? row - footprint.height + 1 : row
+  const anchorColumn = isFlipped && !isRotated ? column - footprint.width + 1 : column
+
+  return {
+    id,
+    pieceId: piece.id,
+    row: anchorRow,
+    column: anchorColumn,
+    width: footprint.width,
+    height: footprint.height,
+    floor,
+    flipped: isFlipped,
+    rotated: isRotated,
+  }
 }
 
 function placementCoversCell(placement, row, column, floor = placement.floor) {
@@ -81,17 +102,41 @@ function placementsOverlapInVolume(a, b, pieceMap) {
   return placementsOverlap(a, b) && a.floor < bTop && aTop > b.floor
 }
 
+function clonePlacements(placements) {
+  return placements.map((placement) => ({ ...placement }))
+}
+
+function placementSignature(placement) {
+  return [
+    placement.id,
+    placement.pieceId,
+    placement.row,
+    placement.column,
+    placement.width,
+    placement.height,
+    placement.floor,
+    placement.flipped ? 1 : 0,
+    placement.rotated ? 1 : 0,
+  ].join('|')
+}
+
+function arePlacementsEqual(a, b) {
+  if (a.length !== b.length) return false
+
+  return a.every((placement, index) => placementSignature(placement) === placementSignature(b[index]))
+}
+
 function isStructuralPlacement(placement, pieceMap) {
   const piece = pieceMap.get(placement.pieceId)
 
   return piece?.structuralRole === 'structure'
 }
 
-function hasLowerFloorSupport(placements, candidate, pieceMap) {
-  if (candidate.floor === 0) {
-    return true
-  }
+function isAccessoryPiece(piece) {
+  return piece?.category === 'accesorios'
+}
 
+function hasDirectLowerStructuralSupport(placements, candidate, pieceMap) {
   return placements.some((placement) => (
     isStructuralPlacement(placement, pieceMap)
     && placement.floor + getPieceLayerCount(pieceMap.get(placement.pieceId)) === candidate.floor
@@ -99,39 +144,101 @@ function hasLowerFloorSupport(placements, candidate, pieceMap) {
   ))
 }
 
-function hasLateralSupport(placements, candidate, pieceMap) {
-  return placements.some((placement) => {
+function hasLowerFloorSupport(placements, candidate, pieceMap) {
+  return candidate.floor === 0 || hasDirectLowerStructuralSupport(placements, candidate, pieceMap)
+}
+
+function intervalsCoverSpan(intervals, start, end) {
+  let coveredUntil = start
+
+  const sortedIntervals = intervals
+    .sort((a, b) => a.start - b.start)
+
+  for (const interval of sortedIntervals) {
+    if (interval.end <= coveredUntil) continue
+    if (interval.start > coveredUntil) return false
+
+    coveredUntil = Math.max(coveredUntil, interval.end)
+    if (coveredUntil >= end) return true
+  }
+
+  return coveredUntil >= end
+}
+
+function getAllowedAccessorySupportSides(piece, candidate) {
+  if (piece?.modelType === 'door') {
+    return ['left', 'right', 'top', 'bottom']
+  }
+
+  if (candidate.width > candidate.height) {
+    return ['top', 'bottom']
+  }
+
+  if (candidate.height > candidate.width) {
+    return ['left', 'right']
+  }
+
+  return ['left', 'right', 'top', 'bottom']
+}
+
+function getAdjacentSupportInterval(placement, candidate, side) {
+  if (side === 'left' || side === 'right') {
+    const touchesSide = side === 'left'
+      ? placement.column + placement.width === candidate.column
+      : candidate.column + candidate.width === placement.column
+
+    if (!touchesSide) return null
+
+    const start = Math.max(placement.row, candidate.row)
+    const end = Math.min(placement.row + placement.height, candidate.row + candidate.height)
+
+    return end > start ? { start, end } : null
+  }
+
+  const touchesSide = side === 'top'
+    ? placement.row + placement.height === candidate.row
+    : candidate.row + candidate.height === placement.row
+
+  if (!touchesSide) return null
+
+  const start = Math.max(placement.column, candidate.column)
+  const end = Math.min(placement.column + placement.width, candidate.column + candidate.width)
+
+  return end > start ? { start, end } : null
+}
+
+function hasFullAdjacentStructuralSupport(placements, candidate, pieceMap) {
+  const candidatePiece = pieceMap.get(candidate.pieceId)
+  const candidateTop = candidate.floor + getPieceLayerCount(candidatePiece)
+  const allowedSides = getAllowedAccessorySupportSides(candidatePiece, candidate)
+  const intervalsBySide = new Map(allowedSides.map((side) => [side, []]))
+
+  placements.forEach((placement) => {
     if (!isStructuralPlacement(placement, pieceMap)) {
-      return false
+      return
     }
 
-    const candidateTop = candidate.floor + getPieceLayerCount(pieceMap.get(candidate.pieceId))
     const placementTop = placement.floor + getPieceLayerCount(pieceMap.get(placement.pieceId))
     const overlapsVertically = placement.floor < candidateTop && placementTop > candidate.floor
 
-    if (!overlapsVertically) return false
+    if (!overlapsVertically) return
 
-    const touchesHorizontalSide = (
-      placement.column + placement.width === candidate.column
-      || candidate.column + candidate.width === placement.column
-    )
-    const hasVerticalOverlap = (
-      placement.row < candidate.row + candidate.height
-      && placement.row + placement.height > candidate.row
-    )
-    const touchesVerticalSide = (
-      placement.row + placement.height === candidate.row
-      || candidate.row + candidate.height === placement.row
-    )
-    const hasHorizontalOverlap = (
-      placement.column < candidate.column + candidate.width
-      && placement.column + placement.width > candidate.column
-    )
+    allowedSides.forEach((side) => {
+      const interval = getAdjacentSupportInterval(placement, candidate, side)
 
-    return (
-      (touchesHorizontalSide && hasVerticalOverlap)
-      || (touchesVerticalSide && hasHorizontalOverlap)
-    )
+      if (interval) intervalsBySide.get(side).push(interval)
+    })
+  })
+
+  return allowedSides.some((side) => {
+    const sideIntervals = intervalsBySide.get(side)
+    const isVerticalSide = side === 'left' || side === 'right'
+    const start = isVerticalSide ? candidate.row : candidate.column
+    const end = isVerticalSide
+      ? candidate.row + candidate.height
+      : candidate.column + candidate.width
+
+    return intervalsCoverSpan(sideIntervals, start, end)
   })
 }
 
@@ -139,6 +246,7 @@ function validatePlacement(placements, candidate, designPieces) {
   const pieceMap = new Map(designPieces.map((piece) => [piece.id, piece]))
   const candidatePiece = pieceMap.get(candidate.pieceId)
   const needsStructuralSupport = candidatePiece?.structuralRole === 'structure'
+  const needsAccessorySupport = isAccessoryPiece(candidatePiece)
 
   if (
     candidate.row < 0
@@ -146,7 +254,7 @@ function validatePlacement(placements, candidate, designPieces) {
     || candidate.row + candidate.height > gridRows
     || candidate.column + candidate.width > gridColumns
   ) {
-    return { ok: false, message: 'La pieza no cabe dentro del plano.' }
+    return { ok: false, message: t('design.messages.outOfBounds') }
   }
 
   const hasCollision = placements.some((placement) => (
@@ -154,18 +262,47 @@ function validatePlacement(placements, candidate, designPieces) {
   ))
 
   if (hasCollision) {
-    return { ok: false, message: 'Esa zona ya tiene una pieza colocada.' }
+    return { ok: false, message: t('design.messages.collision') }
   }
 
   if (
     needsStructuralSupport
     && !hasLowerFloorSupport(placements, candidate, pieceMap)
-    && !hasLateralSupport(placements, candidate, pieceMap)
   ) {
-    return { ok: false, message: 'La pieza necesita apoyo inferior o conexión lateral.' }
+    return { ok: false, message: t('design.messages.needsSupport') }
+  }
+
+  if (
+    needsAccessorySupport
+    && candidate.floor > 0
+    && !hasDirectLowerStructuralSupport(placements, candidate, pieceMap)
+    && !hasFullAdjacentStructuralSupport(placements, candidate, pieceMap)
+  ) {
+    return { ok: false, message: t('design.messages.needsAccessorySupport') }
   }
 
   return { ok: true, message: '' }
+}
+
+function pruneUnsupportedPlacements(placements, designPieces) {
+  let nextPlacements = [...placements]
+  let removedAny
+
+  do {
+    removedAny = false
+
+    nextPlacements = nextPlacements.filter((placement) => {
+      const placementsWithoutCurrent = nextPlacements.filter((item) => item.id !== placement.id)
+      const validation = validatePlacement(placementsWithoutCurrent, placement, designPieces)
+
+      if (validation.ok) return true
+
+      removedAny = true
+      return false
+    })
+  } while (removedAny)
+
+  return nextPlacements
 }
 
 function loadDraft() {
@@ -193,7 +330,6 @@ function buildStats(placements, designPieces) {
   placements.forEach((placement) => {
     const piece = pieceMap.get(placement.pieceId)
     if (!piece) return
-    if (piece.category === 'accesorios' && piece.price === 0) return
 
     totalPieces += 1
     occupiedCells += placement.width * placement.height
@@ -229,14 +365,42 @@ function useDesignEditor() {
   const [piecesError, setPiecesError] = useState('')
   const [materialFilter, setMaterialFilter] = useState(MATERIAL_ECO)
   const [selectedPieceId, setSelectedPieceId] = useState(draft?.selectedPieceId || null)
-  const [placements, setPlacements] = useState(draft?.placements || [])
+  const initialPlacements = draft?.placements || []
+  const [placements, setPlacementsState] = useState(initialPlacements)
+  const placementsRef = useRef(initialPlacements)
   const [activeFloor, setActiveFloor] = useState(draft?.activeFloor || 0)
   const [viewMode, setViewMode] = useState('2d')
-  const [viewZoom, setViewZoom] = useState(INITIAL_VIEW_ZOOM)
+  const [viewZoom, setViewZoom] = useState(() => getDefaultViewZoom())
+  const [is3DGridVisible, setIs3DGridVisible] = useState(true)
+  const [threeCameraResetKey, setThreeCameraResetKey] = useState(0)
+  const [threeCameraState, setThreeCameraState] = useState(null)
   const [boardOffset, setBoardOffset] = useState({ x: 0, y: 0 })
   const [isRotated, setIsRotated] = useState(false)
   const [isFlipped, setIsFlipped] = useState(draft?.isFlipped || false)
-  const [statusMessage, setStatusMessage] = useState('Selecciona una pieza y colocala en el plano 2D.')
+  const [undoStack, setUndoStack] = useState([])
+  const [redoStack, setRedoStack] = useState([])
+  const [statusMessage, setStatusMessage] = useState(t('design.messages.initial'))
+
+  const commitPlacements = (nextPlacements, { recordHistory = true } = {}) => {
+    const currentPlacements = placementsRef.current
+
+    if (arePlacementsEqual(currentPlacements, nextPlacements)) {
+      return false
+    }
+
+    if (recordHistory) {
+      setUndoStack((current) => [...current, clonePlacements(currentPlacements)])
+      setRedoStack([])
+    }
+
+    placementsRef.current = nextPlacements
+    setPlacementsState(nextPlacements)
+    return true
+  }
+
+  useEffect(() => {
+    placementsRef.current = placements
+  }, [placements])
 
   useEffect(() => {
     let isMounted = true
@@ -257,13 +421,13 @@ function useDesignEditor() {
 
         setDbPieces(mappedPieces)
         if (!mappedPieces.length) {
-          setPiecesError('No hay bloques o pilares publicados en la base de datos.')
+          setPiecesError(t('design.errors.noPieces'))
         }
       } catch (error) {
         if (!isMounted) return
 
         setDbPieces([])
-        setPiecesError(error.message || 'No se pudieron cargar los bloques y pilares.')
+        setPiecesError(error.message || t('design.errors.loadFailed'))
       } finally {
         if (isMounted) setIsLoadingPieces(false)
       }
@@ -307,59 +471,78 @@ function useDesignEditor() {
     setSelectedPieceId(firstPiece?.id || null)
   }
 
-  const placePiece = (row, column) => {
+  const getPlacementPreview = (row, column) => {
     if (!selectedPiece) {
-      setStatusMessage('Selecciona una pieza disponible antes de colocarla.')
-      return
+      return null
     }
 
-    const footprint = getFootprint(selectedPiece, isRotated)
-    const anchorRow = isFlipped && isRotated ? row - footprint.height + 1 : row
-    const anchorColumn = isFlipped && !isRotated ? column - footprint.width + 1 : column
-    const candidate = {
-      id: createPlacementId(),
-      pieceId: selectedPiece.id,
-      row: anchorRow,
-      column: anchorColumn,
-      width: footprint.width,
-      height: footprint.height,
-      floor: activeFloor,
-      flipped: isFlipped,
-      rotated: isRotated,
-    }
-    const validation = validatePlacement(placements, candidate, designPieces)
+    const candidate = buildPlacementCandidate(row, column, selectedPiece, isRotated, isFlipped, activeFloor)
+    const validation = validatePlacement(placementsRef.current, candidate, designPieces)
 
-    if (!validation.ok) {
-      setStatusMessage(validation.message)
-      return
+    return {
+      ...candidate,
+      isValid: validation.ok,
+      message: validation.message,
     }
-
-    setPlacements((current) => [...current, candidate])
-    setStatusMessage(`${selectedPiece.name} colocado desde la capa ${activeFloor}.`)
   }
 
-  const removePiece = (row, column) => {
+  const placePiece = (row, column, options = {}) => {
+    const { silentInvalid = false, silentSuccess = false } = options
+
+    if (!selectedPiece) {
+      if (!silentInvalid) setStatusMessage(t('design.messages.selectAvailable'))
+      return false
+    }
+
+    const candidate = buildPlacementCandidate(row, column, selectedPiece, isRotated, isFlipped, activeFloor, createPlacementId())
+    const currentPlacements = placementsRef.current
+    const validation = validatePlacement(currentPlacements, candidate, designPieces)
+
+    if (!validation.ok) {
+      if (!silentInvalid) setStatusMessage(validation.message)
+      return false
+    }
+
+    commitPlacements([...currentPlacements, candidate])
+    if (!silentSuccess) setStatusMessage(t('design.messages.placed', { name: selectedPiece.name, floor: activeFloor }))
+    return true
+  }
+
+  const removePiece = (row, column, options = {}) => {
+    const { silentSuccess = false } = options
     const pieceMap = new Map(designPieces.map((piece) => [piece.id, piece]))
-    const placement = placements.find((item) => (
+    const currentPlacements = placementsRef.current
+    const placement = currentPlacements.find((item) => (
       placementCoversLayer(item, activeFloor, pieceMap)
       && placementCoversCell(item, row, column, item.floor)
     )) || null
-    if (!placement) return
+    if (!placement) return false
 
-    setPlacements((current) => current.filter((item) => item.id !== placement.id))
-    setStatusMessage('Pieza eliminada del plano.')
+    const remainingPlacements = currentPlacements.filter((item) => item.id !== placement.id)
+    const prunedPlacements = pruneUnsupportedPlacements(remainingPlacements, designPieces)
+    const removedCount = remainingPlacements.length - prunedPlacements.length
+
+    commitPlacements(prunedPlacements)
+    if (!silentSuccess) {
+      setStatusMessage(
+        removedCount > 0
+          ? t('design.messages.removedWithDependents')
+          : t('design.messages.removed'),
+      )
+    }
+    return true
   }
 
   const jumpToSelectedPieceHeight = () => {
     const layerCount = getPieceLayerCount(selectedPiece)
 
     setActiveFloor((current) => current + layerCount)
-    setStatusMessage(`Capa ajustada +${layerCount} (${Math.round(layerCount * layerHeightMeters * 100)} cm).`)
+    setStatusMessage(t('design.messages.layerAdjusted', { layers: layerCount, cm: Math.round(layerCount * layerHeightMeters * 100) }))
   }
 
   const clearProject = () => {
-    setPlacements([])
-    setStatusMessage('Plano reiniciado.')
+    commitPlacements([])
+    setStatusMessage(t('design.messages.reset'))
   }
 
   const saveProject = () => {
@@ -370,16 +553,16 @@ function useDesignEditor() {
       selectedPieceId,
       activeFloor,
       isFlipped,
-      placements,
+      placements: placementsRef.current,
     }))
-    setStatusMessage('Borrador guardado en el navegador.')
+    setStatusMessage(t('design.messages.draftSaved'))
   }
 
   const loadProject = () => {
     const savedDraft = loadDraft()
 
     if (!savedDraft) {
-      setStatusMessage('No hay borrador guardado todavia.')
+      setStatusMessage(t('design.messages.draftMissing'))
       return
     }
 
@@ -387,8 +570,34 @@ function useDesignEditor() {
     setSelectedPieceId(savedDraft.selectedPieceId || null)
     setActiveFloor(savedDraft.activeFloor || 0)
     setIsFlipped(Boolean(savedDraft.isFlipped))
-    setPlacements(savedDraft.placements)
-    setStatusMessage('Borrador cargado correctamente.')
+    commitPlacements(savedDraft.placements)
+    setStatusMessage(t('design.messages.draftLoaded'))
+  }
+
+  const undo = () => {
+    if (!undoStack.length) return false
+
+    const previousPlacements = undoStack[undoStack.length - 1]
+    const currentPlacements = clonePlacements(placementsRef.current)
+
+    setUndoStack((current) => current.slice(0, -1))
+    setRedoStack((current) => [...current, currentPlacements])
+    commitPlacements(previousPlacements, { recordHistory: false })
+    setStatusMessage(t('design.messages.undo'))
+    return true
+  }
+
+  const redo = () => {
+    if (!redoStack.length) return false
+
+    const nextPlacements = redoStack[redoStack.length - 1]
+    const currentPlacements = clonePlacements(placementsRef.current)
+
+    setRedoStack((current) => current.slice(0, -1))
+    setUndoStack((current) => [...current, currentPlacements])
+    commitPlacements(nextPlacements, { recordHistory: false })
+    setStatusMessage(t('design.messages.redo'))
+    return true
   }
 
   const exportProject = () => {
@@ -410,7 +619,7 @@ function useDesignEditor() {
     link.download = 'squarestruct-plano.json'
     link.click()
     window.URL.revokeObjectURL(url)
-    setStatusMessage('Plano exportado como archivo JSON.')
+    setStatusMessage(t('design.messages.exported'))
   }
 
   const updateZoom = (delta) => {
@@ -443,6 +652,18 @@ function useDesignEditor() {
     setBoardOffset({ x: 0, y: 0 })
   }
 
+  const resetView = () => {
+    setViewZoom(getDefaultViewZoom())
+
+    if (viewMode === '3d') {
+      setThreeCameraState(null)
+      setThreeCameraResetKey((current) => current + 1)
+      return
+    }
+
+    resetBoardOffset()
+  }
+
   return {
     activeCategory,
     activeFloor,
@@ -451,9 +672,11 @@ function useDesignEditor() {
     designCategories,
     designPieces,
     exportProject,
+    getPlacementPreview,
     gridColumns,
     gridCellSizeMeters,
     gridRows,
+    is3DGridVisible,
     jumpToSelectedPieceHeight,
     layerHeightMeters,
     isLoadingPieces,
@@ -467,18 +690,28 @@ function useDesignEditor() {
     placePiece,
     removePiece,
     resetBoardOffset,
+    resetView,
     saveProject,
     selectCategory,
     selectedPiece,
     selectedPieceId,
+    canRedo: redoStack.length > 0,
+    canUndo: undoStack.length > 0,
+    redo,
     setActiveFloor,
+    setIs3DGridVisible,
     setIsFlipped,
     setIsRotated,
     setMaterialFilter,
     setSelectedPieceId,
+    setStatusMessage,
     setViewMode,
+    setThreeCameraState,
+    undo,
     stats,
     statusMessage,
+    threeCameraResetKey,
+    threeCameraState,
     viewMode,
     visiblePieces,
     viewZoom,

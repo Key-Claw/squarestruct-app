@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useCallback, useEffect, useMemo, useRef } from 'react'
 import { useThree } from '@react-three/fiber'
 import Controls from '../controls/Controls'
 import DimensionGuides from './DimensionGuides'
@@ -13,21 +13,33 @@ function getPieceRole(piece) {
   return 'structure'
 }
 
+function getPieceLayerCount(piece, layerHeight) {
+  return Math.max(1, Math.ceil((piece?.heightMeters || layerHeight) / layerHeight))
+}
+
+function getProjectTopLayer(placements, designPieces, layerHeight) {
+  return placements.reduce((maxLayer, placement) => {
+    const piece = designPieces.find((item) => item.id === placement.pieceId)
+
+    return Math.max(maxLayer, placement.floor + getPieceLayerCount(piece, layerHeight))
+  }, 0)
+}
+
 function resolveBlocks(placements, designPieces, gridColumns, gridRows, cellSize, activeFloor, layerHeight) {
   if (!placements.length) {
     return []
   }
 
   return placements
-    .filter((placement) => placement.floor <= activeFloor)
     .map((placement) => {
       const piece = designPieces.find((item) => item.id === placement.pieceId)
       const width = placement.width * cellSize
       const depth = placement.height * cellSize
       const height = piece?.heightMeters || 0.2
-      const layerCount = Math.max(1, Math.ceil(height / layerHeight))
+      const layerCount = getPieceLayerCount(piece, layerHeight)
       const isActiveFloor = activeFloor >= placement.floor && activeFloor < placement.floor + layerCount
       const role = getPieceRole(piece)
+      const footprintInset = 0.002
 
       return {
         id: placement.id,
@@ -35,31 +47,122 @@ function resolveBlocks(placements, designPieces, gridColumns, gridRows, cellSize
         material: piece?.material || '',
         color: piece?.color || '#7e8993',
         modelType: piece?.modelType || '',
-        opacity: isActiveFloor ? 0.84 : 0.34,
+        flipped: Boolean(placement.flipped),
+        rotated: Boolean(placement.rotated),
+        opacity: role === 'structure' ? 1 : (isActiveFloor ? 0.84 : 0.56),
         role,
         position: [
           (placement.column - gridColumns / 2) * cellSize + width / 2,
           height / 2 + placement.floor * layerHeight,
           (placement.row - gridRows / 2) * cellSize + depth / 2,
         ],
-        size: [Math.max(width - 0.01, 0.02), height, Math.max(depth - 0.01, 0.02)],
+        size: [Math.max(width - footprintInset, 0.02), height, Math.max(depth - footprintInset, 0.02)],
       }
     })
 }
 
-function CameraDistance({ cellSize, gridColumns, gridRows, layerHeight, visibleLayers, viewZoom }) {
+function CameraDistance({
+  cellSize,
+  gridColumns,
+  gridRows,
+  layerHeight,
+  onCameraStateChange,
+  resetSignal,
+  savedCameraState,
+  target,
+  visibleLayers,
+  viewZoom,
+}) {
   const { camera } = useThree()
+  const initializedRef = useRef(false)
+  const lastResetSignalRef = useRef(resetSignal)
+  const latestRef = useRef({})
+  const orbitTargetRef = useRef(target)
+  const skipNextZoomRef = useRef(true)
   const gridWidth = gridColumns * cellSize
   const gridDepth = gridRows * cellSize
   const gridHeight = Math.max(layerHeight, visibleLayers * layerHeight)
   const baseDistance = Math.max(22, Math.max(gridWidth, gridDepth, gridHeight * 2.2) * 1.15)
 
+  const saveCameraState = useCallback(() => {
+    if (!onCameraStateChange) return
+
+    const orbitTarget = orbitTargetRef.current || latestRef.current.target
+    onCameraStateChange({
+      position: camera.position.toArray(),
+      target: [...orbitTarget],
+    })
+  }, [camera, onCameraStateChange])
+
   useEffect(() => {
-    const distance = baseDistance / viewZoom
-    camera.position.set(distance * 0.7, Math.max(distance * 0.44, gridHeight * 0.9 + 2), distance)
-    camera.lookAt(0, Math.min(gridHeight / 2, 1.8), 0)
+    latestRef.current = {
+      baseDistance,
+      gridHeight,
+      savedCameraState,
+      target,
+      viewZoom,
+    }
+  }, [baseDistance, gridHeight, savedCameraState, target, viewZoom])
+
+  useEffect(() => {
+    const isFirstRun = !initializedRef.current
+    const {
+      baseDistance: currentBaseDistance,
+      gridHeight: currentGridHeight,
+      savedCameraState: currentSavedCameraState,
+      target: currentTarget,
+      viewZoom: currentViewZoom,
+    } = latestRef.current
+    const defaultDistance = currentBaseDistance / currentViewZoom
+    const defaultPosition = [
+      defaultDistance * 0.7,
+      Math.max(defaultDistance * 0.44, currentGridHeight * 0.9 + 2),
+      defaultDistance,
+    ]
+    const shouldReset = lastResetSignalRef.current !== resetSignal
+    const state = !shouldReset && currentSavedCameraState
+      ? currentSavedCameraState
+      : { position: defaultPosition, target: currentTarget }
+
+    camera.position.set(...state.position)
+    orbitTargetRef.current = [...state.target]
+    camera.lookAt(...state.target)
     camera.updateProjectionMatrix()
-  }, [baseDistance, camera, gridHeight, viewZoom])
+    initializedRef.current = true
+    skipNextZoomRef.current = isFirstRun
+    lastResetSignalRef.current = resetSignal
+  }, [camera, resetSignal])
+
+  useEffect(() => {
+    if (!initializedRef.current) return
+
+    if (skipNextZoomRef.current) {
+      skipNextZoomRef.current = false
+      return
+    }
+
+    const distance = baseDistance / viewZoom
+    const orbitTarget = orbitTargetRef.current || latestRef.current.target
+    const direction = camera.position.clone().sub({
+      x: orbitTarget[0],
+      y: orbitTarget[1],
+      z: orbitTarget[2],
+    })
+
+    if (direction.lengthSq() === 0) {
+      direction.set(0.7, 0.44, 1)
+    }
+
+    direction.normalize().multiplyScalar(distance)
+    camera.position.set(
+      orbitTarget[0] + direction.x,
+      orbitTarget[1] + direction.y,
+      orbitTarget[2] + direction.z,
+    )
+    camera.lookAt(...orbitTarget)
+    camera.updateProjectionMatrix()
+    saveCameraState()
+  }, [baseDistance, camera, saveCameraState, viewZoom])
 
   return null
 }
@@ -108,8 +211,7 @@ function LayerGrid({ activeFloor, cellSize, columns, layerHeight, rows }) {
   )
 }
 
-function LayerVolumeGuides({ activeFloor, depth, layerHeight, width }) {
-  const visibleLayers = Math.max(1, activeFloor + 1)
+function LayerVolumeGuides({ activeFloor, depth, layerHeight, visibleLayers, width }) {
   const height = visibleLayers * layerHeight
   const halfWidth = width / 2
   const halfDepth = depth / 2
@@ -142,7 +244,7 @@ function LayerVolumeGuides({ activeFloor, depth, layerHeight, width }) {
           </group>
         )
       })}
-      {[
+      {height > 0 && [
         [-halfWidth, halfDepth],
         [halfWidth, halfDepth],
         [-halfWidth, -halfDepth],
@@ -157,30 +259,69 @@ function LayerVolumeGuides({ activeFloor, depth, layerHeight, width }) {
   )
 }
 
-function Scene({ activeFloor, designPieces, gridCellSizeMeters, gridColumns, gridRows, layerHeightMeters, placements, viewZoom }) {
+function Scene({
+  activeFloor,
+  designPieces,
+  gridCellSizeMeters,
+  gridColumns,
+  gridRows,
+  isGridVisible,
+  layerHeightMeters,
+  onCameraStateChange,
+  placements,
+  resetSignal,
+  savedCameraState,
+  viewZoom,
+}) {
   const cellSize = gridCellSizeMeters
   const layerHeight = layerHeightMeters || cellSize
   const blocks = resolveBlocks(placements, designPieces, gridColumns, gridRows, cellSize, activeFloor, layerHeight)
   const gridWidth = gridColumns * cellSize
   const gridDepth = gridRows * cellSize
   const gridSize = Math.max(gridWidth, gridDepth)
-  const visibleLayers = Math.max(1, activeFloor + 1)
+  const projectTopLayer = getProjectTopLayer(placements, designPieces, layerHeight)
+  const visibleLayers = Math.max(0, activeFloor, projectTopLayer)
+  const visibleHeight = visibleLayers * layerHeight
+  const cameraTarget = useMemo(() => (
+    savedCameraState?.target || [0, Math.min(visibleHeight / 2, 1.8), 0]
+  ), [savedCameraState, visibleHeight])
 
   return (
     <>
       <color attach="background" args={['#fbfdff']} />
-      <CameraDistance cellSize={cellSize} gridColumns={gridColumns} gridRows={gridRows} layerHeight={layerHeight} visibleLayers={visibleLayers} viewZoom={viewZoom} />
+      <CameraDistance
+        cellSize={cellSize}
+        gridColumns={gridColumns}
+        gridRows={gridRows}
+        layerHeight={layerHeight}
+        onCameraStateChange={onCameraStateChange}
+        resetSignal={resetSignal}
+        savedCameraState={savedCameraState}
+        target={cameraTarget}
+        visibleLayers={visibleLayers}
+        viewZoom={viewZoom}
+      />
       <Lights />
-      <Grid columns={gridColumns} rows={gridRows} cellSize={cellSize} />
-      <LayerGrid activeFloor={activeFloor} cellSize={cellSize} columns={gridColumns} layerHeight={layerHeight} rows={gridRows} />
-      <LayerVolumeGuides activeFloor={activeFloor} depth={gridDepth} layerHeight={layerHeight} width={gridWidth} />
-      <DimensionGuides depth={gridDepth} height={visibleLayers * layerHeight} width={gridWidth} />
+      {isGridVisible && (
+        <>
+          <Grid columns={gridColumns} rows={gridRows} cellSize={cellSize} />
+          <LayerGrid activeFloor={activeFloor} cellSize={cellSize} columns={gridColumns} layerHeight={layerHeight} rows={gridRows} />
+          <LayerVolumeGuides activeFloor={activeFloor} depth={gridDepth} layerHeight={layerHeight} visibleLayers={visibleLayers} width={gridWidth} />
+          <DimensionGuides depth={gridDepth} height={visibleHeight} width={gridWidth} />
+        </>
+      )}
       <group>
         {blocks.map((block) => (
           <ModularBlock block={block} key={block.id} />
         ))}
       </group>
-      <Controls maxDistance={Math.max(42, gridSize * 2.2)} minDistance={Math.max(3, gridSize * 0.08)} />
+      <Controls
+        maxDistance={Math.max(42, gridSize * 2.2)}
+        minDistance={Math.max(3, gridSize * 0.08)}
+        onCameraStateChange={onCameraStateChange}
+        resetSignal={resetSignal}
+        target={cameraTarget}
+      />
     </>
   )
 }

@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
 import { getProfile } from '../../services/authService'
 import '../../styles/components/settings/profile-panel.css'
+import { useTranslation } from 'react-i18next'
+import i18n from '../../i18n'
 
 /**
  * Panel deslizante del perfil del usuario
@@ -20,6 +22,7 @@ import '../../styles/components/settings/profile-panel.css'
  * @param {function} props.onNavigateToUsers - Callback para ir a la lista de usuarios
  */
 function ProfilePanel({ isOpen, user, onClose, onLogout, isAdmin, onNavigateToUsers }) {
+  const { t } = useTranslation()
   // Datos del perfil (pueden ser más actualizados que los del estado global)
   const [profileData, setProfileData] = useState(user)
   // Flag para mostrar spinner mientras se cargan datos
@@ -43,14 +46,14 @@ function ProfilePanel({ isOpen, user, onClose, onLogout, isAdmin, onNavigateToUs
       } catch {
         // Si falla el refresco, usamos la sesión local para no romper la vista
         setProfileData(user)
-        setError('No se pudieron cargar los datos actualizados')
+        setError(t('settings.profile.error'))
       } finally {
         setIsLoading(false)
       }
     }
 
     loadUserProfile()
-  }, [isOpen, user])
+  }, [isOpen, user, t])
 
   /**
    * Obtiene el badge de color según el rol del usuario.
@@ -74,9 +77,9 @@ function ProfilePanel({ isOpen, user, onClose, onLogout, isAdmin, onNavigateToUs
   const getRolText = (rol) => {
     switch (rol) {
       case 'admin':
-        return 'Administrador'
+        return t('settings.profile.roles.admin')
       default:
-        return 'Usuario'
+        return t('settings.profile.roles.user')
     }
   }
 
@@ -88,7 +91,7 @@ function ProfilePanel({ isOpen, user, onClose, onLogout, isAdmin, onNavigateToUs
   const formatDate = (dateString) => {
     if (!dateString) return 'N/A'
     const date = new Date(dateString)
-    return date.toLocaleDateString('es-ES', {
+    return date.toLocaleDateString(i18n.resolvedLanguage?.startsWith('en') ? 'en-US' : 'es-ES', {
       year: 'numeric',
       month: 'long',
       day: 'numeric',
@@ -125,12 +128,12 @@ function ProfilePanel({ isOpen, user, onClose, onLogout, isAdmin, onNavigateToUs
           
           {/* ENCABEZADO DEL PANEL */}
           <div className="profile-panel-header">
-            <h2>Mi perfil</h2>
+            <h2>{t('settings.profile.title')}</h2>
             <button
               type="button"
               className="profile-panel-close-btn"
               onClick={onClose}
-              aria-label="Cerrar perfil"
+              aria-label={t('common.close')}
             >
               ×
             </button>
@@ -143,7 +146,7 @@ function ProfilePanel({ isOpen, user, onClose, onLogout, isAdmin, onNavigateToUs
             {isLoading ? (
               <div className="profile-loading">
                 <div className="profile-spinner"></div>
-                <p>Cargando datos...</p>
+                <p>{t('settings.profile.loading')}</p>
               </div>
             ) : (
               <>
@@ -162,7 +165,7 @@ function ProfilePanel({ isOpen, user, onClose, onLogout, isAdmin, onNavigateToUs
                       
                       {/* Rol del usuario */}
                       <div className="profile-field">
-                        <label>Rol</label>
+                        <label>{t('settings.profile.role')}</label>
                         <span className={getRolBadgeClass(profileData.rol)}>
                           {getRolText(profileData.rol)}
                         </span>
@@ -170,26 +173,26 @@ function ProfilePanel({ isOpen, user, onClose, onLogout, isAdmin, onNavigateToUs
 
                       {/* ID del usuario */}
                       <div className="profile-field">
-                        <label>ID de usuario</label>
+                        <label>ID</label>
                         <span className="profile-value">{profileData.idUsuario}</span>
                       </div>
 
                       {/* Nombre del usuario */}
                       <div className="profile-field">
-                        <label>Nombre</label>
+                        <label>{t('settings.profile.name')}</label>
                         <span className="profile-value">{profileData.nombre}</span>
                       </div>
 
                       {/* Email del usuario */}
                       <div className="profile-field">
-                        <label>Correo electrónico</label>
+                        <label>{t('settings.profile.email')}</label>
                         <span className="profile-value">{profileData.email}</span>
                       </div>
 
                       {/* Fecha de alta */}
                       {profileData.fechaAlta && (
                         <div className="profile-field">
-                          <label>Miembro desde</label>
+                          <label>{t('settings.profile.memberSince')}</label>
                           <span className="profile-value">
                             {formatDate(profileData.fechaAlta)}
                           </span>
@@ -214,7 +217,7 @@ function ProfilePanel({ isOpen, user, onClose, onLogout, isAdmin, onNavigateToUs
                             onNavigateToUsers()
                           }}
                         >
-                           Gestionar usuarios
+                           {t('settings.users.title')}
                         </button>
                       )}
 
@@ -223,7 +226,7 @@ function ProfilePanel({ isOpen, user, onClose, onLogout, isAdmin, onNavigateToUs
                         type="button"
                         className="profile-action-btn change-password-btn"
                       >
-                         Cambiar contraseña
+                         {t('settings.profile.changePassword')}
                       </button>
 
                       {/* Botón de logout */}
@@ -232,7 +235,7 @@ function ProfilePanel({ isOpen, user, onClose, onLogout, isAdmin, onNavigateToUs
                         className="profile-action-btn logout-btn"
                         onClick={handleLogout}
                       >
-                         Cerrar sesión
+                         {t('settings.profile.logout')}
                       </button>
 
                     </div>
@@ -240,7 +243,7 @@ function ProfilePanel({ isOpen, user, onClose, onLogout, isAdmin, onNavigateToUs
                   </div>
                 ) : (
                   <div className="profile-empty">
-                    <p>No se pudieron cargar los datos del perfil</p>
+                    <p>{t('settings.profile.error')}</p>
                   </div>
                 )}
 

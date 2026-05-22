@@ -20,6 +20,17 @@ env:
 
 Esta version evita problemas con dependencias modernas del frontend que requieren Node reciente.
 
+## Tecnologias Usadas En El Workflow
+
+| Area | Tecnologia |
+| --- | --- |
+| CI | GitHub Actions sobre `ubuntu-latest`. |
+| Runtime | Node.js `20.19.0` con cache de npm por `package-lock.json`. |
+| Base de datos | Servicio MySQL `8.0` con healthcheck y cliente `default-mysql-client`. |
+| Backend | `npm ci`, Jest 29 y Supertest 7 contra Express 5 y MySQL. |
+| Frontend | `npm install`, Vitest 4, Testing Library, jsdom, ESLint 10 y Vite 8. |
+| Datos | `backend/db/schema.sql` y `backend/db/seeds.sql` cargados antes de los tests de integracion. |
+
 ## Backend
 
 El job de backend usa MySQL como servicio temporal:

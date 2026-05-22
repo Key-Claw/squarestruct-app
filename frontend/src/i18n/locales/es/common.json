@@ -1,0 +1,319 @@
+{
+  "language": {
+    "spanishShort": "ES",
+    "englishShort": "EN",
+    "spanish": "Español",
+    "english": "Inglés"
+  },
+  "nav": {
+    "home": "Inicio",
+    "gallery": "Galería",
+    "catalog": "Catálogo",
+    "design": "Diseñador",
+    "aboutus": "Nosotros",
+    "settings": "Ajustes",
+    "profile": "Perfil",
+    "invoices": "Facturas",
+    "billing": "Facturación",
+    "users": "Usuarios",
+    "plans": "Planos"
+  },
+  "search": {
+    "placeholder": "Buscar en la web...",
+    "button": "Buscar",
+    "ariaLabel": "Buscar"
+  },
+  "account": {
+    "guest": "Cuenta",
+    "login": "Iniciar sesión",
+    "register": "Crear cuenta",
+    "myAccount": "Mi cuenta",
+    "logout": "Cerrar sesión"
+  },
+  "common": {
+    "loading": "Cargando...",
+    "update": "Actualizar",
+    "error": "Error",
+    "unknown": "Desconocido",
+    "emptyStateTitle": "Aún no tienes órdenes",
+    "close": "Cerrar",
+    "cancel": "Cancelar",
+    "save": "Guardar",
+    "total": "Total",
+    "openMenu": "Abrir menú",
+    "closeModal": "Cerrar modal",
+    "closeCart": "Cerrar carrito",
+    "closeCheckout": "Cerrar checkout",
+    "closeError": "Cerrar error",
+    "closeFilters": "Cerrar filtros"
+  },
+  "home": {
+    "eyebrow": "Construcción modular sostenible",
+    "title": "Construye sin límites.",
+    "subtitle": "Modular, fácil, real.",
+    "description": "SquareStruct es la plataforma que te permite descubrir, comparar y planificar tu construcción modular con total claridad y confianza.",
+    "ctaCatalog": "Ver catálogo",
+    "ctaDesign": "Diseñar tu estructura",
+    "carouselSlide": "Slide {{index}}",
+    "carouselPrev": "Anterior",
+    "carouselNext": "Siguiente",
+    "aboutEyebrow": "SquareStruct",
+    "aboutTitle": "¿Qué es SquareStruct?",
+    "aboutIntro1": "Somos una tienda online especializada en soluciones modulares y pilares para la construcción.",
+    "aboutIntro2": "Nuestro objetivo es acercar este tipo de soluciones al usuario, facilitando la elección de materiales y la planificación de estructuras mediante piezas ensamblables.",
+    "highlights": {
+      "modular": { "title": "Modular", "text": "Piezas para muros, cerramientos y estructuras ordenadas por tipos." },
+      "resistant": { "title": "Resistente", "text": "Materiales pensados para mantener solidez y confianza en obra." },
+      "plan": { "title": "Plano", "text": "Diseña y ajusta la estructura antes de construir." },
+      "sustainable": { "title": "Sostenible", "text": "Construcción más eficiente con un uso mejor de recursos." }
+    },
+    "featuresTitle": "Todo lo que puedes hacer en SquareStruct",
+    "featuresEyebrow": "Herramientas SquareStruct",
+    "featureCards": {
+      "gallery": { "title": "Inspirarte", "text": "Descubre ideas de composición y referencias visuales para tus proyectos.", "action": "Ver galería" },
+      "catalog": { "title": "Explorar catálogo", "text": "Encuentra bloques, pilares y accesorios con una vista clara y ordenada.", "action": "Ir al catálogo" },
+      "design": { "title": "Generar tu estructura", "text": "Crea tu propio diseño y calcula los materiales necesarios para hacerlo realidad.", "action": "Ir a Diseño" }
+    },
+    "slides": {
+      "design": { "title": "SquareStruct", "alt": "Diseño modular en SquareStruct" },
+      "catalog": { "title": "Catálogo conectado", "alt": "Personas planificando un proyecto modular" },
+      "sustainable": { "title": "Diseña tu estructura", "alt": "Construcción modular sostenible" }
+    }
+  },
+  "gallery": {
+    "eyebrow": "Inspiración modular",
+    "title": "Galería de soluciones",
+    "intro": "Ideas visuales para descubrir estilos, materiales y distribuciones antes de pasar al diseñador.",
+    "filtersLabel": "Filtrar galería por material",
+    "empty": "No hay ideas que coincidan con la búsqueda actual.",
+    "featured": "Destacada",
+    "designIdea": "Diseñar esta idea",
+    "enlarge": "Ampliar {{title}}",
+    "close": "Cerrar",
+    "materials": {
+      "hormigon": "Hormigón",
+      "eco": "Eco"
+    },
+    "projects": {
+      "casaBruma": {
+        "title": "Casa Bruma",
+        "description": "Vivienda modular con fachada ligera, zonas abiertas y distribución familiar."
+      },
+      "moduloNido": {
+        "title": "Módulo Nido",
+        "description": "Formato compacto para parcelas pequeñas, con espacios fáciles de adaptar."
+      },
+      "casaCala": {
+        "title": "Casa Cala",
+        "description": "Proyecto luminoso con terraza amplia y conexión directa entre interior y exterior."
+      },
+      "casaHorizonte": {
+        "title": "Casa Horizonte",
+        "architect": "La joya de Van der Router",
+        "description1": "Diseño modular contemporáneo inspirado en la arquitectura de líneas limpias y estructuras funcionales, pensado para combinar resistencia, amplitud visual y eficiencia en el uso diario.",
+        "description2": "La distribución abierta favorece la entrada de luz natural, la conexión entre interior y exterior y una circulación fluida entre espacios, creando una vivienda moderna, cómoda y preparada para futuras ampliaciones modulares."
+      },
+      "casaLineal": {
+        "title": "Casa Lineal",
+        "description": "Volumen alargado para separar descanso, trabajo y zona social."
+      },
+      "refugioArena": {
+        "title": "Refugio Arena",
+        "description": "Solución resistente para clima seco, con acabados cálidos y planta sencilla."
+      },
+      "casaSolar": {
+        "title": "Casa Solar",
+        "description": "Vivienda sostenible con grandes sombras y consumo optimizado."
+      }
+    }
+  },
+  "catalog": {
+    "eyebrow": "Materiales modulares",
+    "title": "Catálogo de productos",
+    "intro": "Explora bloques y pilares. Soluciones modulares para la construcción de hogares.",
+    "openFilters": "Abrir filtros",
+    "results": "{{count}} productos encontrados",
+    "searchPlaceholder": "Buscar productos...",
+    "resetSearch": "Revertir",
+    "sortBy": "Ordenar por:",
+    "sortAria": "Ordenar catálogo",
+    "sortRecent": "Más reciente",
+    "sortPriceLow": "Precio menor",
+    "sortPriceHigh": "Precio mayor",
+    "viewGrid": "Vista cuadrícula",
+    "viewList": "Vista lista",
+    "loading": "Cargando productos...",
+    "demoError": "No se pudo conectar con la base de datos. Mostrando productos provisionales.",
+    "empty": "No se encontraron productos con esa búsqueda.",
+    "pagination": "Paginación catálogo",
+    "filters": { "close": "Cerrar", "title": "Filtros", "category": "Categoria", "material": "Material", "materialAria": "Filtrar por material", "priceRange": "Rango de precio", "priceAria": "Rango maximo de precio", "reset": "Desactivar filtros" },
+    "materials": { "all": "Todos", "hormigon": "Hormigón", "eco": "ECO" },
+    "types": { "bloque": "Bloque", "pilar": "Pilar", "product": "Producto" },
+    "sort": { "recent": "Más reciente", "priceLow": "Precio menor", "priceHigh": "Precio mayor" },
+    "card": { "material": "Material", "dimensions": "Dimensiones", "add": "Añadir", "noDescription": "Sin descripción disponible.", "noMaterial": "Sin material" }
+  },
+  "design": {
+    "eyebrow": "Diseñador modular",
+    "title": "Diseña tu estructura",
+    "intro": "Crea tu plano en 3D utilizando bloques modulares y calcula materiales precisos.",
+    "actions": { "save": "Guardar", "load": "Cargar", "new": "Nuevo", "budget": "Gestionar presupuesto" },
+    "categories": "Tipos de piezas",
+    "categoryLabels": { "bloques": "Bloques", "pilares": "Pilares", "accesorios": "Accesorios" },
+    "materialFilter": "Filtrar por material",
+    "materials": { "hormigon": "Hormigón", "eco": "Eco" },
+    "loadingPieces": "Cargando piezas desde la base de datos...",
+    "noPieces": "No hay piezas disponibles en esta categoria.",
+    "localModel": "Modelo local",
+    "accessoryNames": { "door": "Puerta", "window": "Ventana", "stairs": "Escalera", "floor": "Suelo" },
+    "quickHelpTitle": "Ayuda rápida",
+    "quickHelp": [
+      { "icon": "penTool", "title": "Colocar piezas", "text": "Activa el modo de dibujo para añadir piezas sobre el plano 2D." },
+      { "icon": "move", "title": "Mover plano", "text": "Desplaza el tablero por el plano para navegar." },
+      { "icon": "swap", "title": "Invertir sentido", "text": "Cambia el sentido de la siguiente pieza antes de colocarla." },
+      { "icon": "rotate", "title": "Girar pieza", "text": "Rota la próxima pieza para ajustar su orientación sobre la cuadrícula." },
+      { "icon": "undo", "title": "Deshacer", "text": "Revierte el último cambio realizado sobre el plano." },
+      { "icon": "redo", "title": "Rehacer", "text": "Recupera el último cambio que acabas de deshacer." }
+    ],
+    "canvasAria": "Editor modular 2D y visualizador 3D",
+    "toolbarAria": "Herramientas de edición",
+    "toolLabels": { "place": "Colocar piezas", "pan": "Mover por el plano", "flip": "Cambiar sentido", "rotate": "Girar siguiente pieza", "undo": "Deshacer", "redo": "Rehacer", "view3d": "Ver solo lo construido" },
+    "zoomAria": "Control de zoom",
+    "zoomIn": "Ampliar vista",
+    "zoomOut": "Reducir vista",
+    "centerView": "Centrar vista",
+    "floorAria": "Cambiar capa",
+    "floorHeightAria": "Altura actual {{height}}",
+    "floorDown": "Bajar capa",
+    "floorLabel": "Capa activa {{floor}}",
+    "floorUp": "Subir capa",
+    "floorReset": "Volver a la capa cero",
+    "sideToolsAria": "Utilidades del plano",
+    "sideTools": { "plan": "Plano", "pieces": "Piezas", "budget": "Presupuesto" },
+    "clearCanvas": "Limpiar",
+    "clearCanvasTitle": "Limpiar plano",
+    "guideManual": "Manual de instrucciones",
+    "howItWorksTitle": "Como funciona",
+    "howItWorksIntro": "Esta guía resume el flujo completo del diseñador para que puedas colocar piezas, validar apoyos y revisar el volumen final sin perder contexto.",
+    "howItWorks": [
+      { "title": "Selecciona una pieza", "text": "Elige un bloque, pilar o accesorio desde el panel lateral." },
+      { "title": "Edita en 2D", "text": "Coloca piezas en el plano y cambia de planta cuando lo necesites." },
+      { "title": "Visualiza en 3D", "text": "Revisa el volumen construido con la vista tridimensional." }
+    ],
+    "guideButtons": { "2d": "Guía 2D", "3d": "Guía 3D" },
+    "examplesTitle": "Ejemplos",
+    "examples": [
+      { "title": "Plano 2D", "alt": "Plano 2D" },
+      { "title": "Plano 3D", "alt": "Plano 3D" }
+    ],
+    "communityOpenAria": "Abrir ejemplo {{title}}",
+    "modalClose": "Cerrar",
+    "guide2d": {
+      "title": "Guía 2D",
+      "intro": "El plano 2D es el lugar donde construyes la lógica del proyecto antes de ver el volumen final.",
+      "sections": [
+        { "title": "1. Elige la pieza adecuada", "text": "Selecciona un bloque, pilar o accesorio desde la barra lateral y comprueba el material, el tipo y la planta activa antes de colocarlo." },
+        { "title": "2. Coloca y corrige en el plano", "text": "Haz clic sobre el tablero para situar la pieza. Si mantienes pulsado, puedes pintar varios puntos seguidos; si cambias de idea, borra con la misma lógica." },
+        { "title": "3. Respeta las reglas de apoyo", "text": "El editor valida si una pieza necesita apoyo debajo, una conexión lateral o estar en planta 0 para no dejar elementos flotando o mal anclados." },
+        { "title": "4. Cambia de planta cuando haga falta", "text": "Sube y baja de altura para revisar cada capa del proyecto. Así puedes ajustar huecos, comprobar coincidencias y trabajar sección por sección." },
+        { "title": "5. Usa las acciones rápidas", "text": "Deshacer, rehacer, guardar, cargar, exportar y mover el tablero están pensados para que puedas iterar sin perder tiempo." },
+        { "title": "6. Revisa la vista previa", "text": "El plano muestra una previsualización cuando el cursor pasa por encima, de manera que sepas antes de confirmar si la colocación es válida o no." }
+      ],
+      "footer": "Consejo: si dudas, trabaja primero en 2D hasta que el reparto general de piezas esté cerrado y usa el 3D solo para verificar proporciones y altura."
+    },
+    "guide3d": {
+      "title": "Guía 3D",
+      "intro": "La vista 3D transforma el plano en una lectura espacial más intuitiva para entender el resultado final.",
+      "sections": [
+        { "title": "1. Mira el volumen completo", "text": "Cada pieza se convierte en un bloque volumétrico con su altura real, lo que permite entender la forma final del conjunto." },
+        { "title": "2. Lee las capas visibles", "text": "Las guías de altura y la rejilla tridimensional te ayudan a entender qué capas están activas y cuánto volumen se ha acumulado." },
+        { "title": "3. Diferencia estructura y accesorios", "text": "Los elementos estructurales se perciben más sólidos, mientras que los accesorios se muestran con una presencia más ligera para facilitar la lectura." },
+        { "title": "4. Compara medidas y proporciones", "text": "Las guías de dimensiones y el contorno del volumen permiten comprobar ancho, fondo y altura con una referencia visual rápida." },
+        { "title": "5. Ajusta la cámara", "text": "Gira, acerca y aleja la escena para inspeccionar el proyecto desde distintos puntos de vista sin perder la orientación espacial." },
+        { "title": "6. Usa 3D como validación final", "text": "Cuando el plano 2D ya está resuelto, el 3D te sirve para confirmar que la composición general, las alturas y los apoyos tienen sentido." }
+      ],
+      "footer": "Consejo: vuelve al plano 2D si detectas una capa que no encaja; la vista 3D está pensada como comprobación final del diseño."
+    },
+    "topbar": { "2d": "Plano 2D · Capa {{floor}}", "3d": "Vista 3D del proyecto · Capa {{floor}}" },
+    "status": { "plan": "Plano", "pieces": "Piezas colocadas", "budget": "Presupuesto estimado", "clear": "Nuevo plano", "save": "Guardar plano", "load": "Cargar plano", "export": "Exportar", "emptyPieces": "Sin piezas colocadas", "emptyBudget": "No hay piezas colocadas.", "price": "Precio estimado", "summary": { "pieces": "Total piezas", "area": "Superficie", "height": "Altura muros" } },
+    "errors": { "noPieces": "No hay bloques o pilares publicados en la base de datos.", "loadFailed": "No se pudieron cargar los bloques y pilares." },
+    "messages": { "initial": "Selecciona una pieza y colócala en el plano 2D.", "selectAvailable": "Selecciona una pieza disponible antes de colocarla.", "outOfBounds": "La pieza no cabe dentro del plano.", "collision": "Esa zona ya tiene una pieza colocada.", "needsSupport": "La pieza necesita apoyo justo debajo.", "needsAccessorySupport": "El accesorio necesita estar en planta 0, tener apoyo debajo o contacto completo con una pieza estructural.", "placed": "{{name}} colocada en la planta {{floor}}.", "removedWithDependents": "Pieza eliminada junto con las piezas que dependían de ella.", "removed": "Pieza eliminada del plano.", "layerAdjusted": "Capa ajustada +{{layers}} ({{cm}} cm).", "reset": "Plano reiniciado.", "draftSaved": "Borrador guardado en el navegador.", "draftMissing": "No hay borrador guardado todavía.", "draftLoaded": "Borrador cargado correctamente.", "undo": "Deshecho el último cambio.", "redo": "Rehecho el último cambio.", "exported": "Plano exportado como archivo JSON." }
+  },
+  "about": {
+    "eyebrow": "Sobre SquareStruct",
+    "title": "Nuestra historia",
+    "intro1": "SquareStruct nace en el aula, pero mira hacia la obra real: una forma sencilla de explorar, comparar y planificar soluciones modulares antes de construir.",
+    "intro2": "Queremos que elegir materiales ensamblables sea una experiencia clara y cercana, donde cada pieza tenga sentido dentro del proyecto que el usuario imagina.",
+    "intro3": "Detrás de la plataforma hay práctica, aprendizaje y trabajo en equipo: una idea académica convertida en una herramienta útil para resolver necesidades concretas.",
+    "raul": {
+      "name": "Raúl Martín",
+      "imageAlt": "Raúl Martín",
+      "teamAlt": "Raúl y Cristian",
+      "bio": "Raúl es un apasionado por los videojuegos y la tecnología. Orientó su formación a sistemas y desarrollo web desde sus primeros pasos, buscando aplicar lo aprendido en proyectos reales."
+    },
+    "cristian": {
+      "name": "Cristian Gil",
+      "imageAlt": "Cristian Gil",
+      "bio": "Cristian se reinventó profesionalmente hacia el sector tecnológico. Orientó su aprendizaje al desarrollo web y aporta una base práctica en sistemas y redes, buscando crear soluciones útiles para proyectos reales."
+    }
+  },
+  "footer": {
+    "benefits": {
+      "shipping": { "title": "Envíos rápidos", "text": "A todo el país" },
+      "quality": { "title": "Calidad garantizada", "text": "Materiales certificados" },
+      "support": { "title": "Atención personalizada", "text": "Te ayudamos a elegir" },
+      "secure": { "title": "Compra segura", "text": "Tus datos protegidos" }
+    },
+    "copy": "SquareStruct © 2026 · Proyecto académico de construcción modular desarrollado por Raúl Martín y Cristian Gil",
+    "ariaLabel": "Información de SquareStruct"
+  },
+  "auth": {
+    "login": { "title": "Iniciar sesión", "subtitle": "Accede con tu correo electrónico y contraseña.", "email": "Correo", "password": "Contraseña", "submit": "Iniciar sesión", "submitLoading": "Iniciando sesión...", "noAccount": "¿No tienes cuenta?", "toggle": "Regístrate aquí" },
+    "register": { "title": "Crear cuenta", "subtitle": "Crea tu cuenta para guardar tus datos y avanzar con el proyecto.", "name": "Nombre", "firstSurname": "Primer apellido", "email": "Correo", "password": "Contraseña", "confirmPassword": "Confirmar contraseña", "submit": "Crear cuenta", "submitLoading": "Creando cuenta...", "hasAccount": "¿Ya tienes cuenta?", "toggle": "Inicia sesión aquí" },
+    "placeholders": { "email": "tu@email.com", "password": "********", "name": "Tu nombre", "firstSurname": "Tu primer apellido" },
+    "errors": { "loginMissing": "Completa el correo y la contraseña para iniciar sesión.", "loginFailed": "No se pudo iniciar sesión. Revisa tus credenciales.", "registerMissing": "Completa todos los campos para crear tu cuenta.", "registerName": "El nombre debe tener al menos 3 caracteres.", "registerEmail": "Introduce un correo electrónico válido.", "registerPassword": "La contraseña debe tener al menos 6 caracteres.", "registerMismatch": "Las contraseñas no coinciden.", "registerFailed": "No se pudo crear la cuenta. Inténtalo de nuevo.", "missingToken": "No se recibió token de autenticación" },
+    "closeError": "Cerrar error",
+    "closeModal": "Cerrar modal"
+  },
+  "cart": {
+    "title": "Mi cesta",
+    "close": "Cerrar carrito",
+    "empty": "Tu cesta está vacía",
+    "hint": "Añade productos desde el catálogo para empezar",
+    "type": "Tipo",
+    "reduce": "Reducir cantidad",
+    "increase": "Aumentar cantidad",
+    "remove": "Eliminar del carrito",
+    "item": "{{count}} artículo",
+    "item_plural": "{{count}} artículos",
+    "continue": "Seguir comprando",
+    "checkout": "Proceder al pedido"
+  },
+  "checkout": {
+    "title": "Completar compra",
+    "summary": "Resumen de tu pedido",
+    "shippingLabel": "Dirección de envío *",
+    "shippingPlaceholder": "Ej: Calle Principal 123, 28001 Madrid, España",
+    "shippingHint": "Mínimo 10 caracteres",
+    "paymentLabel": "Método de pago *",
+    "paymentOptions": { "tarjeta": "Tarjeta de crédito/débito", "transferencia": "Transferencia bancaria", "paypal": "PayPal", "efectivo": "Efectivo contra reembolso" },
+    "quantity": "Cantidad: {{count}}",
+    "empty": "Tu carrito está vacío",
+    "total": "Total:",
+    "cancel": "Cancelar",
+    "submit": "Confirmar pedido",
+    "submitLoading": "Procesando...",
+    "errors": { "shippingRequired": "Por favor, ingresa una dirección de envío", "shippingLength": "La dirección debe tener al menos 10 caracteres", "emptyCart": "El carrito está vacío", "unknown": "Error desconocido", "createFailed": "No se pudo crear el pedido. Intenta de nuevo." },
+    "success": "¡Pedido creado exitosamente! Tu pedido está pendiente de aprobación."
+  },
+  "settings": {
+    "tabs": { "perfil": "Perfil", "facturas": "Facturas", "facturacion": "Facturación", "usuarios": "Usuarios", "planos": "Planos", "profile": "Perfil", "invoices": "Facturas", "billing": "Facturación", "users": "Usuarios", "plans": "Planos" },
+    "headers": { "admin": "Administración", "private": "Área privada", "billingTitle": "Facturación", "billingText": "Controla facturas, estados y el histórico completo de pedidos.", "usersTitle": "Usuarios", "usersText": "Gestiona cuentas, roles y accesos desde el área de administración.", "adminText": "Accede a tu perfil y a las herramientas de administración.", "privateText": "Gestiona tu perfil, facturas y herramientas desde una sola pantalla." },
+    "profile": { "loading": "Cargando datos de perfil...", "error": "No se pudo cargar el perfil.", "protected": "Cuenta super admin protegida: no permite edicion ni eliminacion.", "title": "Perfil", "edit": "Editar datos", "cancelEdit": "Cancelar edicion", "delete": "Eliminar cuenta", "deleting": "Eliminando...", "role": "Rol", "name": "Nombre", "firstSurname": "Primer apellido", "secondSurname": "Segundo apellido", "email": "Correo electrónico", "memberSince": "Miembro desde", "formName": "Nombre", "formFirstSurname": "Primer apellido", "formSecondSurname": "Segundo apellido", "formEmail": "Correo electronico", "save": "Guardar cambios", "saving": "Guardando...", "updated": "Datos personales actualizados correctamente.", "updateError": "No se pudieron actualizar tus datos.", "superAdminEdit": "La cuenta super admin no se puede editar.", "superAdminDelete": "La cuenta super admin no se puede eliminar.", "deleteConfirmTitle": "Eliminar cuenta", "deleteConfirmText": "Vas a eliminar tu cuenta. Tus pedidos se conservaran anonimizados para mantener el historial de la empresa.", "deleteSuccessTitle": "Cuenta eliminada", "deleteSuccessText": "Tu cuenta se ha eliminado correctamente.", "deleteErrorTitle": "No se pudo eliminar", "deleteError": "No se pudo eliminar tu cuenta. Intentalo de nuevo.", "changePassword": "Cambiar contraseña", "logout": "Cerrar sesión", "roles": { "admin": "Administrador", "user": "Usuario" } },
+    "users": { "adminOnly": "Esta opción solo está disponible para administradores.", "loading": "Cargando usuarios...", "title": "Gestión de usuarios", "total": "Total: {{visible}} de {{total}}", "searchPlaceholder": "Buscar usuarios...", "filterLabel": "Filtrar por rol", "all": "Todos", "admin": "Admin", "users": "Usuarios", "detail": "Detalle", "edit": "Editar", "delete": "Borrar", "deleting": "Borrando...", "empty": "No hay usuarios que coincidan con los filtros", "table": { "name": "Nombre", "email": "Email", "role": "Rol", "actions": "Acciones" }, "superAdminEdit": "La cuenta super admin no se puede editar.", "superAdminDelete": "La cuenta super admin no se puede eliminar.", "detailError": "No se pudo cargar el detalle actualizado del usuario.", "updateSuccess": "Datos de {{name}} actualizados correctamente.", "updateError": "No se pudo actualizar el usuario.", "deleteConfirmTitle": "Eliminar usuario", "deleteConfirmText": "Vas a eliminar la cuenta de {{name}}. Sus pedidos se conservaran anonimizados en el historial.", "deleteSuccessTitle": "Usuario eliminado", "deleteSuccessText": "La cuenta de {{name}} se ha eliminado correctamente.", "deleteErrorTitle": "No se pudo eliminar", "deleteError": "No se pudo eliminar el usuario. Intentalo de nuevo." },
+    "billing": { "loading": "Cargando facturación...", "searchPlaceholder": "Buscar cliente...", "statusFilter": "Filtrar por estado", "paymentFilter": "Filtrar por método", "all": "Todos", "pending": "Pendiente", "accepted": "Aceptado", "rejected": "Denegado", "canceled": "Cancelado", "reset": "Limpiar filtros", "stats": { "totalIncome": "Facturado", "totalOrders": "Pedidos", "totalProducts": "Productos", "averageTicket": "Ticket medio" }, "status": { "accepted": "Aceptadas", "pending": "Pendientes", "rejected": "Denegadas", "canceled": "Canceladas", "paid": "Pagadas" }, "updateSuccess": "Pedido {{status}} correctamente.", "updateError": "No se pudo actualizar la factura.", "table": { "order": "Pedido", "customer": "Cliente", "date": "Fecha", "products": "Productos", "payment": "Pago", "status": "Estado", "total": "Total", "actions": "Acciones" }, "view": "Ver detalle", "accept": "Aceptar", "deny": "Denegar", "details": { "products": "Productos", "shipping": "Dirección de envío", "close": "Cerrar", "pendingDescription": "A la espera de aprobación", "acceptedDescription": "Orden aprobada", "rejectedDescription": "Orden rechazada", "noAddress": "Sin dirección de envío" }, "orderWithItems": "Pedido #{{id}} con más piezas", "empty": "No hay facturas que coincidan con los filtros actuales." },
+    "orders": { "loading": "Cargando pedidos...", "empty": "No hay facturas todavía.", "emptyTitle": "Aún no tienes facturas", "loadError": "No se pudieron cargar tus facturas.", "title": "Facturas", "status": { "pendiente": "Pendiente", "aceptado": "Aceptada", "denegado": "Denegada", "cancelado": "Cancelada", "pagado": "Pagada" }, "payment": { "tarjeta": "Tarjeta", "transferencia": "Transferencia", "paypal": "PayPal", "efectivo": "Efectivo" } }
+  },
+  "billing": { "loading": "Cargando facturación...", "searchPlaceholder": "Buscar cliente...", "statusFilter": "Filtrar por estado", "paymentFilter": "Filtrar por método", "all": "Todos", "pending": "Pendiente", "accepted": "Aceptado", "rejected": "Denegado", "canceled": "Cancelado", "reset": "Limpiar filtros", "stats": { "totalIncome": "Facturado", "totalOrders": "Pedidos", "totalProducts": "Productos", "averageTicket": "Ticket medio" }, "status": { "accepted": "Aceptadas", "pending": "Pendientes", "rejected": "Denegadas", "canceled": "Canceladas", "paid": "Pagadas" }, "updateSuccess": "Pedido {{status}} correctamente.", "updateError": "No se pudo actualizar la factura.", "table": { "order": "Pedido", "customer": "Cliente", "date": "Fecha", "products": "Productos", "payment": "Pago", "status": "Estado", "total": "Total", "actions": "Acciones" }, "view": "Ver detalle", "accept": "Aceptar", "deny": "Denegar", "details": { "products": "Productos", "shipping": "Dirección de envío", "close": "Cerrar", "pendingDescription": "A la espera de aprobación", "acceptedDescription": "Orden aprobada", "rejectedDescription": "Orden rechazada", "noAddress": "Sin dirección de envío" }, "orderWithItems": "Pedido #{{id}} con más piezas", "empty": "No hay facturas que coincidan con los filtros actuales." },
+  "orders": { "loading": "Cargando pedidos...", "empty": "No hay facturas todavía.", "emptyTitle": "Aún no tienes facturas", "loadError": "No se pudieron cargar tus facturas.", "title": "Facturas", "status": { "pendiente": "Pendiente", "aceptado": "Aceptada", "denegado": "Denegada", "cancelado": "Cancelada", "pagado": "Pagada" }, "payment": { "tarjeta": "Tarjeta", "transferencia": "Transferencia", "paypal": "PayPal", "efectivo": "Efectivo" } },
+  "alerts": { "deleteTitle": "Eliminar elemento", "deleteText": "Esta accion no se puede deshacer.", "deleteConfirm": "Eliminar", "cancel": "Cancelar", "successTitle": "Accion completada", "successText": "La operacion se ha realizado correctamente.", "errorTitle": "No se pudo completar", "errorText": "Intentelo de nuevo.", "ok": "Aceptar" }
+}

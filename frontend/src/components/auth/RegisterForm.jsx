@@ -1,4 +1,5 @@
 import AuthErrorMessage from './AuthErrorMessage'
+import { useTranslation } from 'react-i18next'
 
 function RegisterForm({
   nombre,
@@ -18,22 +19,24 @@ function RegisterForm({
   onClose,
   onClearError
 }) {
+  const { t } = useTranslation()
+
   return (
     <div className="auth-modal-card auth-modal-register">
       <div className="auth-modal-header">
-        <h2>Crear cuenta</h2>
+        <h2>{t('auth.register.title')}</h2>
         <button
           type="button"
           className="auth-modal-close-btn"
           onClick={onClose}
-          aria-label="Cerrar modal"
+          aria-label={t('auth.closeModal')}
         >
           X
         </button>
       </div>
 
       <p className="auth-modal-subtitle">
-        Crea tu cuenta para guardar tus datos y avanzar con el proyecto.
+        {t('auth.register.subtitle')}
       </p>
 
       <AuthErrorMessage error={error} onClear={onClearError} />
@@ -41,12 +44,12 @@ function RegisterForm({
       <form onSubmit={onSubmit} className="auth-modal-form">
         <div className="auth-modal-fields">
           <div className="auth-modal-form-group">
-            <label htmlFor="register-nombre">Nombre</label>
+            <label htmlFor="register-nombre">{t('auth.register.name')}</label>
             <input
               id="register-nombre"
               type="text"
               className="auth-modal-input"
-              placeholder="Tu nombre"
+              placeholder={t('auth.placeholders.name')}
               value={nombre}
               onChange={(e) => onNombreChange(e.target.value)}
               disabled={isLoading}
@@ -54,12 +57,12 @@ function RegisterForm({
           </div>
 
           <div className="auth-modal-form-group">
-            <label htmlFor="register-apellido">Primer apellido</label>
+            <label htmlFor="register-apellido">{t('auth.register.firstSurname')}</label>
             <input
               id="register-apellido"
               type="text"
               className="auth-modal-input"
-              placeholder="Tu primer apellido"
+              placeholder={t('auth.placeholders.firstSurname')}
               value={primerApellido}
               onChange={(e) => onPrimerApellidoChange(e.target.value)}
               disabled={isLoading}
@@ -67,12 +70,12 @@ function RegisterForm({
           </div>
 
           <div className="auth-modal-form-group">
-            <label htmlFor="register-email">Correo</label>
+            <label htmlFor="register-email">{t('auth.register.email')}</label>
             <input
               id="register-email"
               type="email"
               className="auth-modal-input"
-              placeholder="tu@email.com"
+              placeholder={t('auth.placeholders.email')}
               value={email}
               autoComplete="email"
               onChange={(e) => onEmailChange(e.target.value)}
@@ -81,12 +84,12 @@ function RegisterForm({
           </div>
 
           <div className="auth-modal-form-group">
-            <label htmlFor="register-password">Contraseña</label>
+            <label htmlFor="register-password">{t('auth.register.password')}</label>
             <input
               id="register-password"
               type="password"
               className="auth-modal-input"
-              placeholder="********"
+              placeholder={t('auth.placeholders.password')}
               value={password}
               autoComplete="new-password"
               onChange={(e) => onPasswordChange(e.target.value)}
@@ -95,12 +98,12 @@ function RegisterForm({
           </div>
 
           <div className="auth-modal-form-group">
-            <label htmlFor="register-confirm-password">Confirmar contraseña</label>
+            <label htmlFor="register-confirm-password">{t('auth.register.confirmPassword')}</label>
             <input
               id="register-confirm-password"
               type="password"
               className="auth-modal-input"
-              placeholder="********"
+              placeholder={t('auth.placeholders.password')}
               value={confirmPassword}
               autoComplete="new-password"
               onChange={(e) => onConfirmPasswordChange(e.target.value)}
@@ -115,19 +118,19 @@ function RegisterForm({
             className="auth-modal-submit-btn"
             disabled={isLoading}
           >
-            {isLoading ? 'Creando cuenta...' : 'Crear cuenta'}
+            {isLoading ? t('auth.register.submitLoading') : t('auth.register.submit')}
           </button>
 
           <div className="auth-modal-footer">
             <p>
-              ¿Ya tienes cuenta?{' '}
+              {t('auth.register.hasAccount')}{' '}
               <button
                 type="button"
                 className="auth-modal-toggle-btn"
                 onClick={onToggleMode}
                 disabled={isLoading}
               >
-                Inicia sesión aquí
+                {t('auth.register.toggle')}
               </button>
             </p>
           </div>
