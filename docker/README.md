@@ -221,7 +221,9 @@ Resultado esperado:
 
 ## AWS
 
-Esta configuracion Docker sirve como base local y como referencia para un despliegue futuro, pero AWS requerira revisar:
+Esta configuracion Docker sirve como base local y como referencia para el despliegue documentado en [`../docs/15-anexos/despliegue-aws-ec2.md`](../docs/15-anexos/despliegue-aws-ec2.md).
+
+Antes de publicar en AWS hay que revisar:
 
 - variables de entorno;
 - secretos;
@@ -230,13 +232,7 @@ Esta configuracion Docker sirve como base local y como referencia para un despli
 - persistencia de datos;
 - backups.
 
-En un despliegue real, lo mas razonable seria separar servicios:
-
-```text
-Frontend -> S3/CloudFront o contenedor
-Backend  -> ECS, EC2, App Runner u otro servicio
-MySQL    -> Amazon RDS
-```
+Para la defensa DAW1 se plantea una sola EC2 con Docker Compose. En un proyecto mayor, se podria estudiar separar frontend, backend y base de datos en servicios gestionados.
 
 ## Problemas comunes
 
