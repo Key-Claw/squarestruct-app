@@ -7,7 +7,7 @@ import '../../styles/pages/settings/settings.css'
 import { useTranslation } from 'react-i18next'
 
 const FACTURACION_PAGE_SIZE = 5
-const SUPER_ADMIN_EMAIL = 'admin@squarestruct.com'
+const SUPER_ADMIN_EMAIL = 'admin@sqst.com'
 
 const getRoleBadgeClass = (role) => {
   if (role === 'admin') return 'settings-role-badge admin'
@@ -42,54 +42,6 @@ const formatMoney = (value) => {
   }).format(number)
 }
 
-/*
-                <h5 className="modal-title">{t('settings.users.edit')}</h5>
-  const normalizedStatus = (status || '').toLowerCase()
-
-  if (normalizedStatus === 'pendiente') return 'settings-invoice-status pending'
-  if (normalizedStatus === 'aceptado') return 'settings-invoice-status accepted'
-  if (normalizedStatus === 'denegado') return 'settings-invoice-status rejected'
-  if (normalizedStatus === 'cancelado') return 'settings-invoice-status canceled'
-  if (normalizedStatus === 'pendiente') return 'settings-invoice-status pending'
-  if (normalizedStatus === 'aceptado') return 'settings-invoice-status accepted'
-
-  if (normalizedStatus === 'cancelado') return 'settings-invoice-status canceled'
-                  <label className="form-label text-muted">{t('settings.profile.formName')}:</label>
-  return 'settings-invoice-status'
-  if (normalizedStatus === 'pendiente') return i18n.t('settings.billing.status.pending')
-  if (normalizedStatus === 'aceptado') return i18n.t('settings.billing.status.accepted')
-  if (normalizedStatus === 'denegado') return i18n.t('settings.billing.status.rejected')
-  if (normalizedStatus === 'cancelado') return i18n.t('settings.billing.status.canceled')
-
-  return status || i18n.t('common.unknown')
-  if (normalizedStatus === 'aceptado') return 'Aceptada'
-  if (normalizedStatus === 'denegado') return 'Denegada'
-const getPaymentMethodLabel = (method) => {
-  const normalizedMethod = (method || '').toLowerCase()
-  return status || 'Sin estado'
-  if (normalizedMethod === 'tarjeta') return i18n.t('settings.orders.payment.tarjeta')
-  if (normalizedMethod === 'transferencia') return i18n.t('settings.orders.payment.transferencia')
-  if (normalizedMethod === 'paypal') return i18n.t('settings.orders.payment.paypal')
-  if (normalizedMethod === 'efectivo') return i18n.t('settings.orders.payment.efectivo')
-
-  return method || 'N/A'
-  if (normalizedMethod === 'transferencia') return 'Transferencia'
-  if (normalizedMethod === 'efectivo') return 'Efectivo'
-
-  return method || 'N/A'
-                    <option value="usuario">{i18n.t('settings.profile.roles.user')}</option>
-
-const buildUserFormData = (userData = {}) => ({
-  nombre: userData.nombre || '',
-  segundoApellido: userData.segundoApellido || '',
-  email: userData.email || '',
-  rol: userData.rol || 'usuario',
-                    {i18n.resolvedLanguage?.startsWith('en') ? 'You are assigning administrator permissions to this user.' : 'Estás asignando permisos de administrador a este usuario.'}
-
-const isSuperAdminAccount = (userData = {}) => userData.email?.toLowerCase() === SUPER_ADMIN_EMAIL
-
-*/
-
 const getStatusClass = (status) => {
   const normalizedStatus = (status || '').toLowerCase()
 
@@ -113,6 +65,8 @@ const getStatusLabel = (status) => {
   if (normalizedStatus === 'denegado') return i18n.t('settings.billing.status.rejected')
   if (normalizedStatus === 'cancelado') return i18n.t('settings.billing.status.canceled')
   if (normalizedStatus === 'pagado') return i18n.t('settings.billing.status.paid')
+  if (normalizedStatus === 'enviado') return i18n.t('settings.billing.status.shipped')
+  if (normalizedStatus === 'entregado') return i18n.t('settings.billing.status.delivered')
 
   return status || i18n.t('common.unknown')
 }
@@ -262,7 +216,7 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange, o
     }
 
     loadUserProfile()
-  }, [activeTab, user])
+  }, [activeTab, t, user])
 
   useEffect(() => {
     if (!isAdminUser || activeTab !== 'usuarios') return
@@ -294,7 +248,7 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange, o
     }
 
     loadUsuarios()
-  }, [activeTab, isAdminUser, onAuthExpired])
+  }, [activeTab, isAdminUser, onAuthExpired, t])
 
   useEffect(() => {
     if (activeTab !== 'facturas') return
@@ -314,7 +268,7 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange, o
     }
 
     loadFacturas()
-  }, [activeTab])
+  }, [activeTab, t])
 
   useEffect(() => {
     if (!isAdminUser || activeTab !== 'facturacion') return
@@ -344,7 +298,7 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange, o
     }
 
     loadFacturacion()
-  }, [activeTab, isAdminUser, onAuthExpired])
+  }, [activeTab, isAdminUser, onAuthExpired, t])
 
   const facturasAdminFiltradas = useMemo(() => {
     const search = facturacionSearchTerm.trim().toLowerCase()
@@ -621,10 +575,10 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange, o
             : pedido
         ))
       ))
-      setFacturacionSuccessMessage(response.mensaje || response.message || 'Pedido actualizado correctamente.')
+      setFacturacionSuccessMessage(response.mensaje || response.message || t('settings.billing.updateSuccess'))
       window.setTimeout(() => setFacturacionSuccessMessage(''), 3000)
     } catch (err) {
-      setFacturacionError(err.message || 'No se pudo actualizar la factura.')
+      setFacturacionError(err.message || t('settings.billing.updateError'))
     } finally {
       setProcessingPedidoId(null)
     }
@@ -861,7 +815,7 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange, o
         {usersSuccessMessage && <div className="alert alert-success">{usersSuccessMessage}</div>}
 
         <>
-          <div className="settings-users-mobile" aria-label="Usuarios móviles">
+          <div className="settings-users-mobile" aria-label={t('settings.users.title')}>
             {usuariosFiltrados.length > 0 ? (
               usuariosFiltrados.map((currentUser) => (
                 <article key={currentUser.idUsuario} className="settings-user-mobile-card">
@@ -1066,7 +1020,7 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange, o
                 <strong>{facturacionStats.totalProductos}</strong>
                 <small>
                   {facturacionStats.pedidoPrincipal
-                    ? `${t('settings.billing.table.order')} #${facturacionStats.pedidoPrincipal.idPedido} ${i18n.resolvedLanguage?.startsWith('en') ? 'with more items' : 'con mas piezas'}`
+                    ? t('settings.billing.orderWithItems', { id: facturacionStats.pedidoPrincipal.idPedido })
                     : t('settings.billing.empty')}
                 </small>
               </div>
@@ -1151,7 +1105,7 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange, o
               </div>
 
               <button type="button" className="btn btn-outline-success fw-bold mt-auto">
-                {i18n.resolvedLanguage?.startsWith('en') ? 'View full report' : 'Ver informe completo'}
+                {t('settings.billing.viewFullReport')}
               </button>
             </div>
           </div>
@@ -1161,7 +1115,7 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange, o
       <div className="settings-card settings-billing-table-card settings-billing-history-card">
         <div className="settings-card-head">
           <h2>{t('settings.orders.title')}</h2>
-          <small>{facturasAdminFiltradas.length} {i18n.resolvedLanguage?.startsWith('en') ? 'results' : 'resultados'}</small>
+          <small>{t('settings.billing.results', { count: facturasAdminFiltradas.length })}</small>
         </div>
 
         {isFacturacionLoading ? (
@@ -1305,7 +1259,7 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange, o
     <div className="settings-card">
       <div className="settings-card-head settings-invoices-head">
         <h2>{t('settings.orders.title')}</h2>
-        <small>{facturasUsuario.length} {t('settings.billing.table.order').toLowerCase()}</small>
+        <small>{t('settings.billing.results', { count: facturasUsuario.length })}</small>
       </div>
 
       {facturasError && <div className="alert alert-danger">{facturasError}</div>}
@@ -1403,9 +1357,7 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange, o
   const renderPlanos = () => (
     <div className="settings-card settings-placeholder-card">
       <h2>{t('settings.tabs.planos')}</h2>
-      <p>{i18n.resolvedLanguage?.startsWith('en')
-        ? 'There are no saved plans yet. When you prepare designs, they will appear in this section.'
-        : 'Aún no hay planos guardados. Cuando prepares diseños, aparecerán en esta sección.'}</p>
+      <p>{t('settings.plans.empty')}</p>
     </div>
   )
 
@@ -1424,10 +1376,10 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange, o
   return (
     <section className="page-shell settings-page-shell container-fluid">
       <div className="settings-layout">
-        <aside className="settings-sidebar" aria-label="Menú de cuenta">
+        <aside className="settings-sidebar" aria-label={t('account.menu')}>
           <div className="settings-sidebar-head">
             <h1>{t('account.myAccount')}</h1>
-            <small>{user?.nombre || (i18n.resolvedLanguage?.startsWith('en') ? 'User' : 'Usuario')}</small>
+            <small>{user?.nombre || t('settings.profile.userLabel')}</small>
           </div>
 
           <nav className="settings-nav-list">
@@ -1535,7 +1487,7 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange, o
                     onChange={(event) => handleAdminUserInputChange('rol', event.target.value)}
                     disabled={isEditLoading}
                   >
-                    <option value="usuario">{i18n.resolvedLanguage?.startsWith('en') ? 'User' : 'Usuario'}</option>
+                    <option value="usuario">{t('settings.profile.roles.user')}</option>
                     <option value="admin">ADMIN</option>
                   </select>
                 </div>

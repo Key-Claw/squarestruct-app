@@ -481,6 +481,21 @@
   gap: 6px;
 }
 
+.settings-billing-history-desktop .settings-inline-actions {
+  display: grid;
+  grid-template-columns: 1fr;
+  justify-items: stretch;
+  min-width: 96px;
+  gap: 7px;
+}
+
+.settings-billing-history-desktop .settings-inline-actions .btn {
+  width: 100%;
+  min-height: 34px;
+  padding: 6px 10px;
+  white-space: nowrap;
+}
+
 .settings-billing-history-mobile {
   display: none;
 }

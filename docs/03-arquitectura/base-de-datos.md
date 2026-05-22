@@ -55,7 +55,7 @@ Estos indices apoyan joins y consultas frecuentes del catalogo, pedidos y factur
 `seeds.sql` inserta:
 
 - proveedores de hormigon y plastico reciclable;
-- usuario admin `admin@squarestruct.com`;
+- usuario admin `admin@sqst.com`;
 - usuarios de ejemplo;
 - productos reales del catalogo;
 - pedidos de ejemplo y sus detalles.

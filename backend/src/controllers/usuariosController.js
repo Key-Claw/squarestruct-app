@@ -4,7 +4,7 @@ import { db } from '../app.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
-const SUPER_ADMIN_EMAIL = 'admin@squarestruct.com';
+const SUPER_ADMIN_EMAIL = 'admin@sqst.com';
 
 /**
  * Corrige texto con mojibake típico de una mala decodificación UTF-8/latin1 (Para las tildes y eso).

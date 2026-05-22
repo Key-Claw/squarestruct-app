@@ -2137,6 +2137,28 @@ button.design-piece-card {
   box-shadow: 0 12px 24px rgba(95, 159, 56, 0.18);
 }
 
+.design-piece-mobile-select {
+  display: none;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.design-piece-mobile-select span {
+  color: rgba(15, 23, 42, 0.78);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.design-piece-mobile-select .form-select {
+  min-height: 44px;
+  border-color: rgba(23, 63, 95, 0.12);
+  border-radius: 10px;
+  background-color: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.045);
+}
+
 .design-piece-list {
   gap: 16px;
   padding: 2px 8px 2px 1px;
@@ -2548,6 +2570,10 @@ button.design-piece-card {
 @media (max-width: 767.98px) {
   .design-pieces-panel {
     padding: 18px 16px;
+  }
+
+  .design-piece-mobile-select {
+    display: grid;
   }
 
   .design-tabs {

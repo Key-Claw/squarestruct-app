@@ -39,7 +39,7 @@ Payload del JWT:
 {
   "idUsuario": 1,
   "nombre": "Admin",
-  "email": "admin@squarestruct.com",
+  "email": "admin@sqst.com",
   "rol": "admin"
 }
 ```
@@ -108,4 +108,4 @@ La proteccion real sigue estando en backend. La proteccion frontend mejora exper
 
 ## Cuentas Sensibles
 
-El backend trata `admin@squarestruct.com` como cuenta super admin para evitar editarla o eliminarla desde flujos normales.
+El backend trata `admin@sqst.com` como cuenta super admin para evitar editarla o eliminarla desde flujos normales.

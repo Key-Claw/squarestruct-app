@@ -20,28 +20,29 @@ VALUES
   (2, 'Hormigon Forpol Group', '+34977881287', 'https://www.forpol.es/prefabricados-hormigon/bloques-de-hormigon-forpolbloc/', 'Hormigon', TRUE);
 
 -- Hash bcrypt de la contrasena temporal de ejemplo para usuarios seed. Cambiar antes de desplegar en AWS.
+-- Usuario admin de demo: admin@sqst.com / Hola123!
 INSERT INTO usuarios (idUsuario, nombre, primerApellido, segundoApellido, email, contrasena, rol)
 VALUES
-  (1, 'Admin', 'SquareStruct', NULL, 'admin@squarestruct.com', '$2b$10$uDPwExnvB1b.4fDtKNOKZOx.4BmAODWoLc23EtZZOa6IPljXf3cjW', 'admin'),
-  (2, 'Juan', 'Perez', 'Guarnizo', 'juan.perez@gmail.com', '$2b$10$uDPwExnvB1b.4fDtKNOKZOx.4BmAODWoLc23EtZZOa6IPljXf3cjW', 'usuario'),
-  (3, 'Ana', 'Gomez', NULL, 'ana.gomez@email.com', '$2b$10$uDPwExnvB1b.4fDtKNOKZOx.4BmAODWoLc23EtZZOa6IPljXf3cjW', 'usuario'),
-  (4, 'Carlos', 'Martinez', 'Lopez', 'carlos.martinez@gmail.com', '$2b$10$uDPwExnvB1b.4fDtKNOKZOx.4BmAODWoLc23EtZZOa6IPljXf3cjW', 'usuario'),
-  (5, 'Lucia', 'Fernandez', NULL, 'lucia.fernandez@gmail.com', '$2b$10$uDPwExnvB1b.4fDtKNOKZOx.4BmAODWoLc23EtZZOa6IPljXf3cjW', 'usuario'),
-  (6, 'Miguel', 'Sanchez', 'Ruiz', 'miguel.sanchez@gmail.com', '$2b$10$uDPwExnvB1b.4fDtKNOKZOx.4BmAODWoLc23EtZZOa6IPljXf3cjW', 'usuario'),
-  (7, 'Elena', 'Torres', NULL, 'elena.torres@gmail.com', '$2b$10$uDPwExnvB1b.4fDtKNOKZOx.4BmAODWoLc23EtZZOa6IPljXf3cjW', 'usuario'),
-  (8, 'David', 'Ramirez', 'Moreno', 'david.ramirez@gmail.com', '$2b$10$uDPwExnvB1b.4fDtKNOKZOx.4BmAODWoLc23EtZZOa6IPljXf3cjW', 'usuario'),
-  (9, 'Sara', 'Navarro', NULL, 'sara.navarro@gmail.com', '$2b$10$uDPwExnvB1b.4fDtKNOKZOx.4BmAODWoLc23EtZZOa6IPljXf3cjW', 'usuario'),
-  (10, 'Javier', 'Ortega', 'Gil', 'javier.ortega@gmail.com', '$2b$10$uDPwExnvB1b.4fDtKNOKZOx.4BmAODWoLc23EtZZOa6IPljXf3cjW', 'usuario'),
-  (11, 'Paula', 'Castro', NULL, 'paula.castro@gmail.com', '$2b$10$uDPwExnvB1b.4fDtKNOKZOx.4BmAODWoLc23EtZZOa6IPljXf3cjW', 'usuario'),
-  (12, 'Raul', 'Mendez', 'Vega', 'raul.mendez@gmail.com', '$2b$10$uDPwExnvB1b.4fDtKNOKZOx.4BmAODWoLc23EtZZOa6IPljXf3cjW', 'usuario'),
-  (13, 'Claudia', 'Herrera', NULL, 'claudia.herrera@gmail.com', '$2b$10$uDPwExnvB1b.4fDtKNOKZOx.4BmAODWoLc23EtZZOa6IPljXf3cjW', 'usuario'),
-  (14, 'Alberto', 'Cano', 'Serrano', 'alberto.cano@gmail.com', '$2b$10$uDPwExnvB1b.4fDtKNOKZOx.4BmAODWoLc23EtZZOa6IPljXf3cjW', 'usuario'),
-  (15, 'Marta', 'Iglesias', NULL, 'marta.iglesias@gmail.com', '$2b$10$uDPwExnvB1b.4fDtKNOKZOx.4BmAODWoLc23EtZZOa6IPljXf3cjW', 'usuario'),
-  (16, 'Sergio', 'Delgado', 'Nieto', 'sergio.delgado@gmail.com', '$2b$10$uDPwExnvB1b.4fDtKNOKZOx.4BmAODWoLc23EtZZOa6IPljXf3cjW', 'usuario'),
-  (17, 'Andrea', 'Reyes', NULL, 'andrea.reyes@gmail.com', '$2b$10$uDPwExnvB1b.4fDtKNOKZOx.4BmAODWoLc23EtZZOa6IPljXf3cjW', 'usuario'),
-  (18, 'Fernando', 'Vidal', 'Prieto', 'fernando.vidal@gmail.com', '$2b$10$uDPwExnvB1b.4fDtKNOKZOx.4BmAODWoLc23EtZZOa6IPljXf3cjW', 'usuario'),
-  (19, 'Natalia', 'Flores', NULL, 'natalia.flores@gmail.com', '$2b$10$uDPwExnvB1b.4fDtKNOKZOx.4BmAODWoLc23EtZZOa6IPljXf3cjW', 'usuario'),
-  (20, 'Pablo', 'Romero', 'Saez', 'pablo.romero@gmail.com', '$2b$10$uDPwExnvB1b.4fDtKNOKZOx.4BmAODWoLc23EtZZOa6IPljXf3cjW', 'usuario');
+  (1, 'Admin', 'SquareStruct', NULL, 'admin@sqst.com', '$2b$10$VSCt51JCe5d2kYdchOmB.uTTROriNQkZAlBxqTJMtNjA5F.QwjMPm', 'admin'),
+  (2, 'Juan', 'Perez', 'Guarnizo', 'perez@gmail.com', '$2b$10$VSCt51JCe5d2kYdchOmB.uTTROriNQkZAlBxqTJMtNjA5F.QwjMPm', 'usuario'),
+  (3, 'Ana', 'Gomez', NULL, 'gomez@email.com', '$2b$10$VSCt51JCe5d2kYdchOmB.uTTROriNQkZAlBxqTJMtNjA5F.QwjMPm', 'usuario'),
+  (4, 'Carlos', 'Martinez', 'Lopez', 'martinez@gmail.com', '$2b$10$VSCt51JCe5d2kYdchOmB.uTTROriNQkZAlBxqTJMtNjA5F.QwjMPm', 'usuario'),
+  (5, 'Lucia', 'Fernandez', NULL, 'fernandez@gmail.com', '$2b$10$VSCt51JCe5d2kYdchOmB.uTTROriNQkZAlBxqTJMtNjA5F.QwjMPm', 'usuario'),
+  (6, 'Miguel', 'Sanchez', 'Ruiz', 'sanchez@gmail.com', '$2b$10$VSCt51JCe5d2kYdchOmB.uTTROriNQkZAlBxqTJMtNjA5F.QwjMPm', 'usuario'),
+  (7, 'Elena', 'Torres', NULL, 'torres@gmail.com', '$2b$10$VSCt51JCe5d2kYdchOmB.uTTROriNQkZAlBxqTJMtNjA5F.QwjMPm', 'usuario'),
+  (8, 'David', 'Ramirez', 'Moreno', 'ramirez@gmail.com', '$2b$10$VSCt51JCe5d2kYdchOmB.uTTROriNQkZAlBxqTJMtNjA5F.QwjMPm', 'usuario'),
+  (9, 'Sara', 'Navarro', NULL, 'navarro@gmail.com', '$2b$10$VSCt51JCe5d2kYdchOmB.uTTROriNQkZAlBxqTJMtNjA5F.QwjMPm', 'usuario'),
+  (10, 'Javier', 'Ortega', 'Gil', 'ortega@gmail.com', '$2b$10$VSCt51JCe5d2kYdchOmB.uTTROriNQkZAlBxqTJMtNjA5F.QwjMPm', 'usuario'),
+  (11, 'Paula', 'Castro', NULL, 'castro@gmail.com', '$2b$10$VSCt51JCe5d2kYdchOmB.uTTROriNQkZAlBxqTJMtNjA5F.QwjMPm', 'usuario'),
+  (12, 'Raul', 'Mendez', 'Vega', 'mendez@gmail.com', '$2b$10$VSCt51JCe5d2kYdchOmB.uTTROriNQkZAlBxqTJMtNjA5F.QwjMPm', 'usuario'),
+  (13, 'Claudia', 'Herrera', NULL, 'herrera@gmail.com', '$2b$10$VSCt51JCe5d2kYdchOmB.uTTROriNQkZAlBxqTJMtNjA5F.QwjMPm', 'usuario'),
+  (14, 'Alberto', 'Cano', 'Serrano', 'cano@gmail.com', '$2b$10$VSCt51JCe5d2kYdchOmB.uTTROriNQkZAlBxqTJMtNjA5F.QwjMPm', 'usuario'),
+  (15, 'Marta', 'Iglesias', NULL, 'iglesias@gmail.com', '$2b$10$VSCt51JCe5d2kYdchOmB.uTTROriNQkZAlBxqTJMtNjA5F.QwjMPm', 'usuario'),
+  (16, 'Sergio', 'Delgado', 'Nieto', 'delgado@gmail.com', '$2b$10$VSCt51JCe5d2kYdchOmB.uTTROriNQkZAlBxqTJMtNjA5F.QwjMPm', 'usuario'),
+  (17, 'Andrea', 'Reyes', NULL, 'reyes@gmail.com', '$2b$10$VSCt51JCe5d2kYdchOmB.uTTROriNQkZAlBxqTJMtNjA5F.QwjMPm', 'admin'),
+  (18, 'Fernando', 'Vidal', 'Prieto', 'vidal@gmail.com', '$2b$10$VSCt51JCe5d2kYdchOmB.uTTROriNQkZAlBxqTJMtNjA5F.QwjMPm', 'usuario'),
+  (19, 'Natalia', 'Flores', NULL, 'flores@gmail.com', '$2b$10$VSCt51JCe5d2kYdchOmB.uTTROriNQkZAlBxqTJMtNjA5F.QwjMPm', 'usuario'),
+  (20, 'Pablo', 'Romero', 'Saez', 'romero@gmail.com', '$2b$10$VSCt51JCe5d2kYdchOmB.uTTROriNQkZAlBxqTJMtNjA5F.QwjMPm', 'usuario');
 
 -- Productos
 INSERT INTO productos (idProducto, nombre, descripcion, precio, tipo, material, alto, ancho, largo, idProveedor)
@@ -135,3 +136,53 @@ VALUES
   (9, 34, 1, 36.00),
   (10, 35, 1, 98.00),
   (10, 36, 1, 72.00);
+
+
+-- =========================================================
+-- PROPUESTA - SEEDS PLANOS
+-- =========================================================
+-- Datos de prueba asociados al sistema conceptual
+-- de planos/editor 2D/3D de SquareStruct v3.
+--
+-- Actualmente NO integrado en:
+-- - backend
+-- - frontend
+-- - API REST
+-- - schema.sql operativo
+-- - seeds.sql operativo
+--
+-- Su implementación real queda prevista para
+-- futuras actualizaciones del proyecto.
+-- =========================================================
+
+/*
+
+INSERT INTO planos (
+    idPlano,
+    nombre,
+    descripcion,
+    metrosCuadrados,
+    precioEstimado,
+    datosJSON,
+    idUsuario
+) VALUES
+(
+    1,
+    'Plano modular inicial',
+    'Diseño conceptual del editor 2D/3D.',
+    85.00,
+    1540.00,
+    '{"version":"v3","bloques":[]}',
+    2
+),
+(
+    2,
+    'Vivienda eco demo',
+    'Plano de prueba con materiales ecologicos.',
+    120.00,
+    2450.00,
+    '{"version":"v3","bloques":[]}',
+    3
+);
+
+*/

@@ -1,107 +1,64 @@
 # Documentacion DevOps Docker
 
-Este documento resume la parte DevOps local del proyecto y se conecta con la guia de AWS EC2.
+## Arquitectura Final
 
-## Modos De Ejecucion
+```text
+Internet
+  |
+  | puerto 80
+  v
+nginx proxy
+  |-- /      -> frontend nginx interno
+  |-- /api/  -> backend Express interno
+backend -> mysql interno
+```
 
-| Modo | Archivo | Cuando usarlo |
+## Puertos
+
+| Servicio | Puerto interno | Publico |
 | --- | --- | --- |
-| Desarrollo | `docker/docker-compose-dev.yml` | Backend y frontend en local, MySQL en Docker. |
-| Completo | `docker/docker-compose.yml` | MySQL, backend y frontend en Docker. |
+| proxy | `80` | `80` |
+| frontend | `80` | no |
+| backend | `3000` | no |
+| mysql | `3306` | no |
 
-## Desarrollo Local
+El modo de desarrollo mantiene `5173`, `3000` y `3306` usando `docker-compose-dev.yml`.
 
-```bash
-docker compose -f docker/docker-compose-dev.yml up -d
-cd backend
-npm run dev
-cd ../frontend
-npm run dev
-```
+## Por Que Asi
 
-Puertos:
+- El usuario entra por `http://IP_EC2`.
+- El frontend usa `/api`, asi que no depende de la IP de EC2.
+- nginx envia `/api` al backend.
+- MySQL queda dentro de Docker y no se abre a internet.
+- HashRouter evita problemas de rutas SPA.
 
-```text
-Frontend: http://localhost:5173
-Backend:  http://localhost:3000
-MySQL:    localhost:3306
-```
-
-En este modo, `backend/.env` debe usar:
-
-```text
-DB_HOST=localhost
-DB_PORT=3306
-```
-
-## Entorno Completo
+## Comando Principal
 
 ```bash
-docker compose -f docker/docker-compose.yml up -d --build
+cp docker/.env.example docker/.env
+docker compose -f docker/docker-compose.yml --env-file docker/.env up -d --build
 ```
 
-Puertos:
+## Variables Importantes
 
 ```text
-Frontend: http://localhost:5174
-Backend:  http://localhost:3001
-MySQL:    localhost:3307
+VITE_API_URL=
+CORS_ORIGIN=
+JWT_SECRET=cambiar_en_ec2
+DB_PASSWORD=cambiar_en_ec2
+MYSQL_ROOT_PASSWORD=cambiar_en_ec2
 ```
 
-En este modo, el backend usa:
-
-```text
-DB_HOST=mysql
-DB_PORT=3306
-```
-
-## Flujo De Integracion Docker
-
-1. MySQL arranca con volumen persistente.
-2. MySQL carga schema y seeds si el volumen esta vacio.
-3. Backend espera al healthcheck de MySQL.
-4. Backend expone API en el puerto interno `3000`, publicado como `3001`.
-5. Frontend se sirve con Vite en `5173`, publicado como `5174`.
-6. El navegador llama a la API configurada en `VITE_API_URL`.
-
-## Persistencia
-
-Los volumenes Docker guardan los datos de MySQL:
-
-- `squarestruct_mysql_data_dev` para desarrollo.
-- `squarestruct_mysql_data` para entorno completo.
-
-Para reiniciar sin borrar datos:
-
-```bash
-docker compose -f docker/docker-compose.yml down
-docker compose -f docker/docker-compose.yml up -d --build
-```
-
-Para borrar datos y recargar schema/seeds:
-
-```bash
-docker compose -f docker/docker-compose.yml down -v
-docker compose -f docker/docker-compose.yml up -d --build
-```
+`VITE_API_URL` queda vacio para que el cliente use `/api`.
 
 ## Comprobaciones
 
 ```bash
-docker compose -f docker/docker-compose.yml ps
-docker compose -f docker/docker-compose.yml logs backend
-docker compose -f docker/docker-compose.yml logs frontend
-docker compose -f docker/docker-compose.yml logs mysql
-```
-
-URLs:
-
-```text
-http://localhost:5174
-http://localhost:3001/api/health
-http://localhost:3001/api/db-status
+docker compose -f docker/docker-compose.yml --env-file docker/.env ps
+curl http://localhost/api/health
+curl http://localhost/api/db-status
 ```
 
 ## Como Defenderlo
 
-Docker no cambia la aplicacion. Solo empaqueta sus servicios para ejecutarlos de forma repetible. Para DAW1, lo importante es saber explicar puertos, variables, volumenes y conexion entre contenedores.
+La aplicacion sigue separada por capas, pero publicamente solo existe una entrada: nginx. Esto reduce CORS, simplifica la URL y evita exponer puertos sensibles.

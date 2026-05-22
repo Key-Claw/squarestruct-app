@@ -9,6 +9,7 @@ import {
   gridColumns,
   gridRows,
   layerHeightMeters,
+  localizeDesignPiece,
   mapProductToDesignPiece,
 } from './designEditorData'
 
@@ -20,7 +21,14 @@ const MATERIAL_ALL = 'todos'
 const MATERIAL_HORMIGON = 'hormigon'
 const MATERIAL_ECO = 'eco'
 
-const getDefaultViewZoom = () => INITIAL_VIEW_ZOOM
+const getDefaultViewZoom = () => {
+  if (typeof window === 'undefined') return INITIAL_VIEW_ZOOM
+
+  if (window.innerWidth < 768) return 2.04
+  if (window.innerWidth < 992) return 1.92
+
+  return INITIAL_VIEW_ZOOM
+}
 
 const normalizeMaterial = (value) => (
   String(value || '')
@@ -450,7 +458,10 @@ function useDesignEditor() {
     }
   }, [activeI18n.language, t])
 
-  const designPieces = useMemo(() => [...dbPieces, ...accessoryPieces], [dbPieces])
+  const designPieces = useMemo(
+    () => [...dbPieces, ...accessoryPieces].map((piece) => localizeDesignPiece(piece, t)),
+    [dbPieces, t],
+  )
 
   const visiblePieces = useMemo(
     () => designPieces.filter((piece) => {
@@ -492,6 +503,7 @@ function useDesignEditor() {
     return {
       ...candidate,
       isValid: validation.ok,
+      message: validation.messageKey ? t(validation.messageKey) : t('design.previewDefault'),
       messageKey: validation.messageKey,
     }
   }

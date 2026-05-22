@@ -6,14 +6,18 @@ const ORDER_STATUS_LABELS = {
     aceptado: 'Aceptado',
     denegado: 'Denegado',
     cancelado: 'Cancelado',
-    pagado: 'Pagado'
+    pagado: 'Pagado',
+    enviado: 'Enviado',
+    entregado: 'Entregado'
   },
   en: {
     pendiente: 'Pending',
     aceptado: 'Accepted',
     denegado: 'Rejected',
     cancelado: 'Canceled',
-    pagado: 'Paid'
+    pagado: 'Paid',
+    enviado: 'Shipped',
+    entregado: 'Delivered'
   }
 };
 

@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 import { getAllUsers, logoutUser, updateUser } from '../../services/authService'
 import '../../styles/pages/settings/users.css'
-import i18n from '../../i18n'
 import { useTranslation } from 'react-i18next'
 
 /**
@@ -11,7 +10,7 @@ import { useTranslation } from 'react-i18next'
  * @param {object} user - Datos del usuario autenticado (admin).
  */
 function Users({ onNavigate, user, onAuthExpired }) {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   // Lista de usuarios del sistema.
   const [usuarios, setUsuarios] = useState([])
   // Flag para mostrar spinner mientras se cargan datos.
@@ -130,8 +129,8 @@ function Users({ onNavigate, user, onAuthExpired }) {
   }
 
   const getRolText = (rol) => {
-    if (rol === 'admin') return 'ADMIN'
-    return i18n.resolvedLanguage?.startsWith('en') ? 'USER' : 'USUARIO'
+    if (rol === 'admin') return t('settings.profile.roles.admin').toUpperCase()
+    return t('settings.profile.roles.user').toUpperCase()
   }
 
   /**
@@ -184,7 +183,7 @@ function Users({ onNavigate, user, onAuthExpired }) {
                     className="btn btn-outline-light btn-sm"
                     onClick={() => onNavigate('home')}
                   >
-                    ← {i18n.resolvedLanguage?.startsWith('en') ? 'Back' : 'Volver'}
+                    ← {t('common.back')}
                   </button>
                 </div>
 
@@ -251,8 +250,8 @@ function Users({ onNavigate, user, onAuthExpired }) {
                                 disabled={u.idUsuario === user.idUsuario}
                                 title={
                                   u.idUsuario === user.idUsuario
-                                    ? (i18n.resolvedLanguage?.startsWith('en') ? 'You cannot edit your own role' : 'No puedes editar tu propio rol')
-                                    : (i18n.resolvedLanguage?.startsWith('en') ? 'Edit role' : 'Editar rol')
+                                    ? t('settings.users.editRoleOwn')
+                                    : t('settings.users.editRole')
                                 }
                               >
                                 {t('settings.users.edit')}
@@ -325,7 +324,7 @@ function Users({ onNavigate, user, onAuthExpired }) {
                     onChange={(e) => setNuevoRol(e.target.value)}
                     disabled={isEditLoading}
                   >
-                    <option value="usuario">{i18n.resolvedLanguage?.startsWith('en') ? 'User' : 'Usuario'}</option>
+                    <option value="usuario">{t('settings.profile.roles.user')}</option>
                     <option value="admin">ADMIN</option>
                   </select>
                 </div>
@@ -333,7 +332,7 @@ function Users({ onNavigate, user, onAuthExpired }) {
                 {/* Aviso si se cambia a admin. */}
                 {nuevoRol === 'admin' && nuevoRol !== editingUsuario.rol && (
                   <div className="alert alert-warning alert-sm mb-3" role="alert">
-                    {i18n.resolvedLanguage?.startsWith('en') ? 'You are assigning administrator permissions to this user.' : 'Estás asignando permisos de administrador a este usuario.'}
+                    {t('settings.users.assignAdmin')}
                   </div>
                 )}
               </div>

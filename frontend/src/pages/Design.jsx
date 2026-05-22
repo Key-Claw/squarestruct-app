@@ -14,7 +14,6 @@ import DesignBoard2D from '../components/design/editor/DesignBoard2D'
 import useDesignEditor from '../components/design/editor/useDesignEditor'
 import Viewer3D from '../components/design/three/Viewer3D'
 import { useTranslation } from 'react-i18next'
-import i18n from '../i18n'
 
 const normalizeDesignText = (value) => (
   String(value || '')
@@ -38,15 +37,15 @@ const getDesignPieceImage = (piece) => {
   return null
 }
 
-const getDesignPieceBadge = (piece) => {
+const getDesignPieceBadge = (piece, t) => {
   if (piece.category === 'accesorios') {
-    return i18n.t('design.localModel')
+    return t('design.localModel')
   }
 
   const material = normalizeDesignText(piece.material)
   return material.includes('plastico') || material.includes('eco') || material.includes('recicl')
-    ? i18n.t('design.materials.eco')
-    : i18n.t('design.materials.hormigon')
+    ? t('design.materials.eco')
+    : t('design.materials.hormigon')
 }
 
 const buildIndexedTranslations = (t, baseKey, count, fields) => (
@@ -317,6 +316,24 @@ function Design() {
               ))}
             </div>
 
+            {editor.visiblePieces.length > 0 && (
+              <label className="design-piece-mobile-select d-lg-none">
+                <span>{t('design.pieceSelector')}</span>
+                <select
+                  className="form-select"
+                  value={editor.selectedPiece?.id || ''}
+                  aria-label={t('design.pieceSelector')}
+                  onChange={(event) => editor.setSelectedPieceId(event.target.value)}
+                >
+                  {editor.visiblePieces.map((piece) => (
+                    <option key={piece.id} value={piece.id}>
+                      {piece.name} · {piece.size}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            )}
+
             {editor.activeCategory !== 'accesorios' && (
               <div className="design-material-filter" aria-label={t('design.materialFilter')}>
                 <button
@@ -352,9 +369,6 @@ function Design() {
               {editor.visiblePieces.map((piece) => (
                 (() => {
                   const pieceImage = getDesignPieceImage(piece)
-                  const displayName = (piece.source === 'local' && piece.modelType)
-                    ? i18n.t(`design.accessoryNames.${piece.modelType}`)
-                    : piece.name
 
                   return (
                 <button
@@ -370,9 +384,9 @@ function Design() {
                       null
                     )}
                   </div>
-                  <span className="design-piece-badge">{getDesignPieceBadge(piece)}</span>
+                  <span className="design-piece-badge">{getDesignPieceBadge(piece, t)}</span>
                   <div>
-                    <h3>{displayName}</h3>
+                    <h3>{piece.name}</h3>
                     <span className="design-piece-size">{piece.size}</span>
                     {piece.source === 'local' && <small>{t('design.localModel')}</small>}
                   </div>
@@ -429,6 +443,7 @@ function Design() {
                 gridColumns={editor.gridColumns}
                 gridRows={editor.gridRows}
                 isPanMode={isPanMode}
+                onBoardMessage={editor.setStatusMessage}
                 panBoard={editor.panBoard}
                 placements={editor.placements}
                 placePiece={editor.placePiece}
@@ -595,7 +610,7 @@ function Design() {
               </button>
             </div>
 
-            <div className="design-view-switch" aria-label="Cambiar vista">
+            <div className="design-view-switch" aria-label={t('design.viewSwitch')}>
               <button
                 type="button"
                 className={editor.viewMode === '2d' ? 'active' : ''}

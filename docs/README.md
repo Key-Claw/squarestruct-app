@@ -8,18 +8,19 @@ La fuente principal siempre es el codigo actual de la rama activa. La MVP se con
 
 1. [`01-proyecto/vision-general.md`](01-proyecto/vision-general.md): que es SquareStruct y que alcance tiene V3.
 2. [`14-defensa-presentacion/guia-defensa-daw1.md`](14-defensa-presentacion/guia-defensa-daw1.md): guion para estudiar y exponer.
-3. [`13-documentacion-codigo/inventario-codigo-daw1.md`](13-documentacion-codigo/inventario-codigo-daw1.md): mapa de archivos importantes.
-4. [`09-flujos-codigo/README.md`](09-flujos-codigo/README.md): recorridos reales del codigo.
-5. [`03-arquitectura/backend-estructura.md`](03-arquitectura/backend-estructura.md): backend Express, rutas, controladores y middlewares.
-6. [`03-arquitectura/frontend-estructura.md`](03-arquitectura/frontend-estructura.md): frontend React, paginas, componentes, servicios y estado.
-7. [`03-arquitectura/base-de-datos.md`](03-arquitectura/base-de-datos.md): modelo relacional actual.
-8. [`04-api/endpoints.md`](04-api/endpoints.md): contrato REST de la API.
-9. [`05-testing/ci-github-actions.md`](05-testing/ci-github-actions.md): tests y CI.
-10. [`08-historico-versiones/comparativa-v2-v3.md`](08-historico-versiones/comparativa-v2-v3.md): comparativa entre V2 y V3.
-11. [`08-historico-versiones/problemas-limitaciones-mejoras.md`](08-historico-versiones/problemas-limitaciones-mejoras.md): problemas reales, limites y mejoras futuras.
-12. [`15-anexos/devops-docker.md`](15-anexos/devops-docker.md): Docker, puertos, variables y persistencia.
-13. [`15-anexos/despliegue-aws-ec2.md`](15-anexos/despliegue-aws-ec2.md): despliegue AWS EC2 paso a paso.
-14. [`15-anexos/auditoria-documental.md`](15-anexos/auditoria-documental.md): auditoria y reorganizacion documental.
+3. [`14-defensa-presentacion/revision-final-defensa.md`](14-defensa-presentacion/revision-final-defensa.md): revision global, preguntas probables, limites y guion corto.
+4. [`13-documentacion-codigo/inventario-codigo-daw1.md`](13-documentacion-codigo/inventario-codigo-daw1.md): mapa de archivos importantes.
+5. [`09-flujos-codigo/README.md`](09-flujos-codigo/README.md): recorridos reales del codigo.
+6. [`03-arquitectura/backend-estructura.md`](03-arquitectura/backend-estructura.md): backend Express, rutas, controladores y middlewares.
+7. [`03-arquitectura/frontend-estructura.md`](03-arquitectura/frontend-estructura.md): frontend React, paginas, componentes, servicios y estado.
+8. [`03-arquitectura/base-de-datos.md`](03-arquitectura/base-de-datos.md): modelo relacional actual.
+9. [`04-api/endpoints.md`](04-api/endpoints.md): contrato REST de la API.
+10. [`05-testing/ci-github-actions.md`](05-testing/ci-github-actions.md): tests y CI.
+11. [`08-historico-versiones/comparativa-v2-v3.md`](08-historico-versiones/comparativa-v2-v3.md): comparativa entre V2 y V3.
+12. [`08-historico-versiones/problemas-limitaciones-mejoras.md`](08-historico-versiones/problemas-limitaciones-mejoras.md): problemas reales, limites y mejoras futuras.
+13. [`15-anexos/devops-docker.md`](15-anexos/devops-docker.md): Docker, puertos, variables y persistencia.
+14. [`15-anexos/despliegue-aws-ec2.md`](15-anexos/despliegue-aws-ec2.md): despliegue AWS EC2 paso a paso.
+15. [`15-anexos/auditoria-documental.md`](15-anexos/auditoria-documental.md): auditoria y reorganizacion documental.
 
 ## Mapa Documental
 

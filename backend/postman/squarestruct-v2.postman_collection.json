@@ -53,7 +53,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"email\": \"juan.perez@email.com\",\n  \"contrasena\": \"123456\"\n}"
+              "raw": "{\n  \"email\": \"juan.perez@email.com\",\n  \"contrasena\": \"Hola123!\"\n}"
             },
             "url": {
               "raw": "http://localhost:3000/api/usuarios/login",
@@ -114,7 +114,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"email\": \"admin@squarestruct.com\",\n  \"contrasena\": \"123456\"\n}"
+              "raw": "{\n  \"email\": \"admin@sqst.com\",\n  \"contrasena\": \"Hola123!\"\n}"
             },
             "url": {
               "raw": "http://localhost:3000/api/usuarios/login",
@@ -782,7 +782,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"nombre\": \"Test\",\n  \"primerApellido\": \"Admin\",\n  \"segundoApellido\": \"\",\n  \"email\": \"test{{$timestamp}}@squarestruct.com\",\n  \"contrasena\": \"123456\",\n  \"rol\": \"admin\"\n}"
+              "raw": "{\n  \"nombre\": \"Test\",\n  \"primerApellido\": \"Admin\",\n  \"segundoApellido\": \"\",\n  \"email\": \"test{{$timestamp}}@squarestruct.com\",\n  \"contrasena\": \"Hola123!\",\n  \"rol\": \"admin\"\n}"
             },
             "url": {
               "raw": "http://localhost:3000/api/usuarios/register",

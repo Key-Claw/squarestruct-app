@@ -20,7 +20,15 @@ const __dirname = path.dirname(__filename);
 dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
 const app = express();
-app.use(cors());
+
+// En desarrollo se permite cualquier origen para facilitar pruebas locales.
+// En EC2 con nginx, frontend y API comparten origen (/api), pero CORS_ORIGIN
+// permite restringirlo si se publica el backend de otra forma en el futuro.
+const corsOptions = process.env.CORS_ORIGIN
+  ? { origin: process.env.CORS_ORIGIN }
+  : {};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 
 // Ruta protegida de ejemplo (perfil)

@@ -6,6 +6,7 @@ Esta seccion contiene el material principal para estudiar la exposicion final.
 
 - [`guia-defensa-daw1.md`](guia-defensa-daw1.md): guion general de defensa.
 - [`tecnologias-y-comandos-defensa.md`](tecnologias-y-comandos-defensa.md): tecnologias usadas y comandos utiles.
+- [`revision-final-defensa.md`](revision-final-defensa.md): revision global, preguntas probables, limites y guion corto.
 
 ## Enfoque De Defensa
 
