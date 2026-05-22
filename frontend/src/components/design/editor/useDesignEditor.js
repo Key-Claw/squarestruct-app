@@ -19,6 +19,16 @@ const MATERIAL_ALL = 'todos'
 const MATERIAL_HORMIGON = 'hormigon'
 const MATERIAL_ECO = 'eco'
 
+function getDefaultViewZoom() {
+  if (typeof window === 'undefined') return INITIAL_VIEW_ZOOM
+
+  if (window.innerWidth < 576) return 1.02
+  if (window.innerWidth < 768) return 1.14
+  if (window.innerWidth < 1200) return 1.34
+
+  return INITIAL_VIEW_ZOOM
+}
+
 const normalizeMaterial = (value) => (
   String(value || '')
     .normalize('NFD')
@@ -283,7 +293,7 @@ function validatePlacement(placements, candidate, designPieces) {
 
 function pruneUnsupportedPlacements(placements, designPieces) {
   let nextPlacements = [...placements]
-  let removedAny = false
+  let removedAny
 
   do {
     removedAny = false
@@ -367,7 +377,7 @@ function useDesignEditor() {
   const placementsRef = useRef(initialPlacements)
   const [activeFloor, setActiveFloor] = useState(draft?.activeFloor || 0)
   const [viewMode, setViewMode] = useState('2d')
-  const [viewZoom, setViewZoom] = useState(INITIAL_VIEW_ZOOM)
+  const [viewZoom, setViewZoom] = useState(() => getDefaultViewZoom())
   const [is3DGridVisible, setIs3DGridVisible] = useState(true)
   const [threeCameraResetKey, setThreeCameraResetKey] = useState(0)
   const [threeCameraState, setThreeCameraState] = useState(null)
@@ -650,6 +660,8 @@ function useDesignEditor() {
   }
 
   const resetView = () => {
+    setViewZoom(getDefaultViewZoom())
+
     if (viewMode === '3d') {
       setThreeCameraState(null)
       setThreeCameraResetKey((current) => current + 1)
@@ -699,6 +711,7 @@ function useDesignEditor() {
     setIsRotated,
     setMaterialFilter,
     setSelectedPieceId,
+    setStatusMessage,
     setViewMode,
     setThreeCameraState,
     undo,
