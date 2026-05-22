@@ -71,6 +71,14 @@ function Navbar({
 
   const handleLanguageChange = (lang) => {
     i18n.changeLanguage(lang)
+
+    if (typeof localStorage !== 'undefined') {
+      localStorage.setItem('squarestruct-lang', lang)
+    }
+
+    if (typeof document !== 'undefined') {
+      document.documentElement.lang = lang
+    }
   }
 
   const renderSearchForm = (className = '') => (

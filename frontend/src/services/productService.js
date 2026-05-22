@@ -25,8 +25,8 @@ export const filtrarProductos = (texto, productos) => {
 
   return productos.filter((producto) => {
     // Se busca por nombre y por descripción para hacer la experiencia más útil.
-    const nombre = (producto.nombre || '').toLowerCase()
-    const descripcion = (producto.descripcion || '').toLowerCase()
+    const nombre = (producto.nombre || producto.nombreOriginal || '').toLowerCase()
+    const descripcion = (producto.descripcion || producto.descripcionOriginal || '').toLowerCase()
 
     return nombre.includes(busqueda) || descripcion.includes(busqueda)
   })

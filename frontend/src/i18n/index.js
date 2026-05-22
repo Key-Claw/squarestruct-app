@@ -33,4 +33,14 @@ i18n
     },
   })
 
+i18n.on('languageChanged', (language) => {
+  if (typeof localStorage !== 'undefined') {
+    localStorage.setItem('squarestruct-lang', language)
+  }
+
+  if (typeof document !== 'undefined') {
+    document.documentElement.lang = language
+  }
+})
+
 export default i18n
