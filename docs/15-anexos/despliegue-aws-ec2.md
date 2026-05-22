@@ -41,11 +41,11 @@ Cierra SSH y vuelve a entrar.
 ## Clonar Proyecto
 
 ```bash
-git clone -b feat/design-3d https://github.com/Key-Claw/squarestruct-app.git
+git clone -b feat/review-v3 https://github.com/Key-Claw/squarestruct-app.git
 cd squarestruct-app
 ```
 
-Si se despliega otra rama activa, cambia `feat/design-3d` por el nombre real de la rama.
+Si esta rama se integra en `dev` o `main`, cambia `feat/review-v3` por el nombre real de la rama estable que se vaya a desplegar.
 
 ## Variables
 
