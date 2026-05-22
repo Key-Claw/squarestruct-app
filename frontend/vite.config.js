@@ -1,9 +1,17 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import { fileURLToPath, URL } from 'node:url'
 
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
+  resolve: {
+    alias: {
+      i18next: fileURLToPath(new URL('./src/shims/i18next.js', import.meta.url)),
+      'i18next-browser-languagedetector': fileURLToPath(new URL('./src/shims/i18next-browser-languagedetector.js', import.meta.url)),
+      'react-i18next': fileURLToPath(new URL('./src/shims/react-i18next.js', import.meta.url)),
+    },
+  },
   server: {
     proxy: {
       '/api': {

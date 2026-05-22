@@ -2,10 +2,12 @@ import { useEffect, useMemo, useState } from 'react'
 import { deleteUser, getAllUsers, getProfile, getUserById, logoutUser, updateUser } from '../../services/authService'
 import { actualizarEstadoPedido, obtenerMisPedidos, obtenerPedidosAdmin } from '../../services/orderService'
 import { confirmDelete, showError, showSuccess } from '../../utils/alerts'
+import i18n from '../../i18n'
 import '../../styles/pages/settings/settings.css'
+import { useTranslation } from 'react-i18next'
 
 const FACTURACION_PAGE_SIZE = 5
-const SUPER_ADMIN_EMAIL = 'admin@squarestruct.com'
+const SUPER_ADMIN_EMAIL = 'admin@sqst.com'
 
 const getRoleBadgeClass = (role) => {
   if (role === 'admin') return 'settings-role-badge admin'
@@ -13,25 +15,32 @@ const getRoleBadgeClass = (role) => {
 }
 
 const getRoleText = (role) => {
-  if (role === 'admin') return 'ADMIN'
-  return 'Usuario'
+  if (role === 'admin') return i18n.t('settings.profile.roles.admin')
+  return i18n.t('settings.profile.roles.user')
 }
 
 const formatDate = (dateString) => {
   if (!dateString) return 'N/A'
   const date = new Date(dateString)
+  const locale = i18n.resolvedLanguage?.startsWith('en') ? 'en-US' : 'es-ES'
 
-  return date.toLocaleDateString('es-ES', {
+  return date.toLocaleDateString(locale, {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
   })
 }
 
-const formatMoney = (amount) => new Intl.NumberFormat('es-ES', {
-  style: 'currency',
-  currency: 'EUR',
-}).format(Number(amount || 0))
+const formatMoney = (value) => {
+  const number = Number(value || 0)
+  const locale = i18n.resolvedLanguage?.startsWith('en') ? 'en-US' : 'es-ES'
+
+  return new Intl.NumberFormat(locale, {
+    style: 'currency',
+    currency: 'EUR',
+    maximumFractionDigits: 2,
+  }).format(number)
+}
 
 const getStatusClass = (status) => {
   const normalizedStatus = (status || '').toLowerCase()
@@ -45,23 +54,34 @@ const getStatusClass = (status) => {
 }
 
 const getStatusLabel = (status) => {
+  if (typeof status === 'object' && status !== null) {
+    return status.estadoLabel || status.statusLabel || status.estado || status.status || i18n.t('common.unknown')
+  }
+
   const normalizedStatus = (status || '').toLowerCase()
 
-  if (normalizedStatus === 'pendiente') return 'Pendiente'
-  if (normalizedStatus === 'aceptado') return 'Aceptada'
-  if (normalizedStatus === 'denegado') return 'Denegada'
-  if (normalizedStatus === 'cancelado') return 'Cancelada'
+  if (normalizedStatus === 'pendiente') return i18n.t('settings.billing.status.pending')
+  if (normalizedStatus === 'aceptado') return i18n.t('settings.billing.status.accepted')
+  if (normalizedStatus === 'denegado') return i18n.t('settings.billing.status.rejected')
+  if (normalizedStatus === 'cancelado') return i18n.t('settings.billing.status.canceled')
+  if (normalizedStatus === 'pagado') return i18n.t('settings.billing.status.paid')
+  if (normalizedStatus === 'enviado') return i18n.t('settings.billing.status.shipped')
+  if (normalizedStatus === 'entregado') return i18n.t('settings.billing.status.delivered')
 
-  return status || 'Sin estado'
+  return status || i18n.t('common.unknown')
 }
 
 const getPaymentLabel = (method) => {
+  if (typeof method === 'object' && method !== null) {
+    return method.metodoPagoLabel || method.paymentLabel || method.metodoPago || method.paymentMethod || 'N/A'
+  }
+
   const normalizedMethod = (method || '').toLowerCase()
 
-  if (normalizedMethod === 'tarjeta') return 'Tarjeta'
-  if (normalizedMethod === 'transferencia') return 'Transferencia'
-  if (normalizedMethod === 'paypal') return 'PayPal'
-  if (normalizedMethod === 'efectivo') return 'Efectivo'
+  if (normalizedMethod === 'tarjeta') return i18n.t('settings.orders.payment.tarjeta')
+  if (normalizedMethod === 'transferencia') return i18n.t('settings.orders.payment.transferencia')
+  if (normalizedMethod === 'paypal') return i18n.t('settings.orders.payment.paypal')
+  if (normalizedMethod === 'efectivo') return i18n.t('settings.orders.payment.efectivo')
 
   return method || 'N/A'
 }
@@ -89,30 +109,31 @@ const getInitialTab = (tab, isAdminUser) => {
 const getSettingsHeader = (activeTab, tabs, isAdminUser) => {
   if (isAdminUser && activeTab === 'facturacion') {
     return {
-      eyebrow: 'Administración',
-      title: 'Facturación',
-      text: 'Controla facturas, estados y el histórico completo de pedidos.',
+      eyebrow: i18n.t('settings.headers.admin'),
+      title: i18n.t('settings.tabs.facturacion'),
+      text: i18n.t('settings.headers.billingText'),
     }
   }
 
   if (isAdminUser && activeTab === 'usuarios') {
     return {
-      eyebrow: 'Administración',
-      title: 'Usuarios',
-      text: 'Gestiona cuentas, roles y accesos desde el área de administración.',
+      eyebrow: i18n.t('settings.headers.admin'),
+      title: i18n.t('settings.tabs.users'),
+      text: i18n.t('settings.headers.usersText'),
     }
   }
 
   return {
-    eyebrow: isAdminUser ? 'Administración' : 'Area privada',
-    title: tabs.find((tab) => tab.id === activeTab)?.label || 'Perfil',
+    eyebrow: isAdminUser ? i18n.t('settings.headers.admin') : i18n.t('settings.headers.private'),
+    title: tabs.find((tab) => tab.id === activeTab)?.label || i18n.t('settings.tabs.profile'),
     text: isAdminUser
-      ? 'Accede a tu perfil y a las herramientas de administración.'
-      : 'Gestiona tu perfil, facturas y herramientas desde una sola pantalla.',
+      ? i18n.t('settings.headers.adminText')
+      : i18n.t('settings.headers.privateText'),
   }
 }
 
 function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange, onUserUpdate, onUserDeleted }) {
+  const { t } = useTranslation()
   const [activeTab, setActiveTab] = useState(getInitialTab(initialTab, isAdminUser))
 
   // Profile tab state
@@ -160,19 +181,19 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange, o
   const tabs = useMemo(() => {
     if (isAdminUser) {
       return [
-        { id: 'perfil', label: 'Perfil' },
-        { id: 'facturacion', label: 'Facturación' },
-        { id: 'usuarios', label: 'Usuarios' },
-        { id: 'planos', label: 'Planos' },
+        { id: 'perfil', label: t('settings.tabs.perfil') },
+        { id: 'facturacion', label: t('settings.tabs.facturacion') },
+        { id: 'usuarios', label: t('settings.tabs.usuarios') },
+        { id: 'planos', label: t('settings.tabs.planos') },
       ]
     }
 
     return [
-      { id: 'perfil', label: 'Perfil' },
-      { id: 'facturas', label: 'Facturas' },
-      { id: 'planos', label: 'Planos' },
+      { id: 'perfil', label: t('settings.tabs.perfil') },
+      { id: 'facturas', label: t('settings.orders.title') },
+      { id: 'planos', label: t('settings.tabs.planos') },
     ]
-  }, [isAdminUser])
+  }, [isAdminUser, t])
 
   useEffect(() => {
     if (activeTab !== 'perfil') return
@@ -188,14 +209,14 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange, o
       } catch {
         setProfileData(user)
         setProfileFormData(buildUserFormData(user))
-        setProfileError('No se pudieron cargar los datos actualizados')
+        setProfileError(t('settings.profile.updateError'))
       } finally {
         setIsProfileLoading(false)
       }
     }
 
     loadUserProfile()
-  }, [activeTab, user])
+  }, [activeTab, t, user])
 
   useEffect(() => {
     if (!isAdminUser || activeTab !== 'usuarios') return
@@ -208,7 +229,7 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange, o
         const data = await getAllUsers()
         setUsuarios(data)
       } catch (err) {
-        const message = err.message || 'No se pudo cargar la lista de usuarios.'
+        const message = err.message || t('settings.users.loading')
 
         if (message.includes('Token')) {
           if (typeof onAuthExpired === 'function') {
@@ -216,7 +237,7 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange, o
           } else {
             logoutUser()
           }
-          setUsersError(`${message}. Vuelve a iniciar sesión como administrador.`)
+          setUsersError(`${message}. ${t('settings.users.adminOnly')}`)
           return
         }
 
@@ -227,7 +248,7 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange, o
     }
 
     loadUsuarios()
-  }, [activeTab, isAdminUser, onAuthExpired])
+  }, [activeTab, isAdminUser, onAuthExpired, t])
 
   useEffect(() => {
     if (activeTab !== 'facturas') return
@@ -240,14 +261,14 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange, o
         const pedidos = await obtenerMisPedidos()
         setFacturasUsuario(pedidos)
       } catch (err) {
-        setFacturasError(err.message || 'No se pudieron cargar tus facturas.')
+        setFacturasError(err.message || t('settings.orders.loadError'))
       } finally {
         setIsFacturasLoading(false)
       }
     }
 
     loadFacturas()
-  }, [activeTab])
+  }, [activeTab, t])
 
   useEffect(() => {
     if (!isAdminUser || activeTab !== 'facturacion') return
@@ -260,7 +281,7 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange, o
         const pedidos = await obtenerPedidosAdmin()
         setFacturasAdmin(pedidos)
       } catch (err) {
-        const message = err.message || 'No se pudo cargar el historial de facturación.'
+        const message = err.message || t('settings.billing.loading')
 
         if (message.includes('Token')) {
           if (typeof onAuthExpired === 'function') {
@@ -277,7 +298,7 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange, o
     }
 
     loadFacturacion()
-  }, [activeTab, isAdminUser, onAuthExpired])
+  }, [activeTab, isAdminUser, onAuthExpired, t])
 
   const facturasAdminFiltradas = useMemo(() => {
     const search = facturacionSearchTerm.trim().toLowerCase()
@@ -329,10 +350,10 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange, o
     }, null)
 
     const estados = [
-      { nombre: 'Aceptadas', total: aceptadas, color: 'success' },
-      { nombre: 'Pendientes', total: pendientes, color: 'warning' },
-      { nombre: 'Denegadas', total: denegadas, color: 'danger' },
-      { nombre: 'Canceladas', total: canceladas, color: 'secondary' },
+      { nombre: t('settings.billing.status.accepted'), total: aceptadas, color: 'success' },
+      { nombre: t('settings.billing.status.pending'), total: pendientes, color: 'warning' },
+      { nombre: t('settings.billing.status.rejected'), total: denegadas, color: 'danger' },
+      { nombre: t('settings.billing.status.canceled'), total: canceladas, color: 'secondary' },
     ].map((estado) => ({
       ...estado,
       porcentaje: totalFacturas > 0 ? Math.round((estado.total / totalFacturas) * 100) : 0,
@@ -351,7 +372,7 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange, o
       estados,
       acceptedPercent: totalFacturas > 0 ? Math.round((aceptadas / totalFacturas) * 100) : 0,
     }
-  }, [facturasAdminFiltradas])
+  }, [facturasAdminFiltradas, t])
 
   const handleResetBillingFilters = () => {
     setFacturacionSearchTerm('')
@@ -370,7 +391,7 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange, o
 
   const handleEditClick = (usuario) => {
     if (isSuperAdminAccount(usuario)) {
-      setUsersError('La cuenta super admin no se puede editar.')
+      setUsersError(t('settings.profile.superAdminEdit'))
       return
     }
 
@@ -407,7 +428,7 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange, o
       const detalle = await getUserById(usuario.idUsuario)
       setSelectedUsuario(detalle)
     } catch {
-      setDetailError('No se pudo cargar el detalle actualizado del usuario.')
+      setDetailError(t('settings.users.detailError'))
     } finally {
       setIsDetailLoading(false)
     }
@@ -431,7 +452,7 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange, o
 
     if (!profileData) return
     if (isSuperAdminAccount(profileData)) {
-      setProfileError('La cuenta super admin no se puede editar.')
+      setProfileError(t('settings.profile.superAdminEdit'))
       return
     }
 
@@ -449,7 +470,7 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange, o
       setProfileData(updatedUser)
       setProfileFormData(buildUserFormData(updatedUser))
       setIsProfileEditing(false)
-      setProfileSuccessMessage('Datos personales actualizados correctamente.')
+      setProfileSuccessMessage(t('settings.profile.updated'))
 
       if (typeof onUserUpdate === 'function') {
         onUserUpdate(updatedUser)
@@ -457,7 +478,7 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange, o
 
       window.setTimeout(() => setProfileSuccessMessage(''), 3000)
     } catch (err) {
-      setProfileError(err.message || 'No se pudieron actualizar tus datos.')
+      setProfileError(err.message || t('settings.profile.updateError'))
     } finally {
       setIsProfileSaving(false)
     }
@@ -466,13 +487,13 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange, o
   const handleDeleteOwnAccount = async () => {
     if (!profileData) return
     if (isSuperAdminAccount(profileData)) {
-      setProfileError('La cuenta super admin no se puede eliminar.')
+      setProfileError(t('settings.profile.superAdminDelete'))
       return
     }
 
     const confirmed = await confirmDelete({
-      title: 'Eliminar cuenta',
-      text: 'Vas a eliminar tu cuenta. Tus pedidos se conservaran anonimizados para mantener el historial de la empresa.',
+      title: t('settings.profile.deleteConfirmTitle'),
+      text: t('settings.profile.deleteConfirmText'),
     })
     if (!confirmed) return
 
@@ -482,8 +503,8 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange, o
     try {
       await deleteUser(profileData.idUsuario)
       await showSuccess({
-        title: 'Cuenta eliminada',
-        text: 'Tu cuenta se ha eliminado correctamente.',
+        title: t('settings.profile.deleteSuccessTitle'),
+        text: t('settings.profile.deleteSuccessText'),
       })
       logoutUser()
 
@@ -491,10 +512,10 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange, o
         onUserDeleted()
       }
     } catch (err) {
-      const message = err.message || 'No se pudo eliminar tu cuenta. Intentalo de nuevo.'
+      const message = err.message || t('settings.profile.deleteError')
       setProfileError(message)
       await showError({
-        title: 'No se pudo eliminar',
+        title: t('settings.profile.deleteErrorTitle'),
         text: message,
       })
     } finally {
@@ -505,13 +526,13 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange, o
   const handleDeleteUser = async (usuario) => {
     if (!usuario || usuario.idUsuario === user.idUsuario) return
     if (isSuperAdminAccount(usuario)) {
-      setUsersError('La cuenta super admin no se puede eliminar.')
+      setUsersError(t('settings.users.superAdminDelete'))
       return
     }
 
     const confirmed = await confirmDelete({
-      title: 'Eliminar usuario',
-      text: `Vas a eliminar la cuenta de ${usuario.nombre}. Sus pedidos se conservaran anonimizados en el historial.`,
+      title: t('settings.users.deleteConfirmTitle'),
+      text: t('settings.users.deleteConfirmText', { name: usuario.nombre }),
     })
     if (!confirmed) return
 
@@ -522,17 +543,17 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange, o
     try {
       await deleteUser(usuario.idUsuario)
       setUsuarios((currentUsers) => currentUsers.filter((currentUser) => currentUser.idUsuario !== usuario.idUsuario))
-      setUsersSuccessMessage(`Cuenta de ${usuario.nombre} eliminada correctamente.`)
+      setUsersSuccessMessage(t('settings.users.deleteSuccessText', { name: usuario.nombre }))
       await showSuccess({
-        title: 'Usuario eliminado',
-        text: `La cuenta de ${usuario.nombre} se ha eliminado correctamente.`,
+        title: t('settings.users.deleteSuccessTitle'),
+        text: t('settings.users.deleteSuccessText', { name: usuario.nombre }),
       })
       window.setTimeout(() => setUsersSuccessMessage(''), 3000)
     } catch (err) {
-      const message = err.message || 'No se pudo eliminar el usuario. Intentalo de nuevo.'
+      const message = err.message || t('settings.users.deleteError')
       setUsersError(message)
       await showError({
-        title: 'No se pudo eliminar',
+        title: t('settings.users.deleteErrorTitle'),
         text: message,
       })
     } finally {
@@ -546,18 +567,18 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange, o
     setFacturacionSuccessMessage('')
 
     try {
-      await actualizarEstadoPedido(idPedido, nuevoEstado)
+      const response = await actualizarEstadoPedido(idPedido, nuevoEstado)
       setFacturasAdmin((currentPedidos) => (
         currentPedidos.map((pedido) => (
           pedido.idPedido === idPedido
-            ? { ...pedido, estado: nuevoEstado }
+            ? { ...pedido, estado: nuevoEstado, estadoLabel: response.pedido?.estadoLabel || getStatusLabel(nuevoEstado) }
             : pedido
         ))
       ))
-      setFacturacionSuccessMessage(`Pedido ${nuevoEstado === 'aceptado' ? 'aceptado' : 'denegado'} correctamente.`)
+      setFacturacionSuccessMessage(response.mensaje || response.message || t('settings.billing.updateSuccess'))
       window.setTimeout(() => setFacturacionSuccessMessage(''), 3000)
     } catch (err) {
-      setFacturacionError(err.message || 'No se pudo actualizar la factura.')
+      setFacturacionError(err.message || t('settings.billing.updateError'))
     } finally {
       setProcessingPedidoId(null)
     }
@@ -566,7 +587,7 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange, o
   const handleSaveChanges = async () => {
     if (!editingUsuario) return
     if (isSuperAdminAccount(editingUsuario)) {
-      setUsersError('La cuenta super admin no se puede editar.')
+      setUsersError(t('settings.users.superAdminEdit'))
       handleCloseModal()
       return
     }
@@ -588,11 +609,11 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange, o
         ))
       ))
 
-      setUsersSuccessMessage(`Datos de ${editingUsuarioForm.nombre} actualizados correctamente.`)
+      setUsersSuccessMessage(t('settings.users.updateSuccess', { name: editingUsuarioForm.nombre }))
       handleCloseModal()
       window.setTimeout(() => setUsersSuccessMessage(''), 3000)
     } catch (err) {
-      setUsersError(err.message || 'No se pudo actualizar el usuario.')
+      setUsersError(err.message || t('settings.users.updateError'))
     } finally {
       setIsEditLoading(false)
     }
@@ -603,15 +624,15 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange, o
       return (
         <div className="settings-empty-state">
           <div className="spinner-border text-success" role="status">
-            <span className="visually-hidden">Cargando...</span>
+            <span className="visually-hidden">{t('common.loading')}</span>
           </div>
-          <p>Cargando datos de perfil...</p>
+          <p>{t('settings.profile.loading')}</p>
         </div>
       )
     }
 
     if (!profileData) {
-      return <p className="settings-empty-state">No se pudo cargar el perfil.</p>
+      return <p className="settings-empty-state">{t('settings.profile.error')}</p>
     }
 
     const isSuperAdminProfile = isSuperAdminAccount(profileData)
@@ -622,13 +643,13 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange, o
           {profileError && <div className="alert alert-warning mb-3">{profileError}</div>}
           {profileSuccessMessage && <div className="alert alert-success mb-3">{profileSuccessMessage}</div>}
           {isSuperAdminProfile && (
-            <div className="alert alert-info mb-3">
-              Cuenta super admin protegida: no permite edicion ni eliminacion.
+              <div className="alert alert-info mb-3">
+              {t('settings.profile.protected')}
             </div>
           )}
 
           <div className="settings-profile-head">
-            <h2 className="settings-section-title">Perfil</h2>
+            <h2 className="settings-section-title">{t('settings.profile.title')}</h2>
             <div className="settings-profile-actions">
               <button
                 type="button"
@@ -636,7 +657,7 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange, o
                 onClick={() => setIsProfileEditing((isEditing) => !isEditing)}
                 disabled={isProfileSaving || isProfileDeleting || isSuperAdminProfile}
               >
-                {isProfileEditing ? 'Cancelar edicion' : 'Editar datos'}
+                {isProfileEditing ? t('settings.profile.cancelEdit') : t('settings.profile.edit')}
               </button>
               <button
                 type="button"
@@ -644,39 +665,39 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange, o
                 onClick={handleDeleteOwnAccount}
                 disabled={isProfileSaving || isProfileDeleting || isSuperAdminProfile}
               >
-                {isProfileDeleting ? 'Eliminando...' : 'Eliminar cuenta'}
+                {isProfileDeleting ? t('settings.profile.deleting') : t('settings.profile.delete')}
               </button>
             </div>
           </div>
           <div className="settings-profile-fields">
             <div>
-              <label>Rol</label>
+              <label>{t('settings.profile.role')}</label>
               <span className={getRoleBadgeClass(profileData.rol)}>{getRoleText(profileData.rol)}</span>
             </div>
 
             <div>
-              <label>Nombre</label>
+              <label>{t('settings.profile.name')}</label>
               <span>{profileData.nombre}</span>
             </div>
 
             <div>
-              <label>Primer apellido</label>
+              <label>{t('settings.profile.firstSurname')}</label>
               <span>{profileData.primerApellido || 'N/A'}</span>
             </div>
 
             <div>
-              <label>Segundo apellido</label>
+              <label>{t('settings.profile.secondSurname')}</label>
               <span>{profileData.segundoApellido || 'N/A'}</span>
             </div>
 
             <div>
-              <label>Correo electrónico</label>
+              <label>{t('settings.profile.email')}</label>
               <span>{profileData.email}</span>
             </div>
 
             {(profileData.creadoEn || profileData.fechaAlta) && (
               <div>
-                <label>Miembro desde</label>
+                <label>{t('settings.profile.memberSince')}</label>
                 <span>{formatDate(profileData.creadoEn || profileData.fechaAlta)}</span>
               </div>
             )}
@@ -686,7 +707,7 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange, o
             <form className="settings-profile-form" onSubmit={handleSaveProfile}>
               <div className="settings-profile-form-grid">
                 <label>
-                  Nombre
+                  {t('settings.profile.formName')}
                   <input
                     className="form-control"
                     value={profileFormData.nombre}
@@ -697,7 +718,7 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange, o
                 </label>
 
                 <label>
-                  Primer apellido
+                  {t('settings.profile.formFirstSurname')}
                   <input
                     className="form-control"
                     value={profileFormData.primerApellido}
@@ -707,7 +728,7 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange, o
                 </label>
 
                 <label>
-                  Segundo apellido
+                  {t('settings.profile.formSecondSurname')}
                   <input
                     className="form-control"
                     value={profileFormData.segundoApellido}
@@ -717,7 +738,7 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange, o
                 </label>
 
                 <label>
-                  Correo electronico
+                  {t('settings.profile.formEmail')}
                   <input
                     className="form-control"
                     type="email"
@@ -731,7 +752,7 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange, o
 
               <div className="settings-profile-form-actions">
                 <button type="submit" className="btn btn-success" disabled={isProfileSaving}>
-                  {isProfileSaving ? 'Guardando...' : 'Guardar cambios'}
+                  {isProfileSaving ? t('settings.profile.saving') : t('settings.profile.save')}
                 </button>
               </div>
             </form>
@@ -743,16 +764,16 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange, o
 
   const renderUsersAdmin = () => {
     if (!isAdminUser) {
-      return <p className="settings-empty-state">Esta opción solo está disponible para administradores.</p>
+      return <p className="settings-empty-state">{t('settings.users.adminOnly')}</p>
     }
 
     if (isUsersLoading) {
       return (
         <div className="settings-empty-state">
           <div className="spinner-border text-success" role="status">
-            <span className="visually-hidden">Cargando...</span>
+            <span className="visually-hidden">{t('common.loading')}</span>
           </div>
-          <p>Cargando usuarios...</p>
+          <p>{t('settings.users.loading')}</p>
         </div>
       )
     }
@@ -760,23 +781,23 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange, o
     return (
       <div className="settings-card settings-users-card">
         <div className="settings-card-head">
-          <h2>Gestión de usuarios</h2>
-          <small>Total: {usuariosFiltrados.length} de {usuarios.length}</small>
+          <h2>{t('settings.users.title')}</h2>
+          <small>{t('settings.users.total', { visible: usuariosFiltrados.length, total: usuarios.length })}</small>
         </div>
 
-        <div className="settings-users-toolbar" aria-label="Filtros de usuarios">
+        <div className="settings-users-toolbar" aria-label={t('settings.users.filterLabel')}>
           <input
             className="form-control settings-users-search"
             type="search"
-            placeholder="Buscar usuarios..."
+            placeholder={t('settings.users.searchPlaceholder')}
             value={usersSearchTerm}
             onChange={(event) => setUsersSearchTerm(event.target.value)}
           />
-          <div className="settings-users-role-filter" role="group" aria-label="Filtrar por rol">
+          <div className="settings-users-role-filter" role="group" aria-label={t('settings.users.filterLabel')}>
             {[
-              { value: 'todos', label: 'Todos' },
-              { value: 'admin', label: 'Admin' },
-              { value: 'usuario', label: 'Usuarios' },
+              { value: 'todos', label: t('settings.users.all') },
+              { value: 'admin', label: t('settings.users.admin') },
+              { value: 'usuario', label: t('settings.users.users') },
             ].map((option) => (
               <button
                 key={option.value}
@@ -794,7 +815,7 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange, o
         {usersSuccessMessage && <div className="alert alert-success">{usersSuccessMessage}</div>}
 
         <>
-          <div className="settings-users-mobile" aria-label="Usuarios móviles">
+          <div className="settings-users-mobile" aria-label={t('settings.users.title')}>
             {usuariosFiltrados.length > 0 ? (
               usuariosFiltrados.map((currentUser) => (
                 <article key={currentUser.idUsuario} className="settings-user-mobile-card">
@@ -809,7 +830,7 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange, o
                       className="btn btn-sm btn-outline-info"
                       onClick={() => handleViewClick(currentUser)}
                     >
-                      Detalle
+                      {t('settings.users.detail')}
                     </button>
                     <button
                       type="button"
@@ -817,7 +838,7 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange, o
                       onClick={() => handleEditClick(currentUser)}
                       disabled={currentUser.idUsuario === user.idUsuario || isSuperAdminAccount(currentUser)}
                     >
-                      Editar
+                      {t('settings.users.edit')}
                     </button>
                     <button
                       type="button"
@@ -825,14 +846,14 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange, o
                       onClick={() => handleDeleteUser(currentUser)}
                       disabled={currentUser.idUsuario === user.idUsuario || isSuperAdminAccount(currentUser) || deletingUsuarioId === currentUser.idUsuario}
                     >
-                      {deletingUsuarioId === currentUser.idUsuario ? 'Borrando...' : 'Borrar'}
+                      {deletingUsuarioId === currentUser.idUsuario ? t('settings.users.deleting') : t('settings.users.delete')}
                     </button>
                   </div>
                 </article>
               ))
             ) : (
               <div className="settings-empty-state">
-                <p>No hay usuarios que coincidan con los filtros</p>
+                <p>{t('settings.users.empty')}</p>
               </div>
             )}
           </div>
@@ -841,10 +862,10 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange, o
             <table className="table table-hover align-middle mb-0 settings-table">
               <thead>
                 <tr>
-                  <th>Nombre</th>
-                  <th>Email</th>
-                  <th>Rol</th>
-                  <th>Acciones</th>
+                  <th>{t('settings.users.table.name')}</th>
+                  <th>{t('settings.users.table.email')}</th>
+                  <th>{t('settings.users.table.role')}</th>
+                  <th>{t('settings.users.table.actions')}</th>
                 </tr>
               </thead>
               <tbody>
@@ -863,7 +884,7 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange, o
                             className="btn btn-sm btn-outline-info"
                             onClick={() => handleViewClick(currentUser)}
                           >
-                            Detalle
+                            {t('settings.users.detail')}
                           </button>
                         <button
                           type="button"
@@ -871,7 +892,7 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange, o
                           onClick={() => handleEditClick(currentUser)}
                           disabled={currentUser.idUsuario === user.idUsuario || isSuperAdminAccount(currentUser)}
                         >
-                          Editar
+                          {t('settings.users.edit')}
                         </button>
                         <button
                           type="button"
@@ -879,7 +900,7 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange, o
                           onClick={() => handleDeleteUser(currentUser)}
                           disabled={currentUser.idUsuario === user.idUsuario || isSuperAdminAccount(currentUser) || deletingUsuarioId === currentUser.idUsuario}
                         >
-                          {deletingUsuarioId === currentUser.idUsuario ? 'Borrando...' : 'Borrar'}
+                          {deletingUsuarioId === currentUser.idUsuario ? t('settings.users.deleting') : t('settings.users.delete')}
                         </button>
                         </div>
                       </td>
@@ -887,7 +908,7 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange, o
                   ))
                 ) : (
                   <tr>
-                    <td colSpan="4" className="text-center py-4">No hay usuarios que coincidan con los filtros</td>
+                    <td colSpan="4" className="text-center py-4">{t('settings.users.empty')}</td>
                   </tr>
                 )}
               </tbody>
@@ -910,7 +931,7 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange, o
               <input
                 className="form-control"
                 type="search"
-                placeholder="Buscar cliente..."
+                placeholder={t('settings.billing.searchPlaceholder')}
                 value={facturacionSearchTerm}
                 onChange={(event) => {
                   setFacturacionSearchTerm(event.target.value)
@@ -927,11 +948,11 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange, o
                   setFacturacionPage(1)
                 }}
               >
-                <option value="todos">Todos</option>
-                <option value="pendiente">Pendiente</option>
-                <option value="aceptado">Aceptada</option>
-                <option value="denegado">Rechazada</option>
-                <option value="cancelado">Cancelada</option>
+                <option value="todos">{t('settings.billing.all')}</option>
+                <option value="pendiente">{t('settings.billing.pending')}</option>
+                <option value="aceptado">{t('settings.billing.accepted')}</option>
+                <option value="denegado">{t('settings.billing.rejected')}</option>
+                <option value="cancelado">{t('settings.billing.canceled')}</option>
               </select>
             </div>
             <div className="settings-billing-filter-field">
@@ -943,15 +964,15 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange, o
                   setFacturacionPage(1)
                 }}
               >
-                <option value="todos">Método de pago</option>
-                <option value="tarjeta">Tarjeta</option>
-                <option value="transferencia">Transferencia</option>
-                <option value="paypal">PayPal</option>
-                <option value="efectivo">Efectivo</option>
+                <option value="todos">{t('settings.billing.paymentFilter')}</option>
+                <option value="tarjeta">{t('settings.orders.payment.tarjeta')}</option>
+                <option value="transferencia">{t('settings.orders.payment.transferencia')}</option>
+                <option value="paypal">{t('settings.orders.payment.paypal')}</option>
+                <option value="efectivo">{t('settings.orders.payment.efectivo')}</option>
               </select>
             </div>
             <div className="settings-billing-filter-action">
-              <button type="button" className="btn btn-success settings-billing-reset-btn" onClick={handleResetBillingFilters}>Desactivar filtros</button>
+              <button type="button" className="btn btn-success settings-billing-reset-btn" onClick={handleResetBillingFilters}>{t('settings.billing.reset')}</button>
             </div>
           </div>
         </div>
@@ -960,47 +981,47 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange, o
       <div className="settings-billing-grid">
         <section className="settings-card settings-billing-summary-card">
           <div className="settings-card-head">
-            <h2>Panel de facturación</h2>
-            <small>Vista general</small>
+            <h2>{t('settings.tabs.facturacion')}</h2>
+            <small>{t('settings.headers.admin')}</small>
           </div>
 
           <div className="settings-billing-metrics">
             <article className="settings-billing-metric">
               <span className="settings-billing-metric-icon">EUR</span>
               <div>
-                <p>Facturación total</p>
+                <p>{t('settings.billing.stats.totalIncome')}</p>
                 <strong>{formatMoney(facturacionStats.totalFacturado)}</strong>
-                <small>{facturacionStats.pendientes} pendientes</small>
+                <small>{facturacionStats.pendientes} {t('settings.billing.status.pending').toLowerCase()}</small>
               </div>
             </article>
 
             <article className="settings-billing-metric">
               <span className="settings-billing-metric-icon">{facturacionStats.totalFacturas}</span>
               <div>
-                <p>Número de facturas</p>
+                <p>{t('settings.billing.stats.totalOrders')}</p>
                 <strong>{facturacionStats.totalFacturas}</strong>
-                <small>{facturacionStats.aceptadas} aceptadas</small>
+                <small>{facturacionStats.aceptadas} {t('settings.billing.status.accepted').toLowerCase()}</small>
               </div>
             </article>
 
             <article className="settings-billing-metric">
               <span className="settings-billing-metric-icon">TM</span>
               <div>
-                <p>Ticket medio</p>
+                <p>{t('settings.billing.stats.averageTicket')}</p>
                 <strong>{formatMoney(facturacionStats.ticketMedio)}</strong>
-                <small>{facturacionStats.denegadas} denegadas</small>
+                <small>{facturacionStats.denegadas} {t('settings.billing.status.rejected').toLowerCase()}</small>
               </div>
             </article>
 
             <article className="settings-billing-metric">
               <span className="settings-billing-metric-icon">PZ</span>
               <div>
-                <p>Productos pedidos</p>
+                <p>{t('settings.billing.stats.totalProducts')}</p>
                 <strong>{facturacionStats.totalProductos}</strong>
                 <small>
                   {facturacionStats.pedidoPrincipal
-                    ? `Pedido #${facturacionStats.pedidoPrincipal.idPedido} con mas piezas`
-                    : 'Sin pedidos registrados'}
+                    ? t('settings.billing.orderWithItems', { id: facturacionStats.pedidoPrincipal.idPedido })
+                    : t('settings.billing.empty')}
                 </small>
               </div>
             </article>
@@ -1009,7 +1030,7 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange, o
 
         <aside className="settings-card settings-billing-chart-card">
           <div className="settings-card-head">
-            <h2>Estado de pedidos</h2>
+            <h2>{t('settings.billing.status.accepted')}</h2>
           </div>
 
           <div className="card border-0 shadow-sm h-100">
@@ -1058,9 +1079,9 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange, o
 
                           {/* center text */}
                           <g>
-                            <text y="-6" textAnchor="middle" className="donut-center-label" fill="#64748b">Total</text>
+                            <text y="-6" textAnchor="middle" className="donut-center-label" fill="#64748b">{t('settings.billing.stats.totalOrders')}</text>
                             <text y="12" textAnchor="middle" className="donut-center-value" fontWeight="900">{facturasAdminFiltradas.length}</text>
-                            <text y="28" textAnchor="middle" className="donut-center-small" fill="#94a3b8">facturas</text>
+                            <text y="28" textAnchor="middle" className="donut-center-small" fill="#94a3b8">{t('settings.orders.title').toLowerCase()}</text>
                           </g>
                         </g>
                       </svg>
@@ -1074,7 +1095,7 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange, o
                   <div key={trend.nombre}>
                     <div className="d-flex align-items-center justify-content-between mb-1">
                       <strong className="small text-dark">{trend.nombre}</strong>
-                      <span className="small text-muted">{trend.porcentaje}% - {trend.total} pedidos</span>
+                      <span className="small text-muted">{trend.porcentaje}% - {trend.total} {t('settings.billing.stats.totalOrders').toLowerCase()}</span>
                     </div>
                     <div className="progress" style={{ height: '10px' }}>
                       <div className={`progress-bar bg-${trend.color}`} role="progressbar" style={{ width: `${trend.porcentaje}%` }} aria-valuenow={trend.porcentaje} aria-valuemin="0" aria-valuemax="100" />
@@ -1084,7 +1105,7 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange, o
               </div>
 
               <button type="button" className="btn btn-outline-success fw-bold mt-auto">
-                Ver informe completo
+                {t('settings.billing.viewFullReport')}
               </button>
             </div>
           </div>
@@ -1093,20 +1114,20 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange, o
 
       <div className="settings-card settings-billing-table-card settings-billing-history-card">
         <div className="settings-card-head">
-          <h2>Facturas recientes</h2>
-          <small>{facturasAdminFiltradas.length} resultados</small>
+          <h2>{t('settings.orders.title')}</h2>
+          <small>{t('settings.billing.results', { count: facturasAdminFiltradas.length })}</small>
         </div>
 
         {isFacturacionLoading ? (
           <div className="settings-empty-state">
             <div className="spinner-border text-success" role="status">
-              <span className="visually-hidden">Cargando...</span>
+              <span className="visually-hidden">{t('common.loading')}</span>
             </div>
-            <p>Cargando historial de facturación...</p>
+            <p>{t('settings.billing.loading')}</p>
           </div>
         ) : facturasAdminFiltradas.length === 0 ? (
           <div className="settings-empty-state">
-            <p>No hay facturas para los filtros actuales.</p>
+            <p>{t('settings.billing.empty')}</p>
           </div>
         ) : (
           <>
@@ -1114,14 +1135,14 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange, o
               <table className="table align-middle mb-0 settings-table">
                 <thead>
                   <tr>
-                    <th>Factura</th>
-                    <th>Cliente</th>
-                    <th>Fecha</th>
-                    <th>Productos</th>
-                    <th>Total</th>
-                    <th>Pago</th>
-                    <th>Estado</th>
-                    <th>Acciones</th>
+                    <th>{t('settings.billing.table.order')}</th>
+                    <th>{t('settings.billing.table.customer')}</th>
+                    <th>{t('settings.billing.table.date')}</th>
+                    <th>{t('settings.billing.table.products')}</th>
+                    <th>{t('settings.billing.table.total')}</th>
+                    <th>{t('settings.billing.table.payment')}</th>
+                    <th>{t('settings.billing.table.status')}</th>
+                    <th>{t('settings.billing.table.actions')}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -1147,7 +1168,7 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange, o
                             onClick={() => actualizarFactura(factura.idPedido, 'aceptado')}
                             disabled={processingPedidoId === factura.idPedido || factura.estado !== 'pendiente'}
                           >
-                            Aceptar
+                            {t('settings.billing.accept')}
                           </button>
                           <button
                             type="button"
@@ -1155,7 +1176,7 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange, o
                             onClick={() => actualizarFactura(factura.idPedido, 'denegado')}
                             disabled={processingPedidoId === factura.idPedido || factura.estado !== 'pendiente'}
                           >
-                            Denegar
+                            {t('settings.billing.deny')}
                           </button>
                         </div>
                       </td>
@@ -1165,7 +1186,7 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange, o
               </table>
             </div>
 
-            <div className="settings-billing-history-mobile" aria-label="Facturas recientes en tablet y movil">
+            <div className="settings-billing-history-mobile" aria-label={t('settings.orders.title')}>
               {facturasAdminPaginadas.map((factura) => (
                 <article key={factura.idPedido} className="settings-billing-history-item">
                   <div className="settings-billing-history-main">
@@ -1182,7 +1203,7 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange, o
 
                   <div className="settings-billing-history-meta">
                     <span>{formatDate(factura.fecha)}</span>
-                    <span>{factura.totalProductos ?? 0} productos</span>
+                    <span>{factura.totalProductos ?? 0} {t('settings.billing.stats.totalProducts').toLowerCase()}</span>
                     <span>{getPaymentLabel(factura.metodoPago)}</span>
                   </div>
 
@@ -1193,7 +1214,7 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange, o
                       onClick={() => actualizarFactura(factura.idPedido, 'aceptado')}
                       disabled={processingPedidoId === factura.idPedido || factura.estado !== 'pendiente'}
                     >
-                      Aceptar
+                      {t('settings.billing.accept')}
                     </button>
                     <button
                       type="button"
@@ -1201,14 +1222,14 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange, o
                       onClick={() => actualizarFactura(factura.idPedido, 'denegado')}
                       disabled={processingPedidoId === factura.idPedido || factura.estado !== 'pendiente'}
                     >
-                      Denegar
+                      {t('settings.billing.deny')}
                     </button>
                   </div>
                 </article>
               ))}
             </div>
 
-            <nav className="billing-pagination" aria-label="Paginación de facturas">
+            <nav className="billing-pagination" aria-label={t('settings.billing.table.order')}>
               <button type="button" className="billing-page-btn" onClick={() => setFacturacionPage((value) => Math.max(1, value - 1))} disabled={facturacionPageSafe === 1}>
                 &lt;
               </button>
@@ -1237,8 +1258,8 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange, o
   const renderInvoicesUser = () => (
     <div className="settings-card">
       <div className="settings-card-head settings-invoices-head">
-        <h2>Facturas</h2>
-        <small>{facturasUsuario.length} pedidos</small>
+        <h2>{t('settings.orders.title')}</h2>
+        <small>{t('settings.billing.results', { count: facturasUsuario.length })}</small>
       </div>
 
       {facturasError && <div className="alert alert-danger">{facturasError}</div>}
@@ -1246,13 +1267,13 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange, o
       {isFacturasLoading ? (
         <div className="settings-empty-state">
           <div className="spinner-border text-success" role="status">
-            <span className="visually-hidden">Cargando...</span>
+            <span className="visually-hidden">{t('common.loading')}</span>
           </div>
-          <p>Cargando tus facturas...</p>
+          <p>{t('settings.orders.loading')}</p>
         </div>
       ) : (
         <>
-          <div className="settings-invoices-mobile" aria-label="Facturas en móvil">
+          <div className="settings-invoices-mobile" aria-label={t('settings.orders.title')}>
             {facturasUsuario.length > 0 ? (
               facturasUsuario.map((factura) => {
                 const isDetalleAbierto = facturaDetalleAbiertoId === factura.idPedido
@@ -1271,15 +1292,15 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange, o
                         currentId === factura.idPedido ? null : factura.idPedido
                       ))}
                     >
-                      {isDetalleAbierto ? 'Ocultar detalle' : 'Ver detalle'}
+                      {isDetalleAbierto ? t('common.close') : t('settings.billing.view')}
                     </button>
 
                     {isDetalleAbierto && (
                       <div className="settings-invoice-mobile-detail">
-                        <p><strong>Dirección:</strong> {factura.direccionEnvio || 'Sin dirección'}</p>
-                        <p><strong>Fecha:</strong> {formatDate(factura.fecha)}</p>
-                        <p><strong>Total:</strong> {formatMoney(factura.total)}</p>
-                        <p><strong>Pago:</strong> {getPaymentLabel(factura.metodoPago)}</p>
+                        <p><strong>{t('settings.billing.details.shipping')}:</strong> {factura.direccionEnvio || t('settings.billing.details.noAddress')}</p>
+                        <p><strong>{t('settings.billing.table.date')}:</strong> {formatDate(factura.fecha)}</p>
+                        <p><strong>{t('settings.billing.table.total')}:</strong> {formatMoney(factura.total)}</p>
+                        <p><strong>{t('settings.billing.table.payment')}:</strong> {getPaymentLabel(factura.metodoPago)}</p>
                       </div>
                     )}
                   </article>
@@ -1287,7 +1308,7 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange, o
               })
             ) : (
               <div className="settings-empty-state">
-                <p>No tienes facturas disponibles.</p>
+                <p>{t('settings.orders.empty')}</p>
               </div>
             )}
           </div>
@@ -1296,12 +1317,12 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange, o
             <table className="table align-middle mb-0 settings-table">
               <thead>
                 <tr>
-                  <th>Factura</th>
-                  <th>Dirección</th>
-                  <th>Fecha</th>
-                  <th>Total</th>
-                  <th>Pago</th>
-                  <th>Estado</th>
+                  <th>{t('settings.billing.table.order')}</th>
+                  <th>{t('settings.billing.details.shipping')}</th>
+                  <th>{t('settings.billing.table.date')}</th>
+                  <th>{t('settings.billing.table.total')}</th>
+                  <th>{t('settings.billing.table.payment')}</th>
+                  <th>{t('settings.billing.table.status')}</th>
                 </tr>
               </thead>
               <tbody>
@@ -1309,7 +1330,7 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange, o
                   facturasUsuario.map((factura) => (
                     <tr key={factura.idPedido}>
                       <td>#{factura.idPedido}</td>
-                      <td>{factura.direccionEnvio}</td>
+                      <td>{factura.direccionEnvio || t('settings.billing.details.noAddress')}</td>
                       <td>{formatDate(factura.fecha)}</td>
                       <td>{formatMoney(factura.total)}</td>
                       <td>{getPaymentLabel(factura.metodoPago)}</td>
@@ -1321,7 +1342,7 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange, o
                 ) : (
                   <tr>
                     <td colSpan="6" className="text-center py-4">
-                      No tienes facturas disponibles.
+                      {t('settings.orders.empty')}
                     </td>
                   </tr>
                 )}
@@ -1335,8 +1356,8 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange, o
 
   const renderPlanos = () => (
     <div className="settings-card settings-placeholder-card">
-      <h2>Planos</h2>
-      <p>Aún no hay planos guardados. Cuando prepares diseños, aparecerán en esta sección.</p>
+      <h2>{t('settings.tabs.planos')}</h2>
+      <p>{t('settings.plans.empty')}</p>
     </div>
   )
 
@@ -1355,10 +1376,10 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange, o
   return (
     <section className="page-shell settings-page-shell container-fluid">
       <div className="settings-layout">
-        <aside className="settings-sidebar" aria-label="Menú de cuenta">
+        <aside className="settings-sidebar" aria-label={t('account.menu')}>
           <div className="settings-sidebar-head">
-            <h1>Mi cuenta</h1>
-            <small>{user?.nombre || 'Usuario'}</small>
+            <h1>{t('account.myAccount')}</h1>
+            <small>{user?.nombre || t('settings.profile.userLabel')}</small>
           </div>
 
           <nav className="settings-nav-list">
@@ -1399,19 +1420,19 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange, o
           <div className="modal-dialog modal-dialog-centered">
             <div className="modal-content usuarios-modal-content">
               <div className="modal-header">
-                <h5 className="modal-title">Editar usuario</h5>
+                <h5 className="modal-title">{t('settings.users.edit')}</h5>
                 <button
                   type="button"
                   className="btn-close"
                   onClick={handleCloseModal}
                   disabled={isEditLoading}
-                  aria-label="Cerrar"
+                  aria-label={t('common.close')}
                 ></button>
               </div>
 
               <div className="modal-body">
                 <div className="mb-3">
-                  <label className="form-label text-muted">Nombre:</label>
+                  <label className="form-label text-muted">{t('settings.profile.name')}:</label>
                   <input
                     className="form-control"
                     value={editingUsuarioForm.nombre}
@@ -1422,7 +1443,7 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange, o
                 </div>
 
                 <div className="mb-3">
-                  <label className="form-label text-muted">Correo electrónico:</label>
+                  <label className="form-label text-muted">{t('settings.profile.formEmail')}:</label>
                   <input
                     className="form-control"
                     type="email"
@@ -1435,7 +1456,7 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange, o
 
                 <div className="row g-3 mb-3">
                   <div className="col-md-6">
-                    <label className="form-label text-muted">Primer apellido:</label>
+                    <label className="form-label text-muted">{t('settings.profile.firstSurname')}:</label>
                     <input
                       className="form-control"
                       value={editingUsuarioForm.primerApellido}
@@ -1445,7 +1466,7 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange, o
                   </div>
 
                   <div className="col-md-6">
-                    <label className="form-label text-muted">Segundo apellido:</label>
+                    <label className="form-label text-muted">{t('settings.profile.secondSurname')}:</label>
                     <input
                       className="form-control"
                       value={editingUsuarioForm.segundoApellido}
@@ -1457,7 +1478,7 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange, o
 
                 <div className="mb-4">
                   <label htmlFor="rolSelect" className="form-label text-muted">
-                    Nuevo rol:
+                    {t('settings.profile.role')}:
                   </label>
                   <select
                     id="rolSelect"
@@ -1466,7 +1487,7 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange, o
                     onChange={(event) => handleAdminUserInputChange('rol', event.target.value)}
                     disabled={isEditLoading}
                   >
-                    <option value="usuario">Usuario</option>
+                    <option value="usuario">{t('settings.profile.roles.user')}</option>
                     <option value="admin">ADMIN</option>
                   </select>
                 </div>
@@ -1479,7 +1500,7 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange, o
                   onClick={handleCloseModal}
                   disabled={isEditLoading}
                 >
-                  Cancelar
+                  {t('common.cancel')}
                 </button>
 
                 <button
@@ -1488,7 +1509,7 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange, o
                   onClick={handleSaveChanges}
                   disabled={isEditLoading}
                 >
-                  {isEditLoading ? 'Guardando...' : 'Guardar cambios'}
+                  {isEditLoading ? t('settings.profile.saving') : t('settings.profile.save')}
                 </button>
               </div>
             </div>
@@ -1501,12 +1522,12 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange, o
           <div className="modal-dialog modal-dialog-centered modal-lg">
             <div className="modal-content usuarios-modal-content">
               <div className="modal-header">
-                <h5 className="modal-title">Detalle de usuario</h5>
+                <h5 className="modal-title">{t('settings.users.detail')}</h5>
                 <button
                   type="button"
                   className="btn-close"
                   onClick={handleCloseDetailModal}
-                  aria-label="Cerrar"
+                  aria-label={t('common.close')}
                 ></button>
               </div>
 
@@ -1514,9 +1535,9 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange, o
                 {isDetailLoading && (
                   <div className="settings-empty-state" style={{ minHeight: '120px' }}>
                     <div className="spinner-border text-success" role="status">
-                      <span className="visually-hidden">Cargando...</span>
+                      <span className="visually-hidden">{t('common.loading')}</span>
                     </div>
-                    <p>Cargando detalle del usuario...</p>
+                    <p>{t('settings.users.detail')}</p>
                   </div>
                 )}
 
@@ -1526,32 +1547,32 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange, o
 
                     <div className="settings-profile-fields" style={{ width: '100%' }}>
                       <div>
-                        <label>Nombre</label>
+                        <label>{t('settings.profile.name')}</label>
                         <span>{selectedUsuario.nombre}</span>
                       </div>
 
                       <div>
-                        <label>Primer apellido</label>
+                        <label>{t('settings.profile.firstSurname')}</label>
                         <span>{selectedUsuario.primerApellido || 'N/A'}</span>
                       </div>
 
                       <div>
-                        <label>Segundo apellido</label>
+                        <label>{t('settings.profile.secondSurname')}</label>
                         <span>{selectedUsuario.segundoApellido || 'N/A'}</span>
                       </div>
 
                       <div>
-                        <label>Correo electrónico</label>
+                        <label>{t('settings.profile.email')}</label>
                         <span>{selectedUsuario.email}</span>
                       </div>
 
                       <div>
-                        <label>Rol</label>
+                        <label>{t('settings.profile.role')}</label>
                         <span className={getRoleBadgeClass(selectedUsuario.rol)}>{getRoleText(selectedUsuario.rol)}</span>
                       </div>
 
                       <div>
-                        <label>Fecha de alta</label>
+                        <label>{t('settings.profile.memberSince')}</label>
                         <span>{formatDate(selectedUsuario.creadoEn || selectedUsuario.fechaAlta)}</span>
                       </div>
                     </div>
@@ -1561,7 +1582,7 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange, o
 
               <div className="modal-footer">
                 <button type="button" className="btn btn-outline-secondary" onClick={handleCloseDetailModal}>
-                  Cerrar
+                  {t('common.close')}
                 </button>
               </div>
             </div>

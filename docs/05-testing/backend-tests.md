@@ -1,6 +1,6 @@
 # Tests Del Backend
 
-Los tests del backend usan Jest y Supertest para validar la API Express contra el comportamiento real de V2.
+Los tests del backend usan Jest y Supertest para validar la API Express contra el comportamiento real de V3.
 
 ## Comandos
 

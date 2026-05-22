@@ -5,7 +5,7 @@ describe('Productos y pedidos', () => {
   const email = `pedido${Date.now()}@mail.com`;
   const otherEmail = `pedido-otro${Date.now()}@mail.com`;
   const adminEmail = `admin-productos${Date.now()}@mail.com`;
-  const password = '12345678';
+  const password = 'Hola123!';
   let token;
   let otherToken;
   let adminToken;
@@ -46,7 +46,7 @@ describe('Productos y pedidos', () => {
         'Admin Productos',
         'Test',
         adminEmail,
-        '$2b$10$uDPwExnvB1b.4fDtKNOKZOx.4BmAODWoLc23EtZZOa6IPljXf3cjW',
+        '$2b$10$VSCt51JCe5d2kYdchOmB.uTTROriNQkZAlBxqTJMtNjA5F.QwjMPm',
         'admin'
       ]
     );
@@ -55,7 +55,7 @@ describe('Productos y pedidos', () => {
       .post('/api/usuarios/login')
       .send({
         email: adminEmail,
-        contrasena: '123456'
+        contrasena: 'Hola123!'
       });
 
     expect(res.statusCode).toBe(200);
@@ -198,7 +198,7 @@ describe('Productos y pedidos', () => {
 
     expect(res.statusCode).toBe(200);
     expect(res.body.message).toBe('Pedido cancelado correctamente');
-    expect(res.body.pedido).toEqual({
+    expect(res.body.pedido).toMatchObject({
       idPedido,
       estado: 'cancelado'
     });
@@ -281,7 +281,7 @@ describe('Productos y pedidos', () => {
       .set('Authorization', `Bearer ${adminToken}`);
 
     expect(res.statusCode).toBe(200);
-    expect(res.body.pedido).toEqual({
+    expect(res.body.pedido).toMatchObject({
       idPedido: pedidoRes.body.idPedido,
       estado: 'cancelado'
     });

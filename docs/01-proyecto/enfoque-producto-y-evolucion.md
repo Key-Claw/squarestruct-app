@@ -1,4 +1,4 @@
-# Enfoque SaaS Y Evolucion
+# Enfoque De Producto Y Evolucion
 
 SquareStruct se plantea como una aplicacion web accesible desde navegador, con frontend y backend separados, autenticacion, base de datos persistente y posibilidad de crecer hacia herramientas de diseno y presupuesto.
 
@@ -7,12 +7,13 @@ SquareStruct se plantea como una aplicacion web accesible desde navegador, con f
 | Fase | Estado | Papel |
 | --- | --- | --- |
 | MVP v1 | Cerrada | Valido la base funcional: auth, catalogo, carrito visual y administracion inicial. |
-| V2 | Actual | Consolida aplicacion full stack con checkout, pedidos, facturas, roles, Docker, CI y documentacion tecnica. |
-| V3 | Futura | Incorporara disenador real, planos persistentes, presupuesto avanzado y despliegue productivo. |
+| Version anterior | Cerrada | Consolido la aplicacion full stack con checkout, pedidos, facturas, roles, Docker, CI y documentacion tecnica. |
+| V3 | Actual | Evoluciona el producto hacia el disenador, mantiene el flujo completo de catalogo/pedidos y actualiza stack, pruebas y documentacion. |
+| Siguiente fase | Pendiente | Persistencia de planos, presupuesto avanzado, pagos y despliegue productivo. |
 
-## Por Que Tiene Enfoque SaaS
+## Enfoque Tecnico Actual
 
-La V2 ya separa piezas propias de una aplicacion mantenible:
+La V3 ya separa piezas propias de una aplicacion mantenible:
 
 - frontend independiente en React/Vite;
 - backend REST en Express;
@@ -23,11 +24,11 @@ La V2 ya separa piezas propias de una aplicacion mantenible:
 - CI para validar cambios;
 - variables de entorno para configuracion.
 
-Esto no convierte automaticamente el proyecto en una plataforma completa, pero prepara una evolucion natural hacia servicio web desplegado.
+El objetivo actual no es orientar el proyecto a un modelo concreto de negocio, sino mantener una aplicacion web clara, comprobable y preparada para seguir ampliando funcionalidades.
 
 ## Estado Actual
 
-SquareStruct V2 permite:
+SquareStruct V3 permite:
 
 - navegar por contenido publico;
 - registrarse e iniciar sesion;
@@ -42,7 +43,7 @@ SquareStruct V2 permite:
 
 ## Evolucion Pendiente
 
-Las siguientes piezas pertenecen a V3 o a un despliegue productivo:
+Las siguientes piezas pertenecen a la evolucion posterior del trabajo actual:
 
 - entidad `plano`;
 - guardado de disenos por usuario;

@@ -1,6 +1,6 @@
 # Frontend SquareStruct
 
-Frontend React/Vite de SquareStruct V2. Implementa la interfaz publica, catalogo, galeria, disenador visual provisional, autenticacion, carrito, checkout, area privada y paneles administrativos.
+Frontend React/Vite de SquareStruct V3. Implementa la interfaz publica, catalogo, galeria, editor visual 2D/3D, autenticacion, carrito, checkout, area privada y paneles administrativos.
 
 ## Stack
 
@@ -8,6 +8,7 @@ Frontend React/Vite de SquareStruct V2. Implementa la interfaz publica, catalogo
 - Vite 8
 - React Router DOM 7 con `HashRouter`
 - Bootstrap 5
+- Three.js, React Three Fiber y Drei
 - SweetAlert2
 - Vitest + Testing Library
 - ESLint
@@ -107,7 +108,7 @@ Si no existe, se usa `/api` y Vite lo redirige al backend local con el proxy de 
 - Facturacion admin con filtros, estadisticas, paginacion y acciones aceptar/denegar.
 - Gestion admin de usuarios con busqueda, filtro, detalle, edicion y eliminacion.
 - Galeria con filtros por material y modal de imagen.
-- Disenador visual provisional con paneles, herramientas y resumen simulado.
+- Disenador visual 2D/3D con piezas cargadas desde catalogo, accesorios locales, borrador en `localStorage`, exportacion JSON y presupuesto estimado.
 - Alertas de confirmacion/error/exito con SweetAlert2.
 - Loaders, estados vacios y mensajes de error.
 
@@ -151,5 +152,5 @@ Los tests actuales estan en `src/tests/` y usan Vitest + Testing Library. Cubren
 - Bootstrap se usa como apoyo de grid, botones, tablas, formularios y utilidades.
 - CSS propio mantiene la identidad visual sin introducir una libreria UI adicional.
 - SweetAlert2 se reserva para confirmaciones y feedback de acciones destructivas o relevantes.
-- El catalogo filtra en cliente porque V2 carga un volumen pequeno de productos desde `/api/productos`.
+- El catalogo filtra en cliente porque V3 carga un volumen pequeno de productos desde `/api/productos`.
 - `Settings.jsx` concentra varias tabs porque comparten usuario, permisos, pedidos y estados administrativos.

@@ -1,0 +1,758 @@
+{
+  "info": {
+    "_postman_id": "779228a1-7d27-4e22-8435-e411e968222b",
+    "name": "SquareStruct V3 - DAW1",
+    "description": "Coleccion actualizada para la V3 del proyecto final de DAW1. Cubre health, base de datos, autenticacion, perfil, catalogo, usuarios, pedidos y pruebas basicas de seguridad. Usa la variable baseUrl para poder cambiar facilmente entre local y otros entornos.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "00 - Sistema",
+      "item": [
+        {
+          "name": "Health - 200",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/health"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Respuesta OK', () => pm.expect(pm.response.text()).to.eql('OK'));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "DB status - 200",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/db-status"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const res = pm.response.json();",
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('BD disponible', () => pm.expect(res.ok).to.eql(true));",
+                  "pm.test('Tablas principales', () => {",
+                  "  ['usuarios', 'proveedores', 'productos', 'pedidos', 'pedidoDetalles'].forEach((tabla) => {",
+                  "    pm.expect(res.tablas).to.include(tabla);",
+                  "  });",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "01 - Auth",
+      "item": [
+        {
+          "name": "Login admin seed - 200",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@sqst.com\",\n  \"contrasena\": \"Hola123!\"\n}"
+            },
+            "url": "{{baseUrl}}/usuarios/login"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const res = pm.response.json();",
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Devuelve token', () => pm.expect(res.token).to.be.a('string').and.not.empty);",
+                  "pm.collectionVariables.set('adminToken', res.token);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Login usuario seed - 200",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"juan.perez@gmail.com\",\n  \"contrasena\": \"Hola123!\"\n}"
+            },
+            "url": "{{baseUrl}}/usuarios/login"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const res = pm.response.json();",
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Devuelve token', () => pm.expect(res.token).to.be.a('string').and.not.empty);",
+                  "pm.collectionVariables.set('userToken', res.token);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Register usuario demo - 201",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Demo\",\n  \"primerApellido\": \"DAW\",\n  \"email\": \"demo{{$timestamp}}@squarestruct.com\",\n  \"contrasena\": \"Hola123!\"\n}"
+            },
+            "url": "{{baseUrl}}/usuarios/register"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const req = JSON.parse(pm.request.body.raw);",
+                  "pm.collectionVariables.set('testUserEmail', req.email);",
+                  "pm.collectionVariables.set('testUserPassword', req.contrasena);",
+                  "pm.test('Status 201', () => pm.response.to.have.status(201));",
+                  "pm.test('Mensaje de registro', () => pm.expect(pm.response.json().mensaje).to.exist);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Login usuario demo - 200",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{testUserEmail}}\",\n  \"contrasena\": \"{{testUserPassword}}\"\n}"
+            },
+            "url": "{{baseUrl}}/usuarios/login"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const res = pm.response.json();",
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Devuelve token', () => pm.expect(res.token).to.be.a('string').and.not.empty);",
+                  "pm.collectionVariables.set('testUserToken', res.token);"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "02 - Perfil",
+      "item": [
+        {
+          "name": "Perfil usuario demo - 200",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{testUserToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/perfil"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const res = pm.response.json();",
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Devuelve usuario', () => pm.expect(res.usuario).to.have.property('idUsuario'));",
+                  "pm.collectionVariables.set('idUsuarioDemo', res.usuario.idUsuario);"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "03 - Productos",
+      "item": [
+        {
+          "name": "Listar productos - 200",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/productos"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const res = pm.response.json();",
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Devuelve array', () => pm.expect(res).to.be.an('array'));",
+                  "pm.test('Hay productos seed', () => pm.expect(res.length).to.be.greaterThan(0));",
+                  "if (res.length) pm.collectionVariables.set('idProductoSeed', res[0].idProducto);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Detalle producto seed - 200",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/productos/{{idProductoSeed}}"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const res = pm.response.json();",
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Producto correcto', () => pm.expect(String(res.idProducto)).to.eql(String(pm.collectionVariables.get('idProductoSeed'))));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Crear producto admin - 201",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"POSTMAN Bloque V3\",\n  \"descripcion\": \"Producto temporal creado desde Postman V3.\",\n  \"precio\": 42.5,\n  \"tipo\": \"bloque\",\n  \"material\": \"Plastico reciclable\",\n  \"alto\": 22.7,\n  \"ancho\": 19.7,\n  \"largo\": 39.4,\n  \"idProveedor\": 1\n}"
+            },
+            "url": "{{baseUrl}}/productos"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const res = pm.response.json();",
+                  "pm.test('Status 201', () => pm.response.to.have.status(201));",
+                  "pm.test('Devuelve idProducto', () => pm.expect(res.idProducto).to.be.a('number'));",
+                  "pm.collectionVariables.set('idProductoTemporal', res.idProducto);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Actualizar producto admin - 200",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"POSTMAN Bloque V3 actualizado\",\n  \"descripcion\": \"Producto temporal actualizado desde Postman V3.\",\n  \"precio\": 44,\n  \"tipo\": \"bloque\",\n  \"material\": \"Plastico reciclable\",\n  \"alto\": 22.7,\n  \"ancho\": 19.7,\n  \"largo\": 39.4,\n  \"idProveedor\": 1\n}"
+            },
+            "url": "{{baseUrl}}/productos/{{idProductoTemporal}}"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Mensaje de actualizacion', () => pm.expect(pm.response.json().mensaje).to.exist);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Eliminar producto admin - 200",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/productos/{{idProductoTemporal}}"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Mensaje de borrado', () => pm.expect(pm.response.json().mensaje).to.exist);"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "04 - Usuarios",
+      "item": [
+        {
+          "name": "Listar usuarios admin - 200",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/usuarios"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const res = pm.response.json();",
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Devuelve array', () => pm.expect(res).to.be.an('array'));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Detalle usuario demo admin - 200",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/usuarios/{{idUsuarioDemo}}"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const res = pm.response.json();",
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Usuario correcto', () => pm.expect(String(res.idUsuario)).to.eql(String(pm.collectionVariables.get('idUsuarioDemo'))));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Actualizar perfil demo - 200",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{testUserToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Demo\",\n  \"primerApellido\": \"DAW Actualizado\",\n  \"segundoApellido\": \"\",\n  \"email\": \"{{testUserEmail}}\"\n}"
+            },
+            "url": "{{baseUrl}}/usuarios/{{idUsuarioDemo}}"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Devuelve usuario actualizado', () => pm.expect(pm.response.json().usuario).to.exist);"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "05 - Pedidos",
+      "item": [
+        {
+          "name": "Listar pedidos usuario - 200",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{userToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/orders"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const res = pm.response.json();",
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Devuelve array', () => pm.expect(res).to.be.an('array'));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Crear pedido usuario demo - 201",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{testUserToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"direccionEnvio\": \"Calle Demo 123, Madrid\",\n  \"metodoPago\": \"tarjeta\",\n  \"productos\": [\n    {\n      \"idProducto\": 1,\n      \"cantidad\": 1\n    }\n  ]\n}"
+            },
+            "url": "{{baseUrl}}/orders"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const res = pm.response.json();",
+                  "pm.test('Status 201', () => pm.response.to.have.status(201));",
+                  "pm.test('Pedido creado', () => pm.expect(res.idPedido).to.be.a('number'));",
+                  "pm.collectionVariables.set('idPedido', res.idPedido);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Detalle pedido creado - 200",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{testUserToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/orders/{{idPedido}}"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const res = pm.response.json();",
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Pedido correcto', () => pm.expect(String(res.idPedido)).to.eql(String(pm.collectionVariables.get('idPedido'))));",
+                  "pm.test('Incluye productos', () => pm.expect(res.productos).to.be.an('array'));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Cancelar pedido creado - 200",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{testUserToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"motivo\": \"Cancelado desde Postman V3\"\n}"
+            },
+            "url": "{{baseUrl}}/orders/{{idPedido}}/cancelar"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const res = pm.response.json();",
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Estado cancelado', () => pm.expect(res.pedido.estado).to.eql('cancelado'));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Listar pedidos admin - 200",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/orders/admin/todos"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const res = pm.response.json();",
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Devuelve array', () => pm.expect(res).to.be.an('array'));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Listar pedidos pendientes admin - 200",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/orders/admin/pendientes"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const res = pm.response.json();",
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Devuelve array', () => pm.expect(res).to.be.an('array'));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "06 - Seguridad",
+      "item": [
+        {
+          "name": "Perfil sin token - 401",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/perfil"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const res = pm.response.json();",
+                  "pm.test('Status 401', () => pm.response.to.have.status(401));",
+                  "pm.test('Error de token', () => pm.expect(res.error).to.match(/token/i));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Usuarios con usuario normal - 403",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{userToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/usuarios"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const res = pm.response.json();",
+                  "pm.test('Status 403', () => pm.response.to.have.status(403));",
+                  "pm.test('Acceso admin bloqueado', () => pm.expect(res.error).to.match(/administradores/i));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Crear producto sin token - 401",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"POSTMAN Producto sin token\",\n  \"descripcion\": \"Debe fallar por falta de token.\",\n  \"precio\": 42.5,\n  \"tipo\": \"bloque\",\n  \"material\": \"Plastico reciclable\",\n  \"alto\": 22.7,\n  \"ancho\": 19.7,\n  \"largo\": 39.4,\n  \"idProveedor\": 1\n}"
+            },
+            "url": "{{baseUrl}}/productos"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const res = pm.response.json();",
+                  "pm.test('Status 401', () => pm.response.to.have.status(401));",
+                  "pm.test('Error de token', () => pm.expect(res.error).to.match(/token/i));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000/api"
+    },
+    {
+      "key": "adminToken",
+      "value": ""
+    },
+    {
+      "key": "userToken",
+      "value": ""
+    },
+    {
+      "key": "testUserToken",
+      "value": ""
+    },
+    {
+      "key": "testUserEmail",
+      "value": ""
+    },
+    {
+      "key": "testUserPassword",
+      "value": ""
+    },
+    {
+      "key": "idUsuarioDemo",
+      "value": ""
+    },
+    {
+      "key": "idProductoSeed",
+      "value": "1"
+    },
+    {
+      "key": "idProductoTemporal",
+      "value": ""
+    },
+    {
+      "key": "idPedido",
+      "value": ""
+    }
+  ]
+}

@@ -1,10 +1,10 @@
 # Vision General
 
-SquareStruct es una aplicacion web full stack para construccion modular sostenible. La V2 permite consultar soluciones visuales, navegar por un catalogo de piezas, crear pedidos desde un carrito, revisar facturas y gestionar usuarios/facturacion desde un rol administrador.
+SquareStruct es una aplicacion web full stack para construccion modular sostenible. La V3 permite consultar soluciones visuales, navegar por un catalogo de piezas, crear pedidos desde un carrito, revisar facturas y gestionar usuarios/facturacion desde un rol administrador.
 
-## Alcance Actual De V2
+## Alcance Actual De V3
 
-V2 esta implementada con:
+V3 esta implementada con:
 
 - frontend React/Vite;
 - API REST Express;
@@ -45,22 +45,22 @@ admin inicia sesion
   -> acepta o deniega pedidos pendientes
 ```
 
-## MVP Y V2
+## MVP Y V3
 
 La MVP fue la primera version funcional. Su objetivo era validar la base: registro, login, catalogo, carrito visual y estructura inicial de administracion.
 
-V2 es la version documentada actualmente. Sobre esa base incorpora integracion real de pedidos desde checkout, facturas, facturacion admin, validaciones, responsive, tests, Docker y CI.
+V3 es la version documentada actualmente. Sobre esa base incorpora integracion real de pedidos desde checkout, facturas, facturacion admin, validaciones, responsive, tests, Docker y CI.
 
 ## Funcionalidades Implementadas
 
-| Area | Estado V2 |
+| Area | Estado V3 |
 | --- | --- |
 | Inicio | Pagina de entrada con navegacion hacia areas principales. |
 | Galeria | Ideas visuales, filtro por material y modal de imagen. |
 | Catalogo | Productos desde API, busqueda, filtros, orden, paginacion y fallback local. |
-| Disenador | Interfaz visual provisional con paneles y resumen simulado; no guarda planos reales. |
+| Disenador | Editor visual 2D/3D: carga piezas desde productos, permite colocar piezas, calcula resumen y guarda borrador local. |
 | Auth | Registro, login, JWT, expiracion local y logout. |
-| Cuenta | Perfil editable, facturas y seccion de planos vacia. |
+| Cuenta | Perfil editable, facturas y seccion de planos como area pendiente de persistencia real. |
 | Carrito | Panel lateral, cantidades, eliminacion y total. |
 | Checkout | Crea pedidos autenticados en backend. |
 | Usuarios admin | Listado, busqueda, filtro, detalle, edicion y eliminacion/anominizacion. |
@@ -69,7 +69,7 @@ V2 es la version documentada actualmente. Sobre esa base incorpora integracion r
 
 ## Limites Conscientes
 
-- El disenador todavia no es un editor 3D real persistente.
+- El disenador ya permite trabajar en 2D/3D, pero el guardado actual es local en el navegador.
 - No existe entidad `plano` en base de datos.
 - No hay pasarela de pago real.
 - El despliegue AWS esta documentado como orientacion, no como infraestructura productiva cerrada.
@@ -80,5 +80,6 @@ V2 es la version documentada actualmente. Sobre esa base incorpora integracion r
 | Version | Alcance |
 | --- | --- |
 | MVP v1 | Primera version funcional: auth, catalogo, carrito visual y base admin. |
-| V2 | Estado actual: aplicacion full stack con pedidos, checkout, facturacion, roles, tests y CI. |
-| V3 | Disenador 3D persistente, entidad `plano`, presupuesto avanzado y despliegue productivo. |
+| Version anterior | Aplicacion full stack con pedidos, checkout, facturacion, roles, tests y CI. |
+| V3 | Estado actual: base completa del producto, documentacion alineada, CI y stack de frontend/backend actualizado. |
+| Siguiente fase | Persistencia de planos, presupuesto avanzado, pagos y despliegue productivo. |

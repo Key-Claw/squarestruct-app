@@ -1,4 +1,4 @@
-# Pruebas del MVP y v2 con Postman
+# Pruebas del MVP y V3 con Postman
 
 ## Objetivo
 
@@ -6,7 +6,7 @@ Este documento explica cómo probar manualmente el flujo principal del MVP y có
 
 El objetivo no es cubrir todos los casos posibles, sino comprobar que la API funciona, que las piezas principales están conectadas y que las reglas de acceso se respetan: productos, registro, login, token JWT, rutas protegidas, gestión de administradores y base de pedidos.
 
-Además, se documenta la evolución hacia v2, donde el backend ya se prueba con mayor enfoque en automatización, reutilización de variables dinámicas y validación de respuestas reales de la API.
+Además, se documenta la evolución hacia V3, donde el backend ya se prueba con mayor enfoque en automatización, reutilización de variables dinámicas y validación de respuestas reales de la API.
 
 ## Requisitos previos
 
@@ -30,12 +30,16 @@ En lugar de escribir tokens e IDs a mano en cada request, la colección usa vari
 
 ### Variables principales
 
-| Variable                       | Uso                                               |
-| ------------------------------ | ------------------------------------------------- |
-| `adminToken`                   | Token del login de administrador.                 |
-| `userToken`                    | Token del login de usuario normal.                |
-| `productId`                    | ID del producto recién creado.                    |
-| `idPedido`                     | ID del pedido recién creado.                      |
+| Variable | Uso |
+| --- | --- |
+| `baseUrl` | URL base de la API, por defecto `http://localhost:3000/api`. |
+| `adminToken` | Token del login de administrador seed. |
+| `userToken` | Token del login de usuario seed. |
+| `testUserToken` | Token del usuario demo creado por la coleccion. |
+| `idUsuarioDemo` | ID del usuario demo obtenido desde `/perfil`. |
+| `idProductoSeed` | ID de un producto existente del catalogo. |
+| `idProductoTemporal` | ID del producto temporal creado para probar CRUD. |
+| `idPedido` | ID del pedido recien creado. |
 
 ### Por qué se usan `{{variable}}`
 
@@ -66,11 +70,11 @@ const res = pm.response.json();
 pm.collectionVariables.set("idPedido", res.idPedido);
 ```
 
-Ejemplo para un producto recién creado:
+Ejemplo para un producto temporal recien creado:
 
 ```javascript
 const res = pm.response.json();
-pm.collectionVariables.set("productId", res.idProducto);
+pm.collectionVariables.set("idProductoTemporal", res.idProducto);
 ```
 
 ## Flujo recomendado
@@ -126,7 +130,7 @@ Body:
 {
   "nombre": "Test User",
   "email": "test{{$timestamp}}@mail.com",
-  "contrasena": "12345678"
+  "contrasena": "Hola123!"
 }
 ```
 
@@ -161,7 +165,7 @@ Body:
 ```json
 {
   "email": "testuser@mail.com",
-  "contrasena": "12345678"
+  "contrasena": "Hola123!"
 }
 ```
 
@@ -338,13 +342,13 @@ Con token de usuario normal, la respuesta esperada es:
 * que el backend devuelve un mensaje de creación correcto;
 * que el `idProducto` creado se puede reutilizar en tests posteriores.
 
-### Qué pasa con el `productId`
+### Que pasa con `idProductoTemporal`
 
-Tras crear el producto, el ID se guarda en una variable para usarlo automáticamente en `PUT` y `DELETE`.
+Tras crear el producto, el ID se guarda en `idProductoTemporal` para usarlo automaticamente en `PUT` y `DELETE`.
 
 ## 7. Base de pedidos
 
-El backend tiene endpoints y tablas para pedidos. En v2 el checkout del frontend ya crea pedidos reales, por lo que estas pruebas sirven para validar el mismo flujo desde Postman.
+El backend tiene endpoints y tablas para pedidos. En V3 el checkout del frontend ya crea pedidos reales, por lo que estas pruebas sirven para validar el mismo flujo desde Postman.
 
 ```text
 Método: POST
@@ -473,31 +477,31 @@ Los tests añadidos en la colección no solo comprueban que la request responde,
 ### Ejecutar la colección completa
 
 ```bash
-newman run squarestruct-v2.postman_collection.json
+newman run squarestruct-v3.postman_collection.json
 ```
 
 ### Ejecutar con más detalle
 
 ```bash
-newman run squarestruct-v2.postman_collection.json --verbose
+newman run squarestruct-v3.postman_collection.json --verbose
 ```
 
 ### Ejecutar con reporte en consola y JSON
 
 ```bash
-newman run squarestruct-v2.postman_collection.json -r cli json
+newman run squarestruct-v3.postman_collection.json -r cli json
 ```
 
 ### Ejecutar con environment exportado
 
 ```bash
-newman run squarestruct-v2.postman_collection.json -e local.postman_environment.json
+newman run squarestruct-v3.postman_collection.json -e local.postman_environment.json
 ```
 
 ### Pasar un token por terminal si hace falta
 
 ```bash
-newman run squarestruct-v2.postman_collection.json --env-var adminToken="TU_TOKEN"
+newman run squarestruct-v3.postman_collection.json --env-var adminToken="TU_TOKEN"
 ```
 
 ## 12. Qué se considera correcto al pasar la colección

@@ -1,0 +1,348 @@
+{
+  "language": {
+    "spanishShort": "ES",
+    "englishShort": "EN",
+    "spanish": "Spanish",
+    "english": "English"
+  },
+  "nav": {
+    "home": "Home",
+    "gallery": "Gallery",
+    "catalog": "Catalog",
+    "design": "Designer",
+    "aboutus": "About us",
+    "settings": "Settings",
+    "profile": "Profile",
+    "invoices": "Invoices",
+    "billing": "Billing",
+    "users": "Users",
+    "plans": "Plans"
+  },
+  "search": {
+    "placeholder": "Search the site...",
+    "button": "Search",
+    "ariaLabel": "Search"
+  },
+  "account": {
+    "guest": "Account",
+    "login": "Log in",
+    "register": "Create account",
+    "myAccount": "My account",
+    "menu": "Account menu",
+    "logout": "Log out"
+  },
+  "common": {
+    "loading": "Loading...",
+    "update": "Refresh",
+    "error": "Error",
+    "unknown": "Unknown",
+    "back": "Back",
+    "emptyStateTitle": "You do not have any orders yet",
+    "close": "Close",
+    "cancel": "Cancel",
+    "save": "Save",
+    "total": "Total",
+    "openMenu": "Open menu",
+    "closeModal": "Close modal",
+    "closeCart": "Close cart",
+    "closeCheckout": "Close checkout",
+    "closeError": "Close error",
+    "closeFilters": "Close filters"
+  },
+  "home": {
+    "eyebrow": "Sustainable modular construction",
+    "title": "Build without limits.",
+    "subtitle": "Modular, easy, real.",
+    "description": "SquareStruct is the platform that lets you discover, compare and plan your modular build with clarity and confidence.",
+    "ctaCatalog": "View catalog",
+    "ctaDesign": "Design your structure",
+    "carouselSlide": "Slide {{index}}",
+    "carouselPrev": "Previous",
+    "carouselNext": "Next",
+    "aboutEyebrow": "SquareStruct",
+    "aboutTitle": "What is SquareStruct?",
+    "aboutIntro1": "We are an online store specializing in modular construction solutions and structural pillars.",
+    "aboutIntro2": "Our goal is to bring these solutions closer to users by making it easier to choose materials and plan structures with modular pieces.",
+    "highlights": {
+      "modular": { "title": "Modular", "text": "Pieces for walls, enclosures and structures organized by type." },
+      "resistant": { "title": "Resistant", "text": "Materials designed to deliver strength and reliability on site." },
+      "plan": { "title": "Plan", "text": "Design and adjust the structure before building." },
+      "sustainable": { "title": "Sustainable", "text": "More efficient construction with better resource use." }
+    },
+    "featuresTitle": "Everything you can do in SquareStruct",
+    "featuresEyebrow": "SquareStruct tools",
+    "featureCards": {
+      "gallery": { "title": "Get inspired", "text": "Discover composition ideas and visual references for your projects.", "action": "View gallery" },
+      "catalog": { "title": "Browse the catalog", "text": "Find blocks, pillars and accessories in a clear and organized view.", "action": "Go to catalog" },
+      "design": { "title": "Create your structure", "text": "Create your own design and calculate the materials needed to make it real.", "action": "Go to design" }
+    },
+    "slides": {
+      "design": { "title": "SquareStruct", "alt": "Modular design in SquareStruct" },
+      "catalog": { "title": "Catalog overview", "alt": "People planning a modular project" },
+      "sustainable": { "title": "Design your structure", "alt": "Sustainable modular construction" }
+    }
+  },
+  "gallery": {
+    "eyebrow": "Modular inspiration",
+    "title": "Solutions gallery",
+    "intro": "Visual ideas to discover styles, materials and layouts before moving to the designer.",
+    "filtersLabel": "Filter gallery by material",
+    "empty": "No ideas match the current search.",
+    "featured": "Featured",
+    "designIdea": "Design this idea",
+    "enlarge": "Enlarge {{title}}",
+    "close": "Close",
+    "materials": {
+      "hormigon": "Concrete",
+      "eco": "Eco"
+    },
+    "projects": {
+      "casaBruma": {
+        "title": "Bruma House",
+        "description": "Modular home with a light facade, open areas and family-oriented layout."
+      },
+      "moduloNido": {
+        "title": "Nest Module",
+        "description": "Compact format for small plots with easy-to-adapt spaces."
+      },
+      "casaCala": {
+        "title": "Cala House",
+        "description": "Bright project with a large terrace and a direct connection between indoors and outdoors."
+      },
+      "casaHorizonte": {
+        "title": "Horizon House",
+        "architect": "The jewel of Van der Rohe",
+        "description1": "Contemporary modular design inspired by clean-lined architecture and functional structures, created to combine strength, visual openness and everyday efficiency.",
+        "description2": "The open layout encourages natural light, indoor-outdoor connection and fluid circulation between spaces, creating a modern, comfortable home ready for future modular expansions."
+      },
+      "casaLineal": {
+        "title": "Linear House",
+        "description": "An elongated volume to separate rest, work and social areas."
+      },
+      "refugioArena": {
+        "title": "Sand Shelter",
+        "description": "A resistant solution for dry climates, with warm finishes and a simple floor plan."
+      },
+      "casaSolar": {
+        "title": "Solar House",
+        "description": "Sustainable home with generous shade and optimized energy use."
+      }
+    }
+  },
+  "catalog": {
+    "eyebrow": "Modular materials",
+    "title": "Product catalog",
+    "intro": "Explore blocks and pillars for modular home construction.",
+    "openFilters": "Open filters",
+    "results": "{{count}} products found",
+    "searchPlaceholder": "Search products...",
+    "resetSearch": "Reset",
+    "sortBy": "Sort by:",
+    "sortAria": "Sort catalog",
+    "sortRecent": "Most recent",
+    "sortPriceLow": "Lowest price",
+    "sortPriceHigh": "Highest price",
+    "viewGrid": "Grid view",
+    "viewList": "List view",
+    "loading": "Loading products...",
+    "demoError": "Could not connect to the database. Showing demo products.",
+    "empty": "No products were found for that search.",
+    "pagination": "Catalog pagination",
+    "filters": { "close": "Close", "title": "Filters", "category": "Category", "material": "Material", "materialAria": "Filter by material", "priceRange": "Price range", "priceAria": "Maximum price range", "reset": "Disable filters" },
+    "materials": { "all": "All", "hormigon": "Concrete", "eco": "Eco" },
+    "types": { "bloque": "Block", "pilar": "Pillar", "product": "Product" },
+    "sort": { "recent": "Most recent", "priceLow": "Lowest price", "priceHigh": "Highest price" },
+    "card": { "material": "Material", "dimensions": "Dimensions", "add": "Add", "noDescription": "No description available.", "noMaterial": "No material" }
+  },
+  "design": {
+    "eyebrow": "Modular designer",
+    "title": "Design your structure",
+    "intro": "Create your 3D plan using modular blocks and calculate accurate materials.",
+    "actions": { "save": "Save", "load": "Load", "new": "New", "budget": "Manage budget" },
+    "categories": "Piece types",
+    "categoryLabels": { "bloques": "Blocks", "pilares": "Pillars", "accesorios": "Accessories" },
+    "materialFilter": "Filter by material",
+    "materials": { "hormigon": "Concrete", "eco": "Eco" },
+    "loadingPieces": "Loading pieces from the database...",
+    "noPieces": "No pieces available in this category.",
+    "localModel": "Local model",
+    "accessoryNames": { "door": "Door", "window": "Window", "stairs": "Stairs", "floor": "Floor" },
+    "quickHelpTitle": "Quick help",
+    "quickHelp": [
+      { "icon": "penTool", "title": "Place pieces", "text": "Turn on drawing mode to add pieces to the 2D plan." },
+      { "icon": "move", "title": "Move the board", "text": "Drag the board across the plan to navigate." },
+      { "icon": "swap", "title": "Flip direction", "text": "Change the direction of the next piece before placing it." },
+      { "icon": "rotate", "title": "Rotate piece", "text": "Rotate the next piece to adjust its orientation on the grid." },
+      { "icon": "undo", "title": "Undo", "text": "Revert the last change made to the plan." },
+      { "icon": "redo", "title": "Redo", "text": "Recover the last change you just undid." }
+    ],
+    "canvasAria": "2D modular editor and 3D viewer",
+    "toolbarAria": "Editing tools",
+    "toolLabels": { "place": "Place pieces", "pan": "Move across the plan", "flip": "Flip direction", "rotate": "Rotate next piece", "undo": "Undo", "redo": "Redo", "view3d": "Show only built content" },
+    "zoomAria": "Zoom control",
+    "zoomIn": "Zoom in",
+    "zoomOut": "Zoom out",
+    "centerView": "Center view",
+    "floorAria": "Change floor",
+    "floorHeightAria": "Current height {{height}}",
+    "floorDown": "Lower floor",
+    "floorLabel": "Active floor {{floor}}",
+    "floorUp": "Raise floor",
+    "floorReset": "Return to floor zero",
+    "sideToolsAria": "Plan utilities",
+    "sideTools": { "plan": "Plan", "pieces": "Pieces", "budget": "Budget" },
+    "clearCanvas": "Clear",
+    "clearCanvasTitle": "Clear plan",
+    "guideManual": "Instruction manual",
+    "howItWorksTitle": "How it works",
+    "howItWorksIntro": "This guide summarizes the full design flow so you can place pieces, validate support and review the final volume without losing context.",
+    "howItWorks": [
+      { "title": "Choose a piece", "text": "Pick a block, pillar or accessory from the side panel." },
+      { "title": "Edit in 2D", "text": "Place pieces on the plan and switch floors whenever you need to." },
+      { "title": "Visualize in 3D", "text": "Review the built volume with the three-dimensional view." }
+    ],
+    "guideButtons": { "2d": "2D guide", "3d": "3D guide" },
+    "examplesTitle": "Examples",
+    "examples": [
+      { "title": "2D plan", "alt": "2D plan" },
+      { "title": "3D plan", "alt": "3D plan" }
+    ],
+    "communityOpenAria": "Open example {{title}}",
+    "modalClose": "Close",
+    "guide2d": {
+      "title": "2D guide",
+      "intro": "The 2D plan is where you build the logic of the project before seeing the final volume.",
+      "sections": [
+        { "title": "1. Choose the right piece", "text": "Select a block, pillar or accessory from the sidebar and check the material, type and active floor before placing it." },
+        { "title": "2. Place and correct on the plan", "text": "Click on the board to place the piece. If you hold the button, you can paint several points in a row; if you change your mind, delete with the same logic." },
+        { "title": "3. Respect support rules", "text": "The editor validates whether a piece needs support below, a lateral connection or to be on floor 0 so that nothing floats or is poorly anchored." },
+        { "title": "4. Switch floors when needed", "text": "Go up and down in height to review each layer of the project. That way you can adjust gaps, check overlaps and work section by section." },
+        { "title": "5. Use quick actions", "text": "Undo, redo, save, load, export and move the board are designed so you can iterate without wasting time." },
+        { "title": "6. Review the preview", "text": "The plan shows a preview when the cursor hovers over it, so you know before confirming whether placement is valid or not." }
+      ],
+      "footer": "Tip: if in doubt, work in 2D first until the overall piece layout is closed and use 3D only to check proportions and height."
+    },
+    "guide3d": {
+      "title": "3D guide",
+      "intro": "The 3D view turns the plan into a more intuitive spatial reading to understand the final result.",
+      "sections": [
+        { "title": "1. Look at the full volume", "text": "Each piece becomes a volumetric block with its real height, making the final form of the whole easier to understand." },
+        { "title": "2. Read the visible layers", "text": "Height guides and the three-dimensional grid help you understand which layers are active and how much volume has been accumulated." },
+        { "title": "3. Distinguish structure and accessories", "text": "Structural elements feel more solid, while accessories are shown more lightly to make reading easier." },
+        { "title": "4. Compare measurements and proportions", "text": "Dimension guides and the volume outline let you check width, depth and height with a fast visual reference." },
+        { "title": "5. Adjust the camera", "text": "Rotate, zoom in and zoom out to inspect the project from different viewpoints without losing spatial orientation." },
+        { "title": "6. Use 3D as final validation", "text": "When the 2D plan is already solved, 3D helps confirm that the overall composition, heights and supports make sense." }
+      ],
+      "footer": "Tip: go back to the 2D plan if you find a layer that does not fit; the 3D view is meant as the final design check."
+    },
+    "topbar": { "2d": "2D plan · Floor {{floor}}", "3d": "3D project view · Floor {{floor}}" },
+    "status": { "plan": "Plan", "pieces": "Placed pieces", "budget": "Estimated budget", "clear": "New plan", "save": "Save plan", "load": "Load plan", "export": "Export", "emptyPieces": "No pieces placed", "emptyBudget": "No pieces placed.", "price": "Estimated price", "summary": { "pieces": "Total pieces", "area": "Area", "height": "Wall height" } },
+    "errors": { "noPieces": "No blocks or pillars are published in the database.", "loadFailed": "Could not load the blocks and pillars." },
+    "messages": { "initial": "Select a piece and place it on the 2D plan.", "selectAvailable": "Select an available piece before placing it.", "outOfBounds": "The piece does not fit inside the plan.", "collision": "That area already has a placed piece.", "needsSupport": "The piece needs support directly underneath.", "needsAccessorySupport": "The accessory needs to be on floor 0, have support underneath or full contact with a structural piece.", "doubleTapRemove": "Double-tap a piece to remove it.", "placed": "Piece placed on floor {{floor}}: {{name}}.", "removedWithDependents": "Piece removed along with the pieces that depended on it.", "removed": "Piece removed from the plan.", "layerAdjusted": "Layer adjusted +{{layers}} ({{cm}} cm).", "reset": "Plan reset.", "draftSaved": "Draft saved in the browser.", "draftMissing": "No saved draft yet.", "draftLoaded": "Draft loaded successfully.", "undo": "Last change undone.", "redo": "Last change redone.", "exported": "Plan exported as a JSON file." },
+    "previewDefault": "Placement preview",
+    "boardAria": "Editable 2D plan on floor {{floor}}. {{width}} by {{height}} meters.",
+    "viewSwitch": "Change view",
+    "fallbacks": { "piece": "Piece", "noDimensions": "no dimensions" }
+  },
+  "about": {
+    "eyebrow": "About SquareStruct",
+    "title": "Our story",
+    "intro1": "SquareStruct was born in the classroom, but looks toward real construction: a simple way to explore, compare and plan modular solutions before building.",
+    "intro2": "We want choosing stackable materials to feel clear and approachable, where every piece has a purpose inside the project the user imagines.",
+    "intro3": "Behind the platform there is practice, learning and teamwork: an academic idea turned into a useful tool to solve concrete needs.",
+    "raul": {
+      "name": "Raúl Martín",
+      "imageAlt": "Raúl Martín",
+      "teamAlt": "Raúl and Cristian",
+      "bio": "Raúl is passionate about video games and technology. He focused his training on systems and web development from his first steps, aiming to apply what he learned in real projects."
+    },
+    "cristian": {
+      "name": "Cristian Gil",
+      "imageAlt": "Cristian Gil",
+      "bio": "Cristian reinvented his career toward the technology sector. He focused his learning on web development and brings a practical background in systems and networks, aiming to create useful solutions for real projects."
+    }
+  },
+  "footer": {
+    "benefits": {
+      "shipping": { "title": "Fast shipping", "text": "Across the country" },
+      "quality": { "title": "Guaranteed quality", "text": "Certified materials" },
+      "support": { "title": "Personal support", "text": "We help you choose" },
+      "secure": { "title": "Secure purchase", "text": "Your data protected" }
+    },
+    "copy": "SquareStruct © 2026 · Academic modular construction project developed by Raúl Martín and Cristian Gil",
+    "ariaLabel": "SquareStruct information"
+  },
+  "auth": {
+    "login": { "title": "Log in", "subtitle": "Sign in with your email and password.", "email": "Email", "password": "Password", "submit": "Log in", "submitLoading": "Logging in...", "noAccount": "Don't have an account?", "toggle": "Sign up here" },
+    "register": { "title": "Create account", "subtitle": "Create your account to save your data and keep moving forward with the project.", "name": "First name", "firstSurname": "Last name", "email": "Email", "password": "Password", "confirmPassword": "Confirm password", "submit": "Create account", "submitLoading": "Creating account...", "hasAccount": "Already have an account?", "toggle": "Log in here" },
+    "placeholders": { "email": "you@email.com", "password": "********", "name": "Your first name", "firstSurname": "Your last name" },
+    "errors": { "loginMissing": "Fill in the email and password to log in.", "loginFailed": "Could not log in. Check your credentials.", "registerMissing": "Fill in all fields to create your account.", "registerName": "The name must have at least 3 characters.", "registerEmail": "Enter a valid email address.", "registerPassword": "The password must have at least 6 characters.", "registerMismatch": "Passwords do not match.", "registerFailed": "Could not create the account. Please try again.", "missingToken": "Authentication token was not received" },
+    "closeError": "Close error",
+    "closeModal": "Close modal"
+  },
+  "cart": {
+    "title": "My cart",
+    "close": "Close cart",
+    "empty": "Your cart is empty",
+    "hint": "Add products from the catalog to get started",
+    "type": "Type",
+    "reduce": "Decrease quantity",
+    "increase": "Increase quantity",
+    "remove": "Remove from cart",
+    "item": "{{count}} item",
+    "item_plural": "{{count}} items",
+    "continue": "Continue shopping",
+    "checkout": "Proceed to order"
+  },
+  "checkout": {
+    "title": "Complete purchase",
+    "summary": "Order summary",
+    "shippingLabel": "Shipping address *",
+    "shippingPlaceholder": "Ex: Main Street 123, 28001 Madrid, Spain",
+    "shippingHint": "Minimum 10 characters",
+    "paymentLabel": "Payment method *",
+    "paymentOptions": { "tarjeta": "Credit/debit card", "transferencia": "Bank transfer", "paypal": "PayPal", "efectivo": "Cash on delivery" },
+    "quantity": "Quantity: {{count}}",
+    "empty": "Your cart is empty",
+    "total": "Total:",
+    "cancel": "Cancel",
+    "submit": "Confirm order",
+    "submitLoading": "Processing...",
+    "errors": { "shippingRequired": "Please enter a shipping address", "shippingLength": "The address must be at least 10 characters long", "emptyCart": "The cart is empty", "unknown": "Unknown error", "createFailed": "Could not create the order. Please try again." },
+    "success": "Order created successfully! Your order is pending approval."
+  },
+  "settings": {
+    "tabs": { "perfil": "Profile", "facturas": "Invoices", "facturacion": "Billing", "usuarios": "Users", "planos": "Plans", "profile": "Profile", "invoices": "Invoices", "billing": "Billing", "users": "Users", "plans": "Plans" },
+    "headers": { "admin": "Administration", "private": "Private area", "billingTitle": "Billing", "billingText": "Manage invoices, statuses and the full order history.", "usersTitle": "Users", "usersText": "Manage accounts, roles and access from the admin area.", "adminText": "Access your profile and admin tools.", "privateText": "Manage your profile, invoices and tools from a single screen." },
+    "profile": { "loading": "Loading profile data...", "error": "Could not load the profile.", "protected": "Super admin account protected: editing and deleting are disabled.", "title": "Profile", "edit": "Edit data", "cancelEdit": "Cancel editing", "delete": "Delete account", "deleting": "Deleting...", "role": "Role", "name": "First name", "firstSurname": "Last name", "secondSurname": "Second surname", "email": "Email", "memberSince": "Member since", "formName": "First name", "formFirstSurname": "Last name", "formSecondSurname": "Second surname", "formEmail": "Email", "save": "Save changes", "saving": "Saving...", "updated": "Personal data updated successfully.", "updateError": "Could not update your data.", "superAdminEdit": "The super admin account cannot be edited.", "superAdminDelete": "The super admin account cannot be deleted.", "deleteConfirmTitle": "Delete account", "deleteConfirmText": "You are about to delete your account. Your orders will remain anonymized to preserve the company history.", "deleteSuccessTitle": "Account deleted", "deleteSuccessText": "Your account has been deleted successfully.", "deleteErrorTitle": "Could not delete", "deleteError": "Could not delete your account. Please try again.", "changePassword": "Change password", "logout": "Log out", "userLabel": "User", "roles": { "admin": "Administrator", "user": "User" } },
+    "users": { "adminOnly": "This option is available only to administrators.", "loading": "Loading users...", "title": "User management", "total": "Total: {{visible}} of {{total}}", "searchPlaceholder": "Search users...", "filterLabel": "Filter by role", "all": "All", "admin": "Admin", "users": "Users", "detail": "Details", "edit": "Edit", "delete": "Delete", "deleting": "Deleting...", "empty": "No users match the current filters", "table": { "name": "Name", "email": "Email", "role": "Role", "actions": "Actions" }, "superAdminEdit": "The super admin account cannot be edited.", "superAdminDelete": "The super admin account cannot be deleted.", "detailError": "Could not load the updated user details.", "updateSuccess": "{{name}} data updated successfully.", "updateError": "Could not update the user.", "deleteConfirmTitle": "Delete user", "deleteConfirmText": "You are about to delete {{name}}'s account. Their orders will remain anonymized in the history.", "deleteSuccessTitle": "User deleted", "deleteSuccessText": "{{name}}'s account has been deleted successfully.", "deleteErrorTitle": "Could not delete", "deleteError": "Could not delete the user. Please try again.", "editRole": "Edit role", "editRoleOwn": "You cannot edit your own role", "assignAdmin": "You are assigning administrator permissions to this user." },
+    "billing": { "loading": "Loading billing...", "searchPlaceholder": "Search customer...", "statusFilter": "Filter by status", "paymentFilter": "Filter by payment method", "all": "All", "pending": "Pending", "accepted": "Accepted", "rejected": "Rejected", "canceled": "Canceled", "reset": "Clear filters", "stats": { "totalIncome": "Revenue", "totalOrders": "Orders", "totalProducts": "Products", "averageTicket": "Average order value" }, "status": { "accepted": "Accepted", "pending": "Pending", "rejected": "Rejected", "canceled": "Canceled", "paid": "Paid", "shipped": "Shipped", "delivered": "Delivered" }, "updateSuccess": "Invoice updated successfully.", "updateError": "Could not update the invoice.", "table": { "order": "Order", "customer": "Customer", "date": "Date", "products": "Products", "payment": "Payment", "status": "Status", "total": "Total", "actions": "Actions" }, "view": "View details", "viewFullReport": "View full report", "results": "{{count}} results", "accept": "Accept", "deny": "Deny", "details": { "products": "Products", "shipping": "Shipping address", "close": "Close", "pendingDescription": "Waiting for approval", "acceptedDescription": "Order approved", "rejectedDescription": "Order rejected", "noAddress": "No shipping address" }, "orderWithItems": "Order #{{id}} with more items", "empty": "No invoices match the current filters." },
+    "plans": { "empty": "There are no saved plans yet. When you prepare designs, they will appear in this section." },
+    "orders": { "loading": "Loading orders...", "empty": "You don't have any invoices yet.", "emptyTitle": "You don't have any invoices yet", "loadError": "Could not load your invoices.", "title": "Invoices", "status": { "pendiente": "Pending", "aceptado": "Accepted", "denegado": "Rejected", "cancelado": "Canceled", "pagado": "Paid", "enviado": "Shipped", "entregado": "Delivered" }, "payment": { "tarjeta": "Card", "transferencia": "Transfer", "paypal": "PayPal", "efectivo": "Cash" } }
+  },
+  "billing": {
+    "loading": "Loading billing...",
+    "searchPlaceholder": "Search customer...",
+    "statusFilter": "Filter by status",
+    "paymentFilter": "Filter by payment method",
+    "all": "All",
+    "pending": "Pending",
+    "accepted": "Accepted",
+    "rejected": "Rejected",
+    "canceled": "Canceled",
+    "reset": "Clear filters",
+    "stats": { "totalIncome": "Revenue", "totalOrders": "Orders", "totalProducts": "Products", "averageTicket": "Average order value" },
+    "status": { "accepted": "Accepted", "pending": "Pending", "rejected": "Rejected", "canceled": "Canceled", "paid": "Paid", "shipped": "Shipped", "delivered": "Delivered" },
+    "updateSuccess": "Invoice updated successfully.",
+    "updateError": "Could not update the invoice.",
+    "table": { "order": "Order", "customer": "Customer", "date": "Date", "products": "Products", "payment": "Payment", "status": "Status", "total": "Total", "actions": "Actions" },
+    "view": "View details",
+    "accept": "Accept",
+    "deny": "Deny",
+    "details": { "products": "Products", "shipping": "Shipping address", "close": "Close", "pendingDescription": "Waiting for approval", "acceptedDescription": "Order approved", "rejectedDescription": "Order rejected", "noAddress": "No shipping address" },
+    "orderWithItems": "Order #{{id}} with more items",
+    "empty": "No invoices match the current filters."
+  },
+  "orders": { "loading": "Loading orders...", "empty": "You don't have any invoices yet.", "emptyTitle": "You don't have any invoices yet", "loadError": "Could not load your invoices.", "title": "Invoices", "status": { "pendiente": "Pending", "aceptado": "Accepted", "denegado": "Rejected", "cancelado": "Canceled", "pagado": "Paid", "enviado": "Shipped", "entregado": "Delivered" }, "payment": { "tarjeta": "Card", "transferencia": "Transfer", "paypal": "PayPal", "efectivo": "Cash" } },
+  "alerts": { "deleteTitle": "Delete item", "deleteText": "This action cannot be undone.", "deleteConfirm": "Delete", "cancel": "Cancel", "successTitle": "Action completed", "successText": "The operation was completed successfully.", "errorTitle": "Could not complete", "errorText": "Please try again.", "ok": "OK" }
+}

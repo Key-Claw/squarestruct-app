@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import Icon from '../../components/common/Icon'
 import { obtenerMisPedidos } from '../../services/orderService'
 import '../../styles/pages/settings/invoices.css'
+import { useTranslation } from 'react-i18next'
 
 /**
  * Componente Facturas - Página donde los usuarios ven sus órdenes/facturas
@@ -14,6 +15,7 @@ import '../../styles/pages/settings/invoices.css'
  * - Manejo de errores y estados de carga
  */
 function Invoices() {
+  const { t } = useTranslation()
   // ============================================================================
   // ESTADO DEL COMPONENTE
   // ============================================================================
@@ -32,20 +34,20 @@ function Invoices() {
   /**
    * Obtiene todas las órdenes del usuario autenticado.
    */
-  const cargarMisOrdenes = async () => {
+  const cargarMisOrdenes = useCallback(async () => {
     try {
       setIsLoading(true)
       setError('')
       const data = await obtenerMisPedidos()
       setOrdenes(data)
     } catch (err) {
-      const mensaje = err instanceof Error ? err.message : 'Error al cargar tus órdenes'
+      const mensaje = err instanceof Error ? err.message : t('orders.loadError')
       setError(mensaje)
       console.error('Error cargando órdenes:', err)
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [t])
 
   /**
    * Carga las órdenes del usuario cuando el componente se monta.
@@ -56,7 +58,7 @@ function Invoices() {
     })
 
     return () => window.cancelAnimationFrame(frameId)
-  }, [])
+  }, [cargarMisOrdenes])
 
   // ============================================================================
   // FUNCIONES AUXILIARES
@@ -101,14 +103,22 @@ function Invoices() {
    * @param {string} metodo - Método de pago
    * @returns {string} Nombre legible del método
    */
-  const getNombreMetodoPago = (metodo) => {
-    const metodos = {
-      tarjeta: 'Tarjeta',
-      transferencia: 'Transferencia',
-      paypal: 'PayPal',
-      efectivo: 'Efectivo'
-    }
-    return metodos[metodo?.toLowerCase()] || metodo
+  const getNombreMetodoPago = (metodo, metodoLabel) => {
+    if (!metodo) return metodoLabel || 'N/A'
+
+    const key = `orders.payment.${metodo.toLowerCase()}`
+    const translated = t(key)
+
+    return translated === key ? (metodoLabel || metodo) : translated
+  }
+
+  const getEstadoLabel = (estado, estadoLabel) => {
+    if (!estado) return estadoLabel || t('common.unknown')
+
+    const key = `orders.status.${estado}`
+    const translated = t(key)
+
+    return translated === key ? (estadoLabel || estado) : translated
   }
 
   // ============================================================================
@@ -120,15 +130,15 @@ function Invoices() {
       {/* ENCABEZADO */}
       <header className="facturas-header">
         <div>
-          <h1>Mis órdenes</h1>
-          <p>Historial de todas tus compras y facturas</p>
+          <h1>{t('orders.title')}</h1>
+          <p>{t('settings.headers.privateText')}</p>
         </div>
         <button 
           className="btn facturas-refresh-btn"
           onClick={cargarMisOrdenes}
           disabled={isLoading}
         >
-          {isLoading ? 'Actualizando...' : 'Actualizar'}
+          {isLoading ? t('billing.loading') : t('common.update')}
         </button>
       </header>
 
@@ -137,7 +147,7 @@ function Invoices() {
         <div className="facturas-alert facturas-alert-error">
           <span className="facturas-alert-icon"><Icon name="warning" size={18} /></span>
           <div>
-            <strong>Error</strong>
+            <strong>{t('common.error')}</strong>
             <p>{error}</p>
           </div>
         </div>
@@ -147,13 +157,13 @@ function Invoices() {
       {isLoading ? (
         <div className="facturas-loading">
           <div className="facturas-spinner"></div>
-          <p>Cargando tus órdenes...</p>
+          <p>{t('orders.loading')}</p>
         </div>
       ) : ordenes.length === 0 ? (
         <div className="facturas-empty-state">
           <div className="facturas-empty-icon">📦</div>
-          <h2>Aún no tienes órdenes</h2>
-          <p>Cuando realices tu primera compra, aparecerá aquí.</p>
+          <h2>{t('orders.emptyTitle')}</h2>
+          <p>{t('orders.empty')}</p>
         </div>
       ) : (
         <div className="facturas-container">
@@ -161,12 +171,12 @@ function Invoices() {
             <table className="facturas-table">
               <thead>
                 <tr>
-                  <th>ID Orden</th>
-                  <th>Fecha</th>
-                  <th>Total</th>
-                  <th>Método de Pago</th>
-                  <th>Dirección de Envío</th>
-                  <th>Estado</th>
+                  <th>{t('billing.table.order')}</th>
+                  <th>{t('billing.table.date')}</th>
+                  <th>{t('billing.table.total')}</th>
+                  <th>{t('billing.table.payment')}</th>
+                  <th>{t('billing.details.shipping')}</th>
+                  <th>{t('billing.table.status')}</th>
                 </tr>
               </thead>
               <tbody>
@@ -192,7 +202,7 @@ function Invoices() {
                     {/* Método de pago */}
                     <td className="facturas-metodo">
                       <span className="facturas-metodo-badge">
-                        {getNombreMetodoPago(orden.metodoPago)}
+                        {getNombreMetodoPago(orden.metodoPago, orden.metodoPagoLabel)}
                       </span>
                     </td>
 
@@ -206,7 +216,7 @@ function Invoices() {
                     {/* Estado */}
                     <td className="facturas-estado">
                       <span className={getEstadoClase(orden.estado)}>
-                        {orden.estado ? orden.estado.charAt(0).toUpperCase() + orden.estado.slice(1) : 'Desconocido'}
+                        {getEstadoLabel(orden.estado, orden.estadoLabel)}
                       </span>
                     </td>
                   </tr>
@@ -219,15 +229,15 @@ function Invoices() {
           <div className="facturas-legend">
             <div className="facturas-legend-item">
               <span className="facturas-legend-color pending"></span>
-              <span>Pendiente: A la espera de aprobación</span>
+              <span>{t('billing.status.pending')}: {t('billing.details.pendingDescription')}</span>
             </div>
             <div className="facturas-legend-item">
               <span className="facturas-legend-color accepted"></span>
-              <span>Aceptada: Orden aprobada</span>
+              <span>{t('billing.status.accepted')}: {t('billing.details.acceptedDescription')}</span>
             </div>
             <div className="facturas-legend-item">
               <span className="facturas-legend-color rejected"></span>
-              <span>Denegada: Orden rechazada</span>
+              <span>{t('billing.status.rejected')}: {t('billing.details.rejectedDescription')}</span>
             </div>
           </div>
         </div>

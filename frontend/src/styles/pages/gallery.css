@@ -1,4 +1,4 @@
-/* ============================================================================
+﻿/* ============================================================================
    PÁGINA GALERÍA - Proyectos con filtros, cards con overlays y proyecto destacado
    - gallery-page: Contenedor principal
    - gallery-intro-card: Card de introducción con imagen de fondo
@@ -573,7 +573,7 @@
   }
 }
 
-/* FASE 4: acabado v2 para galer�a */
+/* FASE 4: acabado V3 para galeria */
 .gallery-intro-card,
 .gallery-project-card,
 .gallery-feature-card,
@@ -803,6 +803,16 @@
   text-shadow: 0 2px 8px rgba(5, 18, 26, 0.78);
 }
 
+.gallery-project-card .gallery-card-overlay .gallery-project-description {
+  width: min(100%, 34ch);
+  max-width: 34ch;
+  margin-left: auto;
+  margin-right: 200px;
+  text-align: left;
+  text-align-last: left;
+  text-wrap: balance;
+}
+
 .gallery-project-card .gallery-card-overlay .gallery-area {
   color: var(--ss-green-100);
 }
@@ -998,6 +1008,70 @@
   }
 }
 
+/* Ajuste compacto compartido para las heroes de Catalogo, Galeria y Disenador. */
+.gallery-intro-card,
+.gallery-intro-copy,
+.gallery-intro-media,
+.gallery-intro-media .gallery-cover-image {
+  height: 220px;
+  min-height: 220px;
+}
+
+@media (min-width: 992px) {
+  .gallery-intro-copy {
+    padding-top: 36px;
+    padding-bottom: 18px;
+  }
+}
+
+@media (max-width: 991.98px) {
+  .gallery-intro-card,
+  .gallery-intro-copy,
+  .gallery-intro-media,
+  .gallery-intro-media .gallery-cover-image {
+    height: 220px;
+    min-height: 220px;
+  }
+}
+
+/* Recorte final de hero: elimina la franja inferior sobrante. */
+.gallery-intro-card,
+.gallery-intro-copy,
+.gallery-intro-media,
+.gallery-intro-media .gallery-cover-image {
+  height: 225px;
+  min-height: 225px;
+}
+
+.gallery-intro-card {
+  overflow: hidden;
+}
+
+.gallery-intro-media .gallery-cover-image {
+  object-position: center top;
+}
+
+.gallery-intro-actions {
+  bottom: 14px;
+}
+
+@media (min-width: 992px) {
+  .gallery-intro-copy {
+    padding-top: 30px;
+    padding-bottom: 16px;
+  }
+}
+
+@media (max-width: 991.98px) {
+  .gallery-intro-card,
+  .gallery-intro-copy,
+  .gallery-intro-media,
+  .gallery-intro-media .gallery-cover-image {
+    height: 225px;
+    min-height: 225px;
+  }
+}
+
 .gallery-feature-title-grid .gallery-badge {
   border-color: #ffffff;
   background: #ffffff;
@@ -1030,12 +1104,6 @@
 .gallery-feature-actions {
   align-self: end;
 }
-
-
-
-
-
-
 
 
 

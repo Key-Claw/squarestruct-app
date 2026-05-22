@@ -70,7 +70,7 @@ Esto significa que crear productos requiere:
 
 ## Controladores
 
-Los controladores contienen la logica actual de V2:
+Los controladores contienen la logica actual de V3:
 
 - consultas a `db`;
 - validaciones especificas de negocio;
@@ -103,7 +103,7 @@ Si algo falla, ejecuta rollback.
 
 ## Servicios Historicos
 
-`src/services/userService.js` y `src/services/productService.js` no siguen el estilo activo de V2: usan `require` y hacen referencia a un `db` que no forma parte del flujo ESM actual. Se consideran restos historicos del MVP y no deben documentarse como capa activa.
+`src/services/userService.js` y `src/services/productService.js` no siguen el estilo activo de V3: usan `require` y hacen referencia a un `db` que no forma parte del flujo ESM actual. Se consideran restos historicos del MVP y no deben documentarse como capa activa.
 
 ## Integracion Con Base De Datos
 

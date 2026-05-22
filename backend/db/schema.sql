@@ -105,3 +105,58 @@ CREATE INDEX idxDetallesIdProducto ON pedidoDetalles (idProducto);
 -- COMMIT finaliza la transaccion y guarda TODOS los cambios realizados desde BEGIN
 -- Si llega aqui sin errores, la BD quedara con todas las tablas e indices creados.
 COMMIT;
+
+
+
+-- =========================================================
+-- PROPUESTA - SCHEMA PLANOS
+-- =========================================================
+-- Estructura conceptual relacionada con el editor
+-- 2D/3D de SquareStruct v3.
+--
+-- Actualmente NO integrada en:
+-- - backend
+-- - frontend
+-- - API REST
+-- - schema.sql operativo
+-- - seeds.sql operativo
+--
+-- Su implementación real queda prevista para
+-- futuras actualizaciones del proyecto.
+-- =========================================================
+
+/*
+
+CREATE TABLE planos (
+    idPlano INT AUTO_INCREMENT,
+    nombre VARCHAR(150) NOT NULL,
+    descripcion VARCHAR(500),
+    metrosCuadrados DECIMAL(10,2) NOT NULL,
+    precioEstimado DECIMAL(12,2) NOT NULL DEFAULT 0,
+    datosJSON LONGTEXT NOT NULL,
+    fechaCreacion TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    fechaActualizacion TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    idUsuario INT NOT NULL,
+
+    CONSTRAINT pkPlanos PRIMARY KEY (idPlano),
+
+    CONSTRAINT chkPlanosMetros CHECK (
+        metrosCuadrados > 0
+    ),
+
+    CONSTRAINT chkPlanosPrecio CHECK (
+        precioEstimado >= 0
+    )
+) ENGINE=InnoDB;
+
+ALTER TABLE planos
+ADD CONSTRAINT fkPlanosUsuarios
+FOREIGN KEY (idUsuario)
+REFERENCES usuarios(idUsuario)
+ON UPDATE CASCADE
+ON DELETE CASCADE;
+
+CREATE INDEX idxPlanosIdUsuario
+ON planos(idUsuario);
+
+*/

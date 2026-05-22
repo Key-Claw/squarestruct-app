@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { getAllUsers, logoutUser, updateUser } from '../../services/authService'
 import '../../styles/pages/settings/users.css'
+import { useTranslation } from 'react-i18next'
 
 /**
  * Página de administración de usuarios (solo para admin).
@@ -9,6 +10,7 @@ import '../../styles/pages/settings/users.css'
  * @param {object} user - Datos del usuario autenticado (admin).
  */
 function Users({ onNavigate, user, onAuthExpired }) {
+  const { t, i18n } = useTranslation()
   // Lista de usuarios del sistema.
   const [usuarios, setUsuarios] = useState([])
   // Flag para mostrar spinner mientras se cargan datos.
@@ -35,7 +37,7 @@ function Users({ onNavigate, user, onAuthExpired }) {
         const data = await getAllUsers()
         setUsuarios(data)
       } catch (err) {
-        const message = err.message || 'No se pudo cargar la lista de usuarios.'
+        const message = err.message || t('settings.users.loading')
 
         if (message.includes('Token')) {
           if (typeof onAuthExpired === 'function') {
@@ -43,7 +45,7 @@ function Users({ onNavigate, user, onAuthExpired }) {
           } else {
             logoutUser()
           }
-          setError(`${message}. Vuelve a iniciar sesión como administrador.`)
+          setError(`${message}. ${t('settings.users.adminOnly')}`)
           return
         }
 
@@ -54,7 +56,7 @@ function Users({ onNavigate, user, onAuthExpired }) {
     }
 
     loadUsuarios()
-  }, [onAuthExpired])
+  }, [onAuthExpired, t])
 
   /**
    * Abre el modal para editar el rol de un usuario.
@@ -100,13 +102,13 @@ function Users({ onNavigate, user, onAuthExpired }) {
         )
       )
 
-      setSuccessMessage(`Rol de ${editingUsuario.nombre} actualizado a ${nuevoRol}.`)
+      setSuccessMessage(t('settings.users.updateSuccess', { name: editingUsuario.nombre }))
       handleCloseModal()
 
       // Limpiar mensaje de éxito después de 3 segundos
       setTimeout(() => setSuccessMessage(''), 3000)
     } catch {
-      setError('No se pudo actualizar el rol del usuario.')
+      setError(t('settings.users.updateError'))
     } finally {
       setIsEditLoading(false)
     }
@@ -127,8 +129,8 @@ function Users({ onNavigate, user, onAuthExpired }) {
   }
 
   const getRolText = (rol) => {
-    if (rol === 'admin') return 'ADMIN'
-    return 'USUARIO'
+    if (rol === 'admin') return t('settings.profile.roles.admin').toUpperCase()
+    return t('settings.profile.roles.user').toUpperCase()
   }
 
   /**
@@ -139,7 +141,7 @@ function Users({ onNavigate, user, onAuthExpired }) {
   const formatDate = (dateString) => {
     if (!dateString) return 'N/A'
     const date = new Date(dateString)
-    return date.toLocaleDateString('es-ES')
+    return date.toLocaleDateString(i18n.resolvedLanguage?.startsWith('en') ? 'en-US' : 'es-ES')
   }
 
   // Mostrar spinner mientras se carga
@@ -149,7 +151,7 @@ function Users({ onNavigate, user, onAuthExpired }) {
         <div className="container-fluid usuarios-container">
           <div className="text-center py-5">
             <div className="spinner-border text-success" role="status">
-              <span className="visually-hidden">Cargando...</span>
+              <span className="visually-hidden">{t('common.loading')}</span>
             </div>
           </div>
         </div>
@@ -175,13 +177,13 @@ function Users({ onNavigate, user, onAuthExpired }) {
               <div className="card-body p-4">
                 {/* Encabezado con título y botón de retorno. */}
                 <div className="d-flex justify-content-between align-items-center mb-4">
-                  <h2 className="fw-bold mb-0 text-uppercase">Gestión de usuarios</h2>
+                  <h2 className="fw-bold mb-0 text-uppercase">{t('settings.users.title')}</h2>
                   <button
                     type="button"
                     className="btn btn-outline-light btn-sm"
                     onClick={() => onNavigate('home')}
                   >
-                    ← Volver
+                    ← {t('common.back')}
                   </button>
                 </div>
 
@@ -193,7 +195,7 @@ function Users({ onNavigate, user, onAuthExpired }) {
                       type="button"
                       className="btn-close"
                       onClick={() => setError('')}
-                      aria-label="Cerrar"
+                      aria-label={t('common.close')}
                     ></button>
                   </div>
                 )}
@@ -206,7 +208,7 @@ function Users({ onNavigate, user, onAuthExpired }) {
                       type="button"
                       className="btn-close"
                       onClick={() => setSuccessMessage('')}
-                      aria-label="Cerrar"
+                      aria-label={t('common.close')}
                     ></button>
                   </div>
                 )}
@@ -216,11 +218,11 @@ function Users({ onNavigate, user, onAuthExpired }) {
                   <table className="table table-hover mb-0">
                     <thead>
                       <tr>
-                        <th>Nombre</th>
-                        <th>Correo electrónico</th>
-                        <th>Rol</th>
-                        <th>Miembro desde</th>
-                        <th>Acciones</th>
+                        <th>{t('settings.users.table.name')}</th>
+                        <th>{t('settings.users.table.email')}</th>
+                        <th>{t('settings.users.table.role')}</th>
+                        <th>{t('settings.profile.memberSince')}</th>
+                        <th>{t('settings.users.table.actions')}</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -248,11 +250,11 @@ function Users({ onNavigate, user, onAuthExpired }) {
                                 disabled={u.idUsuario === user.idUsuario}
                                 title={
                                   u.idUsuario === user.idUsuario
-                                    ? 'No puedes editar tu propio rol'
-                                    : 'Editar rol'
+                                    ? t('settings.users.editRoleOwn')
+                                    : t('settings.users.editRole')
                                 }
                               >
-                                Editar
+                                {t('settings.users.edit')}
                               </button>
                             </td>
                           </tr>
@@ -260,7 +262,7 @@ function Users({ onNavigate, user, onAuthExpired }) {
                       ) : (
                         <tr>
                           <td colSpan="5" className="text-center text-muted py-4">
-                            No hay usuarios registrados
+                            {t('settings.users.empty')}
                           </td>
                         </tr>
                       )}
@@ -270,7 +272,7 @@ function Users({ onNavigate, user, onAuthExpired }) {
 
                 {/* Información de resumen. */}
                 <div className="mt-3 text-muted">
-                  <small>Total de usuarios: {usuarios ? usuarios.length : 0}</small>
+                  <small>{t('settings.users.total', { visible: usuarios ? usuarios.length : 0, total: usuarios ? usuarios.length : 0 })}</small>
                 </div>
               </div>
             </div>
@@ -288,32 +290,32 @@ function Users({ onNavigate, user, onAuthExpired }) {
           <div className="modal-dialog modal-dialog-centered">
             <div className="modal-content usuarios-modal-content">
               <div className="modal-header">
-                <h5 className="modal-title">Editar rol de usuario</h5>
+                <h5 className="modal-title">{t('settings.users.edit')}</h5>
                 <button
                   type="button"
                   className="btn-close"
                   onClick={handleCloseModal}
                   disabled={isEditLoading}
-                  aria-label="Cerrar"
+                  aria-label={t('common.close')}
                 ></button>
               </div>
 
               <div className="modal-body">
                 {/* Información del usuario a editar. */}
                 <div className="mb-3">
-                  <label className="form-label text-muted">Nombre:</label>
+                  <label className="form-label text-muted">{t('settings.profile.formName')}:</label>
                   <p className="mb-0 fw-bold">{editingUsuario.nombre}</p>
                 </div>
 
                 <div className="mb-3">
-                  <label className="form-label text-muted">Correo electrónico:</label>
+                  <label className="form-label text-muted">{t('settings.profile.formEmail')}:</label>
                   <p className="mb-0">{editingUsuario.email}</p>
                 </div>
 
                 {/* Selector de nuevo rol. */}
                 <div className="mb-4">
-                  <label htmlFor="rolSelect" className="form-label text-muted">
-                    Nuevo rol:
+                    <label htmlFor="rolSelect" className="form-label text-muted">
+                    {t('settings.profile.role')}:
                   </label>
                   <select
                     id="rolSelect"
@@ -322,7 +324,7 @@ function Users({ onNavigate, user, onAuthExpired }) {
                     onChange={(e) => setNuevoRol(e.target.value)}
                     disabled={isEditLoading}
                   >
-                    <option value="usuario">Usuario</option>
+                    <option value="usuario">{t('settings.profile.roles.user')}</option>
                     <option value="admin">ADMIN</option>
                   </select>
                 </div>
@@ -330,7 +332,7 @@ function Users({ onNavigate, user, onAuthExpired }) {
                 {/* Aviso si se cambia a admin. */}
                 {nuevoRol === 'admin' && nuevoRol !== editingUsuario.rol && (
                   <div className="alert alert-warning alert-sm mb-3" role="alert">
-                    Estás asignando permisos de administrador a este usuario.
+                    {t('settings.users.assignAdmin')}
                   </div>
                 )}
               </div>
@@ -343,7 +345,7 @@ function Users({ onNavigate, user, onAuthExpired }) {
                   onClick={handleCloseModal}
                   disabled={isEditLoading}
                 >
-                  Cancelar
+                  {t('common.cancel')}
                 </button>
 
                 {/* Botón para guardar cambios. */}
@@ -353,7 +355,7 @@ function Users({ onNavigate, user, onAuthExpired }) {
                   onClick={handleSaveChanges}
                   disabled={isEditLoading}
                 >
-                  {isEditLoading ? 'Guardando...' : 'Guardar cambios'}
+                  {isEditLoading ? t('settings.profile.saving') : t('settings.profile.save')}
                 </button>
               </div>
             </div>

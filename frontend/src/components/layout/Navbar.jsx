@@ -1,5 +1,8 @@
 ﻿import { useState } from 'react'
 import { Link, NavLink } from 'react-router-dom'
+import { useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
+import i18n from '../../i18n'
 
 import Icon from '../common/Icon'
 import logo from '../../assets/logo/squarestruct-icon.png'
@@ -43,10 +46,15 @@ function Navbar({
   onOpenAuthModal,
   onOpenCartPanel,
 }) {
+  const { t } = useTranslation()
   const [searchValue, setSearchValue] = useState('')
-  const [language, setLanguage] = useState('ES')
-  const accountName = user?.nombre?.trim().split(/\s+/)[0] || 'Cuenta'
+  const currentLanguage = i18n.resolvedLanguage?.startsWith('en') ? 'en' : 'es'
+  const accountName = user?.nombre?.trim().split(/\s+/)[0] || t('account.guest')
   const mobileAccountName = accountName.length > 8 ? `${accountName.slice(0, 8)}.` : accountName
+
+  useEffect(() => {
+    document.documentElement.lang = currentLanguage
+  }, [currentLanguage])
 
   const handleSearch = () => {
     const term = normalizeSearchTerm(searchValue)
@@ -67,7 +75,15 @@ function Navbar({
   }
 
   const handleLanguageChange = (lang) => {
-    setLanguage(lang)
+    i18n.changeLanguage(lang)
+
+    if (typeof localStorage !== 'undefined') {
+      localStorage.setItem('squarestruct-lang', lang)
+    }
+
+    if (typeof document !== 'undefined') {
+      document.documentElement.lang = lang
+    }
   }
 
   const renderSearchForm = (className = '') => (
@@ -86,14 +102,14 @@ function Navbar({
         <input
           type="text"
           className="form-control navbar-search-input"
-          placeholder="Buscar en la web..."
-          aria-label="Buscar"
+          placeholder={t('search.placeholder')}
+          aria-label={t('search.ariaLabel')}
           value={searchValue}
           onChange={(event) => setSearchValue(event.target.value)}
         />
         <button className="btn navbar-search-btn" type="button" onClick={handleSearch}>
           <Icon name="search" className="navbar-search-button-icon" size={20} />
-          <span>Buscar</span>
+          <span>{t('search.button')}</span>
         </button>
       </div>
     </form>
@@ -105,12 +121,12 @@ function Navbar({
         <>
           <li>
             <button className="dropdown-item" onClick={() => onOpenAuthModal(true)}>
-              Iniciar sesión
+              {t('account.login')}
             </button>
           </li>
           <li>
             <button className="dropdown-item" onClick={() => onOpenAuthModal(false)}>
-              Crear cuenta
+              {t('account.register')}
             </button>
           </li>
         </>
@@ -119,7 +135,7 @@ function Navbar({
         <>
           <li>
             <button className="dropdown-item" onClick={() => onNavigate('settings')}>
-              Mi cuenta
+              {t('account.myAccount')}
             </button>
           </li>
           <li>
@@ -127,7 +143,7 @@ function Navbar({
           </li>
           <li>
             <button className="dropdown-item text-danger" onClick={handleLogout}>
-              Cerrar sesión
+              {t('account.logout')}
             </button>
           </li>
         </>
@@ -143,7 +159,7 @@ function Navbar({
             <Link
               className="navbar-brand square-navbar-brand d-flex align-items-center"
               to={MAIN_ROUTES.aboutus}
-              aria-label="Sobre nosotros"
+              aria-label={t('nav.aboutus')}
               onClick={() => onNavigate('aboutus')}
             >
               <img src={logo} alt="SquareStruct" className="navbar-logo" />
@@ -152,7 +168,7 @@ function Navbar({
             <Link
               className={`navbar-wordmark-btn${activePage === 'home' ? ' active' : ''}`}
               to={MAIN_ROUTES.home}
-              aria-label="Inicio"
+              aria-label={t('nav.home')}
               onClick={() => onNavigate('home')}
             >
               <img src={logoText} alt="SquareStruct" className="navbar-wordmark" />
@@ -161,7 +177,7 @@ function Navbar({
 
           {renderSearchForm('navbar-search-mobile')}
 
-          <div className="navbar-mobile-actions" aria-label="Acciones rápidas">
+          <div className="navbar-mobile-actions" aria-label={t('common.openMenu')}>
             <button
               className="navbar-toggler navbar-mobile-toggler"
               type="button"
@@ -169,7 +185,7 @@ function Navbar({
               data-bs-target="#mainNavbar"
               aria-controls="mainNavbar"
               aria-expanded="false"
-              aria-label="Toggle navigation"
+              aria-label={t('common.openMenu')}
             >
               <span className="navbar-toggler-icon"></span>
             </button>
@@ -177,8 +193,8 @@ function Navbar({
             <button
               className="btn navbar-action-btn"
               type="button"
-              aria-label="Carrito"
-              title="Carrito"
+              aria-label={t('cart.title')}
+              title={t('cart.title')}
               onClick={() => onOpenCartPanel()}
             >
               <Icon name="cart" className="cart-icon" size={22} />
@@ -187,11 +203,12 @@ function Navbar({
             <button
               className="btn navbar-action-btn navbar-language-btn"
               type="button"
-              onClick={() => handleLanguageChange(language === 'ES' ? 'EN' : 'ES')}
-              aria-label={language === 'ES' ? 'Idioma actual: español' : 'Idioma actual: inglés'}
+              onClick={() => handleLanguageChange(currentLanguage === 'es' ? 'en' : 'es')}
+              aria-label={currentLanguage === 'es' ? t('language.spanish') : t('language.english')}
+              aria-pressed={currentLanguage === 'en'}
             >
               <Icon name="globe" size={20} />
-              <span>{language}</span>
+              <span>{currentLanguage === 'es' ? t('language.spanishShort') : t('language.englishShort')}</span>
             </button>
           </div>
 
@@ -205,7 +222,7 @@ function Navbar({
                     onClick={() => onNavigate(item.id)}
                   >
                     <Icon name={item.icon} size={25} />
-                    <span>{item.label}</span>
+                    <span>{t(item.labelKey)}</span>
                   </NavLink>
                 </li>
               ))}
@@ -246,8 +263,8 @@ function Navbar({
                 <button
                   className="btn navbar-action-btn"
                   type="button"
-                  aria-label="Carrito"
-                  title="Carrito"
+                  aria-label={t('cart.title')}
+                  title={t('cart.title')}
                   onClick={() => onOpenCartPanel()}
                 >
                   <Icon name="cart" className="cart-icon" size={22} />
@@ -258,11 +275,12 @@ function Navbar({
                 <button
                   className="btn navbar-action-btn navbar-language-btn"
                   type="button"
-                  onClick={() => handleLanguageChange(language === 'ES' ? 'EN' : 'ES')}
-                  aria-label={language === 'ES' ? 'Idioma actual: español' : 'Idioma actual: inglés'}
+                  onClick={() => handleLanguageChange(currentLanguage === 'es' ? 'en' : 'es')}
+                  aria-label={currentLanguage === 'es' ? t('language.spanish') : t('language.english')}
+                  aria-pressed={currentLanguage === 'en'}
                 >
                   <Icon name="globe" size={22} />
-                  <span>{language}</span>
+                  <span>{currentLanguage === 'es' ? t('language.spanishShort') : t('language.englishShort')}</span>
                 </button>
               </li>
             </ul>

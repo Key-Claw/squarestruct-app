@@ -30,9 +30,9 @@ export const getSettingsRoute = (tab = 'perfil') => (
 )
 
 export const NAV_LINKS = [
-  { id: 'gallery', label: 'Galería', icon: 'image', path: MAIN_ROUTES.gallery },
-  { id: 'catalog', label: 'Catálogo', icon: 'cube', path: MAIN_ROUTES.catalog },
-  { id: 'design', label: 'Diseñador', icon: 'penTool', path: MAIN_ROUTES.design },
+  { id: 'gallery', labelKey: 'nav.gallery', icon: 'image', path: MAIN_ROUTES.gallery },
+  { id: 'catalog', labelKey: 'nav.catalog', icon: 'cube', path: MAIN_ROUTES.catalog },
+  { id: 'design', labelKey: 'nav.design', icon: 'penTool', path: MAIN_ROUTES.design },
 ]
 
 export const PAGE_BY_PATH = {

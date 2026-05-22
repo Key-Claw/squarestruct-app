@@ -43,7 +43,7 @@ Frontend
 2. El frontend solicita `GET /api/productos`.
 3. `productosController.getProductos` consulta productos y proveedores.
 4. El resultado se normaliza y se devuelve al frontend.
-5. Los filtros de V2 se aplican en cliente.
+5. Los filtros de V3 se aplican en cliente.
 
 ## Ejemplo: Checkout
 

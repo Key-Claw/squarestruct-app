@@ -8,21 +8,12 @@ Hay dos modos de uso:
 
 | Archivo | Uso | Servicios |
 | --- | --- | --- |
-| `docker-compose-dev.yml` | Desarrollo diario con backend y frontend en local | MySQL |
-| `docker-compose.yml` | Prueba del entorno completo en contenedores | MySQL, backend y frontend |
+| `docker-compose-dev.yml` | Desarrollo diario con backend/frontend en local | MySQL |
+| `docker-compose.yml` | Despliegue EC2 y prueba completa | nginx proxy, frontend, backend, MySQL |
 
-## Requisitos
+## Desarrollo Local Recomendado
 
-- Docker instalado.
-- Docker Desktop abierto si se usa Windows o macOS.
-- Repositorio clonado.
-- Node.js instalado si se usa el modo de desarrollo con `docker-compose-dev.yml`.
-
-## Desarrollo local recomendado
-
-Este modo levanta solo MySQL en Docker. El backend y el frontend se ejecutan en local con `npm run dev`, lo que permite ver cambios sin reconstruir imagenes.
-
-Desde la raiz del repositorio:
+Este modo levanta solo MySQL en Docker. Backend y frontend se ejecutan con `npm run dev`.
 
 ```bash
 docker compose -f docker/docker-compose-dev.yml up -d
@@ -44,221 +35,107 @@ npm install
 npm run dev
 ```
 
-Puertos en desarrollo:
+Puertos:
 
 ```text
 Frontend local: http://localhost:5173
 Backend local:  http://localhost:3000
-Health:         http://localhost:3000/api/health
-DB check:       http://localhost:3000/api/db-status
 MySQL Docker:   localhost:3306
 ```
 
-En este modo, `backend/.env` debe apuntar a MySQL local:
+## Entorno Completo Con Proxy
+
+Este modo es el que se usa para AWS EC2. Solo publica el puerto `80`.
+
+```bash
+cp docker/.env.example docker/.env
+docker compose -f docker/docker-compose.yml --env-file docker/.env up -d --build
+```
+
+Puertos:
 
 ```text
-DB_HOST=localhost
-DB_PORT=3306
-DB_USER=admin
-DB_PASSWORD=20doblajepuro37
-DB_NAME=squarestruct
+Frontend publico: http://localhost
+Backend publico:  http://localhost/api/health
+MySQL:            interno, sin puerto publico
 ```
 
-### Parar MySQL de desarrollo
+Servicios internos:
 
-```bash
-docker compose -f docker/docker-compose-dev.yml down
-```
+| Servicio | Puerto interno | Puerto publico |
+| --- | --- | --- |
+| `proxy` | `80` | `80` |
+| `frontend` | `80` | ninguno |
+| `backend` | `3000` | ninguno |
+| `mysql` | `3306` | ninguno |
 
-### Reiniciar la base de datos de desarrollo
+## Idea De Red
 
-Este comando borra el volumen de desarrollo y vuelve a cargar `schema.sql` y `seeds.sql`.
-
-```bash
-docker compose -f docker/docker-compose-dev.yml down -v
-docker compose -f docker/docker-compose-dev.yml up -d
-```
-
-## Entorno completo con Docker
-
-Este modo levanta frontend, backend y MySQL dentro de contenedores.
-
-```bash
-docker compose -f docker/docker-compose.yml up --build
-```
-
-Puertos en Docker completo:
+El navegador entra por nginx:
 
 ```text
-Frontend Docker: http://localhost:5174
-Backend Docker:  http://localhost:3001
-Health:          http://localhost:3001/api/health
-DB check:        http://localhost:3001/api/db-status
-MySQL Docker:    localhost:3307
+http://IP_EC2       -> proxy -> frontend
+http://IP_EC2/api   -> proxy -> backend
+backend -> mysql    -> red Docker interna
 ```
 
-Dentro de Docker, el backend se conecta a MySQL usando el nombre del servicio:
+Asi se evitan problemas de CORS y no se exponen directamente backend ni MySQL.
+
+## Variables
+
+Copia `docker/.env.example` como `docker/.env` y cambia secretos:
 
 ```text
-DB_HOST=mysql
-DB_PORT=3306
+MYSQL_ROOT_PASSWORD
+DB_NAME
+DB_USER
+DB_PASSWORD
+JWT_SECRET
+VITE_API_URL=
+CORS_ORIGIN=
 ```
 
-No se usa `localhost` dentro del contenedor porque `localhost` apuntaria al propio contenedor del backend.
+En produccion con nginx, `VITE_API_URL` debe quedarse vacio para que el frontend use `/api`.
 
-### Parar entorno completo
+## Comprobaciones
 
 ```bash
-docker compose -f docker/docker-compose.yml down
+docker compose -f docker/docker-compose.yml --env-file docker/.env ps
+docker compose -f docker/docker-compose.yml --env-file docker/.env logs proxy
+docker compose -f docker/docker-compose.yml --env-file docker/.env logs backend
+docker compose -f docker/docker-compose.yml --env-file docker/.env logs mysql
 ```
 
-### Reiniciar la base de datos del entorno completo
-
-```bash
-docker compose -f docker/docker-compose.yml down -v
-docker compose -f docker/docker-compose.yml up --build
-```
-
-## Comprobar contenedores
-
-Modo desarrollo:
-
-```bash
-docker compose -f docker/docker-compose-dev.yml ps
-```
-
-Modo completo:
-
-```bash
-docker compose -f docker/docker-compose.yml ps
-```
-
-Todos los contenedores:
-
-```bash
-docker ps -a
-```
-
-Volumenes:
-
-```bash
-docker volume ls
-```
-
-## Ver logs
-
-MySQL en desarrollo:
-
-```bash
-docker compose -f docker/docker-compose-dev.yml logs mysql
-```
-
-Todos los servicios del entorno completo:
-
-```bash
-docker compose -f docker/docker-compose.yml logs
-```
-
-Solo backend:
-
-```bash
-docker compose -f docker/docker-compose.yml logs backend
-```
-
-Solo frontend:
-
-```bash
-docker compose -f docker/docker-compose.yml logs frontend
-```
-
-Solo MySQL:
-
-```bash
-docker compose -f docker/docker-compose.yml logs mysql
-```
-
-## Acceso manual a MySQL
-
-```bash
-docker exec -it squarestruct-mysql mysql -uadmin -p
-```
-
-La contrasena local definida en los compose es:
+URLs:
 
 ```text
-20doblajepuro37
+http://localhost
+http://localhost/api/health
+http://localhost/api/db-status
 ```
 
-Comprobar tablas:
+## Persistencia
 
-```sql
-SHOW TABLES;
-```
+MySQL usa el volumen `squarestruct_mysql_data`.
 
-## Validacion recomendada
-
-En desarrollo local:
-
-```text
-http://localhost:5173
-http://localhost:3000/api/health
-http://localhost:3000/api/db-status
-```
-
-En entorno completo Docker:
-
-```text
-http://localhost:5174
-http://localhost:3001/api/health
-http://localhost:3001/api/db-status
-```
-
-Resultado esperado:
-
-- el frontend carga correctamente;
-- `/api/health` responde `OK`;
-- `/api/db-status` devuelve informacion de tablas y totales.
-
-## AWS
-
-Esta configuracion Docker sirve como base local y como referencia para un despliegue futuro, pero AWS requerira revisar:
-
-- variables de entorno;
-- secretos;
-- red y puertos;
-- HTTPS;
-- persistencia de datos;
-- backups.
-
-En un despliegue real, lo mas razonable seria separar servicios:
-
-```text
-Frontend -> S3/CloudFront o contenedor
-Backend  -> ECS, EC2, App Runner u otro servicio
-MySQL    -> Amazon RDS
-```
-
-## Problemas comunes
-
-### Los cambios de schema.sql o seeds.sql no aparecen
-
-MySQL solo ejecuta los scripts iniciales cuando el volumen esta vacio. Reinicie con `down -v` en el modo que este usando.
-
-### El backend no conecta con MySQL
-
-Revise `DB_HOST`:
-
-- desarrollo local con `docker-compose-dev.yml`: `localhost`;
-- backend dentro de `docker-compose.yml`: `mysql`.
-
-### Error al descargar imagenes
-
-Si aparece `context deadline exceeded`, suele ser un problema temporal de red. Puede reintentar o descargar primero la imagen:
+Reiniciar sin borrar datos:
 
 ```bash
-docker pull mysql:8.4
+docker compose -f docker/docker-compose.yml --env-file docker/.env down
+docker compose -f docker/docker-compose.yml --env-file docker/.env up -d --build
 ```
 
-## Idea clave
+Reiniciar desde cero:
 
-Para desarrollo diario, use `docker-compose-dev.yml`. Para comprobar que todo el proyecto puede arrancar en contenedores, use `docker-compose.yml`.
+```bash
+docker compose -f docker/docker-compose.yml --env-file docker/.env down -v
+docker compose -f docker/docker-compose.yml --env-file docker/.env up -d --build
+```
+
+## HTTPS Futuro
+
+El compose deja comentado el puerto `443`. Para activarlo hacen falta certificados y un bloque SSL en `docker/nginx/nginx.conf`.
+
+## Como Defenderlo
+
+Docker empaqueta cada capa. nginx es la entrada publica, React queda como estatico, Express queda interno y MySQL no se publica. Es una solucion simple y defendible para DAW.

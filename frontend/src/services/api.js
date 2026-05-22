@@ -6,6 +6,44 @@
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || '/api'
 
+const getPreferredLanguage = () => {
+  if (typeof localStorage !== 'undefined') {
+    const storedLanguage = localStorage.getItem('squarestruct-lang')
+    if (storedLanguage === 'es' || storedLanguage === 'en') {
+      return storedLanguage
+    }
+  }
+
+  if (typeof document !== 'undefined') {
+    const documentLanguage = document.documentElement?.lang?.toLowerCase()
+    const shortLanguage = documentLanguage ? documentLanguage.slice(0, 2) : ''
+    if (shortLanguage === 'es' || shortLanguage === 'en') {
+      return shortLanguage
+    }
+  }
+
+  if (typeof navigator !== 'undefined') {
+    const navigatorLanguage = navigator.language?.toLowerCase().slice(0, 2)
+    if (navigatorLanguage === 'es' || navigatorLanguage === 'en') {
+      return navigatorLanguage
+    }
+  }
+
+  return 'es'
+}
+
+const appendLanguage = (endpoint) => {
+  const language = getPreferredLanguage()
+
+  if (/[?&]lang=/.test(endpoint)) {
+    return endpoint
+  }
+
+  return endpoint.includes('?')
+    ? `${endpoint}&lang=${encodeURIComponent(language)}`
+    : `${endpoint}?lang=${encodeURIComponent(language)}`
+}
+
 /**
  * Obtiene los headers por defecto para las peticiones JSON.
  * Si existe un token de autenticación en localStorage, lo incluye en el header Authorization.
@@ -14,6 +52,7 @@ const API_BASE_URL = import.meta.env.VITE_API_URL || '/api'
 const getHeaders = () => {
   const headers = {
     'Content-Type': 'application/json',
+    'Accept-Language': getPreferredLanguage(),
   }
 
   // Obtener token de localStorage si existe
@@ -51,7 +90,7 @@ const handleResponse = async (response) => {
  */
 export const getRequest = async (endpoint) => {
   // Petición de lectura para listados y consultas simples.
-  const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+  const response = await fetch(`${API_BASE_URL}${appendLanguage(endpoint)}`, {
     method: 'GET',
     headers: getHeaders(),
   })
@@ -67,7 +106,7 @@ export const getRequest = async (endpoint) => {
  */
 export const postRequest = async (endpoint, payload) => {
   // Petición de creación, usada en formularios de alta o login.
-  const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+  const response = await fetch(`${API_BASE_URL}${appendLanguage(endpoint)}`, {
     method: 'POST',
     headers: getHeaders(),
     body: JSON.stringify(payload),
@@ -84,7 +123,7 @@ export const postRequest = async (endpoint, payload) => {
  */
 export const putRequest = async (endpoint, payload) => {
   // Petición de actualización para editar recursos existentes.
-  const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+  const response = await fetch(`${API_BASE_URL}${appendLanguage(endpoint)}`, {
     method: 'PUT',
     headers: getHeaders(),
     body: JSON.stringify(payload),
@@ -100,7 +139,7 @@ export const putRequest = async (endpoint, payload) => {
  */
 export const deleteRequest = async (endpoint) => {
   // Petición de borrado para acciones administrativas o limpieza.
-  const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+  const response = await fetch(`${API_BASE_URL}${appendLanguage(endpoint)}`, {
     method: 'DELETE',
     headers: getHeaders(),
   })
@@ -116,7 +155,7 @@ export const deleteRequest = async (endpoint) => {
  */
 export const patchRequest = async (endpoint, payload) => {
   // Petición de actualización parcial, usada para cambios específicos sin reemplazar toda la entidad.
-  const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+  const response = await fetch(`${API_BASE_URL}${appendLanguage(endpoint)}`, {
     method: 'PATCH',
     headers: getHeaders(),
     body: JSON.stringify(payload),

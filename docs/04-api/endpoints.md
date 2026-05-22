@@ -30,7 +30,7 @@ Registro:
   "nombre": "Ana",
   "primerApellido": "Gomez",
   "email": "ana@example.com",
-  "contrasena": "12345678"
+  "contrasena": "Hola123!"
 }
 ```
 
@@ -39,7 +39,7 @@ Login por email:
 ```json
 {
   "email": "ana@example.com",
-  "contrasena": "12345678"
+  "contrasena": "Hola123!"
 }
 ```
 
@@ -83,7 +83,7 @@ Producto:
 
 ## Pedidos
 
-Rutas definidas en `backend/src/routes/pedidos.js`. Estan montadas tanto en `/api/pedidos` como en `/api/orders`. El frontend V2 usa el alias `/api/orders` desde `frontend/src/services/orderService.js`.
+Rutas definidas en `backend/src/routes/pedidos.js`. Estan montadas tanto en `/api/pedidos` como en `/api/orders`. El frontend V3 usa el alias `/api/orders` desde `frontend/src/services/orderService.js`.
 
 | Metodo | Ruta | Proteccion | Uso |
 | --- | --- | --- | --- |

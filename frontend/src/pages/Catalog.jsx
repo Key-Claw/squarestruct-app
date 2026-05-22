@@ -5,11 +5,14 @@ import CatalogProductCard from '../components/catalog/CatalogProductCard'
 import catalogHeroImage from '../assets/catalog/catalog-hero.webp'
 import { productosDemo } from '../data/productosDemo'
 import { getProductos, filtrarProductos } from '../services/productService'
+import { getCatalogDisplayName } from '../utils/catalogLocalization'
 import { normalizarProducto } from '../utils/text'
+import { useTranslation } from 'react-i18next'
+import i18n from '../i18n'
 
 const CATALOG_VISIBLE_PRODUCTS = 8
 const MATERIAL_ALL = 'todos'
-const MATERIAL_HORMIGON = 'Hormigon'
+const MATERIAL_HORMIGON = 'hormigon'
 
 const normalizeCatalogText = (value) => (
   String(value || '')
@@ -18,7 +21,17 @@ const normalizeCatalogText = (value) => (
     .toLowerCase()
 )
 
+const getCatalogTypeLabel = (type, t) => {
+  const normalizedType = normalizeCatalogText(type)
+
+  if (normalizedType === 'bloque') return t('catalog.types.bloque')
+  if (normalizedType === 'pilar') return t('catalog.types.pilar')
+  return type || t('catalog.types.product')
+}
+
 function Catalog({ onNavigate, onAddToCart, searchTerm = '', initialSection = '' }) {
+  const { t } = useTranslation()
+  const catalogLanguage = i18n.resolvedLanguage || i18n.language
   const resultsBarRef = useRef(null)
   const [productos, setProductos] = useState([])
   const [cargando, setCargando] = useState(true)
@@ -40,14 +53,14 @@ function Catalog({ onNavigate, onAddToCart, searchTerm = '', initialSection = ''
         const data = await getProductos()
         setProductos(Array.isArray(data) ? data.map(normalizarProducto) : [])
       } catch (err) {
-        setError(err.message || 'No se pudieron cargar los productos')
+        setError(err.message || i18n.t('catalog.loading'))
       } finally {
         setCargando(false)
       }
     }
 
     cargarProductos()
-  }, [])
+  }, [catalogLanguage])
 
   useEffect(() => {
     if (initialSection === 'productos') {
@@ -109,7 +122,12 @@ function Catalog({ onNavigate, onAddToCart, searchTerm = '', initialSection = ''
   const productosCatalogo = useMemo(() => (
     (productos.length > 0 ? productos : productosDemo)
       .filter((product) => product.tipo?.toLowerCase() !== 'plano')
-  ), [productos])
+      .map((product) => ({
+        ...product,
+        nombreOriginal: product.nombre,
+        nombre: getCatalogDisplayName(product.nombre, catalogLanguage) || product.nombre,
+      }))
+  ), [catalogLanguage, productos])
 
   const categorias = useMemo(() => {
     const resumen = productosCatalogo.reduce((acc, product) => {
@@ -119,14 +137,14 @@ function Catalog({ onNavigate, onAddToCart, searchTerm = '', initialSection = ''
     }, {})
 
     return [
-      { id: 'todos', label: 'Productos', count: productosCatalogo.length },
+      { id: 'todos', label: t('catalog.materials.all'), count: productosCatalogo.length },
       ...Object.entries(resumen).map(([label, count]) => ({
-        id: label.toLowerCase(),
-        label,
+        id: normalizeCatalogText(label),
+        label: getCatalogTypeLabel(label, t),
         count,
       })),
     ]
-  }, [productosCatalogo])
+  }, [productosCatalogo, t])
 
   const precioMaxCatalogo = Math.max(1, ...productosCatalogo.map((product) => Number(product.precio) || 0))
   const precioMaxActivo = precioMax ?? Math.ceil(precioMaxCatalogo)
@@ -209,11 +227,11 @@ function Catalog({ onNavigate, onAddToCart, searchTerm = '', initialSection = ''
       <header className="card catalog-heading">
         <div className="catalog-heading-copy">
           <div className="catalog-heading-title">
-            <p className="catalog-eyebrow">Materiales modulares</p>
-            <h1>Catálogo de productos</h1>
+            <p className="catalog-eyebrow">{t('catalog.eyebrow')}</p>
+            <h1>{t('catalog.title')}</h1>
           </div>
           <div className="catalog-heading-text">
-            <p>Explora bloques y pilares. Soluciones modulares para la construcción de hogares.</p>
+            <p>{t('catalog.intro')}</p>
           </div>
         </div>
         <div className="catalog-heading-media" aria-hidden="true">
@@ -228,7 +246,7 @@ function Catalog({ onNavigate, onAddToCart, searchTerm = '', initialSection = ''
         aria-expanded={mobileFiltersOpen}
         aria-controls="catalogFilters"
       >
-        Abrir filtros
+        {t('catalog.openFilters')}
       </button>
 
       <div
@@ -256,14 +274,14 @@ function Catalog({ onNavigate, onAddToCart, searchTerm = '', initialSection = ''
           <div className="col-12 col-md-9 col-xl-10 catalog-content">
             <div className="card catalog-results-bar" ref={resultsBarRef}>
               <div className="catalog-results-count">
-                {productosFiltrados.length} productos encontrados
+                {t('catalog.results', { count: productosFiltrados.length })}
               </div>
 
               <div className="d-flex gap-2 catalog-results-actions">
                 <input
                   type="text"
                   className="form-control catalog-search-input"
-                  placeholder="Buscar productos..."
+                  placeholder={t('catalog.searchPlaceholder')}
                   value={busqueda}
                   onChange={handleSearchChange}
                   onKeyDown={(event) => {
@@ -279,26 +297,26 @@ function Catalog({ onNavigate, onAddToCart, searchTerm = '', initialSection = ''
                     className="btn btn-outline-dark catalog-back-button"
                     onClick={handleResetSearch}
                   >
-                    Revertir
+                    {t('catalog.resetSearch')}
                   </button>
                 )}
 
-                <span>Ordenar por:</span>
+                <span>{t('catalog.sortBy')}</span>
                 <select
                   className="form-select catalog-sort-select"
-                  aria-label="Ordenar catálogo"
+                  aria-label={t('catalog.sortAria')}
                   value={orden}
                   onChange={handleOrderChange}
                 >
-                  <option value="reciente">Más reciente</option>
-                  <option value="precio-menor">Precio menor</option>
-                  <option value="precio-mayor">Precio mayor</option>
+                  <option value="reciente">{t('catalog.sort.recent')}</option>
+                  <option value="precio-menor">{t('catalog.sort.priceLow')}</option>
+                  <option value="precio-mayor">{t('catalog.sort.priceHigh')}</option>
                 </select>
 
                 <button
                   type="button"
                   className={`btn catalog-view-btn${viewMode === 'grid' ? ' active' : ''}`}
-                  aria-label="Vista cuadrícula"
+                  aria-label={t('catalog.viewGrid')}
                   aria-pressed={viewMode === 'grid'}
                   onClick={() => setViewMode('grid')}
                 >
@@ -307,7 +325,7 @@ function Catalog({ onNavigate, onAddToCart, searchTerm = '', initialSection = ''
                 <button
                   type="button"
                   className={`btn catalog-view-btn${viewMode === 'list' ? ' active' : ''}`}
-                  aria-label="Vista lista"
+                  aria-label={t('catalog.viewList')}
                   aria-pressed={viewMode === 'list'}
                   onClick={() => setViewMode('list')}
                 >
@@ -318,13 +336,13 @@ function Catalog({ onNavigate, onAddToCart, searchTerm = '', initialSection = ''
 
             {cargando && (
               <div className="text-center py-5 catalog-state">
-                Cargando productos...
+                {t('catalog.loading')}
               </div>
             )}
 
             {error && (
               <div className="alert alert-warning catalog-demo-alert text-center">
-                No se pudo conectar con la base de datos. Mostrando productos provisionales.
+                {t('catalog.demoError')}
               </div>
             )}
 
@@ -338,12 +356,12 @@ function Catalog({ onNavigate, onAddToCart, searchTerm = '', initialSection = ''
 
             {!cargando && productosFiltrados.length === 0 && (
               <div className="text-center catalog-state mt-4">
-                No se encontraron productos con esa búsqueda.
+                {t('catalog.empty')}
               </div>
             )}
 
             {!cargando && productosFiltrados.length > CATALOG_VISIBLE_PRODUCTS && (
-              <nav className="catalog-pagination" aria-label="Paginación catálogo">
+              <nav className="catalog-pagination" aria-label={t('catalog.pagination')}>
                 <ul className="pagination pagination-sm">
                   {Array.from({ length: totalPaginas }, (_, index) => index + 1).map((pageNumber) => (
                     <li className={`page-item${pageNumber === paginaSegura ? ' active' : ''}`} key={pageNumber}>
