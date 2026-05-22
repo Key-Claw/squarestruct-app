@@ -26,7 +26,7 @@ const startServer = async () => {
     console.warn('⚠️ Servidor iniciado sin conexión a la base de datos');
   }
 
-  app.listen(PORT, () => {
+  app.listen(PORT, '0.0.0.0', () => {
     console.log(`Servidor backend escuchando en el puerto ${PORT}`);
   });
 };
