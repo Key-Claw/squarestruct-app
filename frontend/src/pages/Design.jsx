@@ -312,9 +312,9 @@ function Design() {
                 <div className="design-piece-empty">{t('design.loadingPieces')}</div>
               )}
 
-              {!editor.isLoadingPieces && editor.piecesError && editor.activeCategory !== 'accesorios' && (
-                <div className="design-piece-empty">{editor.piecesError}</div>
-              )}
+            {!editor.isLoadingPieces && editor.piecesError && editor.activeCategory !== 'accesorios' && (
+              <div className="design-piece-empty">{editor.piecesError}</div>
+            )}
 
               {!editor.isLoadingPieces && !editor.visiblePieces.length && !editor.piecesError && (
                 <div className="design-piece-empty">{t('design.noPieces')}</div>
@@ -398,6 +398,7 @@ function Design() {
                 gridColumns={editor.gridColumns}
                 gridRows={editor.gridRows}
                 isPanMode={isPanMode}
+                onBoardMessage={editor.setStatusMessage}
                 panBoard={editor.panBoard}
                 placements={editor.placements}
                 placePiece={editor.placePiece}

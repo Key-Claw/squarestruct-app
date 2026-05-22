@@ -370,7 +370,7 @@ function useDesignEditor() {
   const placementsRef = useRef(initialPlacements)
   const [activeFloor, setActiveFloor] = useState(draft?.activeFloor || 0)
   const [viewMode, setViewMode] = useState('2d')
-  const [viewZoom, setViewZoom] = useState(INITIAL_VIEW_ZOOM)
+  const [viewZoom, setViewZoom] = useState(() => getDefaultViewZoom())
   const [is3DGridVisible, setIs3DGridVisible] = useState(true)
   const [threeCameraResetKey, setThreeCameraResetKey] = useState(0)
   const [threeCameraState, setThreeCameraState] = useState(null)
@@ -653,6 +653,8 @@ function useDesignEditor() {
   }
 
   const resetView = () => {
+    setViewZoom(getDefaultViewZoom())
+
     if (viewMode === '3d') {
       setThreeCameraState(null)
       setThreeCameraResetKey((current) => current + 1)
@@ -702,6 +704,7 @@ function useDesignEditor() {
     setIsRotated,
     setMaterialFilter,
     setSelectedPieceId,
+    setStatusMessage,
     setViewMode,
     setThreeCameraState,
     undo,

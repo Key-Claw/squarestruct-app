@@ -26,6 +26,7 @@ function Viewer3D({
         camera={{ position: [distance * 0.7, distance * 0.62, distance], fov: 44 }}
         dpr={[1, 1.6]}
         gl={{ antialias: true, alpha: false }}
+        resize={{ scroll: false }}
       >
         <Scene
           activeFloor={activeFloor}

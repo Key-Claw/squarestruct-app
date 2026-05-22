@@ -131,8 +131,7 @@ function CameraDistance({
     initializedRef.current = true
     skipNextZoomRef.current = isFirstRun
     lastResetSignalRef.current = resetSignal
-    saveCameraState()
-  }, [camera, resetSignal, saveCameraState])
+  }, [camera, resetSignal])
 
   useEffect(() => {
     if (!initializedRef.current) return
