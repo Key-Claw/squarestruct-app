@@ -965,6 +965,10 @@
   min-height: 225px;
 }
 
+html[lang^="en"] .catalog-page {
+  --ss-hero-copy-x: clamp(12px, 2vw, 34px);
+}
+
 .catalog-heading {
   overflow: hidden;
 }

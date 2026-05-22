@@ -316,6 +316,24 @@ function Design() {
               ))}
             </div>
 
+            {editor.visiblePieces.length > 0 && (
+              <label className="design-piece-mobile-select d-lg-none">
+                <span>{t('design.pieceSelector')}</span>
+                <select
+                  className="form-select"
+                  value={editor.selectedPiece?.id || ''}
+                  aria-label={t('design.pieceSelector')}
+                  onChange={(event) => editor.setSelectedPieceId(event.target.value)}
+                >
+                  {editor.visiblePieces.map((piece) => (
+                    <option key={piece.id} value={piece.id}>
+                      {piece.name} · {piece.size}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            )}
+
             {editor.activeCategory !== 'accesorios' && (
               <div className="design-material-filter" aria-label={t('design.materialFilter')}>
                 <button
