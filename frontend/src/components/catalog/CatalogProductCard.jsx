@@ -2,6 +2,7 @@ import bloqueEcoImage from '../../assets/catalog/bloque-eco.webp'
 import bloqueHormigonImage from '../../assets/catalog/bloque-hormigon.webp'
 import pilarEcoImage from '../../assets/catalog/pilar-eco.webp'
 import pilarHormigonImage from '../../assets/catalog/pilar-hormigon.webp'
+import { useTranslation } from 'react-i18next'
 
 const formatCatalogText = (value) => (
   String(value || '')
@@ -16,6 +17,14 @@ const normalizeCatalogText = (value) => (
     .toLowerCase()
 )
 
+const getCatalogTypeLabel = (type, t) => {
+  const normalizedType = normalizeCatalogText(type)
+
+  if (normalizedType === 'bloque') return t('catalog.types.bloque')
+  if (normalizedType === 'pilar') return t('catalog.types.pilar')
+  return type || t('catalog.types.product')
+}
+
 const getCatalogProductImage = (product) => {
   const type = normalizeCatalogText(product.tipo)
   const material = normalizeCatalogText(product.material)
@@ -29,9 +38,15 @@ const getCatalogProductImage = (product) => {
 }
 
 function CatalogProductCard({ product, onAddProduct }) {
-  const tipo = formatCatalogText(product.tipo || 'Producto')
-  const material = formatCatalogText(product.material || 'Sin material')
-  const descripcion = formatCatalogText(product.descripcion || 'Sin descripcion disponible.')
+  const { t } = useTranslation()
+  const tipo = getCatalogTypeLabel(product.tipo, t)
+  const normalizedMaterial = normalizeCatalogText(product.material)
+  const material = normalizedMaterial.includes('hormigon')
+    ? t('catalog.materials.hormigon')
+    : normalizedMaterial.includes('plastico') || normalizedMaterial.includes('reciclable') || normalizedMaterial.includes('eco')
+      ? t('catalog.materials.eco')
+      : formatCatalogText(product.material || t('catalog.card.noMaterial'))
+  const descripcion = formatCatalogText(product.descripcion || t('catalog.card.noDescription'))
   const productImage = getCatalogProductImage(product)
   const dimensiones = [product.largo, product.ancho, product.alto]
     .map((value) => Number(value))
@@ -54,12 +69,12 @@ function CatalogProductCard({ product, onAddProduct }) {
         </strong>
         <dl className="catalog-product-meta">
           <div>
-            <dt>Material</dt>
+            <dt>{t('catalog.card.material')}</dt>
             <dd>{material}</dd>
           </div>
           {dimensiones && (
             <div>
-              <dt>Dimensiones</dt>
+              <dt>{t('catalog.card.dimensions')}</dt>
               <dd>{dimensiones}</dd>
             </div>
           )}
@@ -70,7 +85,7 @@ function CatalogProductCard({ product, onAddProduct }) {
             className="btn catalog-add-btn"
             onClick={() => onAddProduct(product)}
           >
-            Anadir
+            {t('catalog.card.add')}
           </button>
         </div>
       </div>

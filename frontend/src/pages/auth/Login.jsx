@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { loginUser } from '../../services/authService'
+import { useTranslation } from 'react-i18next'
 
 /**
  * Página de login - formulario para iniciar sesión con email y contraseña.
@@ -8,6 +9,7 @@ import { loginUser } from '../../services/authService'
  * @param {function} onUserLogin - Callback al hacer login exitoso, recibe datos del usuario.
  */
 function Login({ onNavigate, onUserLogin }) {
+  const { t } = useTranslation()
   // Email ingresado en el formulario.
   const [email, setEmail] = useState('')
   // Contraseña ingresada en el formulario.
@@ -27,7 +29,7 @@ function Login({ onNavigate, onUserLogin }) {
     
       // Validación básica de campos (email + contraseña).
       if (!email || !contrasena) {
-        setError('Completa el correo y la contraseña para iniciar sesión.')
+          setError(t('auth.errors.loginMissing'))
         return
       }
 
@@ -49,7 +51,7 @@ function Login({ onNavigate, onUserLogin }) {
       onNavigate('home')
     } catch (err) {
       // Mostrar error al usuario.
-      setError(err.message || 'No se pudo iniciar sesión. Revisa tus credenciales.')
+      setError(err.message || t('auth.errors.loginFailed'))
     } finally {
       setIsLoading(false)
     }
@@ -70,8 +72,8 @@ function Login({ onNavigate, onUserLogin }) {
               <div className="card-body p-4 p-md-5 text-center">
                 <div className="mb-md-4 mt-md-2 pb-3">
                   {/* Título y descripción de la pantalla de acceso. */}
-                  <h2 className="fw-bold mb-2 text-uppercase">Iniciar sesión</h2>
-                  <p className="text-white-50 mb-4">Accede con tu correo electrónico y contraseña.</p>
+                  <h2 className="fw-bold mb-2 text-uppercase">{t('auth.login.title')}</h2>
+                  <p className="text-white-50 mb-4">{t('auth.login.subtitle')}</p>
 
                   {/* Mostrar mensaje de error si ocurre. */}
                   {error && (
@@ -81,7 +83,7 @@ function Login({ onNavigate, onUserLogin }) {
                         type="button"
                         className="btn-close"
                         onClick={() => setError('')}
-                        aria-label="Cerrar"
+                        aria-label={t('common.close')}
                       ></button>
                     </div>
                   )}
@@ -103,7 +105,7 @@ function Login({ onNavigate, onUserLogin }) {
                         disabled={isLoading}
                       />
                       <label className="form-label" htmlFor="typeEmailX">
-                        Correo electrónico
+                        {t('auth.login.email')}
                       </label>
                     </div>
 
@@ -120,7 +122,7 @@ function Login({ onNavigate, onUserLogin }) {
                         disabled={isLoading}
                       />
                       <label className="form-label" htmlFor="typePasswordX">
-                        Contraseña
+                        {t('auth.login.password')}
                       </label>
                     </div>
 
@@ -130,7 +132,7 @@ function Login({ onNavigate, onUserLogin }) {
                       type="submit"
                       disabled={isLoading}
                     >
-                      {isLoading ? 'Accediendo...' : 'Iniciar sesión'}
+                        {isLoading ? t('auth.login.submitLoading') : t('auth.login.submit')}
                     </button>
                   </form>
                 </div>
@@ -138,14 +140,14 @@ function Login({ onNavigate, onUserLogin }) {
                 {/* Enlace para cambiar al formulario de registro. */}
                 <div className="login-footer">
                   <p className="mb-0">
-                    ¿Aún no tienes cuenta?{' '}
+                    {t('auth.login.noAccount')}{' '}
                     <button
                       type="button"
                       className="btn btn-link text-white-50 fw-bold p-0"
                       onClick={() => onNavigate('register')}
                       disabled={isLoading}
                     >
-                      Registrarse
+                      {t('auth.login.toggle')}
                     </button>
                   </p>
                 </div>

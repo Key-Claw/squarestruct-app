@@ -1,5 +1,6 @@
 // Controlador para productos
 import { db } from '../app.js';
+import { getLocaleFromRequest, getLocalizedMessage, localizeProduct } from '../utils/localization.js';
 
 /**
  * Corrige texto con mojibake típico de una mala decodificación UTF-8/latin1.
@@ -35,6 +36,8 @@ const normalizarProducto = (producto) => ({
 
 export const getProductos = async (req, res) => {
   try {
+    const locale = getLocaleFromRequest(req);
+
     const [rows] = await db.query(`
       SELECT
         p.*,
@@ -44,15 +47,22 @@ export const getProductos = async (req, res) => {
       FROM productos p
       JOIN proveedores pr ON p.idProveedor = pr.idProveedor
     `);
-    res.json(rows.map(normalizarProducto));
+    res.json(rows.map(normalizarProducto).map((producto) => localizeProduct(producto, locale)));
   } catch (error) {
-    res.status(500).json({ error: 'Error al obtener productos', detalle: error.message });
+    res.status(500).json({
+      error: getLocalizedMessage(getLocaleFromRequest(req), {
+        es: 'Error al obtener productos',
+        en: 'Error while fetching products'
+      }),
+      detalle: error.message
+    });
   }
 };
 
 export const getProductoById = async (req, res) => {
   try {
     const { id } = req.params;
+    const locale = getLocaleFromRequest(req);
 
     const [rows] = await db.query(
       `SELECT
@@ -70,14 +80,21 @@ export const getProductoById = async (req, res) => {
       return res.status(404).json({ error: 'Producto no encontrado' });
     }
 
-    res.json(normalizarProducto(rows[0]));
+    res.json(localizeProduct(normalizarProducto(rows[0]), locale));
   } catch (error) {
-    res.status(500).json({ error: 'Error al obtener el producto', detalle: error.message });
+    res.status(500).json({
+      error: getLocalizedMessage(getLocaleFromRequest(req), {
+        es: 'Error al obtener el producto',
+        en: 'Error while fetching the product'
+      }),
+      detalle: error.message
+    });
   }
 };
 
 export const crearProducto = async (req, res) => {
   try {
+    const locale = getLocaleFromRequest(req);
     const { nombre, descripcion, precio, tipo, material, alto, ancho, largo, idProveedor } = req.body;
 
     if (!nombre || precio === undefined || !material || alto === undefined || ancho === undefined || largo === undefined || !idProveedor) {
@@ -94,12 +111,18 @@ export const crearProducto = async (req, res) => {
     );
 
     res.status(201).json({
-      mensaje: 'Producto creado correctamente',
+      mensaje: getLocalizedMessage(locale, {
+        es: 'Producto creado correctamente',
+        en: 'Product created successfully'
+      }),
       idProducto: result.insertId
     });
   } catch (error) {
     res.status(500).json({
-      error: 'Error al crear el producto',
+      error: getLocalizedMessage(getLocaleFromRequest(req), {
+        es: 'Error al crear el producto',
+        en: 'Error while creating the product'
+      }),
       detalle: error.message
     });
   }
@@ -108,6 +131,7 @@ export const crearProducto = async (req, res) => {
 export const actualizarProducto = async (req, res) => {
   try {
     const { id } = req.params;
+    const locale = getLocaleFromRequest(req);
     const { nombre, descripcion, precio, tipo, material, alto, ancho, largo, idProveedor } = req.body;
 
     const [result] = await db.query(
@@ -121,10 +145,18 @@ export const actualizarProducto = async (req, res) => {
       return res.status(404).json({ error: 'Producto no encontrado' });
     }
 
-    res.json({ mensaje: 'Producto actualizado correctamente' });
+    res.json({
+      mensaje: getLocalizedMessage(locale, {
+        es: 'Producto actualizado correctamente',
+        en: 'Product updated successfully'
+      })
+    });
   } catch (error) {
     res.status(500).json({
-      error: 'Error al actualizar el producto',
+      error: getLocalizedMessage(getLocaleFromRequest(req), {
+        es: 'Error al actualizar el producto',
+        en: 'Error while updating the product'
+      }),
       detalle: error.message
     });
   }
@@ -133,6 +165,7 @@ export const actualizarProducto = async (req, res) => {
 export const eliminarProducto = async (req, res) => {
   try {
     const { id } = req.params;
+    const locale = getLocaleFromRequest(req);
 
     const [result] = await db.query(
       'DELETE FROM productos WHERE idProducto = ?',
@@ -143,10 +176,18 @@ export const eliminarProducto = async (req, res) => {
       return res.status(404).json({ error: 'Producto no encontrado' });
     }
 
-    res.json({ mensaje: 'Producto eliminado correctamente' });
+    res.json({
+      mensaje: getLocalizedMessage(locale, {
+        es: 'Producto eliminado correctamente',
+        en: 'Product deleted successfully'
+      })
+    });
   } catch (error) {
     res.status(409).json({
-      error: 'No se puede eliminar el producto porque está asociado a un pedido',
+      error: getLocalizedMessage(getLocaleFromRequest(req), {
+        es: 'No se puede eliminar el producto porque está asociado a un pedido',
+        en: 'The product cannot be deleted because it is linked to an order'
+      }),
       detalle: error.message
     });
   }

@@ -121,7 +121,7 @@ export const loginUser = async ({ email, nombre, primerApellido, contraseña, co
       return userData
     }
 
-    throw new Error('No se recibió token de autenticación')
+    throw new Error('Authentication token was not received')
   } catch (error) {
     if (error instanceof Error) throw error
     throw new Error(String(error), { cause: error })

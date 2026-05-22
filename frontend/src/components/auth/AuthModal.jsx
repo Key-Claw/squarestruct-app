@@ -3,9 +3,11 @@ import LoginForm from './LoginForm'
 import RegisterForm from './RegisterForm'
 import { loginUser, registerUser } from '../../services/authService'
 import { isValidEmail } from '../../utils/validators'
+import { useTranslation } from 'react-i18next'
 import '../../styles/components/auth/auth-modal.css'
 
 function AuthModal({ isOpen, isLoginMode, onClose, onToggleMode, onUserLogin, onNavigate }) {
+  const { t } = useTranslation()
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
   const [loginEmail, setLoginEmail] = useState('')
@@ -23,7 +25,7 @@ function AuthModal({ isOpen, isLoginMode, onClose, onToggleMode, onUserLogin, on
     const password = loginPassword.trim()
 
     if (!email || !password) {
-      setError('Completa el correo y la contraseña para iniciar sesión.')
+      setError(t('auth.errors.loginMissing'))
       return
     }
 
@@ -38,7 +40,7 @@ function AuthModal({ isOpen, isLoginMode, onClose, onToggleMode, onUserLogin, on
       onClose()
       onNavigate('home')
     } catch (err) {
-      setError(err.message || 'No se pudo iniciar sesión. Revisa tus credenciales.')
+      setError(err.message || t('auth.errors.loginFailed'))
     } finally {
       setIsLoading(false)
     }
@@ -54,27 +56,27 @@ function AuthModal({ isOpen, isLoginMode, onClose, onToggleMode, onUserLogin, on
     const confirmPassword = registerConfirmPassword.trim()
 
     if (!nombre || !primerApellido || !email || !password || !confirmPassword) {
-      setError('Completa todos los campos para crear tu cuenta.')
+      setError(t('auth.errors.registerMissing'))
       return
     }
 
     if (nombre.length < 3) {
-      setError('El nombre debe tener al menos 3 caracteres.')
+      setError(t('auth.errors.registerName'))
       return
     }
 
     if (!isValidEmail(email)) {
-      setError('Introduce un correo electrónico válido.')
+      setError(t('auth.errors.registerEmail'))
       return
     }
 
     if (password.length < 6) {
-      setError('La contraseña debe tener al menos 6 caracteres.')
+      setError(t('auth.errors.registerPassword'))
       return
     }
 
     if (password !== confirmPassword) {
-      setError('Las contraseñas no coinciden.')
+      setError(t('auth.errors.registerMismatch'))
       return
     }
 
@@ -93,7 +95,7 @@ function AuthModal({ isOpen, isLoginMode, onClose, onToggleMode, onUserLogin, on
       onClose()
       onNavigate('home')
     } catch (err) {
-      setError(err.message || 'No se pudo crear la cuenta. Inténtalo de nuevo.')
+      setError(err.message || t('auth.errors.registerFailed'))
     } finally {
       setIsLoading(false)
     }

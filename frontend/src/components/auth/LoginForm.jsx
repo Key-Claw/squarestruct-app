@@ -1,4 +1,5 @@
 import AuthErrorMessage from './AuthErrorMessage'
+import { useTranslation } from 'react-i18next'
 
 function LoginForm({
   email,
@@ -12,22 +13,24 @@ function LoginForm({
   onClose,
   onClearError
 }) {
+  const { t } = useTranslation()
+
   return (
     <div className="auth-modal-card auth-modal-login">
       <div className="auth-modal-header">
-        <h2>Iniciar sesión</h2>
+        <h2>{t('auth.login.title')}</h2>
         <button
           type="button"
           className="auth-modal-close-btn"
           onClick={onClose}
-          aria-label="Cerrar modal"
+          aria-label={t('auth.closeModal')}
         >
           X
         </button>
       </div>
 
       <p className="auth-modal-subtitle">
-        Accede con tu correo electrónico y contraseña.
+        {t('auth.login.subtitle')}
       </p>
 
       <AuthErrorMessage error={error} onClear={onClearError} />
@@ -35,12 +38,12 @@ function LoginForm({
       <form onSubmit={onSubmit} className="auth-modal-form">
         <div className="auth-modal-fields">
           <div className="auth-modal-form-group">
-            <label htmlFor="login-email">Correo</label>
+            <label htmlFor="login-email">{t('auth.login.email')}</label>
             <input
               id="login-email"
               type="email"
               className="auth-modal-input"
-              placeholder="tu@email.com"
+              placeholder={t('auth.placeholders.email')}
               value={email}
               autoComplete="username"
               onChange={(e) => onEmailChange(e.target.value)}
@@ -49,12 +52,12 @@ function LoginForm({
           </div>
 
           <div className="auth-modal-form-group">
-            <label htmlFor="login-password">Contraseña</label>
+            <label htmlFor="login-password">{t('auth.login.password')}</label>
             <input
               id="login-password"
               type="password"
               className="auth-modal-input"
-              placeholder="********"
+              placeholder={t('auth.placeholders.password')}
               value={password}
               autoComplete="current-password"
               onChange={(e) => onPasswordChange(e.target.value)}
@@ -69,19 +72,19 @@ function LoginForm({
             className="auth-modal-submit-btn"
             disabled={isLoading}
           >
-            {isLoading ? 'Iniciando sesión...' : 'Iniciar sesión'}
+            {isLoading ? t('auth.login.submitLoading') : t('auth.login.submit')}
           </button>
 
           <div className="auth-modal-footer">
             <p>
-              ¿No tienes cuenta?{' '}
+              {t('auth.login.noAccount')}{' '}
               <button
                 type="button"
                 className="auth-modal-toggle-btn"
                 onClick={onToggleMode}
                 disabled={isLoading}
               >
-                Regístrate aquí
+                {t('auth.login.toggle')}
               </button>
             </p>
           </div>
