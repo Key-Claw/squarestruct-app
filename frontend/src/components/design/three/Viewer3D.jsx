@@ -1,4 +1,5 @@
 import { Canvas } from '@react-three/fiber'
+import { useTranslation } from 'react-i18next'
 import Scene from './scene/Scene'
 
 function Viewer3D({
@@ -15,6 +16,7 @@ function Viewer3D({
   savedCameraState = null,
   viewZoom = 0.58,
 }) {
+  const { t } = useTranslation()
   const gridMax = Math.max(gridColumns, gridRows)
   const baseDistance = Math.max(22, gridMax * gridCellSizeMeters * 1.15)
   const distance = baseDistance / viewZoom
@@ -40,6 +42,7 @@ function Viewer3D({
           placements={placements}
           resetSignal={resetSignal}
           savedCameraState={savedCameraState}
+          pieceFallbackName={t('design.fallbacks.piece')}
           viewZoom={viewZoom}
         />
       </Canvas>

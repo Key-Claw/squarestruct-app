@@ -25,7 +25,7 @@ function getProjectTopLayer(placements, designPieces, layerHeight) {
   }, 0)
 }
 
-function resolveBlocks(placements, designPieces, gridColumns, gridRows, cellSize, activeFloor, layerHeight) {
+function resolveBlocks(placements, designPieces, gridColumns, gridRows, cellSize, activeFloor, layerHeight, fallbackName) {
   if (!placements.length) {
     return []
   }
@@ -43,7 +43,7 @@ function resolveBlocks(placements, designPieces, gridColumns, gridRows, cellSize
 
       return {
         id: placement.id,
-        label: piece?.name || 'Pieza',
+        label: piece?.name || fallbackName,
         material: piece?.material || '',
         color: piece?.color || '#7e8993',
         modelType: piece?.modelType || '',
@@ -268,6 +268,7 @@ function Scene({
   isGridVisible,
   layerHeightMeters,
   onCameraStateChange,
+  pieceFallbackName = 'Piece',
   placements,
   resetSignal,
   savedCameraState,
@@ -275,7 +276,16 @@ function Scene({
 }) {
   const cellSize = gridCellSizeMeters
   const layerHeight = layerHeightMeters || cellSize
-  const blocks = resolveBlocks(placements, designPieces, gridColumns, gridRows, cellSize, activeFloor, layerHeight)
+  const blocks = resolveBlocks(
+    placements,
+    designPieces,
+    gridColumns,
+    gridRows,
+    cellSize,
+    activeFloor,
+    layerHeight,
+    pieceFallbackName,
+  )
   const gridWidth = gridColumns * cellSize
   const gridDepth = gridRows * cellSize
   const gridSize = Math.max(gridWidth, gridDepth)

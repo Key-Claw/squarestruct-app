@@ -9,6 +9,7 @@ import {
   gridColumns,
   gridRows,
   layerHeightMeters,
+  localizeDesignPiece,
   mapProductToDesignPiece,
 } from './designEditorData'
 
@@ -450,7 +451,10 @@ function useDesignEditor() {
     }
   }, [activeI18n.language, t])
 
-  const designPieces = useMemo(() => [...dbPieces, ...accessoryPieces], [dbPieces])
+  const designPieces = useMemo(
+    () => [...dbPieces, ...accessoryPieces].map((piece) => localizeDesignPiece(piece, t)),
+    [dbPieces, t],
+  )
 
   const visiblePieces = useMemo(
     () => designPieces.filter((piece) => {
@@ -492,6 +496,7 @@ function useDesignEditor() {
     return {
       ...candidate,
       isValid: validation.ok,
+      message: validation.messageKey ? t(validation.messageKey) : t('design.previewDefault'),
       messageKey: validation.messageKey,
     }
   }

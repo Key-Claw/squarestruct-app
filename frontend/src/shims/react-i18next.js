@@ -31,10 +31,10 @@ export function I18nextProvider({ children, i18n: providedI18n = i18next }) {
 export function useTranslation(namespace = 'common') {
   const context = useContext(I18nContext)
   const activeI18n = context?.i18n || i18next
-  const [, setTick] = useState(0)
+  const [, setVersion] = useState(0)
 
   useEffect(() => {
-    const rerender = () => setTick((current) => current + 1)
+    const rerender = () => setVersion((current) => current + 1)
 
     activeI18n.on('languageChanged', rerender)
     activeI18n.on('loaded', rerender)
@@ -45,7 +45,11 @@ export function useTranslation(namespace = 'common') {
     }
   }, [activeI18n])
 
-  const t = useMemo(() => (key, options) => activeI18n.t(key, { ns: namespace, ...options }), [activeI18n, namespace])
+  const language = activeI18n.resolvedLanguage || activeI18n.language
+  const t = useMemo(
+    () => (key, options) => activeI18n.t(key, { ns: namespace, ...options, lng: language }),
+    [activeI18n, language, namespace],
+  )
 
   return {
     t,

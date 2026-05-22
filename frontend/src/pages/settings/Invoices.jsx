@@ -104,15 +104,21 @@ function Invoices() {
    * @returns {string} Nombre legible del método
    */
   const getNombreMetodoPago = (metodo, metodoLabel) => {
-    if (metodoLabel) return metodoLabel
+    if (!metodo) return metodoLabel || 'N/A'
 
-    const metodos = {
-      tarjeta: t('orders.payment.tarjeta'),
-      transferencia: t('orders.payment.transferencia'),
-      paypal: t('orders.payment.paypal'),
-      efectivo: t('orders.payment.efectivo')
-    }
-    return metodos[metodo?.toLowerCase()] || metodo
+    const key = `orders.payment.${metodo.toLowerCase()}`
+    const translated = t(key)
+
+    return translated === key ? (metodoLabel || metodo) : translated
+  }
+
+  const getEstadoLabel = (estado, estadoLabel) => {
+    if (!estado) return estadoLabel || t('common.unknown')
+
+    const key = `orders.status.${estado}`
+    const translated = t(key)
+
+    return translated === key ? (estadoLabel || estado) : translated
   }
 
   // ============================================================================
@@ -210,7 +216,7 @@ function Invoices() {
                     {/* Estado */}
                     <td className="facturas-estado">
                       <span className={getEstadoClase(orden.estado)}>
-                        {orden.estadoLabel || (orden.estado ? t(`orders.status.${orden.estado}`) || orden.estado : t('common.unknown'))}
+                        {getEstadoLabel(orden.estado, orden.estadoLabel)}
                       </span>
                     </td>
                   </tr>

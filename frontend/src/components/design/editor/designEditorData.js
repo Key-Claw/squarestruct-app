@@ -41,6 +41,49 @@ const getProductColor = (product) => {
   return material.includes('plastico') || material.includes('eco') ? '#7fbe52' : '#9ca6af'
 }
 
+const translateIfAvailable = (t, key) => {
+  if (typeof t !== 'function') return ''
+
+  const value = t(key)
+  return value && value !== key ? value : ''
+}
+
+export const getDesignPieceDisplayName = (piece, t) => {
+  const fallbackName = translateIfAvailable(t, 'design.fallbacks.piece') || 'Pieza'
+
+  if (!piece) return fallbackName
+
+  const nameKey = piece.nameKey || (piece.source === 'local' && piece.modelType
+    ? `design.accessoryNames.${piece.modelType}`
+    : '')
+
+  if (nameKey) {
+    return translateIfAvailable(t, nameKey)
+      || piece.name
+      || fallbackName
+  }
+
+  return piece.name || fallbackName
+}
+
+export const getDesignPieceDisplayMaterial = (piece, t) => {
+  if (!piece) return ''
+
+  const materialKey = piece.materialKey || (piece.source === 'local' ? 'design.localModel' : '')
+
+  if (materialKey) {
+    return translateIfAvailable(t, materialKey) || piece.material || ''
+  }
+
+  return piece.material || ''
+}
+
+export const localizeDesignPiece = (piece, t) => ({
+  ...piece,
+  material: getDesignPieceDisplayMaterial(piece, t),
+  name: getDesignPieceDisplayName(piece, t),
+})
+
 export const mapProductToDesignPiece = (product) => {
   const category = getProductCategory(product)
 
@@ -68,8 +111,10 @@ export const accessoryPieces = [
   {
     id: 'accessory-door-basic',
     category: 'accesorios',
-    name: 'Puerta',
-    material: 'Accesorio local',
+    name: '',
+    nameKey: 'design.accessoryNames.door',
+    material: '',
+    materialKey: 'design.localModel',
     size: '90 x 10 x 210 cm',
     price: 0,
     color: '#a67c52',
@@ -82,8 +127,10 @@ export const accessoryPieces = [
   {
     id: 'accessory-window-basic',
     category: 'accesorios',
-    name: 'Ventana',
-    material: 'Accesorio local',
+    name: '',
+    nameKey: 'design.accessoryNames.window',
+    material: '',
+    materialKey: 'design.localModel',
     size: '100 x 10 x 120 cm',
     price: 0,
     color: '#8fb8d8',
@@ -96,8 +143,10 @@ export const accessoryPieces = [
   {
     id: 'accessory-stairs-basic',
     category: 'accesorios',
-    name: 'Escalera',
-    material: 'Accesorio local',
+    name: '',
+    nameKey: 'design.accessoryNames.stairs',
+    material: '',
+    materialKey: 'design.localModel',
     size: '120 x 80 x 80 cm',
     price: 0,
     color: '#b9a782',
@@ -110,8 +159,10 @@ export const accessoryPieces = [
   {
     id: 'accessory-floor-basic',
     category: 'accesorios',
-    name: 'Suelo',
-    material: 'Accesorio local',
+    name: '',
+    nameKey: 'design.accessoryNames.floor',
+    material: '',
+    materialKey: 'design.localModel',
     size: '100 x 100 x 10 cm',
     price: 0,
     color: '#d7d0c4',

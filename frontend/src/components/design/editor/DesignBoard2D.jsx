@@ -1,9 +1,10 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 const DOUBLE_TAP_REMOVE_MS = 420
 const DOUBLE_TAP_SLOP_PX = 18
 
-function getPlacementLabel(piece) {
+function getPlacementLabel(piece, t) {
   if (!piece) return 'PZ'
 
   const sizeLabel = String(piece.size || '')
@@ -12,7 +13,7 @@ function getPlacementLabel(piece) {
 
   if (sizeLabel) return sizeLabel
 
-  const initials = String(piece.name || 'Pieza')
+  const initials = String(piece.name || t('design.fallbacks.piece'))
     .split(/\s+/)
     .filter(Boolean)
     .map((word) => word[0])
@@ -91,6 +92,7 @@ function DesignBoard2D({
   viewZoom,
   zoomByWheel,
 }) {
+  const { t } = useTranslation()
   const stageRef = useRef(null)
   const dragRef = useRef(null)
   const lastFilledTapRef = useRef(null)
@@ -167,7 +169,7 @@ function DesignBoard2D({
     }
 
     if (event.pointerType !== 'mouse') {
-      onBoardMessage?.('Toca dos veces una pieza para quitarla.')
+      onBoardMessage?.('design.messages.doubleTapRemove')
     }
 
     return true
@@ -420,7 +422,11 @@ function DesignBoard2D({
       <div
         className="design-board-grid"
         role="grid"
-        aria-label={`Plano 2D editable de la capa ${activeFloor}. ${gridColumns * gridCellSizeMeters} por ${gridRows * gridCellSizeMeters} metros.`}
+        aria-label={t('design.boardAria', {
+          floor: activeFloor,
+          height: gridRows * gridCellSizeMeters,
+          width: gridColumns * gridCellSizeMeters,
+        })}
         onClick={handleBoardClick}
         onContextMenu={handleBoardContextMenu}
         onPointerDown={handlePointerDown}
@@ -473,7 +479,7 @@ function DesignBoard2D({
           <div
             className={`design-placement-preview${hoverPreview.isValid ? ' is-valid' : ' is-invalid'}`}
             aria-hidden="true"
-            title={hoverPreview.message || 'Vista previa de colocacion'}
+            title={hoverPreview.message || t('design.previewDefault')}
             style={{
               left: `${(hoverPreview.column / gridColumns) * 100}%`,
               top: `${(hoverPreview.row / gridRows) * 100}%`,
@@ -496,7 +502,7 @@ function DesignBoard2D({
               <div
                 className="design-placement"
                 key={placement.id}
-                title={`${piece?.name || 'Pieza'} · ${piece?.size || 'sin medidas'}`}
+                title={`${piece?.name || t('design.fallbacks.piece')} - ${piece?.size || t('design.fallbacks.noDimensions')}`}
                 style={{
                   '--label-fit': String(labelFit),
                   '--piece-color': piece?.color || '#6b7280',
@@ -507,7 +513,7 @@ function DesignBoard2D({
                   height: `${(placement.height / gridRows) * 100}%`,
                 }}
               >
-                <span>{getPlacementLabel(piece)}</span>
+                <span>{getPlacementLabel(piece, t)}</span>
               </div>
             )
           })}
