@@ -21,6 +21,7 @@ const MATERIAL_HORMIGON = 'hormigon'
 const MATERIAL_ECO = 'eco'
 
 const t = (key, options) => i18n.t(key, options)
+const getDefaultViewZoom = () => INITIAL_VIEW_ZOOM
 
 const normalizeMaterial = (value) => (
   String(value || '')
