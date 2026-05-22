@@ -43,8 +43,6 @@ function Catalog({ onNavigate, onAddToCart, searchTerm = '', initialSection = ''
   const [viewMode, setViewMode] = useState('grid')
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false)
 
-  // Re-fetch products when the i18n language changes.
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     const cargarProductos = async () => {
       try {
@@ -60,7 +58,7 @@ function Catalog({ onNavigate, onAddToCart, searchTerm = '', initialSection = ''
     }
 
     cargarProductos()
-  }, [i18n.language])
+  }, [])
 
   useEffect(() => {
     if (initialSection === 'productos') {

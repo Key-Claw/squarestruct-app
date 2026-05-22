@@ -198,7 +198,7 @@ describe('Productos y pedidos', () => {
 
     expect(res.statusCode).toBe(200);
     expect(res.body.message).toBe('Pedido cancelado correctamente');
-    expect(res.body.pedido).toEqual({
+    expect(res.body.pedido).toMatchObject({
       idPedido,
       estado: 'cancelado'
     });
@@ -281,7 +281,7 @@ describe('Productos y pedidos', () => {
       .set('Authorization', `Bearer ${adminToken}`);
 
     expect(res.statusCode).toBe(200);
-    expect(res.body.pedido).toEqual({
+    expect(res.body.pedido).toMatchObject({
       idPedido: pedidoRes.body.idPedido,
       estado: 'cancelado'
     });

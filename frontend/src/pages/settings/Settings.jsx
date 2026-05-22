@@ -262,7 +262,7 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange, o
     }
 
     loadUserProfile()
-  }, [activeTab, user])
+  }, [activeTab, t, user])
 
   useEffect(() => {
     if (!isAdminUser || activeTab !== 'usuarios') return
@@ -294,7 +294,7 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange, o
     }
 
     loadUsuarios()
-  }, [activeTab, isAdminUser, onAuthExpired])
+  }, [activeTab, isAdminUser, onAuthExpired, t])
 
   useEffect(() => {
     if (activeTab !== 'facturas') return
@@ -314,7 +314,7 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange, o
     }
 
     loadFacturas()
-  }, [activeTab])
+  }, [activeTab, t])
 
   useEffect(() => {
     if (!isAdminUser || activeTab !== 'facturacion') return
@@ -344,7 +344,7 @@ function Settings({ user, initialTab, onAuthExpired, isAdminUser, onTabChange, o
     }
 
     loadFacturacion()
-  }, [activeTab, isAdminUser, onAuthExpired])
+  }, [activeTab, isAdminUser, onAuthExpired, t])
 
   const facturasAdminFiltradas = useMemo(() => {
     const search = facturacionSearchTerm.trim().toLowerCase()
