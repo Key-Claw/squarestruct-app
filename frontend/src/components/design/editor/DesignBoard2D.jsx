@@ -250,6 +250,16 @@ function DesignBoard2D({
     if (!isPanMode && !isDualButtonPan && !isPrimaryPaint && !isSecondaryErase) return
 
     if (!isPanMode && isPrimaryPaint && !isDualButtonPan) {
+      if (event.pointerType !== 'mouse') {
+        const cell = getBoardCellFromEvent(event)
+
+        if (cell && handleFilledCellTap(event, cell)) {
+          return
+        }
+
+        return
+      }
+
       event.preventDefault()
       suppressNextBoardActionRef.current = true
       setHoverPreview(null)
