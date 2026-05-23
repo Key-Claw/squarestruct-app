@@ -3592,7 +3592,85 @@ textarea {
     margin: 0 0 0.4rem;
   }
 
-  .catalog-page > .catalog-heading > .catalog-heading-copy {
-    padding-top: 82px;
+}
+
+/* Estabilidad de heroes ES/EN: una base final comun para evitar offsets por idioma. */
+@media (min-width: 768px) {
+  .gallery-page,
+  .catalog-page,
+  .design-page {
+    --ss-hero-copy-x: clamp(28px, 4vw, 64px);
+  }
+
+  .gallery-page > .gallery-intro-card,
+  .catalog-page > .catalog-heading,
+  .design-page > .design-topbar {
+    grid-template-rows: 250px;
+    min-height: 250px;
+    overflow: hidden;
+  }
+
+  .gallery-page > .gallery-intro-card > .gallery-intro-copy,
+  .catalog-page > .catalog-heading > .catalog-heading-copy,
+  .design-page > .design-topbar > .design-topbar-copy,
+  .gallery-page > .gallery-intro-card > .gallery-intro-media,
+  .catalog-page > .catalog-heading > .catalog-heading-media,
+  .design-page > .design-topbar > .design-topbar-media,
+  .gallery-page > .gallery-intro-card > .gallery-intro-media .gallery-cover-image,
+  .catalog-page > .catalog-heading > .catalog-heading-media img,
+  .design-page > .design-topbar > .design-topbar-media img {
+    height: 250px;
+    min-height: 250px;
+  }
+
+  .gallery-page > .gallery-intro-card > .gallery-intro-copy,
+  .catalog-page > .catalog-heading > .catalog-heading-copy,
+  .design-page > .design-topbar > .design-topbar-copy {
+    box-sizing: border-box;
+    align-content: start;
+    justify-items: start;
+    gap: 14px;
+    text-align: left;
+  }
+
+  .gallery-intro-title,
+  .gallery-intro-text,
+  .catalog-heading-title,
+  .catalog-heading-text,
+  .design-topbar-title,
+  .design-topbar-text {
+    width: min(100%, 620px);
+    max-width: 620px;
+  }
+
+  .gallery-page > .gallery-intro-card h1,
+  .catalog-page > .catalog-heading h1,
+  .design-page > .design-topbar h1,
+  .gallery-page > .gallery-intro-card p:not(.gallery-eyebrow),
+  .catalog-page > .catalog-heading p:not(.catalog-eyebrow),
+  .design-page > .design-topbar p:not(.design-eyebrow) {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    text-align: left;
+    text-align-last: start;
+  }
+}
+
+@media (min-width: 992px) {
+  .gallery-page > .gallery-intro-card > .gallery-intro-copy,
+  .catalog-page > .catalog-heading > .catalog-heading-copy,
+  .design-page > .design-topbar > .design-topbar-copy {
+    padding: 72px 96px 22px 114px;
+  }
+
+  html[lang^="en"] .catalog-page > .catalog-heading > .catalog-heading-copy {
+    transform: translateX(-32px);
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+  .design-page > .design-topbar > .design-topbar-actions--hero {
+    display: none;
   }
 }

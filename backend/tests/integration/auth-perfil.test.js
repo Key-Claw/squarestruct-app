@@ -9,7 +9,6 @@ describe('Registro y login de usuario', () => {
   let token;
   let adminToken;
 
-  // Cerramos la conexión al final para que el proceso de Jest termine limpio.
   afterAll(async () => {
     await db.end();
   });
