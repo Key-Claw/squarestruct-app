@@ -522,8 +522,11 @@ function DesignBoard2D({
                   width: `${(placement.width / gridColumns) * 100}%`,
                   height: `${(placement.height / gridRows) * 100}%`,
                 }}
-              >
+
+                // ocultar el label en móviles para evitar saturar la interfaz, pero mostrarlo en pantallas más grandes
+              >{window.innerWidth >= 768 && (
                 <span>{getPlacementLabel(piece, t)}</span>
+                )}
               </div>
             )
           })}

@@ -21,11 +21,13 @@ const MATERIAL_ALL = 'todos'
 const MATERIAL_HORMIGON = 'hormigon'
 const MATERIAL_ECO = 'eco'
 
+
+// Función para determinar el zoom inicial basado en el ancho de la ventana
 const getDefaultViewZoom = () => {
   if (typeof window === 'undefined') return INITIAL_VIEW_ZOOM
 
-  if (window.innerWidth < 768) return 2.04
-  if (window.innerWidth < 992) return 1.92
+  if (window.innerWidth < 768) return 3.60
+  if (window.innerWidth < 992) return 2.20
 
   return INITIAL_VIEW_ZOOM
 }
