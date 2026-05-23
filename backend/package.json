@@ -1,6 +1,6 @@
 {
     "name": "squarestruct-backend",
-    "version": "3.0.0",
+    "version": "3.0.1",
     "description": "Backend de SquareStruct",
     "main": "server.js",
     "type": "module",
