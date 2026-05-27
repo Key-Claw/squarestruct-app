@@ -65,7 +65,7 @@ export const registerUsuario = async (req, res) => {
   }
 };
 
-
+// POST
 export const loginUsuario = async (req, res) => {
   const { email, nombre, primerApellido, contrasena } = req.body;
 
@@ -73,7 +73,11 @@ export const loginUsuario = async (req, res) => {
   if ((!email && !(nombre && primerApellido)) || !contrasena) {
     return res.status(400).json({ error: 'Faltan campos obligatorios' });
   }
-
+  // si nombre es igual a test o prueba da error 422
+  if (nombre.toLowerCase() === 'test' || nombre.toLowerCase() === 'prueba') {
+      return res.status(422).json({ error: 'El nombre no puede ser "test" o "prueba"' });
+  }
+  
   try {
     let usuarios = [];
 

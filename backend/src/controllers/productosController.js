@@ -34,6 +34,7 @@ const normalizarProducto = (producto) => ({
   categoriaProveedor: normalizarTexto(producto.categoriaProveedor)
 });
 
+// GIT
 export const getProductos = async (req, res) => {
   try {
     const locale = getLocaleFromRequest(req);
@@ -59,6 +60,7 @@ export const getProductos = async (req, res) => {
   }
 };
 
+// GIT ID
 export const getProductoById = async (req, res) => {
   try {
     const { id } = req.params;
@@ -92,6 +94,7 @@ export const getProductoById = async (req, res) => {
   }
 };
 
+// POST
 export const crearProducto = async (req, res) => {
   try {
     const locale = getLocaleFromRequest(req);
@@ -128,6 +131,7 @@ export const crearProducto = async (req, res) => {
   }
 };
 
+// PUT
 export const actualizarProducto = async (req, res) => {
   try {
     const { id } = req.params;
@@ -162,6 +166,7 @@ export const actualizarProducto = async (req, res) => {
   }
 };
 
+// DELETE
 export const eliminarProducto = async (req, res) => {
   try {
     const { id } = req.params;
