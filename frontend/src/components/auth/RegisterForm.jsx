@@ -134,6 +134,7 @@ function RegisterForm({
               </button>
             </p>
           </div>
+              <p>http://localhost:5173/api/usuarios/register?lang=es 422 (Unprocessable Entity)</p>
         </div>
       </form>
     </div>

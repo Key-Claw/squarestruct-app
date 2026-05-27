@@ -52,6 +52,10 @@ export const registerUsuario = async (req, res) => {
     if (existe.length > 0) {
       return res.status(409).json({ error: 'El email ya está registrado' });
     }
+    // Verificar el nombre es "TEST" o "PRUEBA"
+      if ( nombre == "TEST" ||  nombre == "PRUEBA") {
+    return res.status(422).json({ error: 'Modo pruebas denegado' });
+    }
     // Hashear la contraseña
     const hash = await bcrypt.hash(contrasena, 10);
     // Insertar usuario

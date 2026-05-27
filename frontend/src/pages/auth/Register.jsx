@@ -92,6 +92,9 @@ function Register({ onNavigate, onUserLogin }) {
     }
   }
 
+      //Paso 3: Conexión y Feedback Visual (Frontend)
+
+
   return (
     <section className="page-shell register-shell container-fluid">
       {/* Bootstrap grid, card, form-control, alert and buttons:
@@ -225,7 +228,6 @@ function Register({ onNavigate, onUserLogin }) {
                     </button>
                   </form>
                 </div>
-
                 {/* Enlace para volver al acceso si ya existe una cuenta. */}
                 <div>
                   <p className="mb-0">
